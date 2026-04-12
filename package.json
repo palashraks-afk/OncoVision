@@ -1,0 +1,8 @@
+{
+  "dependencies": {
+    "framer-motion": "^12.34.4",
+    "lucide-react": "^0.576.0",
+    "react-parallax-tilt": "^1.7.319",
+    "recharts": "^3.8.1"
+  }
+}
