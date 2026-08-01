@@ -1,0 +1,267 @@
+"""
+Regenerate frontend/src/app/cases.ts, the pool the Generate case button draws from.
+
+Every case is a real record from the training data, expressed in the application's
+input schema, with panels the record does not cover left at a normal adult reading.
+Nothing is invented.
+
+Selection rules:
+  - positives are sampled evenly across each model's probability range rather than
+    taking the most confident record, so generated cases land anywhere from the
+    fifties to the high nineties instead of always reading 99
+  - records the model scores at 100 are excluded, to keep the ceiling at 99
+  - negatives are included so some generated cases come back clean
+  - every case is scored through the same logic the API uses and is only kept if
+    the panel that comes out on top matches the label shown to the user
+
+Run:  python make_cases.py
+"""
+
+import os
+import json
+import numpy as np
+import pandas as pd
+import joblib
+
+import train_models as tm
+
+MODEL_DIR = "models"
+OUT = os.path.join("frontend", "src", "app", "cases.ts")
+
+# A healthy adult reading for every field, used wherever a record has no value.
+NORMAL = {
+    "age": 55, "bmi": 24.1, "wbc": 6.4, "rbc": 4.7, "hemoglobin": 14, "platelets": 250,
+    "glucose": 88, "calcium": 9.4, "bun": 14, "creatinine": 0.9, "protein_total": 7,
+    "albumin": 4.4, "ast": 22, "alt": 20, "bilirubin": 0.6, "alkaline_phosphatase": 78,
+    "alpha_fetoprotein_level": 3.1, "psa": 0.9, "plasma_ca19_9": 12,
+    "radius_mean": 11.4, "texture_mean": 17.2, "perimeter_mean": 72.6, "area_mean": 400,
+    "gender": 0, "smoking": 0, "alcohol_intake": 0.5, "physical_activity": 6,
+    "genetic_risk": 0, "cancer_history": 0, "family_history_cancer": 0,
+    "hepatitis_b": 0, "hepatitis_c": 0, "cirrhosis_history": 0, "diabetes": 0,
+}
+
+LABELS = {
+    "general": "General", "breast": "Breast", "liver": "Liver",
+    "pancreatic": "Pancreatic", "prostate": "Prostate",
+}
+
+SOURCES = {
+    "general": "General cancer risk cohort",
+    "breast": "Wisconsin Diagnostic Breast Cancer",
+    "liver": "Hepatocellular cohort",
+    "pancreatic": "Pancreatic biomarker cohort",
+    "prostate": "Stanford prostate cohort",
+}
+
+models = {
+    f.replace("model_", "").replace(".joblib", ""): joblib.load(os.path.join(MODEL_DIR, f))
+    for f in sorted(os.listdir(MODEL_DIR)) if f.endswith(".joblib")
+}
+
+
+def probabilities(cases: list[dict]) -> dict[str, np.ndarray]:
+    """Score a batch of full app cases through every model, as the API does."""
+    out = {}
+    frame = pd.DataFrame(cases)
+    for name, b in models.items():
+        feats, med = b["feature_names"], b.get("feature_medians", {})
+        X = pd.DataFrame({f: frame[f] if f in frame else med.get(f, 0.0) for f in feats})[feats]
+        out[name] = b["model"].predict_proba(X)[:, 1] * 100
+    return out
+
+
+def top_panel(per_model: dict[str, float]) -> tuple[str, int]:
+    """Reproduce the API's ranking, including the benign complement."""
+    best = max(per_model, key=lambda k: per_model[k])
+    best_risk = int(round(per_model[best]))
+    benign = 100 - best_risk
+    if benign > best_risk:
+        return "No cancer detected", benign
+    return LABELS[best], best_risk
+
+
+def phrase(v: dict) -> str:
+    return "man" if v.get("gender") == 1 else "woman"
+
+
+def note_for(domain: str, v: dict) -> str:
+    age = int(v["age"])
+    who = phrase(v)
+    if domain == "breast":
+        return (f"{age} year old woman. Biopsy imaging shows a nuclear radius of "
+                f"{v['radius_mean']:g} and an area of {v['area_mean']:g}. Blood work is normal.")
+    if domain == "liver":
+        risks = []
+        if v.get("hepatitis_b") == 1: risks.append("hepatitis B")
+        if v.get("hepatitis_c") == 1: risks.append("hepatitis C")
+        if v.get("cirrhosis_history") == 1: risks.append("cirrhosis")
+        if v.get("diabetes") == 1: risks.append("diabetes")
+        tail = ", ".join(risks) if risks else "no viral hepatitis or cirrhosis on record"
+        return f"{age} year old {who} with {tail}. AFP at {v['alpha_fetoprotein_level']:g} ng/mL."
+    if domain == "pancreatic":
+        return (f"{age} year old {who}. CA 19-9 at {v['plasma_ca19_9']:g} U/mL, "
+                f"bilirubin {v['bilirubin']:g}, glucose {v['glucose']:g}, "
+                f"creatinine {v['creatinine']:g}.")
+    if domain == "prostate":
+        return f"{age} year old man. PSA at {v['psa']:g} ng/mL, everything else normal."
+    smoke = {0: "never smoked", 1: "former smoker", 2: "current smoker"}[int(v.get("smoking", 0))]
+    gene = {0: "low", 1: "medium", 2: "high"}[int(v.get("genetic_risk", 0))]
+    prior = ", previous cancer diagnosis on record" if v.get("cancer_history") == 1 else ""
+    return (f"{age} year old {who}, {smoke}, inherited risk {gene}{prior}. "
+            f"BMI {v['bmi']:g}, {v['physical_activity']:g} hours of exercise a week.")
+
+
+def build(domain: str, config: dict):
+    X, y, _ = tm.prepare(config)
+
+    cases = [{**NORMAL, **{k: float(v) for k, v in row.items()}} for _, row in X.iterrows()]
+    per_model = probabilities(cases)
+    own = per_model[domain]
+
+    kept = []
+
+    # Positives: spread across the 50 to 99 band, one per target level.
+    pos_idx = [i for i in range(len(y)) if y.iloc[i] == 1 and 50 <= own[i] < 99.5]
+    for target in [52, 65, 78, 86, 92, 96, 99]:
+        if not pos_idx:
+            break
+        i = min(pos_idx, key=lambda j: abs(own[j] - target))
+        pos_idx.remove(i)
+        kept.append((i, True))
+
+    # Negatives: records the model is confident are clean.
+    neg_idx = sorted([i for i in range(len(y)) if y.iloc[i] == 0], key=lambda j: own[j])[:40]
+    for i in neg_idx[:: max(1, len(neg_idx) // 3)][:3]:
+        kept.append((i, False))
+
+    out = []
+    for i, positive in kept:
+        values = cases[i]
+        label, risk = top_panel({m: per_model[m][i] for m in per_model})
+        expected = LABELS[domain] if positive else "No cancer detected"
+
+        # Only keep a case whose banner promise matches what the models return.
+        if label != expected:
+            print(f"    dropped {domain} row {i}: promised {expected}, models return {label} at {risk}%")
+            continue
+
+        delta = {k: round(float(v), 4) for k, v in values.items()
+                 if abs(float(v) - float(NORMAL[k])) > 1e-9}
+        out.append({
+            "domain": LABELS[domain],
+            "expect": expected,
+            "positive": positive,
+            "source": f"{SOURCES[domain]}, {'positive' if positive else 'negative'} record",
+            "note": note_for(domain, values),
+            "delta": delta,
+            "_risk": risk,
+        })
+    return out
+
+
+def num(v: float) -> str:
+    return str(int(v)) if float(v).is_integer() else str(round(float(v), 4))
+
+
+def main():
+    pool = []
+    for config in tm.DATASETS:
+        domain = config["name"]
+        print(f"  {domain}")
+        pool.extend(build(domain, config))
+
+    for n, c in enumerate(pool):
+        c["id"] = f"{c['domain'].lower()}{'' if c['positive'] else '-neg'}-{n}"
+
+    lines = [
+        "// Sample cases for the Generate case button.",
+        "//",
+        "// Every entry is a real record from the training data, expressed in the",
+        "// application's input schema, with panels the record does not cover left at a",
+        "// normal adult reading. Nothing here is invented.",
+        "//",
+        "// Positives are sampled evenly across each model's probability range rather than",
+        "// taking the most confident record, so a generated case lands anywhere from the",
+        "// fifties to the high nineties instead of always reading 99. Negative records are",
+        "// included too, so some generated cases come back clean. Every case was scored",
+        "// before being written here, and only kept if the panel that comes out on top",
+        "// matches the expectation shown to the user.",
+        "//",
+        "// Generated by make_cases.py. Regenerate if the models are retrained.",
+        "",
+        "export type CaseValues = Record<string, number>;",
+        "",
+        "export const NORMAL: CaseValues = {",
+    ]
+    for k, v in NORMAL.items():
+        lines.append(f"  {k}: {num(v)},")
+    lines += [
+        "};",
+        "",
+        "export type DemoCase = {",
+        "  id: string;",
+        "  domain: string;",
+        "  expect: string;",
+        "  positive: boolean;",
+        "  source: string;",
+        "  note: string;",
+        "  delta: CaseValues;",
+        "};",
+        "",
+        "export const CASE_POOL: DemoCase[] = [",
+    ]
+
+    for c in pool:
+        delta = ", ".join(f"{k}: {num(v)}" for k, v in c["delta"].items())
+        lines += [
+            "  {",
+            f'    id: "{c["id"]}",',
+            f'    domain: "{c["domain"]}",',
+            f'    expect: "{c["expect"]}",',
+            f'    positive: {"true" if c["positive"] else "false"},',
+            f'    source: "{c["source"]}",',
+            f'    note: "{c["note"]}",',
+            f"    delta: {{ {delta} }},",
+            "  },",
+        ]
+
+    # Open on a clear breast case, but one nearer the middle of the range than
+    # the ceiling, so the first thing anyone sees is not a pinned 99.
+    opening = min(
+        (c for c in pool if c["domain"] == "Breast" and c["positive"]),
+        key=lambda c: abs(c["_risk"] - 93),
+    )
+
+    lines += [
+        "];",
+        "",
+        "export const caseValues = (c: DemoCase): CaseValues => ({ ...NORMAL, ...c.delta });",
+        "",
+        "/** Draw a random case, never the same one twice in a row. */",
+        "export function randomCase(previousId?: string): DemoCase {",
+        "  const options = CASE_POOL.filter(c => c.id !== previousId);",
+        "  return options[Math.floor(Math.random() * options.length)];",
+        "}",
+        "",
+        "/**",
+        " * The case the page opens on. Fixed rather than random so the first render",
+        " * matches between server and client. Every press of Generate case after that",
+        " * draws at random.",
+        " */",
+        f'export const OPENING_CASE = CASE_POOL.find(c => c.id === "{opening["id"]}")!;',
+        "",
+    ]
+
+    with open(OUT, "w", encoding="utf-8") as f:
+        f.write("\n".join(lines))
+
+    risks = sorted(c["_risk"] for c in pool if c["positive"])
+    print(f"\nwrote {OUT}")
+    print(f"{len(pool)} cases, {sum(c['positive'] for c in pool)} positive, "
+          f"{sum(not c['positive'] for c in pool)} negative")
+    print(f"positive score range {risks[0]} to {risks[-1]}, median {risks[len(risks)//2]}")
+    print(f"opening case {opening['id']} at {opening['_risk']}%")
+
+
+if __name__ == "__main__":
+    main()

@@ -1,0 +1,104 @@
+{
+  "general": {
+    "label": "General Cancer Risk",
+    "features": [
+      "age",
+      "bmi",
+      "gender",
+      "smoking",
+      "genetic_risk",
+      "physical_activity",
+      "alcohol_intake",
+      "cancer_history"
+    ],
+    "auc": 0.951,
+    "auc_std": 0.01,
+    "accuracy": 0.95,
+    "sensitivity": 0.919,
+    "specificity": 0.968,
+    "n_samples": 1500,
+    "n_positive": 557,
+    "n_features": 8,
+    "cv_folds": 5
+  },
+  "breast": {
+    "label": "Breast Cancer Risk",
+    "features": [
+      "radius_mean",
+      "texture_mean",
+      "perimeter_mean",
+      "area_mean"
+    ],
+    "auc": 0.963,
+    "auc_std": 0.018,
+    "accuracy": 0.895,
+    "sensitivity": 0.786,
+    "specificity": 0.958,
+    "n_samples": 569,
+    "n_positive": 212,
+    "n_features": 4,
+    "cv_folds": 5
+  },
+  "liver": {
+    "label": "Liver Cancer Risk",
+    "features": [
+      "age",
+      "bmi",
+      "alpha_fetoprotein_level",
+      "gender",
+      "smoking",
+      "alcohol_intake",
+      "physical_activity",
+      "hepatitis_b",
+      "hepatitis_c",
+      "cirrhosis_history",
+      "family_history_cancer",
+      "diabetes"
+    ],
+    "auc": 0.972,
+    "auc_std": 0.004,
+    "accuracy": 0.922,
+    "sensitivity": 0.83,
+    "specificity": 0.948,
+    "n_samples": 5000,
+    "n_positive": 1089,
+    "n_features": 12,
+    "cv_folds": 5
+  },
+  "pancreatic": {
+    "label": "Pancreatic Cancer Risk",
+    "features": [
+      "age",
+      "gender",
+      "creatinine",
+      "plasma_ca19_9",
+      "bilirubin",
+      "glucose"
+    ],
+    "auc": 0.97,
+    "auc_std": 0.013,
+    "accuracy": 0.892,
+    "sensitivity": 0.808,
+    "specificity": 0.915,
+    "n_samples": 600,
+    "n_positive": 130,
+    "n_features": 6,
+    "cv_folds": 5
+  },
+  "prostate": {
+    "label": "Prostate Cancer Risk",
+    "features": [
+      "age",
+      "psa"
+    ],
+    "auc": 0.795,
+    "auc_std": 0.066,
+    "accuracy": 0.7,
+    "sensitivity": 0.769,
+    "specificity": 0.571,
+    "n_samples": 97,
+    "n_positive": 62,
+    "n_features": 2,
+    "cv_folds": 5
+  }
+}
