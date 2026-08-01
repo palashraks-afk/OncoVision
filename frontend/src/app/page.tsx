@@ -17,7 +17,12 @@ import { CASE_POOL, OPENING_CASE, caseValues, randomCase, type DemoCase } from "
 
 // Trailing slashes are stripped so a value like "https://host.com/" set in the
 // Vercel dashboard cannot produce a double slash and a 404.
-const API_BASE = (process.env.NEXT_PUBLIC_API_URL || "https://oncovision-backend.onrender.com")
+//
+// The default is the Render service that deploys backend/ from this repo. Note
+// the host is "oncovisonai" without the second i, which is the actual service
+// name. There is an older, unrelated service at oncovision-backend.onrender.com
+// that serves a different API and will 404 on /models and 422 on /predict.
+const API_BASE = (process.env.NEXT_PUBLIC_API_URL || "https://oncovisonai.onrender.com")
   .replace(/\/+$/, "");
 
 // Measured by train_models.py. Used until the live registry responds.
