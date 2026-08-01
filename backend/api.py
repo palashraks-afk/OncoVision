@@ -2,7 +2,7 @@
 Oncovision API.
 
 Two endpoints:
-  POST /predict     lab values in, per domain risk assessment out
+  POST /predict     a flat object of lab values and history, per domain risk out
   POST /parse-pdf   lab report PDFs in, extracted biomarker values out
   GET  /models      the trained model registry and its measured performance
 
@@ -14,7 +14,7 @@ thresholds are reported alongside it as separate flags and never overwrite it.
 
 from fastapi import FastAPI, UploadFile, File
 from fastapi.middleware.cors import CORSMiddleware
-from pydantic import BaseModel
+from pydantic import BaseModel, ConfigDict
 from typing import List, Optional
 import joblib
 import numpy as np
@@ -168,7 +168,83 @@ def ensemble_importances(bundle) -> np.ndarray:
 
 
 class PatientData(BaseModel):
-    lab_values: dict
+    """
+    The /predict request body, sent as a flat object.
+
+    Every field is optional and defaults to None, because the interface asks the
+    patient for whatever they happen to have and never requires a complete panel.
+    A model scores only when it receives at least one of its own features, and
+    anything left out is filled with that feature's training median.
+
+    Unknown keys are ignored rather than rejected, so the frontend can post its
+    whole form without filtering first.
+    """
+
+    model_config = ConfigDict(extra="ignore")
+
+    # Body metrics
+    age: Optional[float] = None
+    bmi: Optional[float] = None
+
+    # Complete blood count
+    wbc: Optional[float] = None
+    rbc: Optional[float] = None
+    hemoglobin: Optional[float] = None
+    platelets: Optional[float] = None
+
+    # Metabolic panel
+    glucose: Optional[float] = None
+    calcium: Optional[float] = None
+    bun: Optional[float] = None
+    creatinine: Optional[float] = None
+    protein_total: Optional[float] = None
+    albumin: Optional[float] = None
+
+    # Liver panel
+    ast: Optional[float] = None
+    alt: Optional[float] = None
+    bilirubin: Optional[float] = None
+    alkaline_phosphatase: Optional[float] = None
+
+    # Tumour markers
+    alpha_fetoprotein_level: Optional[float] = None
+    psa: Optional[float] = None
+    plasma_ca19_9: Optional[float] = None
+
+    # Breast mass morphology
+    radius_mean: Optional[float] = None
+    texture_mean: Optional[float] = None
+    perimeter_mean: Optional[float] = None
+    area_mean: Optional[float] = None
+
+    # Patient history
+    gender: Optional[float] = None
+    smoking: Optional[float] = None
+    alcohol_intake: Optional[float] = None
+    physical_activity: Optional[float] = None
+    genetic_risk: Optional[float] = None
+    cancer_history: Optional[float] = None
+    family_history_cancer: Optional[float] = None
+    hepatitis_b: Optional[float] = None
+    hepatitis_c: Optional[float] = None
+    cirrhosis_history: Optional[float] = None
+    diabetes: Optional[float] = None
+
+
+@app.get("/")
+def root():
+    """Hitting the base URL wakes a sleeping free tier instance and confirms which build is live."""
+    return {
+        "service": "Oncovision AI",
+        "status": "online",
+        "models_loaded": sorted(models.keys()),
+        "endpoints": ["/predict", "/parse-pdf", "/models", "/health", "/docs"],
+    }
+
+
+@app.get("/health")
+def health():
+    return {"status": "healthy" if models else "degraded", "models_loaded": len(models)}
 
 
 @app.get("/models")
@@ -193,18 +269,14 @@ async def predict_risk(data: PatientData):
     values = {}
     ignored = {}
 
-    for raw_key, raw_val in data.lab_values.items():
-        key = raw_key.lower()
-        if raw_val == "" or raw_val is None:
-            continue
-        try:
-            val = float(raw_val)
-        except (TypeError, ValueError):
-            ignored[raw_key] = "not a number"
-            continue
+    # Pydantic has already dropped anything absent and coerced the rest to
+    # float, so the only check left is whether a value is physiologically
+    # possible. Anything outside the bounds is excluded and reported back
+    # rather than clamped, so a typo cannot quietly move a score.
+    for key, val in data.model_dump(exclude_none=True).items():
         low, high = BIOLOGICAL_BOUNDS.get(key, (-1e12, 1e12))
         if val < low or val > high:
-            ignored[raw_key] = f"outside {low} to {high}"
+            ignored[key] = f"outside {low} to {high}"
             continue
         values[key] = val
 

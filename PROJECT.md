@@ -266,7 +266,7 @@ out on top matches the expectation shown to the user. The generator is committed
 
 | Method | Route | Purpose |
 |---|---|---|
-| POST | `/predict` | Lab values in, ranked per panel assessment out with attribution and model metrics |
+| POST | `/predict` | A flat object of lab values and history, every field optional. Returns a ranked per panel assessment with attribution and model metrics |
 | POST | `/parse-pdf` | Up to five PDFs in, extracted biomarker values out |
 | GET | `/models` | The model registry with measured AUC, sensitivity, and specificity |
 

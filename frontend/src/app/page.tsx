@@ -15,7 +15,10 @@ import {
 import { LAB_GROUPS, LAB_KEYS, HISTORY_FIELDS, ALL_KEYS } from "./fields";
 import { CASE_POOL, OPENING_CASE, caseValues, randomCase, type DemoCase } from "./cases";
 
-const API_BASE = process.env.NEXT_PUBLIC_API_URL || "https://oncovisonai.onrender.com";
+// Trailing slashes are stripped so a value like "https://host.com/" set in the
+// Vercel dashboard cannot produce a double slash and a 404.
+const API_BASE = (process.env.NEXT_PUBLIC_API_URL || "https://oncovision-backend.onrender.com")
+  .replace(/\/+$/, "");
 
 // Measured by train_models.py. Used until the live registry responds.
 const FALLBACK_METRICS: Record<string, any> = {
@@ -140,7 +143,7 @@ export default function OncovisionDashboard() {
       const res = await fetch(`${API_BASE}/predict`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ lab_values: payload }),
+        body: JSON.stringify(payload),
       });
       const data = await res.json();
       if (data.status === "error") {
@@ -1202,7 +1205,7 @@ export default function OncovisionDashboard() {
                     <div className="space-y-3 text-xs">
                       <div>
                         <p className="font-mono text-emerald-400 font-bold">POST /predict</p>
-                        <p className="text-slate-500 mt-1">Lab values in, ranked per panel assessment out with attribution and model metrics.</p>
+                        <p className="text-slate-500 mt-1">A flat object of lab values and history, every field optional. Returns a ranked per panel assessment with attribution and model metrics.</p>
                       </div>
                       <div>
                         <p className="font-mono text-emerald-400 font-bold">POST /parse-pdf</p>
