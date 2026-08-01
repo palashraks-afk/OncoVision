@@ -15,15 +15,25 @@ import {
 import { LAB_GROUPS, LAB_KEYS, HISTORY_FIELDS, ALL_KEYS } from "./fields";
 import { CASE_POOL, OPENING_CASE, caseValues, randomCase, type DemoCase } from "./cases";
 
-// Trailing slashes are stripped so a value like "https://host.com/" set in the
-// Vercel dashboard cannot produce a double slash and a 404.
-//
-// The default is the Render service that deploys backend/ from this repo. Note
-// the host is "oncovisonai" without the second i, which is the actual service
-// name. There is an older, unrelated service at oncovision-backend.onrender.com
-// that serves a different API and will 404 on /models and 422 on /predict.
-const API_BASE = (process.env.NEXT_PUBLIC_API_URL || "https://oncovisonai.onrender.com")
-  .replace(/\/+$/, "");
+// The Render service that deploys backend/ from this repo. The host is
+// "oncovisonai" without the second i, which is the real service name.
+const DEFAULT_API = "https://oncovisonai.onrender.com";
+
+// An older, unrelated service that still answers on this host. It runs a
+// different API with one model and a Gemini integration, so it 404s on /models
+// and 422s on /predict no matter what this app sends. It is rejected here
+// rather than trusted, because a stale NEXT_PUBLIC_API_URL pointing at it is
+// otherwise silent and looks exactly like a backend outage.
+const LEGACY_API = "oncovision-backend.onrender.com";
+
+function resolveApiBase(): string {
+  const configured = (process.env.NEXT_PUBLIC_API_URL || "").trim().replace(/\/+$/, "");
+  if (!configured) return DEFAULT_API;
+  if (configured.includes(LEGACY_API)) return DEFAULT_API;
+  return configured;
+}
+
+const API_BASE = resolveApiBase();
 
 // Measured by train_models.py. Used until the live registry responds.
 const FALLBACK_METRICS: Record<string, any> = {
