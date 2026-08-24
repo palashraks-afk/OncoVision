@@ -102,5 +102,124 @@
     },
     "external_logistic_auc": 0.493,
     "auc_drop": 0.297
+  },
+  "general_to_nhanes": {
+    "panel": "general",
+    "train": "Risk-factor cohort, 1500 records, 37% positive",
+    "test": "NHANES 2017-2018, 5173 US adults, 10.3% positive, nationally representative",
+    "features_unavailable_in_nhanes": [
+      "genetic_risk",
+      "cancer_history"
+    ],
+    "internal": {
+      "setting": "internal held-out split",
+      "n": 300,
+      "positives": 111,
+      "prevalence": 0.37,
+      "auc": 0.966,
+      "auc_ci": [
+        0.936,
+        0.99
+      ],
+      "sensitivity": 0.91,
+      "sensitivity_ci": [
+        0.853,
+        0.958
+      ],
+      "specificity": 0.984,
+      "specificity_ci": [
+        0.964,
+        1.0
+      ],
+      "brier": 0.0435,
+      "calibration_slope": 1.176
+    },
+    "external": {
+      "setting": "external, NHANES 2017-2018",
+      "n": 5173,
+      "positives": 535,
+      "prevalence": 0.103,
+      "auc": 0.596,
+      "auc_ci": [
+        0.57,
+        0.621
+      ],
+      "sensitivity": 0.394,
+      "sensitivity_ci": [
+        0.354,
+        0.433
+      ],
+      "specificity": 0.711,
+      "specificity_ci": [
+        0.698,
+        0.725
+      ],
+      "brier": 0.2627,
+      "calibration_slope": 0.116
+    },
+    "external_logistic_auc": 0.618,
+    "auc_drop": 0.37,
+    "subgroups_by_race": {
+      "Mexican American": {
+        "n": 685,
+        "positives": 46,
+        "prevalence": 0.067,
+        "auc": 0.625,
+        "auc_ci": [
+          0.549,
+          0.698
+        ]
+      },
+      "Non-Hispanic Asian": {
+        "n": 750,
+        "positives": 31,
+        "prevalence": 0.041,
+        "auc": 0.667,
+        "auc_ci": [
+          0.56,
+          0.767
+        ]
+      },
+      "Non-Hispanic Black": {
+        "n": 1219,
+        "positives": 90,
+        "prevalence": 0.074,
+        "auc": 0.571,
+        "auc_ci": [
+          0.511,
+          0.631
+        ]
+      },
+      "Non-Hispanic White": {
+        "n": 1777,
+        "positives": 309,
+        "prevalence": 0.174,
+        "auc": 0.578,
+        "auc_ci": [
+          0.542,
+          0.614
+        ]
+      },
+      "Other Hispanic": {
+        "n": 483,
+        "positives": 33,
+        "prevalence": 0.068,
+        "auc": 0.555,
+        "auc_ci": [
+          0.452,
+          0.661
+        ]
+      },
+      "Other or multiracial": {
+        "n": 259,
+        "positives": 26,
+        "prevalence": 0.1,
+        "auc": 0.563,
+        "auc_ci": [
+          0.453,
+          0.668
+        ]
+      }
+    }
   }
 }

@@ -5,7 +5,7 @@ and returns multi-cancer risk assessments in real time.
 
 Built as a mentored research project under the guidance of a clinical oncologist at UCI CHOC.
 
-**[Live app](https://oncovisionai.vercel.app)** · **[Methodology](PROJECT.md)** · **[Full evaluation](EVALUATION.md)**
+**[Live app](https://oncovisionai.vercel.app)** · **[Methodology](PROJECT.md)** · **[Full evaluation](EVALUATION.md)** · **[Validation protocol](PROTOCOL.md)**
 
 > **This is a research prototype, not a medical device.** It has no regulatory clearance, no
 > prospective validation, and no IRB approval. Read [the honest numbers](#honest-numbers) before
@@ -47,30 +47,53 @@ exactly the kind of thing that goes unchecked.
 
 ### External validation
 
-Every number above is a held-out slice of the same cohort the model trained on. That slice shares
-the hospital, the assay machines and the population, so it measures memorisation more than
-generalisation. The liver panel is the one that can be tested properly:
+Every held-out number above still shares a hospital, assay machines and population
+with its training data. Three of the four panels now have a genuine outside test.
 
-- **India**: ILPD, 583 real patients, Andhra Pradesh (UCI 225)
-- **Germany**: HCV data, 589 real patients (UCI 571)
-
-Independent cohorts, eight shared liver chemistry measurements, different continent, hospital,
-protocol and prevalence. The German cohort reports in SI units, so albumin, total protein and
-bilirubin had to be converted before the two were comparable at all.
-
-| Direction | Internal AUC | External AUC | 95% CI | Drop |
+| Panel | External cohort | Internal | External | Drop |
 |---|---|---|---|---|
-| India → Germany | 0.785 | **0.623** | 0.539 to 0.710 | 0.162 |
-| Germany → India | 0.995 | **0.698** | 0.654 to 0.741 | **0.297** |
+| General | NHANES 2017-2018, 5,173 US adults | 0.966 | **0.596** | **0.370** |
+| Liver | Germany, 589 patients (trained on India) | 0.785 | **0.623** | 0.162 |
+| Liver | India, 583 patients (trained on Germany) | 0.995 | **0.698** | **0.297** |
+| Breast | WPBC, 198 independent cancer patients | 0.915 sens | **0.894 sens** | 0.021 |
+| Pancreatic | none exists publicly | 0.969 | not tested | unknown |
 
-**This is the most useful result in the project.** A model trained on German patients scores 0.995
-on its own held-out data and 0.698 on Indian patients. Same model, same task, 0.297 lost purely
-because the patients came from somewhere else. Read every internal number above with that in mind,
-including the ones over 0.96 that have no external test available.
+**The general panel is the cautionary one.** It looked like the best model in the
+project at 0.966 and scores 0.596 on a nationally representative US sample, which
+is barely better than a coin flip. NHANES matters because it is not case-control:
+10.3% prevalence, sampled from the public rather than from people already being
+investigated.
 
-Logistic regression scored 0.736 going India to Germany against the ensemble's 0.623. The simpler
-model transferred better, which is the usual outcome when a complex model has learned a cohort's
-quirks.
+**The breast panel is the one that holds.** 0.894 external sensitivity against
+0.915 internal, on 198 independent confirmed cancer patients from a separate
+Wisconsin cohort. No AUC is available because that cohort has no benign class,
+so this is a partial external test and is labelled as one.
+
+**Liver was tested both directions.** A model trained on German patients scores
+0.995 on its own held-out data and 0.698 on Indian patients. Same model, same
+task, 0.297 lost purely to the change of population. The German cohort reports in
+SI units, so albumin, total protein and bilirubin had to be converted before the
+two were comparable at all.
+
+Logistic regression scored 0.736 going India to Germany against the ensemble's
+0.623, and 0.618 on NHANES against the ensemble's 0.596. The simpler model
+transferred better in both cases.
+
+### Subgroup accuracy, measured rather than disclaimed
+
+NHANES is the only cohort here carrying race and ethnicity.
+
+| Group | n | Prevalence | AUC | 95% CI |
+|---|---|---|---|---|
+| Non-Hispanic Asian | 750 | 4.1% | 0.667 | 0.560 to 0.767 |
+| Mexican American | 685 | 6.7% | 0.625 | 0.549 to 0.698 |
+| Non-Hispanic White | 1,777 | 17.4% | 0.578 | 0.542 to 0.614 |
+| Non-Hispanic Black | 1,219 | 7.4% | 0.571 | 0.511 to 0.631 |
+| Other Hispanic | 483 | 6.8% | 0.555 | 0.452 to 0.661 |
+| Other or multiracial | 259 | 10.0% | 0.563 | 0.453 to 0.668 |
+
+Every group sits between 0.55 and 0.67. The model is weak across all of them
+rather than unfair between them, which is a different problem and a real one.
 
 ### The number that actually matters
 
@@ -105,10 +128,12 @@ method.
 - **The liver panel detects liver disease, not liver cancer.** It replaced a synthetic cohort with
   583 real patients. Its specificity is 0.206, meaning it flags most people, so it is useful for
   ruling out rather than ruling in.
-- **Only the liver panel has external validation.** General, breast and pancreatic have no
-  independent cohort available, so their numbers are internal only and should be discounted by
-  something like the 0.16 to 0.30 drop measured on liver.
-- **No prospective test and no IRB.** No real patient report has been followed to an outcome.
+- **The pancreatic panel has no external test.** No public cohort shares its feature set. Its 0.969
+  should be discounted by something like the 0.16 to 0.37 generalisation loss measured elsewhere.
+- **No prospective test and no IRB.** No real patient report has been followed to an outcome. A
+  submittable study protocol with pre-specified statistics is drafted in [PROTOCOL.md](PROTOCOL.md).
+  Its sample-size table shows the pancreatic panel would need roughly 690,000 participants to
+  validate at real incidence, which is why that panel carries the strongest caution here.
 - **The ensemble is within noise of logistic regression** on breast and pancreatic.
 - **No race or ethnicity in any cohort**, so accuracy across those groups is unmeasured rather than
   acceptable. AUC by sex and age band is in `EVALUATION.md`.

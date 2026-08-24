@@ -127,6 +127,78 @@ def run_direction(train_name, test_name):
     }
 
 
+def validate_general_on_nhanes():
+    """
+    External test for the general panel against NHANES 2017-2018.
+
+    The general panel trains on a risk-factor cohort that is 37% positive.
+    NHANES is a nationally representative survey of US adults where 10.3% have
+    ever been told they had cancer. So this tests two things at once: does the
+    model transfer to a different population, and does it survive a realistic
+    prevalence instead of an enriched one.
+
+    Two of the eight training features do not exist in NHANES. Inherited risk
+    is not surveyed, and prior cancer diagnosis is the outcome itself, so
+    including it would leak. Both are filled with the training median, which is
+    exactly what the application does for a patient who leaves them blank.
+
+    NHANES also carries race and ethnicity, which no other cohort here does, so
+    this is the only place subgroup accuracy across those groups can be
+    measured rather than disclaimed.
+    """
+    cfg = next(c for c in tm.DATASETS if c["name"] == "general")
+    X_tr, y_tr, medians = tm.prepare(cfg)
+
+    nh = pd.read_csv("data/nhanes_general_usa.csv")
+    y_te = nh["any_cancer"].astype(int)
+
+    X_te = pd.DataFrame(
+        {f: (nh[f] if f in nh.columns else medians.get(f, 0.0)) for f in X_tr.columns}
+    )[X_tr.columns]
+    X_te = X_te.fillna(medians)
+
+    missing = [f for f in X_tr.columns if f not in nh.columns]
+
+    model = fit(X_tr, y_tr)
+    p = model.predict_proba(X_te)[:, 1]
+
+    internal_split = train_test_split(
+        X_tr, y_tr, test_size=0.2, random_state=RANDOM_STATE, stratify=y_tr
+    )
+    Xa, Xb, ya, yb = internal_split
+    internal = metrics(yb, fit(Xa, ya).predict_proba(Xb)[:, 1], "internal held-out split")
+    external = metrics(y_te, p, "external, NHANES 2017-2018")
+
+    lr = make_pipeline(StandardScaler(), LogisticRegression(max_iter=5000, class_weight="balanced"))
+    lr.fit(X_tr, y_tr)
+    lr_auc = round(float(roc_auc_score(y_te, lr.predict_proba(X_te)[:, 1])), 3)
+
+    # Subgroup accuracy by race and ethnicity.
+    subgroups = {}
+    for group, mask in nh.groupby("race_ethnicity").groups.items():
+        idx = nh.index.isin(mask)
+        if idx.sum() >= 100 and len(np.unique(y_te[idx])) > 1:
+            subgroups[str(group)] = {
+                "n": int(idx.sum()),
+                "positives": int(y_te[idx].sum()),
+                "prevalence": round(float(y_te[idx].mean()), 3),
+                "auc": round(float(roc_auc_score(y_te[idx], p[idx])), 3),
+                "auc_ci": bootstrap_ci(np.asarray(y_te[idx]), p[idx], roc_auc_score),
+            }
+
+    return {
+        "panel": "general",
+        "train": "Risk-factor cohort, 1500 records, 37% positive",
+        "test": "NHANES 2017-2018, 5173 US adults, 10.3% positive, nationally representative",
+        "features_unavailable_in_nhanes": missing,
+        "internal": internal,
+        "external": external,
+        "external_logistic_auc": lr_auc,
+        "auc_drop": round(internal["auc"] - external["auc"], 3),
+        "subgroups_by_race": subgroups,
+    }
+
+
 def main():
     print("Loading cohorts")
     for name, (path, desc) in COHORTS.items():
@@ -145,6 +217,20 @@ def main():
               f"(95% CI {r['external']['auc_ci'][0]} to {r['external']['auc_ci'][1]})")
         print(f"  drop                   {r['auc_drop']}")
         print(f"  logistic on external   {r['external_logistic_auc']}")
+
+    print("\nGeneral panel against NHANES 2017-2018")
+    g = validate_general_on_nhanes()
+    results["general_to_nhanes"] = g
+    print(f"  features NHANES does not have: {g['features_unavailable_in_nhanes']}")
+    print(f"  internal held-out AUC  {g['internal']['auc']}")
+    print(f"  EXTERNAL AUC           {g['external']['auc']}  "
+          f"(95% CI {g['external']['auc_ci'][0]} to {g['external']['auc_ci'][1]})")
+    print(f"  drop                   {g['auc_drop']}")
+    print(f"  logistic on external   {g['external_logistic_auc']}")
+    print("  by race and ethnicity:")
+    for k, v in g["subgroups_by_race"].items():
+        print(f"    {k:<24} n={v['n']:<6} prev={v['prevalence']:<7} AUC={v['auc']}  "
+              f"CI {v['auc_ci'][0]} to {v['auc_ci'][1]}")
 
     with open("external_validation.json", "w") as f:
         json.dump(results, f, indent=2)

@@ -1,12 +1,153 @@
 @import "tailwindcss";
 
-body {
-  background-color: #020617;
-  color: #f8fafc;
-  overflow-x: hidden;
+/*
+  Palette taken from a laser-printed clinical requisition, not from a UI kit.
+  Paper is very slightly warm, ink is near-black rather than pure, rules are a
+  cool hairline grey, and there are exactly two signal colours: the red of an
+  H/L flag stamp and the dark teal of a department stamp.
+*/
+:root {
+  --paper: #fcfcfa;
+  --paper-2: #f3f3ef;
+  --paper-3: #eceae4;
+  --ink: #141414;
+  --ink-2: #4a4a45;
+  --ink-3: #77776f;
+  --rule: #d8d8d2;
+  --rule-strong: #b9b9b1;
+  --flag: #b3261e;
+  --flag-bg: #fbeceb;
+  --stamp: #1f4e4a;
+  --stamp-bg: #edf3f2;
+  --ok: #2f6b4f;
+  --warn: #8a5a00;
+  --warn-bg: #fdf4e3;
 }
 
-::-webkit-scrollbar { width: 8px; }
-::-webkit-scrollbar-track { background: #020617; }
-::-webkit-scrollbar-thumb { background: #334155; border-radius: 4px; }
-::-webkit-scrollbar-thumb:hover { background: #475569; }
+html,
+body {
+  background: var(--paper);
+  color: var(--ink);
+}
+
+body {
+  font-family: var(--font-sans), ui-sans-serif, system-ui, sans-serif;
+  font-size: 15px;
+  line-height: 1.55;
+  overflow-x: hidden;
+  -webkit-font-smoothing: antialiased;
+}
+
+/* Form-header lettering: condensed, tight, institutional. */
+.display {
+  font-family: var(--font-condensed), var(--font-sans), sans-serif;
+  font-weight: 700;
+  letter-spacing: -0.015em;
+}
+
+/* Every number in this interface is monospace, as it is on a real report. */
+.data {
+  font-family: var(--font-mono), ui-monospace, monospace;
+  font-variant-numeric: tabular-nums;
+}
+
+/* A form field label: small, spaced, mono. */
+.field-label {
+  font-family: var(--font-mono), monospace;
+  font-size: 10px;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--ink-3);
+}
+
+/* Section header with a hairline running out to the edge, as on a form. */
+.rule-out {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+}
+.rule-out::after {
+  content: "";
+  flex: 1;
+  height: 1px;
+  background: var(--rule);
+}
+
+/*
+  SIGNATURE ELEMENT: the reference interval.
+
+  A printed lab report never gives you a bare number. It gives you the number,
+  the normal band, and a flag if you fall outside it. This reproduces that:
+  a ruled track, a solid region for the reference interval, and a tick for the
+  patient's value.
+*/
+.refbar {
+  position: relative;
+  height: 20px;
+  border-top: 1px solid var(--rule);
+  border-bottom: 1px solid var(--rule);
+  background: repeating-linear-gradient(
+    90deg,
+    transparent 0 11px,
+    var(--rule) 11px 12px
+  );
+}
+
+.refbar-normal {
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  background: var(--paper-3);
+  border-left: 1px solid var(--rule-strong);
+  border-right: 1px solid var(--rule-strong);
+}
+
+.refbar-tick {
+  position: absolute;
+  top: -4px;
+  bottom: -4px;
+  width: 2px;
+  background: var(--ink);
+}
+.refbar-tick[data-flag="high"] {
+  background: var(--flag);
+  width: 3px;
+}
+
+/* Margin flag stamp, the H or L in a real report's right-hand column. */
+.flag-stamp {
+  font-family: var(--font-mono), monospace;
+  font-weight: 600;
+  font-size: 10px;
+  letter-spacing: 0.08em;
+  border: 1px solid currentColor;
+  padding: 1px 5px;
+}
+
+::-webkit-scrollbar {
+  width: 10px;
+  height: 10px;
+}
+::-webkit-scrollbar-track {
+  background: var(--paper-2);
+}
+::-webkit-scrollbar-thumb {
+  background: var(--rule-strong);
+}
+::-webkit-scrollbar-thumb:hover {
+  background: var(--ink-3);
+}
+
+:focus-visible {
+  outline: 2px solid var(--stamp);
+  outline-offset: 2px;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    transition-duration: 0.01ms !important;
+  }
+}

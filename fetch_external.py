@@ -138,6 +138,118 @@ def fetch_coimbra() -> pd.DataFrame:
     return out.dropna()
 
 
+def fetch_wpbc() -> pd.DataFrame:
+    """
+    Wisconsin Prognostic Breast Cancer, UCI id 16. 198 patients.
+
+    Same four nuclear morphology measurements the breast panel uses, computed
+    the same way, but a different cohort of patients followed since 1984 for
+    recurrence rather than assembled for diagnosis.
+
+    Every record is a confirmed invasive breast cancer, so there is no benign
+    class and no AUC to compute. What can be measured is external sensitivity:
+    of 198 independent, confirmed cancer patients the model has never seen,
+    how many does it flag. That is a partial external test rather than a full
+    one, and it is reported as exactly that.
+    """
+    d = fetch_ucirepo(id=16)
+    X = d.data.features.copy()
+    return pd.DataFrame({
+        "radius_mean": pd.to_numeric(X["radius1"], errors="coerce"),
+        "texture_mean": pd.to_numeric(X["texture1"], errors="coerce"),
+        "perimeter_mean": pd.to_numeric(X["perimeter1"], errors="coerce"),
+        "area_mean": pd.to_numeric(X["area1"], errors="coerce"),
+        "malignant": 1,
+    }).dropna()
+
+
+def fetch_nhanes() -> pd.DataFrame:
+    """
+    NHANES 2017-2018, CDC. A nationally representative sample of the US
+    population, which is the important part.
+
+    Every other cohort in this project is case-control: people already had a
+    reason to be tested, so 21 to 37 percent of them have the disease. NHANES
+    is a survey of the general public, so its cancer prevalence is what you
+    would actually meet, and it carries race and ethnicity, which none of the
+    other cohorts do.
+
+    That makes it an external test for the general panel on two axes at once:
+    a different population, and a realistic prevalence rather than an enriched
+    one.
+
+    Not every feature the general panel trains on exists here. Inherited risk
+    is not surveyed, and prior cancer diagnosis is the outcome itself, so both
+    are left absent and imputed exactly as the application does for a patient
+    who does not answer them.
+    """
+    import io
+    import ssl
+    import urllib.request
+
+    base = "https://wwwn.cdc.gov/Nchs/Data/Nhanes/Public/2017/DataFiles/"
+    ctx = ssl.create_default_context()
+    ctx.check_hostname = False
+    ctx.verify_mode = ssl.CERT_NONE
+
+    def grab(fname):
+        req = urllib.request.Request(base + fname, headers={"User-Agent": "Mozilla/5.0"})
+        raw = urllib.request.urlopen(req, timeout=300, context=ctx).read()
+        return pd.read_sas(io.BytesIO(raw), format="xport")
+
+    demo = grab("DEMO_J.XPT")[["SEQN", "RIAGENDR", "RIDAGEYR", "RIDRETH3"]]
+    bmx = grab("BMX_J.XPT")[["SEQN", "BMXBMI"]]
+    smq = grab("SMQ_J.XPT")[["SEQN", "SMQ020", "SMQ040"]]
+    alq = grab("ALQ_J.XPT")[["SEQN", "ALQ111", "ALQ130"]]
+    paq = grab("PAQ_J.XPT")[["SEQN", "PAQ655", "PAD660", "PAQ670", "PAD675"]]
+    mcq = grab("MCQ_J.XPT")[["SEQN", "MCQ220"]]
+
+    df = demo
+    for part in (bmx, smq, alq, paq, mcq):
+        df = df.merge(part, on="SEQN", how="left")
+
+    # Adults only. The training cohort is adults and cancer in minors is a
+    # different disease population.
+    df = df[df["RIDAGEYR"] >= 20]
+
+    # Smoking, from "100 cigarettes ever" plus "do you smoke now".
+    smoking = pd.Series(np.nan, index=df.index)
+    smoking[df["SMQ020"] == 2] = 0                                  # never
+    smoking[(df["SMQ020"] == 1) & (df["SMQ040"] == 3)] = 1          # former
+    smoking[(df["SMQ020"] == 1) & (df["SMQ040"].isin([1, 2]))] = 2  # current
+
+    # Alcohol on the training set's 0 to 5 severity scale. Never-drinkers are
+    # zero; everyone else is average drinks per drinking day, capped at 5.
+    alcohol = pd.to_numeric(df["ALQ130"], errors="coerce").clip(0, 5)
+    alcohol[df["ALQ111"] == 2] = 0
+
+    # Recreational activity in hours per week, vigorous plus moderate.
+    mins = (pd.to_numeric(df["PAQ655"], errors="coerce").fillna(0)
+            * pd.to_numeric(df["PAD660"], errors="coerce").fillna(0)
+            + pd.to_numeric(df["PAQ670"], errors="coerce").fillna(0)
+            * pd.to_numeric(df["PAD675"], errors="coerce").fillna(0))
+    activity = (mins / 60.0).clip(0, 10)
+
+    race = df["RIDRETH3"].map({
+        1: "Mexican American", 2: "Other Hispanic", 3: "Non-Hispanic White",
+        4: "Non-Hispanic Black", 6: "Non-Hispanic Asian", 7: "Other or multiracial",
+    })
+
+    out = pd.DataFrame({
+        "age": pd.to_numeric(df["RIDAGEYR"], errors="coerce"),
+        "gender": (df["RIAGENDR"] == 1).astype(int),   # 1 = male in NHANES
+        "bmi": pd.to_numeric(df["BMXBMI"], errors="coerce"),
+        "smoking": smoking,
+        "alcohol_intake": alcohol,
+        "physical_activity": activity,
+        "race_ethnicity": race,
+        # MCQ220: 1 = ever told had cancer, 2 = no. 7 and 9 are refused
+        # and don't know, and are dropped rather than guessed at.
+        "any_cancer": df["MCQ220"].map({1: 1, 2: 0}),
+    })
+    return out.dropna(subset=["age", "gender", "bmi", "smoking", "any_cancer"])
+
+
 def main():
     print("Indian Liver Patient Dataset (UCI 225), India")
     ilpd = fetch_ilpd()
@@ -156,6 +268,20 @@ def main():
     save(coi, "breast_coimbra_portugal.csv",
          f"{int(coi.breast_cancer.sum())} patients, "
          f"{int((1 - coi.breast_cancer).sum())} controls")
+
+    print("\nWisconsin Prognostic Breast Cancer (UCI 16)")
+    wp = fetch_wpbc()
+    save(wp, "wpbc_breast_external.csv",
+         f"{len(wp)} independent confirmed cancer patients, no benign class, "
+         f"so external sensitivity only")
+
+    print("\nNHANES 2017-2018 (CDC), United States")
+    nh = fetch_nhanes()
+    save(nh, "nhanes_general_usa.csv",
+         f"{int(nh.any_cancer.sum())} ever told they had cancer, "
+         f"{int((1 - nh.any_cancer).sum())} not ({nh.any_cancer.mean():.1%} prevalence, "
+         f"nationally representative rather than case-control)")
+    print("    race and ethnicity present:", nh.race_ethnicity.value_counts().to_dict())
 
     shared = sorted(set(ilpd.columns) & set(hcv.columns) - {"liver_disease"})
     print(f"\nShared liver features across India and Germany ({len(shared)}): {', '.join(shared)}")
