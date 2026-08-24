@@ -29,6 +29,11 @@ try:
 except ImportError:  # per-patient attribution degrades to global importance
     shap = None
 
+# SHAP holds a second copy of every tree, which roughly doubles resident memory.
+# On a constrained instance set ENABLE_SHAP=0 to fall back to global importance
+# without redeploying code. Everything else keeps working.
+ENABLE_SHAP = os.getenv("ENABLE_SHAP", "1").strip().lower() not in ("0", "false", "no")
+
 app = FastAPI(title="Oncovision AI")
 
 app.add_middleware(
@@ -194,7 +199,7 @@ def get_explainers(name: str, bundle):
     if name in _explainers:
         return _explainers[name]
     built = []
-    if shap is not None:
+    if shap is not None and ENABLE_SHAP:
         for est in voting_members(bundle):
             try:
                 built.append(shap.TreeExplainer(est))
@@ -334,7 +339,11 @@ def root():
 
 @app.get("/health")
 def health():
-    return {"status": "healthy" if models else "degraded", "models_loaded": len(models)}
+    return {
+        "status": "healthy" if models else "degraded",
+        "models_loaded": len(models),
+        "shap_enabled": bool(shap is not None and ENABLE_SHAP),
+    }
 
 
 @app.get("/models")

@@ -5,3 +5,13 @@ services:
     rootDir: backend
     buildCommand: pip install -r requirements.txt
     startCommand: uvicorn api:app --host 0.0.0.0 --port $PORT
+    envVars:
+      # One worker means one copy of the models in memory. Raising this
+      # multiplies the resident footprint and will exceed a 512 MB instance.
+      - key: WEB_CONCURRENCY
+        value: "1"
+      # SHAP holds a second copy of every tree. Set to 0 if the instance runs
+      # out of memory; per-patient attribution falls back to global importance
+      # and everything else keeps working.
+      - key: ENABLE_SHAP
+        value: "1"
