@@ -1,0 +1,96 @@
+{
+  "general": [
+    {
+      "auc": 0.574,
+      "auc_ci": [
+        0.553,
+        0.595
+      ],
+      "sensitivity": 0.487,
+      "specificity": 0.629,
+      "ppv_at_population_prevalence": 0.0059,
+      "people_flagged_per_true_case": 169.5,
+      "logistic_auc": 0.606,
+      "arm": "A original risk-factor cohort",
+      "n_train": 1500,
+      "cases_train": 557
+    },
+    {
+      "auc": 0.804,
+      "auc_ci": [
+        0.79,
+        0.819
+      ],
+      "sensitivity": 0.012,
+      "specificity": 0.998,
+      "ppv_at_population_prevalence": 0.02292,
+      "people_flagged_per_true_case": 43.6,
+      "logistic_auc": 0.805,
+      "arm": "B NHANES 2005-2014",
+      "n_train": 17719,
+      "cases_train": 1618
+    },
+    {
+      "auc": 0.804,
+      "auc_ci": [
+        0.789,
+        0.819
+      ],
+      "sensitivity": 0.018,
+      "specificity": 0.997,
+      "ppv_at_population_prevalence": 0.03161,
+      "people_flagged_per_true_case": 31.6,
+      "logistic_auc": 0.798,
+      "arm": "C NHANES early + original",
+      "n_train": 19219,
+      "cases_train": 2175
+    }
+  ],
+  "liver": [
+    {
+      "auc": 0.587,
+      "auc_ci": [
+        0.565,
+        0.611
+      ],
+      "sensitivity": 0.067,
+      "specificity": 0.987,
+      "ppv_at_population_prevalence": 0.14568,
+      "people_flagged_per_true_case": 6.9,
+      "logistic_auc": 0.658,
+      "arm": "A India + Germany only",
+      "n_train": 1172,
+      "cases_train": 472
+    },
+    {
+      "auc": 0.708,
+      "auc_ci": [
+        0.685,
+        0.73
+      ],
+      "sensitivity": 0.01,
+      "specificity": 1.0,
+      "ppv_at_population_prevalence": 0.59872,
+      "people_flagged_per_true_case": 1.7,
+      "logistic_auc": 0.718,
+      "arm": "B NHANES 2005-2014",
+      "n_train": 25487,
+      "cases_train": 926
+    },
+    {
+      "auc": 0.716,
+      "auc_ci": [
+        0.692,
+        0.738
+      ],
+      "sensitivity": 0.018,
+      "specificity": 0.999,
+      "ppv_at_population_prevalence": 0.3092,
+      "people_flagged_per_true_case": 3.2,
+      "logistic_auc": 0.718,
+      "arm": "C NHANES early + India + Germany",
+      "n_train": 26659,
+      "cases_train": 1398
+    }
+  ]
+}

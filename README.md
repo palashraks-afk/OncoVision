@@ -20,106 +20,104 @@ Two inputs, read together:
 1. **Your lab reports.** 23 values across body metrics, complete blood count, metabolic panel,
    liver panel, tumour markers, and breast mass morphology. Uploaded as PDFs and parsed
    automatically, or typed in.
-2. **Information about you.** 11 items no lab report contains: sex, smoking, alcohol, exercise,
-   inherited risk, prior diagnosis, family history, hepatitis B and C, cirrhosis, diabetes.
+2. **Information about you.** 7 items no lab report contains: sex, smoking, alcohol, exercise,
+   hepatitis B and C, diabetes. Inherited risk, prior diagnosis, family history and cirrhosis were
+   removed once no shipped panel read them, because asking for what nothing uses is only friction.
 
 Four calibrated models score the combination, and the interface reports what drove each score,
 how accurate that model is, and what the score is worth at real population prevalence.
 
 ---
 
-## What ships, and what does not
+## What ships
 
-Four panels ship. One was built, measured, and withdrawn because the evidence did not support
-serving it.
+Four panels ship. One was withdrawn because the evidence did not support serving it.
 
-| Panel | Test AUC | 95% CI | PPV at real prevalence | Flagged per true case | External test |
-|---|---|---|---|---|---|
-| **Liver disease** | 0.892 | 0.857 to 0.924 | **54.4%** | **1.8** | 3 countries, leave-one-out |
-| General cancer | 0.966 | 0.937 to 0.989 | 20.6% | 4.9 | NHANES, 5,173 adults |
-| Breast malignancy | 0.972 | 0.940 to 0.994 | 2.44% | 41 | WPBC, 198 patients, partial |
-| Pancreatic cancer | 0.969 | 0.938 to 0.991 | 0.19% | 525 | 3 tissue banks, leave-one-site-out |
-| ~~Prostate~~ | 0.786 | **0.505** to 0.99 | 0.22% | 453 | **none exists** |
+| Panel | Trained on | Test AUC | 95% CI | Sens | Spec | Flagged per true case |
+|---|---|---|---|---|---|---|
+| General cancer | 37,564 US adults, NHANES 2005-2018 | 0.781 | 0.764 to 0.797 | 0.80 | 0.62 | 5.6 |
+| Liver disease | 35,511 US adults, NHANES 2005-2018 | 0.753 | 0.721 to 0.782 | 0.55 | 0.80 | 9.9 |
+| Breast malignancy | 569 biopsies, Wisconsin | 0.972 | 0.941 to 0.994 | 0.81 | 0.94 | 52.7 |
+| Pancreatic cancer | 600 samples, 3 tissue banks | 0.969 | 0.937 to 0.991 | 1.00 | 0.88 | 842.8 |
+| ~~Prostate~~ | 97 records, Stanford | 0.786 | **0.505** to 0.99 | | | withdrawn |
 
-All measured on a 20% split cut before any model was fitted. Intervals are bootstrap percentile
-intervals over 2,000 resamples. Reproduce with `python evaluate.py`.
+All measured on a 20% split cut before any model was fitted. Reproduce with `python evaluate.py`.
+
+### The general panel was rebuilt, and its AUC fell on purpose
+
+It used to report 0.966. That number was worthless: trained on a 1,500-record risk-factor cohort,
+it scored **0.574** on a representative sample of US adults. It was measuring its cohort, not
+cancer risk.
+
+Retrained on **37,564 NHANES adults** and tested on cycles it never saw, it reports 0.781, and
+holds at **0.804** under temporal validation. A lower number that is true is worth more than a
+higher one that is not.
+
+The liver panel moved the same way: 35,511 NHANES adults, chemistry plus diabetes and hepatitis
+serology, with India and Germany kept as independent external cohorts instead of training data.
+
+### Choosing the operating point instead of assuming 0.5
+
+Once the panels trained on real prevalence, a fixed 0.5 threshold drove measured sensitivity to
+**0.008**. That was not a broken model. A calibrated model on a 4 percent condition is correctly
+reporting that almost nobody is more likely than not to have it, and 0.5 is simply the wrong cut.
+
+Each panel now picks its threshold by Youden's J on out-of-fold predictions inside the training
+data, and freezes it in the model bundle so the interface, the evaluation and the prospective
+analysis all use the same number.
+
+| Panel | Threshold | Sensitivity |
+|---|---|---|
+| Liver | 3.6% | 0.55 |
+| General | 9.3% | 0.80 |
+| Pancreatic | 25.8% | 1.00 |
+| Breast | 40.5% | 0.81 |
+
+The interface shows the calibrated probability against that panel's reference band, the way a lab
+report shows a value against its reference interval, rather than colouring everything by a
+universal 50 percent line.
+
+One thing this fixed by accident: the threshold was first chosen on uncalibrated out-of-fold scores
+and applied to calibrated probabilities. Two different scales, and the symptom was a
+reasonable-looking threshold that caught nobody.
+
+### External validation
+
+| Panel | Test | Internal | External |
+|---|---|---|---|
+| General | NHANES 2015-2018, unseen cycles | 0.789 | **0.804** |
+| Liver | NHANES 2015-2018, unseen cycles | 0.734 | **0.716** |
+| Liver | India, 583 patients | 0.734 | 0.640 |
+| Liver | Germany, 589 patients | 0.734 | 0.442 |
+| Pancreatic | Leave-one-tissue-bank-out, mean | 0.969 | **0.962** |
+| Breast | WPBC, 198 patients, sensitivity only | 0.915 | **0.894** |
+
+Germany remains the hardest transfer, which is honest and worth keeping visible.
 
 ### Pancreatic: withdrawn, then reinstated on evidence
 
-This panel was withdrawn for having no external test. That was wrong, and finding out why is the
-most instructive thing in this repository.
+This panel was withdrawn for having no external test. That was wrong. Its cohort is drawn from
+**three independent tissue banks** and the site column had been discarded as an identifier during
+preprocessing.
 
-Its own cohort is drawn from **three independent tissue banks**, and the site column had been
-discarded as an identifier during preprocessing. Training on two and testing on the third is a real
-test between institutions.
+| Held out site | Train n | Test n | Cases | AUC | 95% CI |
+|---|---|---|---|---|---|
+| BPTB | 235 | 365 | 74 | 0.978 | 0.962 to 0.990 |
+| CPTB | 459 | 141 | 34 | 0.959 | 0.911 to 0.991 |
+| UPTB | 506 | 94 | 22 | 0.950 | 0.895 to 0.990 |
 
-| Held out site | Train n | Test n | Cases | AUC | 95% CI | Logistic |
-|---|---|---|---|---|---|---|
-| BPTB | 235 | 365 | 74 | 0.978 | 0.962 to 0.990 | 0.982 |
-| CPTB | 459 | 141 | 34 | 0.959 | 0.911 to 0.991 | 0.973 |
-| UPTB | 506 | 94 | 22 | 0.950 | 0.895 to 0.990 | 0.963 |
-
-Mean leave-one-site-out AUC **0.962**, every interval excludes chance, and the drop from the
-internal random split is **0.007**. The panel transfers between institutions, so it was reinstated.
-
-What that does not show is transfer to a screening population. All three sites are pancreatic
-tissue banks running 20 to 24 percent cases, and at real incidence this panel still flags roughly
-**525 people per true case**. Both facts are true at once and the interface reports both.
-Reproduce with `python experiments/pancreatic_multisite.py`.
+Mean 0.962, every interval excludes chance, drop from the internal split 0.007. It transfers
+between institutions, so it was reinstated. It has still never met a screening population, where
+it would flag roughly 843 people per true case, and the interface says so on the panel.
 
 ### Prostate: withdrawn, and the search is documented
 
-Test AUC 0.786 with a 95% CI of **0.505 to 0.99**. The lower bound sits on chance. Specificity
-0.571 with an interval of 0.167 to 1.0, which carries no information on 20 test records.
+Test AUC 0.786, 95% CI **0.505 to 0.99**. The lower bound sits on chance.
 
-External validation was searched for and does not exist:
-
-- The Stanford cohort has **no site column**, so unlike the pancreatic cohort it cannot be split by
-  institution.
-- NHANES measured serum PSA on **4,697 men** across 2005 to 2010, which looked like the answer. It
-  contains only **17 prostate cancer cases**, because men already diagnosed are excluded from the
-  PSA subsample. That is far below the roughly 96 events needed.
-
-97 records and two usable features, with no route to an external test, cannot support a clinical
-claim.
-
-## External validation
-
-**Liver, three independent real cohorts:** ILPD India (583), HCV Germany (589), NHANES USA (4,887).
-Every ordered pair, so no direction is cherry-picked. The German cohort reports in SI units, so
-albumin, total protein and bilirubin had to be converted before any comparison was valid.
-
-| Direction | Internal | External | Drop |
-|---|---|---|---|
-| Germany to India | 0.995 | 0.698 | 0.297 |
-| USA to India | 0.700 | 0.640 | 0.060 |
-| India to Germany | 0.785 | 0.623 | 0.162 |
-| India to USA | 0.785 | 0.575 | 0.210 |
-| Germany to USA | 0.995 | **0.531** | **0.464** |
-| USA to Germany | 0.700 | 0.442 | 0.258 |
-
-**A model trained on German patients scores 0.995 on its own held-out data and 0.531 on Americans.**
-Same model, same task, 0.464 lost purely to the change of population.
-
-**General to NHANES 2017-2018**, 5,173 US adults: internal 0.966, external **0.596**, a drop of
-0.370. NHANES matters because it is not case-control.
-
-**Breast to WPBC**, 198 independent confirmed cancer patients: internal sensitivity 0.915, external
-**0.894**. No AUC, because that cohort has no benign class. Breast is the panel that transfers.
-
-### Leave one cohort out, and what it changed
-
-| Held out | Trained on | Train n | AUC | 95% CI | Logistic |
-|---|---|---|---|---|---|
-| India | Germany + USA | 5,476 | 0.710 | 0.664 to 0.753 | 0.753 |
-| Germany | India + USA | 5,470 | 0.641 | 0.564 to 0.724 | 0.654 |
-| USA | India + Germany | 1,172 | 0.580 | 0.547 to 0.612 | 0.655 |
-
-Mean external AUC is **0.585 training on one cohort and 0.644 training on two**. Cohort diversity is
-worth about 0.06 on an unseen population, and logistic regression beat the ensemble in all three
-folds. Both findings were acted on: the liver panel now trains on all three pooled, 6,059 patients
-across three continents. Its honest expected performance on a genuinely new population is nearer
-**0.69** than the 0.892 measured internally.
+External validation was searched for and does not exist. The Stanford cohort has no site column.
+NHANES measured serum PSA on 4,697 men across 2005 to 2010, but holds only **17 prostate cancer
+cases**, because men already diagnosed are excluded from the PSA subsample by design. That is a
+structural exclusion, not a gap that more searching would close.
 
 ### A negative result, kept
 

@@ -84,6 +84,11 @@ export const LAB_KEYS = LAB_GROUPS.flatMap(g => g.items.map(i => i.key));
 
 // Information about the patient. Not printed on a lab report, so it has to be
 // answered directly. Leaving these blank costs real accuracy.
+//
+// Only fields a shipped panel actually consumes are listed. Inherited risk,
+// prior cancer diagnosis, family history and cirrhosis were removed once the
+// general and liver panels moved to NHANES, because no model reads them any
+// more and asking for information nothing uses is only friction.
 export type HistoryField = {
   key: string;
   label: string;
@@ -122,25 +127,6 @@ export const HISTORY_FIELDS: HistoryField[] = [
     min: 0, max: 10, step: 0.5, suffix: "hrs/week",
   },
   {
-    key: "genetic_risk", label: "Inherited risk", type: "select",
-    meaning: "Known cancer predisposition, from genetic testing or a strong pattern in close relatives.",
-    options: [
-      { value: 0, label: "Low" },
-      { value: 1, label: "Medium" },
-      { value: 2, label: "High" },
-    ],
-  },
-  {
-    key: "cancer_history", label: "Previous cancer diagnosis", type: "select",
-    meaning: "Any cancer you have been diagnosed with before.",
-    options: [{ value: 0, label: "No" }, { value: 1, label: "Yes" }],
-  },
-  {
-    key: "family_history_cancer", label: "Family history of cancer", type: "select",
-    meaning: "Cancer in a parent, sibling or child.",
-    options: [{ value: 0, label: "No" }, { value: 1, label: "Yes" }],
-  },
-  {
     key: "hepatitis_b", label: "Hepatitis B", type: "select",
     meaning: "Chronic hepatitis B is one of the strongest liver cancer risk factors known.",
     options: [{ value: 0, label: "Negative" }, { value: 1, label: "Positive" }],
@@ -149,11 +135,6 @@ export const HISTORY_FIELDS: HistoryField[] = [
     key: "hepatitis_c", label: "Hepatitis C", type: "select",
     meaning: "Chronic hepatitis C carries the same risk through the same route.",
     options: [{ value: 0, label: "Negative" }, { value: 1, label: "Positive" }],
-  },
-  {
-    key: "cirrhosis_history", label: "Cirrhosis", type: "select",
-    meaning: "Scarring of the liver. Most liver cancer develops in a cirrhotic liver.",
-    options: [{ value: 0, label: "No" }, { value: 1, label: "Yes" }],
   },
   {
     key: "diabetes", label: "Diabetes", type: "select",

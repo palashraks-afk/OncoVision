@@ -39,7 +39,7 @@ from sklearn.calibration import CalibratedClassifierCV
 from sklearn.ensemble import ExtraTreesClassifier, VotingClassifier
 from sklearn.model_selection import StratifiedKFold, cross_val_predict, train_test_split
 from sklearn.linear_model import LogisticRegression
-from sklearn.metrics import roc_auc_score, accuracy_score, confusion_matrix
+from sklearn.metrics import roc_auc_score, accuracy_score, confusion_matrix, roc_curve
 from sklearn.pipeline import make_pipeline
 from sklearn.preprocessing import StandardScaler
 from xgboost import XGBClassifier
@@ -68,15 +68,19 @@ WITHDRAWN = {
 
 # Cohort design, stated on every panel because it bounds what the numbers mean.
 COHORT_DESIGN = {
-    "general": "Risk-factor cohort, not a consecutive screening series.",
+    "general": "37,564 US adults from NHANES 2005 to 2018, nationally representative rather "
+               "than case-control. Temporally validated: trained on cycles up to 2014 and "
+               "tested on 2015 to 2018 it reaches 0.804, against 0.574 for the risk-factor "
+               "cohort it replaced.",
     "breast": "Case-control and post-biopsy. This panel reads an aspirate that has already "
               "been taken, so it interprets a diagnostic test rather than screening for one. "
               "Rebuilding it on blood markers was tried and failed: see "
               "experiments/blood_breast_panel.py, external AUC 0.495 with a 95% CI of 0.377 "
               "to 0.607, which contains chance.",
-    "liver": "6,059 real patients pooled across India, Germany and the United States. The only "
-             "panel with genuine external validation: leave-one-cohort-out AUC is 0.58 to 0.75 "
-             "depending on which country is held out. Detects liver disease, not liver cancer.",
+    "liver": "35,511 US adults from NHANES 2005 to 2018, chemistry plus diabetes and "
+             "hepatitis serology. Externally validated against 583 patients in India and "
+             "589 in Germany, and temporally against later cycles. Detects liver disease, "
+             "not liver cancer.",
     "pancreatic": "Case-control across three independent tissue banks. Cases are confirmed "
                   "adenocarcinoma, controls include benign hepatobiliary disease. Validated by "
                   "leave-one-site-out: mean AUC 0.962 with every site's interval excluding "
@@ -106,10 +110,13 @@ LAB_FIELDS = [
 # physical_activity  hours of exercise per week, 0 to 10
 # genetic_risk       0 low, 1 medium, 2 high
 # remaining flags    0 no, 1 yes
+# Only fields a shipped panel actually consumes. Inherited risk, prior cancer
+# diagnosis, family history and cirrhosis were dropped: no panel uses them now
+# that general and liver train on NHANES, and asking a patient for information
+# nothing reads is just friction.
 HISTORY_FIELDS = [
-    "gender", "smoking", "alcohol_intake", "physical_activity", "genetic_risk",
-    "cancer_history", "family_history_cancer", "hepatitis_b", "hepatitis_c",
-    "cirrhosis_history", "diabetes",
+    "gender", "smoking", "alcohol_intake", "physical_activity",
+    "hepatitis_b", "hepatitis_c", "diabetes",
 ]
 
 APP_FIELDS = LAB_FIELDS + HISTORY_FIELDS
@@ -125,21 +132,31 @@ def _map(series, table, default=np.nan):
 DATASETS = [
     {
         "name": "general",
-        "file": "The_Cancer_data_1500_V2.csv",
+        # Retrained on NHANES 2005 to 2018, 37,564 adults with 3,536 cancer
+        # diagnoses, replacing a 1,500 record risk-factor cohort.
+        #
+        # This was the worst panel in the project and the reason was the data.
+        # Trained on that cohort it scored 0.966 on its own held-out slice and
+        # 0.574 on a representative sample of US adults, so it was measuring its
+        # cohort rather than cancer risk. Retrained on NHANES and tested on
+        # cycles it never saw, it reaches 0.804. See
+        # experiments/retrain_on_nhanes.py.
+        #
+        # The target is a lifetime diagnosis, "ever told you had cancer", not an
+        # incident one, so it is scored against the prevalence NHANES itself
+        # measures rather than against SEER annual incidence.
+        "file": "nhanes_general_multicycle.csv",
         "label": "General Cancer Risk",
-        # Gender is documented as 0 male / 1 female, inverted to the app's convention.
         "features": {
-            "age": lambda d: d["Age"],
-            "bmi": lambda d: d["BMI"],
-            "gender": lambda d: 1 - d["Gender"],
-            "smoking": lambda d: d["Smoking"] * 2,
-            "genetic_risk": lambda d: d["GeneticRisk"],
-            "physical_activity": lambda d: d["PhysicalActivity"],
-            "alcohol_intake": lambda d: d["AlcoholIntake"],
-            "cancer_history": lambda d: d["CancerHistory"],
+            "age": lambda d: d["age"],
+            "gender": lambda d: d["gender"],
+            "bmi": lambda d: d["bmi"],
+            "smoking": lambda d: d["smoking"],
+            "alcohol_intake": lambda d: d["alcohol_intake"],
+            "physical_activity": lambda d: d["physical_activity"],
         },
-        "target": lambda d: d["Diagnosis"].astype(int),
-        "positive_means": "a recorded cancer diagnosis",
+        "target": lambda d: d["any_cancer"].astype(int),
+        "positive_means": "ever having been told by a doctor that you had cancer",
     },
     {
         "name": "breast",
@@ -158,24 +175,17 @@ DATASETS = [
     },
     {
         "name": "liver",
-        # Pooled across three continents: 583 patients from India (UCI 225),
-        # 589 from Germany (UCI 571) and 4,887 from NHANES 2017-2018 in the US.
-        # 6,059 real people, 12.2% with liver disease.
+        # 35,511 NHANES adults across seven cycles, 1,436 with a liver
+        # condition. Chemistry plus risk history, so the panel reads the lab
+        # report and the patient together rather than chemistry alone.
         #
-        # Pooling is an evidence-driven choice, not a convenience. Leave-one-
-        # cohort-out in external_validation.py measured mean external AUC at
-        # 0.585 when training on a single cohort and 0.644 when training on two,
-        # so cohort diversity is worth about 0.06 AUC on populations the model
-        # has never seen. NHANES also makes this the only panel whose training
-        # data includes a population-based sample rather than only clinical
-        # referrals.
+        # Hepatitis here is serology rather than self-report, which is a better
+        # measurement of the same question the app asks a patient to answer.
         #
-        # The target is liver disease, not liver cancer. That is a change in
-        # what the panel claims, and it is the honest one: chronic liver
-        # disease is the dominant precursor to hepatocellular carcinoma, it is
-        # roughly 300 times more common, and unlike the synthetic cohort these
-        # are real people.
-        "file": "liver_pooled_3cohort.csv",
+        # India (UCI 225) and Germany (UCI 571) are no longer training data.
+        # They are kept as independent external cohorts, which is worth more:
+        # see external_validation.py.
+        "file": "nhanes_liver_multicycle.csv",
         "label": "Liver Disease Risk",
         "features": {
             "age": lambda d: d["age"],
@@ -186,6 +196,9 @@ DATASETS = [
             "ast": lambda d: d["ast"],
             "protein_total": lambda d: d["protein_total"],
             "albumin": lambda d: d["albumin"],
+            "diabetes": lambda d: d["diabetes"],
+            "hepatitis_b": lambda d: d["hepatitis_b"],
+            "hepatitis_c": lambda d: d["hepatitis_c"],
         },
         "target": lambda d: d["liver_disease"].astype(int),
         "positive_means": "a clinical diagnosis of liver disease, not liver cancer",
@@ -265,26 +278,67 @@ def build_ensemble(n_samples: int, pos_rate: float) -> VotingClassifier:
     )
 
 
+
+def choose_threshold(y_true, p) -> float:
+    """
+    Pick the operating point, instead of assuming 0.5.
+
+    0.5 is only the right cut when the classes are balanced. Once the panels
+    moved to real population data at 4 to 9 percent prevalence, a well
+    calibrated model almost never crosses 0.5, and measured sensitivity fell to
+    0.008. That is not a broken model, it is a broken threshold: the model was
+    correctly reporting that almost nobody is more likely than not to have the
+    disease.
+
+    Youden's J, sensitivity plus specificity minus one, picks the point that
+    best separates the two groups. It is computed on cross validated
+    predictions inside the training data only, so the held-out split never
+    influences it, and the chosen value is stored in the bundle so the API,
+    the evaluation and the prospective analysis all use the same number.
+    """
+    fpr, tpr, cuts = roc_curve(y_true, p)
+    j = tpr - fpr
+    best = cuts[int(np.argmax(j))]
+    # roc_curve can return an infinite first cut point.
+    if not np.isfinite(best):
+        best = 0.5
+    return float(np.clip(best, 0.01, 0.99))
+
+
 def evaluate(clf_factory, X: pd.DataFrame, y: pd.Series) -> dict:
-    """Stratified 5 fold cross validated AUC plus a held out confusion matrix."""
+    """
+    Cross validated AUC, a held-out confusion matrix, and the operating point.
+
+    Everything here runs on the CALIBRATED estimator, which matters. Choosing a
+    threshold on uncalibrated out-of-fold scores and then applying it to
+    calibrated probabilities compares two different scales, and the symptom is a
+    threshold that looks reasonable while catching almost nobody.
+    """
     folds = min(5, int(y.value_counts().min()))
     cv = StratifiedKFold(n_splits=max(2, folds), shuffle=True, random_state=RANDOM_STATE)
 
-    oof = cross_val_predict(clf_factory(), X, y, cv=cv, method="predict_proba", n_jobs=1)[:, 1]
-    cv_auc = roc_auc_score(y, oof)
+    def calibrated():
+        inner = StratifiedKFold(n_splits=max(2, min(3, folds)), shuffle=True,
+                                random_state=RANDOM_STATE)
+        return CalibratedClassifierCV(clf_factory(), method="isotonic", cv=inner)
 
-    # Per fold spread, so the number carries an honest error bar.
+    # Out-of-fold predictions on the calibrated pipeline. These set both the
+    # reported CV AUC and the threshold, and neither sees the held-out split.
+    oof = cross_val_predict(calibrated(), X, y, cv=cv, method="predict_proba", n_jobs=1)[:, 1]
+    cv_auc = roc_auc_score(y, oof)
+    threshold = choose_threshold(y, oof)
+
     fold_aucs = []
     for tr, te in cv.split(X, y):
-        m = clf_factory().fit(X.iloc[tr], y.iloc[tr])
+        m = calibrated().fit(X.iloc[tr], y.iloc[tr])
         fold_aucs.append(roc_auc_score(y.iloc[te], m.predict_proba(X.iloc[te])[:, 1]))
 
     X_tr, X_te, y_tr, y_te = train_test_split(
         X, y, test_size=0.2, random_state=RANDOM_STATE, stratify=y
     )
-    holdout = clf_factory().fit(X_tr, y_tr)
+    holdout = calibrated().fit(X_tr, y_tr)
     proba = holdout.predict_proba(X_te)[:, 1]
-    pred = (proba >= 0.5).astype(int)
+    pred = (proba >= threshold).astype(int)
     tn, fp, fn, tp = confusion_matrix(y_te, pred, labels=[0, 1]).ravel()
 
     return {
@@ -297,6 +351,7 @@ def evaluate(clf_factory, X: pd.DataFrame, y: pd.Series) -> dict:
         "n_positive": int(y.sum()),
         "n_features": int(X.shape[1]),
         "cv_folds": int(cv.get_n_splits()),
+        "threshold": round(float(threshold), 4),
     }
 
 
@@ -458,6 +513,7 @@ def main():
             "label": config["label"],
             "positive_means": config["positive_means"],
             "metrics": metrics,
+            "threshold": metrics.get("threshold", 0.5),
             "held_out": held_out,
             "cohort_design": COHORT_DESIGN[name],
             "algorithm": algorithm,

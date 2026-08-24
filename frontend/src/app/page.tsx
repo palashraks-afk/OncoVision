@@ -40,49 +40,60 @@ const API_BASE = resolveApiBase();
 // Used until the live registry responds.
 const FALLBACK_METRICS: Record<string, any> = {
   general: {
-    label: "General Cancer Risk", auc: 0.966, auc_ci: [0.937, 0.989],
-    sensitivity: 0.91, specificity: 0.984, brier: 0.0435, calibration_slope: 1.176,
-    ppv_at_population_prevalence: 0.20605, people_flagged_per_true_case: 4.9,
-    population_prevalence: 0.004507, cohort_prevalence: 0.371,
-    baseline_logistic_auc: 0.917, baseline_age_sex_auc: 0.66,
-    n_samples: 1500, n_test: 300, n_features: 8,
+    label: "General Cancer Risk", auc: 0.781, auc_ci: [0.764, 0.797],
+    threshold: 8.6,
+    sensitivity: 0.799, specificity: 0.617,
+    brier: 0.077, calibration_slope: 0.947,
+    ppv_at_population_prevalence: 0.17778,
+    people_flagged_per_true_case: 5.6,
+    population_prevalence: 0.094, cohort_prevalence: 0.094,
+    baseline_logistic_auc: 0.781, baseline_age_sex_auc: 0.777,
+    n_samples: 37564, n_test: 7513, n_features: 6,
+  },
+  liver: {
+    label: "Liver Disease Risk", auc: 0.753, auc_ci: [0.721, 0.782],
+    threshold: 4.2,
+    sensitivity: 0.551, specificity: 0.795,
+    brier: 0.0358, calibration_slope: 1.049,
+    ppv_at_population_prevalence: 0.10072,
+    people_flagged_per_true_case: 9.9,
+    population_prevalence: 0.04, cohort_prevalence: 0.04,
+    baseline_logistic_auc: 0.731, baseline_age_sex_auc: 0.602,
+    n_samples: 35511, n_test: 7103, n_features: 11,
   },
   breast: {
-    label: "Breast Malignancy, from biopsy imaging", auc: 0.972, auc_ci: [0.94, 0.994],
-    sensitivity: 0.786, specificity: 0.958, brier: 0.0668, calibration_slope: 1.118,
-    ppv_at_population_prevalence: 0.02441, people_flagged_per_true_case: 41.0,
+    label: "Breast Malignancy, from biopsy imaging", auc: 0.972, auc_ci: [0.941, 0.994],
+    threshold: 38.8,
+    sensitivity: 0.81, specificity: 0.944,
+    brier: 0.0668, calibration_slope: 1.118,
+    ppv_at_population_prevalence: 0.01897,
+    people_flagged_per_true_case: 52.7,
     population_prevalence: 0.001325, cohort_prevalence: 0.373,
     baseline_logistic_auc: 0.964, baseline_age_sex_auc: null,
     n_samples: 569, n_test: 114, n_features: 4,
   },
   pancreatic: {
-    label: "Pancreatic Cancer Risk", auc: 0.969, auc_ci: [0.938, 0.991],
-    sensitivity: 0.731, specificity: 0.947, brier: 0.0617, calibration_slope: 0.46,
-    ppv_at_population_prevalence: 0.00191, people_flagged_per_true_case: 524.6,
+    label: "Pancreatic Cancer Risk", auc: 0.969, auc_ci: [0.937, 0.991],
+    threshold: 16.6,
+    sensitivity: 1.0, specificity: 0.883,
+    brier: 0.0617, calibration_slope: 0.46,
+    ppv_at_population_prevalence: 0.00119,
+    people_flagged_per_true_case: 842.8,
     population_prevalence: 0.000139, cohort_prevalence: 0.217,
     baseline_logistic_auc: 0.968, baseline_age_sex_auc: 0.5,
     n_samples: 600, n_test: 120, n_features: 6,
-  },
-  liver: {
-    label: "Liver Disease Risk", auc: 0.892, auc_ci: [0.857, 0.924],
-    sensitivity: 0.595, specificity: 0.984, brier: 0.0543, calibration_slope: 1.166,
-    ppv_at_population_prevalence: 0.5435, people_flagged_per_true_case: 1.8,
-    population_prevalence: 0.031, cohort_prevalence: 0.122,
-    baseline_logistic_auc: 0.892, baseline_age_sex_auc: 0.592,
-    n_samples: 6059, n_test: 1212, n_features: 8,
   },
 };
 
 // Every ordered pair across three independent real liver cohorts, plus the
 // general panel against NHANES. Nothing from a test cohort touches training.
 const EXTERNAL_VALIDATION = [
-  { direction: "General panel to NHANES, 5,173 US adults", internal: 0.966, external: 0.596, ci: [0.572, 0.621], drop: 0.370 },
-  { direction: "Liver, Germany to India", internal: 0.995, external: 0.698, ci: [0.651, 0.741], drop: 0.297 },
-  { direction: "Liver, USA to India", internal: 0.700, external: 0.640, ci: [0.590, 0.690], drop: 0.060 },
-  { direction: "Liver, India to Germany", internal: 0.785, external: 0.623, ci: [0.539, 0.710], drop: 0.162 },
-  { direction: "Liver, India to USA", internal: 0.785, external: 0.575, ci: [0.539, 0.612], drop: 0.210 },
-  { direction: "Liver, Germany to USA", internal: 0.995, external: 0.531, ci: [0.510, 0.553], drop: 0.464 },
-  { direction: "Liver, USA to Germany", internal: 0.700, external: 0.442, ci: [0.371, 0.513], drop: 0.258 },
+  { direction: "General, NHANES 2005-2014 to 2015-2018", internal: 0.789, external: 0.804, ci: [0.790, 0.819], drop: -0.015 },
+  { direction: "Liver, NHANES 2005-2014 to 2015-2018", internal: 0.734, external: 0.716, ci: [0.692, 0.738], drop: 0.018 },
+  { direction: "Liver, trained USA, tested India", internal: 0.734, external: 0.640, ci: [0.590, 0.690], drop: 0.094 },
+  { direction: "Liver, trained USA, tested Germany", internal: 0.734, external: 0.442, ci: [0.371, 0.513], drop: 0.292 },
+  { direction: "Pancreatic, leave-one-site-out mean", internal: 0.969, external: 0.962, ci: [0.895, 0.990], drop: 0.007 },
+  { direction: "Breast, WPBC sensitivity", internal: 0.915, external: 0.894, ci: [0.85, 0.94], drop: 0.021 },
 ];
 
 // Leave-one-cohort-out: train on two countries, test on the third. This is the
@@ -253,15 +264,21 @@ export default function OncovisionDashboard() {
     setLoading(false);
   };
 
-  const bandStyle = (risk: number, isBenign: boolean) => {
+  // Banding is relative to the panel's own operating threshold, which the API
+  // returns. A flat 50 percent cut is wrong here: the models are calibrated
+  // against real prevalence, so on a 4 percent condition a genuinely concerning
+  // result sits near 10 percent.
+  const bandStyle = (d: any, isBenign: boolean) => {
     if (isBenign) {
-      return risk >= 50
-        ? { text: "text-[var(--ok)]", bg: "bg-[var(--ok)]", label: "Nothing flagged" }
-        : { text: "text-[var(--ink-2)]", bg: "bg-[var(--ink-4)]", label: "Outranked by a cancer panel" };
+      return d.risk >= 50
+        ? { text: "text-[var(--ok)]", bg: "bg-[var(--ok)]", label: "Nothing above threshold" }
+        : { text: "text-[var(--ink-2)]", bg: "bg-[var(--ink-4)]", label: "Outranked by a flagged panel" };
     }
-    if (risk < 20) return { text: "text-[var(--ok)]", bg: "bg-[var(--ok)]", label: "Low" };
-    if (risk < 50) return { text: "text-[var(--warn)]", bg: "bg-[var(--warn)]", label: "Moderate" };
-    return { text: "text-[var(--flag)]", bg: "bg-[var(--flag)]", label: "High" };
+    const t = d.threshold ?? 50;
+    if (d.risk >= t * 2) return { text: "text-[var(--flag)]", bg: "bg-[var(--flag)]", label: "Well above threshold" };
+    if (d.risk >= t) return { text: "text-[var(--flag)]", bg: "bg-[var(--flag)]", label: "Above threshold" };
+    if (d.risk >= t * 0.5) return { text: "text-[var(--warn)]", bg: "bg-[var(--warn)]", label: "Near threshold" };
+    return { text: "text-[var(--ok)]", bg: "bg-[var(--ok)]", label: "Within range" };
   };
 
   const sortedResults = results ? Object.entries(results) : [];
@@ -542,7 +559,7 @@ export default function OncovisionDashboard() {
 
                       {sortedResults.map(([name, d]: any, index: number) => {
                         const isBenign = d.key === "benign";
-                        const style = bandStyle(d.risk, isBenign);
+                        const style = bandStyle(d, isBenign);
                         const open = expanded === name;
 
                         // Emphasis comes from a heavier left rule, the way a
@@ -550,7 +567,7 @@ export default function OncovisionDashboard() {
                         let box = "border border-[var(--rule)] border-l-2 border-l-[var(--rule)] p-5";
                         let head = "text-lg";
                         let num = "text-4xl";
-                        if (index === 0 && !isBenign && d.risk >= 50) {
+                        if (index === 0 && !isBenign && d.above_threshold) {
                           box = "border border-[var(--rule)] border-l-4 border-l-[var(--flag)] p-6";
                           head = "text-2xl text-[var(--flag)]";
                           num = "text-6xl";
@@ -558,7 +575,7 @@ export default function OncovisionDashboard() {
                           box = "border border-[var(--rule)] border-l-4 border-l-[var(--ok)] p-6";
                           head = "text-2xl text-[var(--ok)]";
                           num = "text-6xl";
-                        } else if (index === 1 && !isBenign && d.risk >= 50) {
+                        } else if (index === 1 && !isBenign && d.above_threshold) {
                           box = "border border-[var(--rule)] border-l-2 border-l-[var(--flag)] p-5";
                           head = "text-xl text-[var(--flag)]";
                           num = "text-5xl";
@@ -585,23 +602,41 @@ export default function OncovisionDashboard() {
                               a tick where this patient falls. Below 20 is the
                               reference band for a risk score here.
                             */}
-                            <div className="mt-4 mb-4">
-                              <div className="refbar">
-                                <div className="refbar-normal" style={{ left: "0%", width: "20%" }} />
-                                <div
-                                  className="refbar-tick"
-                                  data-flag={d.risk >= 20 ? "high" : "normal"}
-                                  style={{ left: `calc(${Math.min(Math.max(d.risk, 0), 100)}% - 1px)` }}
-                                />
-                              </div>
-                              <div className="flex justify-between mt-1">
-                                <span className="data text-[9px] text-[var(--ink-4)]">0</span>
-                                <span className="data text-[9px] text-[var(--ink-4)]">
-                                  reference band 0 to 20
-                                </span>
-                                <span className="data text-[9px] text-[var(--ink-4)]">100</span>
-                              </div>
-                            </div>
+                            {(() => {
+                              // Scale the track so the reading and the reference
+                              // band are both legible. A panel with a 3.6 percent
+                              // threshold would be invisible on a 0 to 100 axis.
+                              const t = d.threshold ?? 50;
+                              const span = isBenign
+                                ? 100
+                                : Math.max(t * 3, d.risk * 1.25, 10);
+                              const pct = (v: number) => Math.min(Math.max((v / span) * 100, 0), 100);
+                              return (
+                                <div className="mt-4 mb-4">
+                                  <div className="refbar">
+                                    {!isBenign && (
+                                      <div className="refbar-normal" style={{ left: "0%", width: `${pct(t)}%` }} />
+                                    )}
+                                    <div
+                                      className="refbar-tick"
+                                      data-flag={d.above_threshold ? "high" : "normal"}
+                                      style={{ left: `calc(${pct(d.risk)}% - 1px)` }}
+                                    />
+                                  </div>
+                                  <div className="flex justify-between mt-1">
+                                    <span className="data text-[9px] text-[var(--ink-4)]">0</span>
+                                    <span className="data text-[9px] text-[var(--ink-4)]">
+                                      {isBenign
+                                        ? "complement of the highest panel"
+                                        : `reference band 0 to ${t}%`}
+                                    </span>
+                                    <span className="data text-[9px] text-[var(--ink-4)]">
+                                      {span === 100 ? "100" : span.toFixed(0)}
+                                    </span>
+                                  </div>
+                                </div>
+                              );
+                            })()}
 
                             {d.flags?.length > 0 && (
                               <div className="flex flex-wrap gap-2 mb-3">

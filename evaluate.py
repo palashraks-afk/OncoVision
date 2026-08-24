@@ -43,7 +43,7 @@ import pandas as pd
 from sklearn.calibration import CalibratedClassifierCV
 from sklearn.dummy import DummyClassifier
 from sklearn.linear_model import LogisticRegression
-from sklearn.metrics import brier_score_loss, roc_auc_score
+from sklearn.metrics import brier_score_loss, roc_auc_score, roc_curve
 from sklearn.model_selection import StratifiedKFold, cross_val_predict, train_test_split
 from sklearn.pipeline import make_pipeline
 from sklearn.preprocessing import StandardScaler
@@ -59,21 +59,22 @@ rng = np.random.default_rng(RANDOM_STATE)
 # Annual incidence per 100,000 from SEER, 2019 to 2023, age adjusted.
 # Used as the prior for projecting precision onto a screening population.
 SEER_INCIDENCE = {
-    "general":    (450.7, "Cancer of any site, per 100,000 men and women per year"),
+    # The general and liver panels predict a LIFETIME diagnosis, "ever told
+    # you had this", not an incident one. Scoring them against SEER annual
+    # incidence would be comparing a prevalence model to an incidence prior
+    # and would understate precision by more than an order of magnitude, so
+    # both use the prevalence NHANES itself measures on the same question.
+    "general":    (9400.0, "Ever told had cancer, US adults, NHANES 2005-2018"),
     "breast":     (132.5, "Female breast, per 100,000 women per year"),
     "prostate":   (123.2, "Prostate, per 100,000 men per year"),
     "pancreatic": (13.9,  "Pancreas, per 100,000 men and women per year"),
-    # The liver panel detects liver disease, not liver cancer, so it is scored
-    # against cirrhosis prevalence in US adults (3.1%, NHANES) rather than
-    # liver cancer incidence. Using the cancer figure would understate the
-    # panel's precision by roughly 300 times.
-    "liver":      (3100.0, "Cirrhosis in US adults, NHANES, per 100,000"),
+    "liver":      (4000.0, "Ever told had a liver condition, US adults, NHANES 2005-2018"),
 }
 
 COHORT_DESIGN = {
-    "general":    "Risk-factor cohort. Not a consecutive screening series.",
+    "general":    "37,564 US adults, NHANES 2005-2018, nationally representative.",
     "breast":     "Case-control, post-biopsy. Every record is an FNA already taken because a lesion was found.",
-    "liver":      "583 real patients, India. Externally validated on 589 independent patients from Germany.",
+    "liver":      "35,511 US adults, NHANES 2005-2018. Externally validated on India and Germany.",
     "pancreatic": "Case-control. Cases are confirmed PDAC, controls include benign hepatobiliary disease.",
     "prostate":   "Case-control, post-prostatectomy. Gleason grade comes from the surgical specimen.",
 }
@@ -185,6 +186,13 @@ def evaluate_domain(config):
     oof = cross_val_predict(factory(), X_tr, y_tr, cv=cv, method="predict_proba")[:, 1]
     cv_auc = roc_auc_score(y_tr, oof)
 
+    # Calibrated out-of-fold scores, so the operating point is chosen on the
+    # same scale it will be applied to. Mixing the two silently produces a
+    # threshold that catches almost nobody.
+    oof_cal = cross_val_predict(
+        CalibratedClassifierCV(factory(), method="isotonic", cv=cv),
+        X_tr, y_tr, cv=cv, method="predict_proba")[:, 1]
+
     # --- fitted on train, measured on the untouched test set -----------------
     raw = factory().fit(X_tr, y_tr)
     p_raw = raw.predict_proba(X_te)[:, 1]
@@ -194,25 +202,33 @@ def evaluate_domain(config):
     cal.fit(X_tr, y_tr)
     p_cal = cal.predict_proba(X_te)[:, 1]
 
-    def block(p, label):
+    def block(p, label, oof_scores):
         auc = roc_auc_score(y_te, p)
-        sens = sens_at(0.5)(y_te.values, p)
-        spec = spec_at(0.5)(y_te.values, p)
+        # Operating point chosen on the TRAINING data by Youden's J, never on
+        # the held-out split, and from out-of-fold scores on the same scale as
+        # p. A fixed 0.5 is wrong once prevalence is realistic: it drove measured
+        # sensitivity to 0.008 on the 9 percent general cohort.
+        fpr_t, tpr_t, cuts_t = roc_curve(y_tr, oof_scores)
+        thr = cuts_t[int(np.argmax(tpr_t - fpr_t))]
+        thr = float(np.clip(thr, 0.01, 0.99)) if np.isfinite(thr) else 0.5
+        sens = sens_at(thr)(y_te.values, p)
+        spec = spec_at(thr)(y_te.values, p)
         slope, intercept = calibration_slope_intercept(y_te.values, p)
         prev_rate, prev_desc = SEER_INCIDENCE[name]
         prev = prev_rate / 100_000.0
         ppv_pop, npv_pop, nnt = projected_ppv_npv(sens, spec, prev)
-        pred = (p >= 0.5).astype(int)
+        pred = (p >= thr).astype(int)
         tp = int(((pred == 1) & (y_te.values == 1)).sum())
         fp = int(((pred == 1) & (y_te.values == 0)).sum())
         return {
             "variant": label,
+            "threshold": round(float(thr), 4),
             "auc": round(float(auc), 3),
             "auc_ci": bootstrap_ci(y_te.values, p, roc_auc_score),
             "sensitivity": round(float(sens), 3),
-            "sensitivity_ci": bootstrap_ci(y_te.values, p, sens_at(0.5)),
+            "sensitivity_ci": bootstrap_ci(y_te.values, p, sens_at(thr)),
             "specificity": round(float(spec), 3),
-            "specificity_ci": bootstrap_ci(y_te.values, p, spec_at(0.5)),
+            "specificity_ci": bootstrap_ci(y_te.values, p, spec_at(thr)),
             "ppv_in_cohort": round(tp / (tp + fp), 3) if (tp + fp) else None,
             "brier": round(float(brier_score_loss(y_te, p)), 4),
             "calibration_slope": slope,
@@ -288,8 +304,8 @@ def evaluate_domain(config):
         "features": list(X.columns),
         "cohort_prevalence": round(prevalence_cohort, 3),
         "cv_auc_train_only": round(float(cv_auc), 3),
-        "uncalibrated": block(p_raw, "uncalibrated"),
-        "calibrated": block(p_cal, "isotonic calibrated"),
+        "uncalibrated": block(p_raw, "uncalibrated", oof),
+        "calibrated": block(p_cal, "isotonic calibrated", oof_cal),
         "baselines": baselines,
         "subgroups": subgroups,
     }

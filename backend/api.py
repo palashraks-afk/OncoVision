@@ -423,6 +423,7 @@ def model_registry():
                 "features": b.get("feature_names", []),
                 "positive_means": b.get("positive_means", ""),
                 "cohort_design": b.get("cohort_design", ""),
+                "threshold": b.get("threshold"),
                 "metrics": b.get("metrics", {}),
                 "held_out": b.get("held_out", {}),
             }
@@ -522,19 +523,31 @@ async def predict_risk(data: PatientData):
             if name in domains and values.get(key, 0) == 1:
                 flags.append({"label": label, "detail": "reported by patient"})
 
-        if proba >= 50:
-            band = "High"
-        elif proba >= 20:
-            band = "Moderate"
+        # Banding is relative to this panel's own operating threshold, not to a
+        # flat 50 percent. The models are calibrated against real prevalence, so
+        # on a 4 percent condition a genuinely concerning result sits near 10
+        # percent, and a fixed 50 percent cut would flag almost nobody. The
+        # threshold is chosen on training data by Youden's J and frozen in the
+        # bundle, so the interface, the evaluation and the prospective analysis
+        # all use the same number.
+        threshold_pct = float(bundle.get("threshold", 0.5)) * 100.0
+        if proba >= threshold_pct * 2:
+            band = "Well above threshold"
+        elif proba >= threshold_pct:
+            band = "Above threshold"
+        elif proba >= threshold_pct * 0.5:
+            band = "Near threshold"
         else:
-            band = "Low"
+            band = "Within range"
 
         metrics = bundle.get("metrics", {})
         held = bundle.get("held_out", {})
         results[bundle.get("label", name)] = {
             "key": name,
-            "risk": int(round(proba)),
+            "risk": round(proba, 1),
             "band": band,
+            "threshold": round(threshold_pct, 1),
+            "above_threshold": bool(proba >= threshold_pct),
             "contributors": contributors[:6],
             "drivers": drivers[:8],
             "shap": shap_attribution(name, bundle, frame, set(supplied)),
@@ -570,10 +583,13 @@ async def predict_risk(data: PatientData):
     top = max(r["risk"] for r in results.values())
     all_flags = sum(len(r["flags"]) for r in results.values())
 
+    flagged_panels = [k for k, r in results.items() if r.get("above_threshold")]
     baseline = {
         "key": "benign",
-        "risk": int(round(100 - top)),
-        "band": "High" if (100 - top) >= 50 else "Low",
+        "risk": round(100 - top, 1),
+        "band": "Nothing above threshold" if not flagged_panels else "Outranked by a flagged panel",
+        "threshold": None,
+        "above_threshold": False,
         "contributors": [],
         "drivers": [],
         "flags": [],
@@ -583,8 +599,9 @@ async def predict_risk(data: PatientData):
         "missing": [],
         "auc": None,
         "note": (
-            "Complement of the highest domain score. "
-            f"{all_flags} clinical threshold(s) crossed across all panels."
+            "Complement of the highest panel score. "
+            f"{len(flagged_panels)} panel(s) above their operating threshold, "
+            f"{all_flags} clinical marker threshold(s) crossed."
         ),
     }
     results["No Cancer Detected (Benign)"] = baseline

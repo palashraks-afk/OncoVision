@@ -36,8 +36,7 @@ NORMAL = {
     "alpha_fetoprotein_level": 3.1, "psa": 0.9, "plasma_ca19_9": 12,
     "radius_mean": 11.4, "texture_mean": 17.2, "perimeter_mean": 72.6, "area_mean": 400,
     "gender": 0, "smoking": 0, "alcohol_intake": 0.5, "physical_activity": 6,
-    "genetic_risk": 0, "cancer_history": 0, "family_history_cancer": 0,
-    "hepatitis_b": 0, "hepatitis_c": 0, "cirrhosis_history": 0, "diabetes": 0,
+    "hepatitis_b": 0, "hepatitis_c": 0, "diabetes": 0,
 }
 
 LABELS = {
@@ -46,9 +45,9 @@ LABELS = {
 }
 
 SOURCES = {
-    "general": "General cancer risk cohort",
+    "general": "NHANES 2005-2018, US adults",
     "breast": "Wisconsin Diagnostic Breast Cancer",
-    "liver": "Hepatocellular cohort",
+    "liver": "NHANES 2005-2018, US adults",
     "pancreatic": "Pancreatic biomarker cohort",
     "prostate": "Stanford prostate cohort",
 }
@@ -94,7 +93,6 @@ def note_for(domain: str, v: dict) -> str:
         risks = []
         if v.get("hepatitis_b") == 1: risks.append("hepatitis B")
         if v.get("hepatitis_c") == 1: risks.append("hepatitis C")
-        if v.get("cirrhosis_history") == 1: risks.append("cirrhosis")
         if v.get("diabetes") == 1: risks.append("diabetes")
         tail = ", ".join(risks) if risks else "no viral hepatitis or cirrhosis on record"
         return f"{age} year old {who} with {tail}. AFP at {v['alpha_fetoprotein_level']:g} ng/mL."
@@ -105,10 +103,10 @@ def note_for(domain: str, v: dict) -> str:
     if domain == "prostate":
         return f"{age} year old man. PSA at {v['psa']:g} ng/mL, everything else normal."
     smoke = {0: "never smoked", 1: "former smoker", 2: "current smoker"}[int(v.get("smoking", 0))]
-    gene = {0: "low", 1: "medium", 2: "high"}[int(v.get("genetic_risk", 0))]
-    prior = ", previous cancer diagnosis on record" if v.get("cancer_history") == 1 else ""
-    return (f"{age} year old {who}, {smoke}, inherited risk {gene}{prior}. "
-            f"BMI {v['bmi']:g}, {v['physical_activity']:g} hours of exercise a week.")
+    drink = float(v.get("alcohol_intake", 0))
+    return (f"{age} year old {who}, {smoke}. BMI {v['bmi']:g}, "
+            f"{v['physical_activity']:g} hours of exercise a week, "
+            f"alcohol {drink:g} of 5.")
 
 
 def build(domain: str, config: dict):
