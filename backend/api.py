@@ -24,6 +24,11 @@ import pdfplumber
 import io
 import re
 
+try:
+    import shap
+except ImportError:  # per-patient attribution degrades to global importance
+    shap = None
+
 app = FastAPI(title="Oncovision AI")
 
 app.add_middleware(
@@ -151,11 +156,25 @@ def load_models():
             models[name] = joblib.load(os.path.join(MODEL_DIR, filename))
 
 
-def ensemble_importances(bundle) -> np.ndarray:
-    """Mean feature importance across the two members of the voting ensemble."""
+def voting_members(bundle):
+    """
+    The fitted XGBoost and Extra Trees estimators inside a bundle.
+
+    Shipped models are wrapped in CalibratedClassifierCV, which holds one fitted
+    VotingClassifier per calibration fold. Any of them exposes the same members.
+    """
     model = bundle["model"]
+    inner = model
+    cal = getattr(model, "calibrated_classifiers_", None)
+    if cal:
+        inner = getattr(cal[0], "estimator", model)
+    return list(getattr(inner, "estimators_", []))
+
+
+def ensemble_importances(bundle) -> np.ndarray:
+    """Mean global feature importance across the two members of the ensemble."""
     parts = []
-    for est in getattr(model, "estimators_", []):
+    for est in voting_members(bundle):
         imp = getattr(est, "feature_importances_", None)
         if imp is not None:
             total = float(np.sum(imp))
@@ -165,6 +184,77 @@ def ensemble_importances(bundle) -> np.ndarray:
         n = len(bundle["feature_names"])
         return np.full(n, 1.0 / n)
     return np.mean(parts, axis=0)
+
+
+_explainers: dict = {}
+
+
+def get_explainers(name: str, bundle):
+    """TreeExplainers for both ensemble members, built once and cached."""
+    if name in _explainers:
+        return _explainers[name]
+    built = []
+    if shap is not None:
+        for est in voting_members(bundle):
+            try:
+                built.append(shap.TreeExplainer(est))
+            except Exception:
+                pass
+    _explainers[name] = built
+    return built
+
+
+def shap_attribution(name: str, bundle, frame: pd.DataFrame, supplied: set) -> list:
+    """
+    Per-patient SHAP attribution for one prediction.
+
+    This is a real explanation of this patient's score, not a global importance
+    ranking. Each ensemble member is explained separately and its vector is
+    normalised to a share of that member's total absolute attribution, then the
+    two are averaged. Normalising is necessary because XGBoost reports in log
+    odds and Extra Trees in probability, so the raw magnitudes are not on a
+    common scale. Sign is preserved, so a feature that pushed the score down
+    stays negative.
+
+    Only features the patient actually supplied are returned. A contribution
+    from an imputed median describes the training set, not the person.
+    """
+    explainers = get_explainers(name, bundle)
+    if not explainers:
+        return []
+
+    features = bundle["feature_names"]
+    vectors = []
+    for ex in explainers:
+        try:
+            raw = ex.shap_values(frame)
+        except Exception:
+            continue
+        arr = np.asarray(raw, dtype=float)
+        if arr.ndim == 3:          # (rows, features, classes) from Extra Trees
+            arr = arr[:, :, 1]
+        arr = arr.reshape(-1)[:len(features)]
+        total = float(np.abs(arr).sum())
+        if total > 0:
+            vectors.append(arr / total)
+
+    if not vectors:
+        return []
+
+    mean = np.mean(vectors, axis=0)
+    out = []
+    for idx, feat in enumerate(features):
+        if feat not in supplied:
+            continue
+        out.append({
+            "name": pretty(feat),
+            "feature": feat,
+            "share": round(float(abs(mean[idx])) * 100, 1),
+            "direction": "raises" if mean[idx] > 0 else "lowers",
+            "signed": round(float(mean[idx]) * 100, 1),
+        })
+    out.sort(key=lambda d: d["share"], reverse=True)
+    return out[:8]
 
 
 class PatientData(BaseModel):
@@ -257,7 +347,9 @@ def model_registry():
                 "algorithm": b.get("algorithm", ""),
                 "features": b.get("feature_names", []),
                 "positive_means": b.get("positive_means", ""),
+                "cohort_design": b.get("cohort_design", ""),
                 "metrics": b.get("metrics", {}),
+                "held_out": b.get("held_out", {}),
             }
             for name, b in models.items()
         },
@@ -363,22 +455,37 @@ async def predict_risk(data: PatientData):
             band = "Low"
 
         metrics = bundle.get("metrics", {})
+        held = bundle.get("held_out", {})
         results[bundle.get("label", name)] = {
             "key": name,
             "risk": int(round(proba)),
             "band": band,
             "contributors": contributors[:6],
             "drivers": drivers[:8],
+            "shap": shap_attribution(name, bundle, frame, set(supplied)),
             "flags": flags,
             "inputs_used": len(supplied),
             "inputs_total": len(features),
             "coverage": round(len(supplied) / len(features) * 100),
             "missing": [pretty(f) for f in features if f not in values],
-            "auc": metrics.get("auc"),
-            "auc_std": metrics.get("auc_std"),
-            "sensitivity": metrics.get("sensitivity"),
-            "specificity": metrics.get("specificity"),
+            # Held-out test evidence. These are the numbers that belong in front
+            # of a person: measured on a split cut before anything was fitted.
+            "auc": held.get("auc", metrics.get("auc")),
+            "auc_ci": held.get("auc_ci"),
+            "sensitivity": held.get("sensitivity", metrics.get("sensitivity")),
+            "sensitivity_ci": held.get("sensitivity_ci"),
+            "specificity": held.get("specificity", metrics.get("specificity")),
+            "specificity_ci": held.get("specificity_ci"),
             "n_samples": metrics.get("n_samples"),
+            "n_test": held.get("n_test"),
+            # The number that decides whether this is usable as screening.
+            "ppv_at_population_prevalence": held.get("ppv_at_population_prevalence"),
+            "people_flagged_per_true_case": held.get("people_flagged_per_true_case"),
+            "population_prevalence": held.get("population_prevalence"),
+            "prevalence_source": held.get("prevalence_source"),
+            "cohort_prevalence": held.get("cohort_prevalence"),
+            "baseline_logistic_auc": held.get("baseline_logistic_auc"),
+            "cohort_design": bundle.get("cohort_design", ""),
             "algorithm": bundle.get("algorithm", ""),
         }
 

@@ -60,7 +60,7 @@ $949 and is not covered by Medicare or most insurance. A screening colonoscopy a
 $2,750 without insurance and still runs several hundred dollars out of pocket for many who have it.
 
 Oncovision adds no new test and no new cost. It works from a lab report already paid for, plus
-information the patient can supply in a minute, and checks that combination against five cancer
+information the patient can supply in a minute, and checks that combination against four cancer
 models at once rather than the one or two a given age and sex qualifies for. The marginal cost of
 running it is nothing, which is the point. A test that costs $949 will not become routine. A test
 that reads a PDF already sitting in a patient portal can.
@@ -91,13 +91,13 @@ parser misread can be typed over, and anything the patient does not have is left
 
 **Answer the history questions.** Eleven items that are not on a lab report and cannot be parsed
 from one: sex, smoking, alcohol, exercise, inherited risk, previous cancer diagnosis, family
-history, hepatitis B, hepatitis C, cirrhosis, and diabetes. The general and liver models are built
-mostly on these, so answering them materially changes the accuracy of those two panels.
+history, hepatitis B, hepatitis C, cirrhosis, and diabetes. This is information about the patient that no lab report contains, and it carries real weight in
+the scoring, so answering it materially changes the result.
 
 Pressing **Generate case** loads a real record drawn at random from the training data so the system
 can be tried without entering anything, and states up front which result to expect.
 
-The output is six cards sorted highest first: five cancer panels and a healthy baseline. Each card
+The output is five cards sorted highest first: four cancer panels and a healthy baseline. Each card
 expands to show which inputs the model relied on, how each value compares to its clinical reference
 limit, which established clinical thresholds were crossed, and how accurate that particular model
 is.
@@ -153,7 +153,7 @@ missing BMI, it is an impossible patient, and tree models will happily split on 
 
 ### Stage 4: Inference
 
-Five soft voting ensembles, one per domain, each combining an XGBoost gradient boosted forest with
+Four soft voting ensembles are served, one per domain, each combining an XGBoost gradient boosted forest with
 an Extra Trees classifier.
 
 The two learners are paired because they fail differently. XGBoost fits trees sequentially, each
@@ -212,27 +212,68 @@ from both of the other two.
 
 ## 5. Measured performance
 
-Stratified five fold cross validation, scored using only the features the application collects.
+All figures come from a 20% test split cut **before** any model was fitted, never used for
+training, model selection, or calibration. Intervals are bootstrap percentile intervals over 2,000
+resamples. Reproduce with `python evaluate.py`. Full report in `EVALUATION.md`.
 
-| Panel | AUC | Sensitivity | Specificity | Records | Features |
-|---|---|---|---|---|---|
-| Liver | 0.972 ± 0.004 | 0.83 | 0.95 | 5,000 | 12 |
-| Pancreatic | 0.970 ± 0.013 | 0.81 | 0.92 | 600 | 6 |
-| Breast | 0.963 ± 0.018 | 0.79 | 0.96 | 569 | 4 |
-| General | 0.951 ± 0.010 | 0.92 | 0.97 | 1,500 | 8 |
-| Prostate | 0.795 ± 0.066 | 0.77 | 0.57 | 97 | 2 |
+| Panel | Test AUC | 95% CI | Sensitivity | Specificity | Logistic baseline | Test n |
+|---|---|---|---|---|---|---|
+| General | 0.966 | 0.937 to 0.989 | 0.910 | 0.984 | 0.917 | 300 |
+| Breast | 0.972 | 0.940 to 0.994 | 0.786 | 0.958 | 0.964 | 114 |
+| Liver | 0.970 | 0.958 to 0.979 | 0.798 | 0.986 | 0.942 | 1000 |
+| Pancreatic | 0.969 | 0.939 to 0.991 | 0.731 | 0.947 | 0.968 | 120 |
 
-AUC is the probability that the model ranks a randomly chosen positive case above a randomly chosen
-negative one. A coin flip scores 0.5 and perfect separation scores 1.0. It is reported here in
-preference to accuracy because four of the five cohorts are imbalanced, and on an imbalanced cohort
-accuracy can be high while the model is useless.
+### Precision once the disease is rare
 
-The prostate model is the weak one, and the interface reports it rather than hiding it. Ninety
-seven records and two usable screening inputs is not enough, and its specificity of 0.57 means it
-raises a lot of false alarms. The application labels its output as a prompt to discuss PSA with a
-physician rather than as a probability worth acting on.
+AUC above 0.95 sounds decisive and on its own is close to meaningless for screening. Every cohort
+here is enriched for disease. Projecting measured sensitivity and specificity onto SEER incidence
+gives the precision a real user would experience.
 
----
+| Panel | Cohort positive | Real incidence | PPV there | Flagged per true case |
+|---|---|---|---|---|
+| General | 37% | 0.4507% | **20.6%** | 4.9 |
+| Breast | 37% | 0.1325% | **2.44%** | 41 |
+| Liver | 22% | 0.0095% | **0.54%** | 187 |
+| Pancreatic | 22% | 0.0139% | **0.19%** | 525 |
+
+Used as a population screen today, the pancreatic panel would flag roughly 525 people for every one
+who has the disease. No AUC figure changes that.
+
+### Does the ensemble earn its complexity?
+
+Trained and tested on identical splits.
+
+| Panel | Ensemble | Logistic regression | Age and sex only | Verdict |
+|---|---|---|---|---|
+| General | 0.966 | 0.917 | 0.660 | worth it |
+| Liver | 0.970 | 0.942 | 0.634 | worth it |
+| Breast | 0.972 | 0.964 | n/a | within noise |
+| Pancreatic | 0.969 | 0.968 | 0.500 | within noise |
+
+On breast and pancreatic a reviewer would be right to say the simpler model should ship.
+
+### Calibration
+
+Every shipped model is wrapped in isotonic calibration fitted by internal cross validation, because
+the interface shows people a percentage.
+
+| Panel | Brier | Calibration slope |
+|---|---|---|
+| General | 0.0435 | 1.176 |
+| Liver | 0.0440 | 0.861 |
+| Breast | 0.0668 | 1.118 |
+| Pancreatic | 0.0617 | 0.460 |
+
+The pancreatic slope of 0.46 is the weak one. Treat that panel's percentage as a ranking rather
+than a literal likelihood.
+
+### A panel that was withdrawn
+
+**Prostate is trained, measured, and not served.** Test AUC 0.786, 95% CI 0.505 to 0.99, so the
+lower bound sits on chance. Specificity 0.571 with a CI of 0.167 to 1.0, an interval carrying no
+information because the test split is 20 records. It does not meaningfully beat logistic regression
+(0.769). 97 records and two usable features cannot support a clinical claim. It is reported rather
+than deleted, because a panel that failed its evaluation is evidence about the method.
 
 ## 6. The sample case system
 
@@ -330,27 +371,33 @@ a session and are gone when the tab closes.
 
 ## 9. Limitations
 
-These are stated in the application itself, not just here.
+Stated in the application itself, not only here.
 
-The five source cohorts were collected separately and do not share a schema, so each panel sees a
-different slice of what the user enters. A model scores only when it receives at least one real
-value, and every card reports how many of its inputs were actually supplied.
+**Every cohort is case-control, not a screening series.** These records come from people who
+already had a reason to be tested, so the cohorts run 21 to 37 percent positive against real
+incidence measured in hundredths of a percent. That gap is why the precision table matters more
+than the AUC table.
 
-Feature importance ranks what a model relies on across all patients. It is not a per patient
-explanation.
+**The breast panel contradicts the schema rule.** Its four inputs are nuclear morphology from a
+fine needle aspirate, which requires a biopsy that already happened. It interprets a biopsy rather
+than screening for one.
 
-The hepatocellular cohort is generated rather than observed, so the liver model's AUC describes
-performance on synthetic records and its real world generalisation is unverified.
+**The liver cohort is synthetic.** Largest dataset, joint-highest AUC, generated rather than
+observed. That AUC describes a generator, not a patient population.
 
-The prostate model is underpowered at ninety seven records and two features.
+**No external validation.** Every number comes from a held-out split of the same cohort the model
+trained on. This is the single largest remaining gap.
 
-Public research cohorts do not represent every population equally, so accuracy varies between
-demographic groups in ways these figures do not capture.
+**No prospective test and no IRB.** No real patient report has been run through this and followed
+to an outcome. There is no ethics approval, registration, or clinical validation of any kind.
 
-Most importantly, a low score is not a clear result. Plenty of cancers produce entirely normal
-bloodwork in their early stages. The tool can raise a question. It cannot answer one.
+**The ensemble is within noise of logistic regression** on breast and pancreatic.
 
----
+**No race or ethnicity in any cohort**, so accuracy across those groups is unmeasured rather than
+acceptable. AUC by sex and age band is in `EVALUATION.md`.
+
+**A low score is not a clear result.** Plenty of cancers produce entirely normal lab results early.
+The tool can raise a question. It cannot answer one.
 
 ## 10. Provenance
 

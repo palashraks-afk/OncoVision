@@ -1,6 +1,7 @@
 {
   "general": {
     "label": "General Cancer Risk",
+    "shipped": true,
     "features": [
       "age",
       "bmi",
@@ -11,36 +12,133 @@
       "alcohol_intake",
       "cancer_history"
     ],
-    "auc": 0.951,
-    "auc_std": 0.01,
+    "cohort_design": "Risk-factor cohort, not a consecutive screening series.",
+    "auc": 0.952,
+    "auc_std": 0.011,
     "accuracy": 0.95,
     "sensitivity": 0.919,
     "specificity": 0.968,
     "n_samples": 1500,
     "n_positive": 557,
     "n_features": 8,
-    "cv_folds": 5
+    "cv_folds": 5,
+    "held_out": {
+      "n_test": 300,
+      "auc": 0.966,
+      "auc_ci": [
+        0.937,
+        0.989
+      ],
+      "sensitivity": 0.91,
+      "sensitivity_ci": [
+        0.856,
+        0.961
+      ],
+      "specificity": 0.984,
+      "specificity_ci": [
+        0.964,
+        1.0
+      ],
+      "brier": 0.0435,
+      "calibration_slope": 1.176,
+      "ppv_at_population_prevalence": 0.20605,
+      "people_flagged_per_true_case": 4.9,
+      "population_prevalence": 0.004507,
+      "prevalence_source": "Cancer of any site, per 100,000 men and women per year",
+      "cohort_prevalence": 0.371,
+      "baseline_logistic_auc": 0.917,
+      "baseline_age_sex_auc": 0.66,
+      "subgroups": {
+        "sex: female": {
+          "n": 144,
+          "positives": 69,
+          "auc": 0.976,
+          "auc_ci": [
+            0.941,
+            0.999
+          ]
+        },
+        "sex: male": {
+          "n": 156,
+          "positives": 42,
+          "auc": 0.946,
+          "auc_ci": [
+            0.88,
+            0.994
+          ]
+        },
+        "age under 52": {
+          "n": 148,
+          "positives": 42,
+          "auc": 0.927,
+          "auc_ci": [
+            0.857,
+            0.982
+          ]
+        },
+        "age 52 and over": {
+          "n": 152,
+          "positives": 69,
+          "auc": 0.991,
+          "auc_ci": [
+            0.973,
+            1.0
+          ]
+        }
+      }
+    }
   },
   "breast": {
     "label": "Breast Cancer Risk",
+    "shipped": true,
     "features": [
       "radius_mean",
       "texture_mean",
       "perimeter_mean",
       "area_mean"
     ],
-    "auc": 0.963,
-    "auc_std": 0.018,
+    "cohort_design": "Case-control and post-biopsy. Every record is an FNA already taken because a lesion was found, so this panel interprets a biopsy that has happened, it does not screen for one.",
+    "auc": 0.958,
+    "auc_std": 0.021,
     "accuracy": 0.895,
     "sensitivity": 0.786,
     "specificity": 0.958,
     "n_samples": 569,
     "n_positive": 212,
     "n_features": 4,
-    "cv_folds": 5
+    "cv_folds": 5,
+    "held_out": {
+      "n_test": 114,
+      "auc": 0.972,
+      "auc_ci": [
+        0.94,
+        0.994
+      ],
+      "sensitivity": 0.786,
+      "sensitivity_ci": [
+        0.66,
+        0.902
+      ],
+      "specificity": 0.958,
+      "specificity_ci": [
+        0.904,
+        1.0
+      ],
+      "brier": 0.0668,
+      "calibration_slope": 1.118,
+      "ppv_at_population_prevalence": 0.02441,
+      "people_flagged_per_true_case": 41.0,
+      "population_prevalence": 0.001325,
+      "prevalence_source": "Female breast, per 100,000 women per year",
+      "cohort_prevalence": 0.373,
+      "baseline_logistic_auc": 0.964,
+      "baseline_age_sex_auc": null,
+      "subgroups": {}
+    }
   },
   "liver": {
     "label": "Liver Cancer Risk",
+    "shipped": true,
     "features": [
       "age",
       "bmi",
@@ -55,18 +153,85 @@
       "family_history_cancer",
       "diabetes"
     ],
-    "auc": 0.972,
-    "auc_std": 0.004,
-    "accuracy": 0.922,
-    "sensitivity": 0.83,
-    "specificity": 0.948,
+    "cohort_design": "Synthetic. Records are generated rather than observed, so accuracy here describes the generator, not a patient population.",
+    "auc": 0.973,
+    "auc_std": 0.003,
+    "accuracy": 0.914,
+    "sensitivity": 0.853,
+    "specificity": 0.931,
     "n_samples": 5000,
     "n_positive": 1089,
     "n_features": 12,
-    "cv_folds": 5
+    "cv_folds": 5,
+    "held_out": {
+      "n_test": 1000,
+      "auc": 0.97,
+      "auc_ci": [
+        0.958,
+        0.979
+      ],
+      "sensitivity": 0.798,
+      "sensitivity_ci": [
+        0.745,
+        0.848
+      ],
+      "specificity": 0.986,
+      "specificity_ci": [
+        0.977,
+        0.994
+      ],
+      "brier": 0.044,
+      "calibration_slope": 0.861,
+      "ppv_at_population_prevalence": 0.00536,
+      "people_flagged_per_true_case": 186.5,
+      "population_prevalence": 9.5e-05,
+      "prevalence_source": "Liver and intrahepatic bile duct, per 100,000 per year",
+      "cohort_prevalence": 0.218,
+      "baseline_logistic_auc": 0.942,
+      "baseline_age_sex_auc": 0.634,
+      "subgroups": {
+        "sex: female": {
+          "n": 515,
+          "positives": 103,
+          "auc": 0.971,
+          "auc_ci": [
+            0.955,
+            0.985
+          ]
+        },
+        "sex: male": {
+          "n": 485,
+          "positives": 115,
+          "auc": 0.969,
+          "auc_ci": [
+            0.954,
+            0.982
+          ]
+        },
+        "age under 58": {
+          "n": 486,
+          "positives": 64,
+          "auc": 0.973,
+          "auc_ci": [
+            0.959,
+            0.985
+          ]
+        },
+        "age 58 and over": {
+          "n": 514,
+          "positives": 154,
+          "auc": 0.964,
+          "auc_ci": [
+            0.947,
+            0.979
+          ]
+        }
+      }
+    }
   },
   "pancreatic": {
     "label": "Pancreatic Cancer Risk",
+    "shipped": true,
     "features": [
       "age",
       "gender",
@@ -75,30 +240,86 @@
       "bilirubin",
       "glucose"
     ],
-    "auc": 0.97,
-    "auc_std": 0.013,
-    "accuracy": 0.892,
-    "sensitivity": 0.808,
+    "cohort_design": "Case-control. Cases are confirmed adenocarcinoma, controls include benign hepatobiliary disease.",
+    "auc": 0.971,
+    "auc_std": 0.012,
+    "accuracy": 0.9,
+    "sensitivity": 0.846,
     "specificity": 0.915,
     "n_samples": 600,
     "n_positive": 130,
     "n_features": 6,
-    "cv_folds": 5
+    "cv_folds": 5,
+    "held_out": {
+      "n_test": 120,
+      "auc": 0.969,
+      "auc_ci": [
+        0.939,
+        0.991
+      ],
+      "sensitivity": 0.731,
+      "sensitivity_ci": [
+        0.55,
+        0.885
+      ],
+      "specificity": 0.947,
+      "specificity_ci": [
+        0.896,
+        0.989
+      ],
+      "brier": 0.0617,
+      "calibration_slope": 0.46,
+      "ppv_at_population_prevalence": 0.00191,
+      "people_flagged_per_true_case": 524.6,
+      "population_prevalence": 0.000139,
+      "prevalence_source": "Pancreas, per 100,000 men and women per year",
+      "cohort_prevalence": 0.217,
+      "baseline_logistic_auc": 0.968,
+      "baseline_age_sex_auc": 0.5,
+      "subgroups": {
+        "sex: female": {
+          "n": 54,
+          "positives": 12,
+          "auc": 0.959,
+          "auc_ci": [
+            0.901,
+            0.998
+          ]
+        },
+        "sex: male": {
+          "n": 66,
+          "positives": 14,
+          "auc": 0.978,
+          "auc_ci": [
+            0.942,
+            0.999
+          ]
+        },
+        "age under 57": {
+          "n": 58,
+          "positives": 12,
+          "auc": 0.957,
+          "auc_ci": [
+            0.899,
+            0.998
+          ]
+        },
+        "age 57 and over": {
+          "n": 62,
+          "positives": 14,
+          "auc": 0.983,
+          "auc_ci": [
+            0.953,
+            1.0
+          ]
+        }
+      }
+    }
   },
   "prostate": {
     "label": "Prostate Cancer Risk",
-    "features": [
-      "age",
-      "psa"
-    ],
-    "auc": 0.795,
-    "auc_std": 0.066,
-    "accuracy": 0.7,
-    "sensitivity": 0.769,
-    "specificity": 0.571,
-    "n_samples": 97,
-    "n_positive": 62,
-    "n_features": 2,
-    "cv_folds": 5
+    "shipped": false,
+    "withdrawn_reason": "Held-out test AUC 0.786, 95% CI 0.505 to 0.99. The lower bound sits on chance, so the panel cannot be shown to work. Specificity is 0.571 with a CI of 0.167 to 1.0, an interval so wide it carries no information, because the test split is 20 records. The ensemble also fails to beat plain logistic regression (0.769) by any meaningful margin. 97 records and two usable screening features cannot support a clinical claim, so this panel is trained and measured but not served.",
+    "cohort_design": "Case-control and post-prostatectomy. Gleason grade comes from the surgical specimen, not from screening."
   }
 }

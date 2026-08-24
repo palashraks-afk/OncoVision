@@ -1,0 +1,891 @@
+{
+  "general": {
+    "domain": "general",
+    "cohort_design": "Risk-factor cohort. Not a consecutive screening series.",
+    "n_total": 1500,
+    "n_train": 1200,
+    "n_test": 300,
+    "n_features": 8,
+    "features": [
+      "age",
+      "bmi",
+      "gender",
+      "smoking",
+      "genetic_risk",
+      "physical_activity",
+      "alcohol_intake",
+      "cancer_history"
+    ],
+    "cohort_prevalence": 0.371,
+    "cv_auc_train_only": 0.948,
+    "uncalibrated": {
+      "variant": "uncalibrated",
+      "auc": 0.967,
+      "auc_ci": [
+        0.938,
+        0.989
+      ],
+      "sensitivity": 0.919,
+      "sensitivity_ci": [
+        0.864,
+        0.964
+      ],
+      "specificity": 0.963,
+      "specificity_ci": [
+        0.934,
+        0.985
+      ],
+      "ppv_in_cohort": 0.936,
+      "brier": 0.0704,
+      "calibration_slope": 2.238,
+      "calibration_intercept": -0.03,
+      "reliability": [
+        {
+          "bin": "0.0 to 0.2",
+          "n": 108,
+          "predicted": 0.095,
+          "observed": 0.028
+        },
+        {
+          "bin": "0.2 to 0.4",
+          "n": 67,
+          "predicted": 0.281,
+          "observed": 0.045
+        },
+        {
+          "bin": "0.4 to 0.6",
+          "n": 23,
+          "predicted": 0.469,
+          "observed": 0.261
+        },
+        {
+          "bin": "0.6 to 0.8",
+          "n": 37,
+          "predicted": 0.712,
+          "observed": 0.946
+        },
+        {
+          "bin": "0.8 to 1.0",
+          "n": 65,
+          "predicted": 0.887,
+          "observed": 0.985
+        }
+      ],
+      "ppv_at_population_prevalence": 0.10099,
+      "npv_at_population_prevalence": 0.99962,
+      "people_flagged_per_true_case": 9.9,
+      "population_prevalence": 0.004507,
+      "prevalence_source": "Cancer of any site, per 100,000 men and women per year"
+    },
+    "calibrated": {
+      "variant": "isotonic calibrated",
+      "auc": 0.966,
+      "auc_ci": [
+        0.937,
+        0.989
+      ],
+      "sensitivity": 0.91,
+      "sensitivity_ci": [
+        0.856,
+        0.961
+      ],
+      "specificity": 0.984,
+      "specificity_ci": [
+        0.964,
+        1.0
+      ],
+      "ppv_in_cohort": 0.971,
+      "brier": 0.0435,
+      "calibration_slope": 1.176,
+      "calibration_intercept": 0.475,
+      "reliability": [
+        {
+          "bin": "0.0 to 0.2",
+          "n": 181,
+          "predicted": 0.053,
+          "observed": 0.033
+        },
+        {
+          "bin": "0.2 to 0.4",
+          "n": 13,
+          "predicted": 0.259,
+          "observed": 0.231
+        },
+        {
+          "bin": "0.4 to 0.6",
+          "n": 5,
+          "predicted": 0.498,
+          "observed": 0.8
+        },
+        {
+          "bin": "0.6 to 0.8",
+          "n": 6,
+          "predicted": 0.71,
+          "observed": 0.833
+        },
+        {
+          "bin": "0.8 to 1.0",
+          "n": 95,
+          "predicted": 0.946,
+          "observed": 0.979
+        }
+      ],
+      "ppv_at_population_prevalence": 0.20605,
+      "npv_at_population_prevalence": 0.99959,
+      "people_flagged_per_true_case": 4.9,
+      "population_prevalence": 0.004507,
+      "prevalence_source": "Cancer of any site, per 100,000 men and women per year"
+    },
+    "baselines": {
+      "prevalence_only": {
+        "auc": 0.5
+      },
+      "logistic_regression": {
+        "auc": 0.917,
+        "auc_ci": [
+          0.88,
+          0.948
+        ]
+      },
+      "age_sex_only": {
+        "features": [
+          "age",
+          "gender"
+        ],
+        "auc": 0.66,
+        "auc_ci": [
+          0.6,
+          0.722
+        ]
+      }
+    },
+    "subgroups": {
+      "sex: female": {
+        "n": 144,
+        "positives": 69,
+        "auc": 0.976,
+        "auc_ci": [
+          0.941,
+          0.999
+        ]
+      },
+      "sex: male": {
+        "n": 156,
+        "positives": 42,
+        "auc": 0.946,
+        "auc_ci": [
+          0.88,
+          0.994
+        ]
+      },
+      "age under 52": {
+        "n": 148,
+        "positives": 42,
+        "auc": 0.927,
+        "auc_ci": [
+          0.857,
+          0.982
+        ]
+      },
+      "age 52 and over": {
+        "n": 152,
+        "positives": 69,
+        "auc": 0.991,
+        "auc_ci": [
+          0.973,
+          1.0
+        ]
+      }
+    }
+  },
+  "breast": {
+    "domain": "breast",
+    "cohort_design": "Case-control, post-biopsy. Every record is an FNA already taken because a lesion was found.",
+    "n_total": 569,
+    "n_train": 455,
+    "n_test": 114,
+    "n_features": 4,
+    "features": [
+      "radius_mean",
+      "texture_mean",
+      "perimeter_mean",
+      "area_mean"
+    ],
+    "cohort_prevalence": 0.373,
+    "cv_auc_train_only": 0.954,
+    "uncalibrated": {
+      "variant": "uncalibrated",
+      "auc": 0.968,
+      "auc_ci": [
+        0.933,
+        0.994
+      ],
+      "sensitivity": 0.786,
+      "sensitivity_ci": [
+        0.657,
+        0.9
+      ],
+      "specificity": 0.958,
+      "specificity_ci": [
+        0.908,
+        1.0
+      ],
+      "ppv_in_cohort": 0.917,
+      "brier": 0.0678,
+      "calibration_slope": 1.432,
+      "calibration_intercept": 0.128,
+      "reliability": [
+        {
+          "bin": "0.0 to 0.2",
+          "n": 63,
+          "predicted": 0.081,
+          "observed": 0.032
+        },
+        {
+          "bin": "0.2 to 0.4",
+          "n": 10,
+          "predicted": 0.308,
+          "observed": 0.4
+        },
+        {
+          "bin": "0.4 to 0.6",
+          "n": 5,
+          "predicted": 0.441,
+          "observed": 0.6
+        },
+        {
+          "bin": "0.6 to 0.8",
+          "n": 8,
+          "predicted": 0.712,
+          "observed": 0.625
+        },
+        {
+          "bin": "0.8 to 1.0",
+          "n": 28,
+          "predicted": 0.951,
+          "observed": 1.0
+        }
+      ],
+      "ppv_at_population_prevalence": 0.02441,
+      "npv_at_population_prevalence": 0.9997,
+      "people_flagged_per_true_case": 41.0,
+      "population_prevalence": 0.001325,
+      "prevalence_source": "Female breast, per 100,000 women per year"
+    },
+    "calibrated": {
+      "variant": "isotonic calibrated",
+      "auc": 0.972,
+      "auc_ci": [
+        0.94,
+        0.994
+      ],
+      "sensitivity": 0.786,
+      "sensitivity_ci": [
+        0.66,
+        0.902
+      ],
+      "specificity": 0.958,
+      "specificity_ci": [
+        0.904,
+        1.0
+      ],
+      "ppv_in_cohort": 0.917,
+      "brier": 0.0668,
+      "calibration_slope": 1.118,
+      "calibration_intercept": 0.179,
+      "reliability": [
+        {
+          "bin": "0.0 to 0.2",
+          "n": 65,
+          "predicted": 0.039,
+          "observed": 0.031
+        },
+        {
+          "bin": "0.2 to 0.4",
+          "n": 11,
+          "predicted": 0.291,
+          "observed": 0.545
+        },
+        {
+          "bin": "0.4 to 0.6",
+          "n": 3,
+          "predicted": 0.501,
+          "observed": 0.667
+        },
+        {
+          "bin": "0.6 to 0.8",
+          "n": 7,
+          "predicted": 0.716,
+          "observed": 0.571
+        },
+        {
+          "bin": "0.8 to 1.0",
+          "n": 28,
+          "predicted": 0.982,
+          "observed": 1.0
+        }
+      ],
+      "ppv_at_population_prevalence": 0.02441,
+      "npv_at_population_prevalence": 0.9997,
+      "people_flagged_per_true_case": 41.0,
+      "population_prevalence": 0.001325,
+      "prevalence_source": "Female breast, per 100,000 women per year"
+    },
+    "baselines": {
+      "prevalence_only": {
+        "auc": 0.5
+      },
+      "logistic_regression": {
+        "auc": 0.964,
+        "auc_ci": [
+          0.929,
+          0.989
+        ]
+      }
+    },
+    "subgroups": {}
+  },
+  "liver": {
+    "domain": "liver",
+    "cohort_design": "SYNTHETIC. Records are generated, not observed.",
+    "n_total": 5000,
+    "n_train": 4000,
+    "n_test": 1000,
+    "n_features": 12,
+    "features": [
+      "age",
+      "bmi",
+      "alpha_fetoprotein_level",
+      "gender",
+      "smoking",
+      "alcohol_intake",
+      "physical_activity",
+      "hepatitis_b",
+      "hepatitis_c",
+      "cirrhosis_history",
+      "family_history_cancer",
+      "diabetes"
+    ],
+    "cohort_prevalence": 0.218,
+    "cv_auc_train_only": 0.974,
+    "uncalibrated": {
+      "variant": "uncalibrated",
+      "auc": 0.969,
+      "auc_ci": [
+        0.958,
+        0.978
+      ],
+      "sensitivity": 0.858,
+      "sensitivity_ci": [
+        0.811,
+        0.905
+      ],
+      "specificity": 0.93,
+      "specificity_ci": [
+        0.911,
+        0.947
+      ],
+      "ppv_in_cohort": 0.773,
+      "brier": 0.0699,
+      "calibration_slope": 2.194,
+      "calibration_intercept": 0.102,
+      "reliability": [
+        {
+          "bin": "0.0 to 0.2",
+          "n": 532,
+          "predicted": 0.073,
+          "observed": 0.004
+        },
+        {
+          "bin": "0.2 to 0.4",
+          "n": 145,
+          "predicted": 0.293,
+          "observed": 0.131
+        },
+        {
+          "bin": "0.4 to 0.6",
+          "n": 124,
+          "predicted": 0.478,
+          "observed": 0.145
+        },
+        {
+          "bin": "0.6 to 0.8",
+          "n": 72,
+          "predicted": 0.718,
+          "observed": 0.736
+        },
+        {
+          "bin": "0.8 to 1.0",
+          "n": 127,
+          "predicted": 0.883,
+          "observed": 0.992
+        }
+      ],
+      "ppv_at_population_prevalence": 0.00116,
+      "npv_at_population_prevalence": 0.99999,
+      "people_flagged_per_true_case": 864.0,
+      "population_prevalence": 9.5e-05,
+      "prevalence_source": "Liver and intrahepatic bile duct, per 100,000 per year"
+    },
+    "calibrated": {
+      "variant": "isotonic calibrated",
+      "auc": 0.97,
+      "auc_ci": [
+        0.958,
+        0.979
+      ],
+      "sensitivity": 0.798,
+      "sensitivity_ci": [
+        0.745,
+        0.848
+      ],
+      "specificity": 0.986,
+      "specificity_ci": [
+        0.977,
+        0.994
+      ],
+      "ppv_in_cohort": 0.941,
+      "brier": 0.044,
+      "calibration_slope": 0.861,
+      "calibration_intercept": 3.888,
+      "reliability": [
+        {
+          "bin": "0.0 to 0.2",
+          "n": 752,
+          "predicted": 0.033,
+          "observed": 0.043
+        },
+        {
+          "bin": "0.2 to 0.4",
+          "n": 57,
+          "predicted": 0.258,
+          "observed": 0.193
+        },
+        {
+          "bin": "0.4 to 0.6",
+          "n": 14,
+          "predicted": 0.501,
+          "observed": 0.286
+        },
+        {
+          "bin": "0.6 to 0.8",
+          "n": 12,
+          "predicted": 0.725,
+          "observed": 0.583
+        },
+        {
+          "bin": "0.8 to 1.0",
+          "n": 165,
+          "predicted": 0.982,
+          "observed": 0.994
+        }
+      ],
+      "ppv_at_population_prevalence": 0.00536,
+      "npv_at_population_prevalence": 0.99998,
+      "people_flagged_per_true_case": 186.5,
+      "population_prevalence": 9.5e-05,
+      "prevalence_source": "Liver and intrahepatic bile duct, per 100,000 per year"
+    },
+    "baselines": {
+      "prevalence_only": {
+        "auc": 0.5
+      },
+      "logistic_regression": {
+        "auc": 0.942,
+        "auc_ci": [
+          0.926,
+          0.957
+        ]
+      },
+      "age_sex_only": {
+        "features": [
+          "age",
+          "gender"
+        ],
+        "auc": 0.634,
+        "auc_ci": [
+          0.594,
+          0.674
+        ]
+      }
+    },
+    "subgroups": {
+      "sex: female": {
+        "n": 515,
+        "positives": 103,
+        "auc": 0.971,
+        "auc_ci": [
+          0.955,
+          0.985
+        ]
+      },
+      "sex: male": {
+        "n": 485,
+        "positives": 115,
+        "auc": 0.969,
+        "auc_ci": [
+          0.954,
+          0.982
+        ]
+      },
+      "age under 58": {
+        "n": 486,
+        "positives": 64,
+        "auc": 0.973,
+        "auc_ci": [
+          0.959,
+          0.985
+        ]
+      },
+      "age 58 and over": {
+        "n": 514,
+        "positives": 154,
+        "auc": 0.964,
+        "auc_ci": [
+          0.947,
+          0.979
+        ]
+      }
+    }
+  },
+  "pancreatic": {
+    "domain": "pancreatic",
+    "cohort_design": "Case-control. Cases are confirmed PDAC, controls include benign hepatobiliary disease.",
+    "n_total": 600,
+    "n_train": 480,
+    "n_test": 120,
+    "n_features": 6,
+    "features": [
+      "age",
+      "gender",
+      "creatinine",
+      "plasma_ca19_9",
+      "bilirubin",
+      "glucose"
+    ],
+    "cohort_prevalence": 0.217,
+    "cv_auc_train_only": 0.972,
+    "uncalibrated": {
+      "variant": "uncalibrated",
+      "auc": 0.968,
+      "auc_ci": [
+        0.937,
+        0.991
+      ],
+      "sensitivity": 0.846,
+      "sensitivity_ci": [
+        0.682,
+        0.964
+      ],
+      "specificity": 0.915,
+      "specificity_ci": [
+        0.854,
+        0.968
+      ],
+      "ppv_in_cohort": 0.733,
+      "brier": 0.0694,
+      "calibration_slope": 1.199,
+      "calibration_intercept": 0.023,
+      "reliability": [
+        {
+          "bin": "0.0 to 0.2",
+          "n": 80,
+          "predicted": 0.08,
+          "observed": 0.0
+        },
+        {
+          "bin": "0.2 to 0.4",
+          "n": 8,
+          "predicted": 0.277,
+          "observed": 0.375
+        },
+        {
+          "bin": "0.4 to 0.6",
+          "n": 4,
+          "predicted": 0.515,
+          "observed": 0.5
+        },
+        {
+          "bin": "0.6 to 0.8",
+          "n": 6,
+          "predicted": 0.687,
+          "observed": 0.333
+        },
+        {
+          "bin": "0.8 to 1.0",
+          "n": 22,
+          "predicted": 0.927,
+          "observed": 0.864
+        }
+      ],
+      "ppv_at_population_prevalence": 0.00138,
+      "npv_at_population_prevalence": 0.99998,
+      "people_flagged_per_true_case": 724.5,
+      "population_prevalence": 0.000139,
+      "prevalence_source": "Pancreas, per 100,000 men and women per year"
+    },
+    "calibrated": {
+      "variant": "isotonic calibrated",
+      "auc": 0.969,
+      "auc_ci": [
+        0.939,
+        0.991
+      ],
+      "sensitivity": 0.731,
+      "sensitivity_ci": [
+        0.55,
+        0.885
+      ],
+      "specificity": 0.947,
+      "specificity_ci": [
+        0.896,
+        0.989
+      ],
+      "ppv_in_cohort": 0.792,
+      "brier": 0.0617,
+      "calibration_slope": 0.46,
+      "calibration_intercept": 3.531,
+      "reliability": [
+        {
+          "bin": "0.0 to 0.2",
+          "n": 85,
+          "predicted": 0.015,
+          "observed": 0.012
+        },
+        {
+          "bin": "0.2 to 0.4",
+          "n": 8,
+          "predicted": 0.32,
+          "observed": 0.625
+        },
+        {
+          "bin": "0.4 to 0.6",
+          "n": 3,
+          "predicted": 0.437,
+          "observed": 0.333
+        },
+        {
+          "bin": "0.6 to 0.8",
+          "n": 3,
+          "predicted": 0.674,
+          "observed": 0.0
+        },
+        {
+          "bin": "0.8 to 1.0",
+          "n": 21,
+          "predicted": 0.985,
+          "observed": 0.905
+        }
+      ],
+      "ppv_at_population_prevalence": 0.00191,
+      "npv_at_population_prevalence": 0.99996,
+      "people_flagged_per_true_case": 524.6,
+      "population_prevalence": 0.000139,
+      "prevalence_source": "Pancreas, per 100,000 men and women per year"
+    },
+    "baselines": {
+      "prevalence_only": {
+        "auc": 0.5
+      },
+      "logistic_regression": {
+        "auc": 0.968,
+        "auc_ci": [
+          0.936,
+          0.991
+        ]
+      },
+      "age_sex_only": {
+        "features": [
+          "age",
+          "gender"
+        ],
+        "auc": 0.5,
+        "auc_ci": [
+          0.384,
+          0.62
+        ]
+      }
+    },
+    "subgroups": {
+      "sex: female": {
+        "n": 54,
+        "positives": 12,
+        "auc": 0.959,
+        "auc_ci": [
+          0.901,
+          0.998
+        ]
+      },
+      "sex: male": {
+        "n": 66,
+        "positives": 14,
+        "auc": 0.978,
+        "auc_ci": [
+          0.942,
+          0.999
+        ]
+      },
+      "age under 57": {
+        "n": 58,
+        "positives": 12,
+        "auc": 0.957,
+        "auc_ci": [
+          0.899,
+          0.998
+        ]
+      },
+      "age 57 and over": {
+        "n": 62,
+        "positives": 14,
+        "auc": 0.983,
+        "auc_ci": [
+          0.953,
+          1.0
+        ]
+      }
+    }
+  },
+  "prostate": {
+    "domain": "prostate",
+    "cohort_design": "Case-control, post-prostatectomy. Gleason grade comes from the surgical specimen.",
+    "n_total": 97,
+    "n_train": 77,
+    "n_test": 20,
+    "n_features": 2,
+    "features": [
+      "age",
+      "psa"
+    ],
+    "cohort_prevalence": 0.639,
+    "cv_auc_train_only": 0.77,
+    "uncalibrated": {
+      "variant": "uncalibrated",
+      "auc": 0.753,
+      "auc_ci": [
+        0.441,
+        0.988
+      ],
+      "sensitivity": 0.769,
+      "sensitivity_ci": [
+        0.5,
+        1.0
+      ],
+      "specificity": 0.571,
+      "specificity_ci": [
+        0.167,
+        1.0
+      ],
+      "ppv_in_cohort": 0.769,
+      "brier": 0.1927,
+      "calibration_slope": 1.361,
+      "calibration_intercept": 0.356,
+      "reliability": [
+        {
+          "bin": "0.2 to 0.4",
+          "n": 5,
+          "predicted": 0.307,
+          "observed": 0.2
+        },
+        {
+          "bin": "0.4 to 0.6",
+          "n": 3,
+          "predicted": 0.489,
+          "observed": 1.0
+        },
+        {
+          "bin": "0.6 to 0.8",
+          "n": 12,
+          "predicted": 0.688,
+          "observed": 0.75
+        }
+      ],
+      "ppv_at_population_prevalence": 0.00221,
+      "npv_at_population_prevalence": 0.9995,
+      "people_flagged_per_true_case": 452.7,
+      "population_prevalence": 0.001232,
+      "prevalence_source": "Prostate, per 100,000 men per year"
+    },
+    "calibrated": {
+      "variant": "isotonic calibrated",
+      "auc": 0.786,
+      "auc_ci": [
+        0.505,
+        0.99
+      ],
+      "sensitivity": 0.769,
+      "sensitivity_ci": [
+        0.5,
+        1.0
+      ],
+      "specificity": 0.571,
+      "specificity_ci": [
+        0.167,
+        1.0
+      ],
+      "ppv_in_cohort": 0.769,
+      "brier": 0.1927,
+      "calibration_slope": 0.464,
+      "calibration_intercept": 0.022,
+      "reliability": [
+        {
+          "bin": "0.0 to 0.2",
+          "n": 2,
+          "predicted": 0.029,
+          "observed": 0.0
+        },
+        {
+          "bin": "0.2 to 0.4",
+          "n": 4,
+          "predicted": 0.285,
+          "observed": 0.5
+        },
+        {
+          "bin": "0.4 to 0.6",
+          "n": 1,
+          "predicted": 0.404,
+          "observed": 1.0
+        },
+        {
+          "bin": "0.6 to 0.8",
+          "n": 2,
+          "predicted": 0.749,
+          "observed": 0.5
+        },
+        {
+          "bin": "0.8 to 1.0",
+          "n": 11,
+          "predicted": 0.935,
+          "observed": 0.818
+        }
+      ],
+      "ppv_at_population_prevalence": 0.00221,
+      "npv_at_population_prevalence": 0.9995,
+      "people_flagged_per_true_case": 452.7,
+      "population_prevalence": 0.001232,
+      "prevalence_source": "Prostate, per 100,000 men per year"
+    },
+    "baselines": {
+      "prevalence_only": {
+        "auc": 0.5
+      },
+      "logistic_regression": {
+        "auc": 0.769,
+        "auc_ci": [
+          0.5,
+          0.976
+        ]
+      },
+      "age_sex_only": {
+        "features": [
+          "age"
+        ],
+        "auc": 0.676,
+        "auc_ci": [
+          0.411,
+          0.906
+        ]
+      }
+    },
+    "subgroups": {}
+  }
+}

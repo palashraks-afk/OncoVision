@@ -167,6 +167,9 @@ def main():
     pool = []
     for config in tm.DATASETS:
         domain = config["name"]
+        if domain in tm.WITHDRAWN or domain not in models:
+            print(f"  {domain}: skipped, panel is not shipped")
+            continue
         print(f"  {domain}")
         pool.extend(build(domain, config))
 

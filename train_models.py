@@ -21,6 +21,7 @@ import numpy as np
 import pandas as pd
 import joblib
 
+from sklearn.calibration import CalibratedClassifierCV
 from sklearn.ensemble import ExtraTreesClassifier, VotingClassifier
 from sklearn.model_selection import StratifiedKFold, cross_val_predict, train_test_split
 from sklearn.metrics import roc_auc_score, accuracy_score, confusion_matrix
@@ -29,6 +30,33 @@ from xgboost import XGBClassifier
 DATA_DIR = "data"
 MODEL_DIRS = ["models", os.path.join("backend", "models")]
 RANDOM_STATE = 42
+
+# Panels that are trained and measured but deliberately not shipped.
+# evaluate.py is the evidence for each decision.
+WITHDRAWN = {
+    "prostate": (
+        "Held-out test AUC 0.786, 95% CI 0.505 to 0.99. The lower bound sits on chance, "
+        "so the panel cannot be shown to work. Specificity is 0.571 with a CI of 0.167 to "
+        "1.0, an interval so wide it carries no information, because the test split is 20 "
+        "records. The ensemble also fails to beat plain logistic regression (0.769) by any "
+        "meaningful margin. 97 records and two usable screening features cannot support a "
+        "clinical claim, so this panel is trained and measured but not served."
+    ),
+}
+
+# Cohort design, stated on every panel because it bounds what the numbers mean.
+COHORT_DESIGN = {
+    "general": "Risk-factor cohort, not a consecutive screening series.",
+    "breast": "Case-control and post-biopsy. Every record is an FNA already taken because "
+              "a lesion was found, so this panel interprets a biopsy that has happened, it "
+              "does not screen for one.",
+    "liver": "Synthetic. Records are generated rather than observed, so accuracy here "
+             "describes the generator, not a patient population.",
+    "pancreatic": "Case-control. Cases are confirmed adenocarcinoma, controls include "
+                  "benign hepatobiliary disease.",
+    "prostate": "Case-control and post-prostatectomy. Gleason grade comes from the "
+                "surgical specimen, not from screening.",
+}
 
 # ---------------------------------------------------------------------------
 # Canonical application input schema.
@@ -165,10 +193,15 @@ def build_ensemble(n_samples: int, pos_rate: float) -> VotingClassifier:
     small = n_samples < 300
     scale_pos = (1 - pos_rate) / pos_rate if 0 < pos_rate < 1 else 1.0
 
+    # Tree counts and depth are deliberately modest. The service runs on a
+    # 512 MB instance and SHAP's TreeExplainer holds a second copy of every
+    # tree structure, so an oversized forest is paid for twice. Measured on the
+    # held-out split, shrinking these costs a fraction of a point of AUC and
+    # roughly halves the resident footprint.
     xgb = XGBClassifier(
-        n_estimators=200 if small else 400,
+        n_estimators=120 if small else 200,
         max_depth=3 if small else 4,
-        learning_rate=0.08,
+        learning_rate=0.1,
         subsample=0.9,
         colsample_bytree=0.9,
         reg_lambda=1.5,
@@ -179,9 +212,9 @@ def build_ensemble(n_samples: int, pos_rate: float) -> VotingClassifier:
         n_jobs=-1,
     )
     ext = ExtraTreesClassifier(
-        n_estimators=300 if small else 600,
-        max_depth=None,
-        min_samples_leaf=2,
+        n_estimators=120 if small else 200,
+        max_depth=12,
+        min_samples_leaf=5,
         class_weight="balanced_subsample",
         random_state=RANDOM_STATE,
         n_jobs=-1,
@@ -252,7 +285,51 @@ def prepare(config: dict):
     return X, y, medians
 
 
+def load_held_out() -> dict:
+    """
+    Held-out test results from evaluate.py, keyed by domain.
+
+    These are the numbers that belong in front of a user: measured on a split
+    that was cut before anything was fitted, with bootstrap intervals and with
+    precision projected onto real SEER incidence. Run evaluate.py first.
+    """
+    if not os.path.isfile("evaluation.json"):
+        print("NOTE: evaluation.json not found, run evaluate.py for held-out metrics.")
+        return {}
+    with open("evaluation.json") as f:
+        raw = json.load(f)
+    out = {}
+    for name, r in raw.items():
+        c = r["calibrated"]
+        out[name] = {
+            "n_test": r["n_test"],
+            "auc": c["auc"],
+            "auc_ci": c["auc_ci"],
+            "sensitivity": c["sensitivity"],
+            "sensitivity_ci": c["sensitivity_ci"],
+            "specificity": c["specificity"],
+            "specificity_ci": c["specificity_ci"],
+            "brier": c["brier"],
+            "calibration_slope": c["calibration_slope"],
+            "ppv_at_population_prevalence": c["ppv_at_population_prevalence"],
+            "people_flagged_per_true_case": c["people_flagged_per_true_case"],
+            "population_prevalence": c["population_prevalence"],
+            "prevalence_source": c["prevalence_source"],
+            "cohort_prevalence": r["cohort_prevalence"],
+            "baseline_logistic_auc": r["baselines"]["logistic_regression"]["auc"],
+            "baseline_age_sex_auc": r["baselines"].get("age_sex_only", {}).get("auc"),
+            "subgroups": r["subgroups"],
+        }
+    return out
+
+
+HELD_OUT = {}
+
+
 def main():
+    global HELD_OUT
+    HELD_OUT = load_held_out()
+
     for d in MODEL_DIRS:
         os.makedirs(d, exist_ok=True)
 
@@ -271,13 +348,39 @@ def main():
         print(f"  {len(y)} rows, {int(y.sum())} positive ({pos_rate:.1%}), "
               f"{X.shape[1]} features: {', '.join(X.columns)}")
 
+        if name in WITHDRAWN:
+            print(f"  WITHDRAWN, not shipped: {WITHDRAWN[name][:70]}...")
+            for d in MODEL_DIRS:
+                stale = os.path.join(d, f"model_{name}.joblib")
+                if os.path.isfile(stale):
+                    os.remove(stale)
+                    print(f"  removed stale bundle {stale}")
+            summary[name] = {
+                "label": config["label"],
+                "shipped": False,
+                "withdrawn_reason": WITHDRAWN[name],
+                "cohort_design": COHORT_DESIGN[name],
+            }
+            continue
+
         factory = lambda: build_ensemble(len(y), pos_rate)
         metrics = evaluate(factory, X, y)
         print(f"  AUC {metrics['auc']} +/- {metrics['auc_std']}   "
               f"acc {metrics['accuracy']}   sens {metrics['sensitivity']}   "
               f"spec {metrics['specificity']}")
 
-        model = factory().fit(X, y)
+        # Isotonic calibration so the percentage the interface shows a person
+        # corresponds to an observed frequency rather than a raw forest vote.
+        # CalibratedClassifierCV does its own internal cross validation, so the
+        # calibrator never sees the data it is scoring.
+        folds = max(2, min(5, int(y.value_counts().min())))
+        cv = StratifiedKFold(n_splits=folds, shuffle=True, random_state=RANDOM_STATE)
+        model = CalibratedClassifierCV(factory(), method="isotonic", cv=cv)
+        model.fit(X, y)
+        print("  calibrated (isotonic)")
+
+        # Held-out evidence from evaluate.py, attached so the API can report it.
+        held_out = HELD_OUT.get(name, {})
 
         bundle = {
             "model": model,
@@ -287,7 +390,9 @@ def main():
             "label": config["label"],
             "positive_means": config["positive_means"],
             "metrics": metrics,
-            "algorithm": "Soft-voting ensemble: XGBoost + Extra Trees",
+            "held_out": held_out,
+            "cohort_design": COHORT_DESIGN[name],
+            "algorithm": "Soft-voting ensemble: XGBoost + Extra Trees, isotonic calibrated",
         }
         # compress=3 keeps the bundles small enough to commit and deploy.
         for d in MODEL_DIRS:
@@ -296,21 +401,30 @@ def main():
 
         summary[name] = {
             "label": config["label"],
+            "shipped": True,
             "features": list(X.columns),
+            "cohort_design": COHORT_DESIGN[name],
             **metrics,
+            "held_out": held_out,
         }
 
     with open(os.path.join("backend", "model_metrics.json"), "w") as f:
         json.dump(summary, f, indent=2)
     print("\nWrote backend/model_metrics.json")
 
-    print("\n" + "=" * 68)
-    print(f"{'model':<13}{'AUC':<16}{'acc':<8}{'sens':<8}{'spec':<8}{'n':<7}{'feats'}")
-    print("=" * 68)
+    print("\n" + "=" * 92)
+    print(f"{'panel':<13}{'shipped':<10}{'test AUC':<12}{'95% CI':<20}{'PPV@pop':<11}{'flagged/case'}")
+    print("=" * 92)
     for name, m in summary.items():
-        print(f"{name:<13}{str(m['auc']) + ' +/- ' + str(m['auc_std']):<16}"
-              f"{m['accuracy']:<8}{m['sensitivity']:<8}{m['specificity']:<8}"
-              f"{m['n_samples']:<7}{m['n_features']}")
+        if not m.get("shipped"):
+            print(f"{name:<13}{'NO':<10}withdrawn")
+            continue
+        h = m.get("held_out", {})
+        ci = h.get("auc_ci", ["", ""])
+        ci_text = f"{ci[0]} to {ci[1]}"
+        ppv_text = f"{h.get('ppv_at_population_prevalence', 0) * 100:.2f}%"
+        print(f"{name:<13}{'yes':<10}{str(h.get('auc', '')):<12}{ci_text:<20}"
+              f"{ppv_text:<11}{h.get('people_flagged_per_true_case', '')}")
 
 
 if __name__ == "__main__":

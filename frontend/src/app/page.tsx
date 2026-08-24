@@ -35,14 +35,67 @@ function resolveApiBase(): string {
 
 const API_BASE = resolveApiBase();
 
-// Measured by train_models.py. Used until the live registry responds.
+// Held-out test results from evaluate.py. Measured on a 20% split cut before
+// anything was fitted and never used for training, selection, or calibration.
+// Used until the live registry responds.
 const FALLBACK_METRICS: Record<string, any> = {
-  liver: { label: "Liver Cancer Risk", auc: 0.972, auc_std: 0.004, sensitivity: 0.83, specificity: 0.948, accuracy: 0.922, n_samples: 5000, n_features: 12 },
-  pancreatic: { label: "Pancreatic Cancer Risk", auc: 0.97, auc_std: 0.013, sensitivity: 0.808, specificity: 0.915, accuracy: 0.892, n_samples: 600, n_features: 6 },
-  breast: { label: "Breast Cancer Risk", auc: 0.963, auc_std: 0.018, sensitivity: 0.786, specificity: 0.958, accuracy: 0.895, n_samples: 569, n_features: 4 },
-  general: { label: "General Cancer Risk", auc: 0.951, auc_std: 0.01, sensitivity: 0.919, specificity: 0.968, accuracy: 0.95, n_samples: 1500, n_features: 8 },
-  prostate: { label: "Prostate Cancer Risk", auc: 0.795, auc_std: 0.066, sensitivity: 0.769, specificity: 0.571, accuracy: 0.7, n_samples: 97, n_features: 2 },
+  general: {
+    label: "General Cancer Risk", auc: 0.966, auc_ci: [0.937, 0.989],
+    sensitivity: 0.91, sensitivity_ci: [0.856, 0.961],
+    specificity: 0.984, specificity_ci: [0.964, 1.0],
+    brier: 0.0435, calibration_slope: 1.176,
+    ppv_at_population_prevalence: 0.20605, people_flagged_per_true_case: 4.9,
+    population_prevalence: 0.004507, cohort_prevalence: 0.371,
+    baseline_logistic_auc: 0.917, baseline_age_sex_auc: 0.66,
+    n_samples: 1500, n_test: 300, n_features: 8,
+  },
+  breast: {
+    label: "Breast Cancer Risk", auc: 0.972, auc_ci: [0.94, 0.994],
+    sensitivity: 0.786, sensitivity_ci: [0.66, 0.902],
+    specificity: 0.958, specificity_ci: [0.904, 1.0],
+    brier: 0.0668, calibration_slope: 1.118,
+    ppv_at_population_prevalence: 0.02441, people_flagged_per_true_case: 41.0,
+    population_prevalence: 0.001325, cohort_prevalence: 0.373,
+    baseline_logistic_auc: 0.964, baseline_age_sex_auc: null,
+    n_samples: 569, n_test: 114, n_features: 4,
+  },
+  liver: {
+    label: "Liver Cancer Risk", auc: 0.97, auc_ci: [0.958, 0.979],
+    sensitivity: 0.798, sensitivity_ci: [0.745, 0.848],
+    specificity: 0.986, specificity_ci: [0.977, 0.994],
+    brier: 0.044, calibration_slope: 0.861,
+    ppv_at_population_prevalence: 0.00536, people_flagged_per_true_case: 186.5,
+    population_prevalence: 0.000095, cohort_prevalence: 0.218,
+    baseline_logistic_auc: 0.942, baseline_age_sex_auc: 0.634,
+    n_samples: 5000, n_test: 1000, n_features: 12,
+  },
+  pancreatic: {
+    label: "Pancreatic Cancer Risk", auc: 0.969, auc_ci: [0.939, 0.991],
+    sensitivity: 0.731, sensitivity_ci: [0.55, 0.885],
+    specificity: 0.947, specificity_ci: [0.896, 0.989],
+    brier: 0.0617, calibration_slope: 0.46,
+    ppv_at_population_prevalence: 0.00191, people_flagged_per_true_case: 524.6,
+    population_prevalence: 0.000139, cohort_prevalence: 0.217,
+    baseline_logistic_auc: 0.968, baseline_age_sex_auc: 0.5,
+    n_samples: 600, n_test: 120, n_features: 6,
+  },
 };
+
+// Trained and measured, deliberately not served. Reported rather than deleted,
+// because a withdrawn panel is evidence about the method.
+const WITHDRAWN_PANELS = [
+  {
+    name: "Prostate",
+    auc: 0.786, ci: [0.505, 0.99], logistic: 0.769,
+    specificity: 0.571, spec_ci: [0.167, 1.0],
+    n: 97, n_test: 20, features: 2,
+    reason:
+      "The lower bound of the AUC interval sits on chance, so the panel cannot be shown to work at all. " +
+      "Specificity is 0.571 with an interval from 0.167 to 1.0, which carries no information, because the " +
+      "test split is 20 records. The ensemble does not meaningfully beat plain logistic regression either. " +
+      "97 records and two usable screening features cannot support a clinical claim.",
+  },
+];
 
 const OncovisionLogo = ({ className }: { className?: string }) => (
   <svg viewBox="0 0 100 100" className={className} fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -509,12 +562,39 @@ export default function OncovisionDashboard() {
                             )}
 
                             {!isBenign && (
-                              <div className="flex flex-wrap gap-x-4 gap-y-1 text-[10px] text-slate-500 font-bold uppercase tracking-wider">
-                                <span>AUC {d.auc}</span>
-                                <span>Sensitivity {d.sensitivity}</span>
-                                <span>Specificity {d.specificity}</span>
-                                <span>{d.inputs_used} of {d.inputs_total} inputs supplied</span>
-                              </div>
+                              <>
+                                <div className="flex flex-wrap gap-x-4 gap-y-1 text-[10px] text-slate-500 font-bold uppercase tracking-wider">
+                                  <span>
+                                    AUC {d.auc}
+                                    {d.auc_ci && <span className="text-slate-600 normal-case"> (95% CI {d.auc_ci[0]} to {d.auc_ci[1]})</span>}
+                                  </span>
+                                  <span>Sens {d.sensitivity}</span>
+                                  <span>Spec {d.specificity}</span>
+                                  <span>{d.inputs_used} of {d.inputs_total} inputs supplied</span>
+                                </div>
+
+                                {/* The number that decides whether this is usable. */}
+                                {d.ppv_at_population_prevalence != null && (
+                                  <div className="mt-3 p-3 rounded-lg bg-amber-500/5 border border-amber-500/25">
+                                    <p className="text-[10px] font-black text-amber-300 uppercase tracking-wider mb-1">
+                                      What this score is worth in the real world
+                                    </p>
+                                    <p className="text-[11px] text-amber-100/70 leading-relaxed">
+                                      This panel was measured on a cohort that was{" "}
+                                      <strong className="text-amber-200">{(d.cohort_prevalence * 100).toFixed(0)}% positive</strong>.
+                                      Actual incidence is{" "}
+                                      <strong className="text-amber-200">{(d.population_prevalence * 100).toFixed(4)}%</strong>.
+                                      At that rate a positive here is correct about{" "}
+                                      <strong className="text-amber-200">{(d.ppv_at_population_prevalence * 100).toFixed(2)}%</strong>{" "}
+                                      of the time, meaning roughly{" "}
+                                      <strong className="text-amber-200">{d.people_flagged_per_true_case} people flagged for every real case</strong>.
+                                    </p>
+                                    {d.cohort_design && (
+                                      <p className="text-[10px] text-slate-500 mt-2 italic">{d.cohort_design}</p>
+                                    )}
+                                  </div>
+                                )}
+                              </>
                             )}
                             {isBenign && d.note && (
                               <p className="text-[10px] text-slate-500 leading-relaxed">{d.note}</p>
@@ -532,6 +612,46 @@ export default function OncovisionDashboard() {
 
                             {open && (
                               <div className="mt-6 pt-6 border-t border-slate-800 space-y-6">
+                                {/* Per-patient SHAP. Unlike the global importance
+                                    list below, this explains THIS score. */}
+                                {d.shap?.length > 0 && (
+                                  <div>
+                                    <p className="text-[10px] text-slate-400 uppercase tracking-widest mb-1">
+                                      What moved your score
+                                    </p>
+                                    <p className="text-[10px] text-slate-600 mb-3">
+                                      SHAP values for this specific prediction, not an average across patients.
+                                    </p>
+                                    <div className="space-y-1.5">
+                                      {d.shap.map((s: any, i: number) => {
+                                        const up = s.direction === "raises";
+                                        return (
+                                          <div key={i} className="flex items-center gap-3 text-xs">
+                                            <span className="w-32 flex-shrink-0 text-slate-300 font-bold truncate">{s.name}</span>
+                                            <span className={`w-16 flex-shrink-0 font-bold ${up ? "text-red-400" : "text-emerald-400"}`}>
+                                              {up ? "raises" : "lowers"}
+                                            </span>
+                                            <div className="flex-1 h-2 bg-slate-900 rounded-full overflow-hidden flex">
+                                              <div
+                                                className={`h-full ${up ? "bg-red-500/80" : "bg-emerald-500/80"}`}
+                                                style={{ width: `${Math.min(s.share, 100)}%` }}
+                                              />
+                                            </div>
+                                            <span className="w-12 text-right text-slate-400 font-mono flex-shrink-0">{s.share}%</span>
+                                          </div>
+                                        );
+                                      })}
+                                    </div>
+                                    <p className="text-[10px] text-slate-600 mt-3 leading-relaxed">
+                                      Share of this prediction attributable to each value you supplied. Both
+                                      ensemble members are explained separately and normalised before averaging,
+                                      because XGBoost reports in log odds and Extra Trees in probability.
+                                      Values you left blank are excluded, since a contribution from an imputed
+                                      median describes the training set rather than you.
+                                    </p>
+                                  </div>
+                                )}
+
                                 {d.drivers?.length > 0 && (
                                   <div>
                                     <p className="text-[10px] text-slate-400 uppercase tracking-widest mb-3">
@@ -790,7 +910,9 @@ export default function OncovisionDashboard() {
                   <div className="bg-slate-950 border border-slate-800 rounded-lg p-5">
                     <p className="font-bold text-white text-sm mb-3">The five cancer panels</p>
                     <p className="text-sm text-slate-400 leading-relaxed mb-4">
-                      General, breast, liver, pancreatic and prostate. The percentage is the model&apos;s own output,
+                      General, breast, liver and pancreatic. A prostate panel was built and then withdrawn
+                      because it could not be shown to beat chance, which is explained on the methodology
+                      page. The percentage is the model&apos;s own output,
                       and the honest way to read it is as how closely your profile matches patients in the training
                       data who had that cancer. It is not your literal odds of having it.
                     </p>
@@ -973,10 +1095,10 @@ export default function OncovisionDashboard() {
                   <Target className="text-cyan-500 w-6 h-6" /> Measured performance
                 </h3>
                 <p className="text-sm text-slate-400 mb-6 leading-relaxed">
-                  Every figure below comes from stratified five fold cross validation on held out records, and each
-                  model was scored using only the features this application can actually collect from a patient.
-                  AUC is the probability that the model ranks a randomly chosen positive case above a randomly
-                  chosen negative one, where 0.5 is a coin flip and 1.0 is perfect separation.
+                  Every figure here comes from a 20 percent test split that was cut before any model was
+                  fitted and was never used for training, model selection, or calibration. Confidence
+                  intervals are bootstrap percentile intervals over 2,000 resamples. Reproduce all of it
+                  with <span className="font-mono text-cyan-400">python evaluate.py</span>.
                 </p>
 
                 <div className="overflow-x-auto">
@@ -984,39 +1106,179 @@ export default function OncovisionDashboard() {
                     <thead>
                       <tr className="text-[10px] uppercase tracking-widest text-slate-500 border-b border-slate-800">
                         <th className="pb-3 pr-4 font-bold">Panel</th>
-                        <th className="pb-3 pr-4 font-bold">AUC</th>
+                        <th className="pb-3 pr-4 font-bold">Test AUC</th>
+                        <th className="pb-3 pr-4 font-bold">95% CI</th>
                         <th className="pb-3 pr-4 font-bold">Sens.</th>
                         <th className="pb-3 pr-4 font-bold">Spec.</th>
-                        <th className="pb-3 pr-4 font-bold">Records</th>
-                        <th className="pb-3 font-bold">Features</th>
+                        <th className="pb-3 font-bold">Test n</th>
                       </tr>
                     </thead>
                     <tbody className="divide-y divide-slate-800/60">
                       {metricRows.map(([key, m]: any) => (
                         <tr key={key} className="text-slate-400">
                           <td className="py-3 pr-4 font-bold text-cyan-400 whitespace-nowrap capitalize">{key}</td>
-                          <td className={`py-3 pr-4 font-mono font-bold ${m.auc >= 0.9 ? "text-emerald-400" : m.auc >= 0.8 ? "text-amber-400" : "text-red-400"}`}>
-                            {m.auc} <span className="text-slate-600 font-normal">+/- {m.auc_std}</span>
+                          <td className="py-3 pr-4 font-mono font-bold text-emerald-400">{m.auc}</td>
+                          <td className="py-3 pr-4 font-mono text-slate-500">
+                            {m.auc_ci ? `${m.auc_ci[0]} to ${m.auc_ci[1]}` : "n/a"}
                           </td>
                           <td className="py-3 pr-4 font-mono">{m.sensitivity}</td>
                           <td className="py-3 pr-4 font-mono">{m.specificity}</td>
-                          <td className="py-3 pr-4 font-mono">{m.n_samples}</td>
-                          <td className="py-3 font-mono">{m.n_features}</td>
+                          <td className="py-3 font-mono">{m.n_test ?? "n/a"}</td>
                         </tr>
                       ))}
                     </tbody>
                   </table>
                 </div>
 
-                <div className="mt-6 p-4 rounded-lg bg-amber-500/5 border border-amber-500/20 flex items-start gap-3">
-                  <AlertTriangle className="w-4 h-4 text-amber-400 flex-shrink-0 mt-0.5" />
+                {/* THE NUMBER THAT MATTERS */}
+                <h4 className="text-lg font-bold text-white mt-10 mb-2">Precision once the disease is rare</h4>
+                <p className="text-sm text-slate-400 mb-5 leading-relaxed">
+                  AUC above 0.95 sounds decisive, and on its own it is close to meaningless for screening.
+                  Every cohort here is enriched for disease, between 21 and 37 percent positive, while real
+                  incidence is a fraction of a percent. Projecting the measured sensitivity and specificity
+                  onto SEER incidence gives the number that actually decides whether a tool is usable.
+                </p>
+
+                <div className="overflow-x-auto">
+                  <table className="w-full text-left text-sm">
+                    <thead>
+                      <tr className="text-[10px] uppercase tracking-widest text-slate-500 border-b border-slate-800">
+                        <th className="pb-3 pr-4 font-bold">Panel</th>
+                        <th className="pb-3 pr-4 font-bold">Cohort</th>
+                        <th className="pb-3 pr-4 font-bold">Real incidence</th>
+                        <th className="pb-3 pr-4 font-bold">PPV there</th>
+                        <th className="pb-3 font-bold">Flagged per true case</th>
+                      </tr>
+                    </thead>
+                    <tbody className="divide-y divide-slate-800/60">
+                      {metricRows.map(([key, m]: any) => (
+                        <tr key={key} className="text-slate-400">
+                          <td className="py-3 pr-4 font-bold text-cyan-400 whitespace-nowrap capitalize">{key}</td>
+                          <td className="py-3 pr-4 font-mono">{(m.cohort_prevalence * 100).toFixed(0)}%</td>
+                          <td className="py-3 pr-4 font-mono">{(m.population_prevalence * 100).toFixed(4)}%</td>
+                          <td className={`py-3 pr-4 font-mono font-bold ${m.ppv_at_population_prevalence > 0.1 ? "text-amber-400" : "text-red-400"}`}>
+                            {(m.ppv_at_population_prevalence * 100).toFixed(2)}%
+                          </td>
+                          <td className="py-3 font-mono font-bold text-red-400">{m.people_flagged_per_true_case}</td>
+                        </tr>
+                      ))}
+                    </tbody>
+                  </table>
+                </div>
+
+                <div className="mt-5 p-4 rounded-lg bg-red-500/5 border border-red-500/25">
                   <p className="text-xs text-slate-400 leading-relaxed">
-                    The prostate model is the weak one and it is reported rather than hidden. It has 97 records and
-                    only two usable screening inputs, age and PSA, because the rest of that dataset consists of
-                    surgical findings a screening patient does not have. Treat its output as a prompt to discuss
-                    PSA with a physician, not as a probability.
+                    Read the right-hand column plainly. Used as a population screen today, the pancreatic
+                    panel would flag roughly 525 people for every one who has the disease. That is not a
+                    usable screening test, and no AUC figure changes it. What these models can reasonably do
+                    is rank and explain values for someone who already has a reason to be asking, which is
+                    why the interface reports this alongside every score rather than burying it here.
                   </p>
                 </div>
+
+                {/* BASELINES */}
+                <h4 className="text-lg font-bold text-white mt-10 mb-2">Does the ensemble earn its complexity?</h4>
+                <p className="text-sm text-slate-400 mb-5 leading-relaxed">
+                  A gradient boosted forest paired with an Extra Trees classifier is only worth the cost if
+                  it beats something simple. Both baselines were trained and tested on the identical splits.
+                </p>
+
+                <div className="overflow-x-auto">
+                  <table className="w-full text-left text-sm">
+                    <thead>
+                      <tr className="text-[10px] uppercase tracking-widest text-slate-500 border-b border-slate-800">
+                        <th className="pb-3 pr-4 font-bold">Panel</th>
+                        <th className="pb-3 pr-4 font-bold">Ensemble</th>
+                        <th className="pb-3 pr-4 font-bold">Logistic regression</th>
+                        <th className="pb-3 pr-4 font-bold">Age and sex only</th>
+                        <th className="pb-3 font-bold">Verdict</th>
+                      </tr>
+                    </thead>
+                    <tbody className="divide-y divide-slate-800/60">
+                      {metricRows.map(([key, m]: any) => {
+                        const lr = m.baseline_logistic_auc;
+                        const gain = lr ? m.auc - lr : null;
+                        const verdict =
+                          gain == null ? "n/a" : gain > 0.02 ? "worth it" : "marginal";
+                        return (
+                          <tr key={key} className="text-slate-400">
+                            <td className="py-3 pr-4 font-bold text-cyan-400 whitespace-nowrap capitalize">{key}</td>
+                            <td className="py-3 pr-4 font-mono font-bold text-white">{m.auc}</td>
+                            <td className="py-3 pr-4 font-mono">{lr ?? "n/a"}</td>
+                            <td className="py-3 pr-4 font-mono">{m.baseline_age_sex_auc ?? "n/a"}</td>
+                            <td className={`py-3 font-bold ${verdict === "worth it" ? "text-emerald-400" : "text-amber-400"}`}>
+                              {verdict}
+                            </td>
+                          </tr>
+                        );
+                      })}
+                    </tbody>
+                  </table>
+                </div>
+
+                <p className="text-xs text-slate-500 mt-4 leading-relaxed">
+                  Honest reading: the ensemble is clearly worth it on general and liver. On breast (0.972 against
+                  0.964) and pancreatic (0.969 against 0.968) it is within noise of logistic regression, and a
+                  reviewer would be right to say the simpler model should ship for those two.
+                </p>
+
+                {/* CALIBRATION */}
+                <h4 className="text-lg font-bold text-white mt-10 mb-2">Calibration</h4>
+                <p className="text-sm text-slate-400 mb-5 leading-relaxed">
+                  The interface shows people a percentage, so the percentages have to correspond to observed
+                  frequencies. Every shipped model is wrapped in isotonic calibration fitted by internal cross
+                  validation. A calibration slope of 1.0 is perfect and below 1.0 means over-confident.
+                </p>
+
+                <div className="overflow-x-auto">
+                  <table className="w-full text-left text-sm">
+                    <thead>
+                      <tr className="text-[10px] uppercase tracking-widest text-slate-500 border-b border-slate-800">
+                        <th className="pb-3 pr-4 font-bold">Panel</th>
+                        <th className="pb-3 pr-4 font-bold">Brier score</th>
+                        <th className="pb-3 font-bold">Calibration slope</th>
+                      </tr>
+                    </thead>
+                    <tbody className="divide-y divide-slate-800/60">
+                      {metricRows.map(([key, m]: any) => (
+                        <tr key={key} className="text-slate-400">
+                          <td className="py-3 pr-4 font-bold text-cyan-400 whitespace-nowrap capitalize">{key}</td>
+                          <td className="py-3 pr-4 font-mono">{m.brier}</td>
+                          <td className={`py-3 font-mono ${m.calibration_slope < 0.7 ? "text-amber-400" : ""}`}>
+                            {m.calibration_slope}
+                          </td>
+                        </tr>
+                      ))}
+                    </tbody>
+                  </table>
+                </div>
+
+                <p className="text-xs text-slate-500 mt-4 leading-relaxed">
+                  The pancreatic slope of 0.46 is the weak one. Its probabilities are still over-confident
+                  after calibration, so treat that panel&apos;s percentage as a ranking rather than a literal
+                  likelihood.
+                </p>
+
+                {/* WITHDRAWN */}
+                <h4 className="text-lg font-bold text-white mt-10 mb-2">Withdrawn panels</h4>
+                <p className="text-sm text-slate-400 mb-4 leading-relaxed">
+                  Reported rather than deleted, because a panel that failed its evaluation is evidence about
+                  the method.
+                </p>
+                {WITHDRAWN_PANELS.map(w => (
+                  <div key={w.name} className="p-5 rounded-lg bg-slate-950 border border-red-500/30">
+                    <div className="flex flex-wrap items-baseline gap-x-4 gap-y-1 mb-3">
+                      <span className="font-black text-white">{w.name}</span>
+                      <span className="text-[10px] font-bold uppercase tracking-wider px-2 py-1 rounded bg-red-500/10 text-red-300">
+                        Not served
+                      </span>
+                      <span className="text-[11px] font-mono text-slate-500">
+                        AUC {w.auc}, 95% CI {w.ci[0]} to {w.ci[1]} · logistic {w.logistic} · spec {w.specificity} (CI {w.spec_ci[0]} to {w.spec_ci[1]}) · n={w.n}, test n={w.n_test}
+                      </span>
+                    </div>
+                    <p className="text-sm text-slate-400 leading-relaxed">{w.reason}</p>
+                  </div>
+                ))}
               </section>
 
               <section className="bg-slate-900 border border-slate-800 rounded-xl p-8">
@@ -1104,9 +1366,14 @@ export default function OncovisionDashboard() {
                   <AlertTriangle className="text-amber-400 w-5 h-5" /> Known limitations
                 </h3>
                 <ul className="space-y-3 text-sm text-slate-400 leading-relaxed list-disc pl-5">
-                  <li>The five source datasets were collected separately and do not share a schema, so each panel sees a different slice of what you enter. A model scores only when it receives at least one real value, and every card reports how many of its inputs you actually supplied.</li>
-                  <li>Feature importance ranks what a model leans on across all patients. It is not a per patient explanation, and a proper Shapley decomposition would be the correct tool for that.</li>
-                  <li>The hepatocellular cohort is generated rather than observed, so the liver model&apos;s AUC of 0.972 describes performance on synthetic records and its real world generalisation is unverified.</li>
+                  <li><strong className="text-white">Every cohort is case-control, not a screening series.</strong> These records come from people who already had a reason to be tested, so the cohorts run 21 to 37 percent positive against a real incidence measured in hundredths of a percent. That gap is why the precision table above matters more than the AUC table.</li>
+                  <li><strong className="text-white">The breast panel contradicts the schema rule.</strong> Its four inputs are nuclear morphology from a fine needle aspirate, which requires a biopsy that has already happened. It interprets a biopsy rather than screening for one, and calling it a screening panel would be wrong.</li>
+                  <li><strong className="text-white">The liver cohort is synthetic.</strong> It is the largest dataset here at 5,000 records and posts the joint-highest AUC, and the records are generated rather than observed. That AUC describes a generator, not a patient population.</li>
+                  <li><strong className="text-white">No external validation.</strong> Every number comes from a held-out split of the same cohort the model trained on. Nothing here has been tested against a dataset collected somewhere else, which is the single largest gap.</li>
+                  <li><strong className="text-white">No prospective test and no IRB.</strong> No real patient report has been run through this and followed to an outcome. There is no ethics approval, no registration, and no clinical validation of any kind.</li>
+                  <li><strong className="text-white">The ensemble is within noise of logistic regression on two panels.</strong> Breast at 0.972 against 0.964, pancreatic at 0.969 against 0.968. The added complexity is not clearly earning its place there.</li>
+                  <li><strong className="text-white">Subgroup coverage is thin.</strong> AUC is broken out by sex and age band where the test split allows, but the cohorts carry no race or ethnicity, so accuracy across those groups is unmeasured rather than acceptable.</li>
+                  <li>The source datasets do not share a schema, so each panel sees a different slice of what you enter. A model scores only when it receives at least one real value, and every card reports how many of its inputs you supplied.</li>
                 </ul>
               </section>
 

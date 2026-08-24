@@ -1,5 +1,37 @@
+# Dependencies
 node_modules/
-.next/
-__pycache__/
-.env
 venv/
+.venv/
+env/
+
+# Python
+__pycache__/
+*.py[cod]
+*.egg-info/
+.pytest_cache/
+.ipynb_checkpoints/
+
+# Next.js
+.next/
+out/
+next-env.d.ts
+
+# Environment
+.env
+.env.*
+!.env.example
+
+# Deploy
+.vercel/
+.render/
+
+# Editors and OS
+.vscode/
+.idea/
+.DS_Store
+Thumbs.db
+
+# Build and scratch
+dist/
+build/
+*.log
