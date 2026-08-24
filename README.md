@@ -23,46 +23,65 @@ Two inputs, read together:
 2. **Information about you.** 11 items no lab report contains: sex, smoking, alcohol, exercise,
    inherited risk, prior diagnosis, family history, hepatitis B and C, cirrhosis, diabetes.
 
-Three calibrated models score the combination, and the interface reports what drove each score,
+Four calibrated models score the combination, and the interface reports what drove each score,
 how accurate that model is, and what the score is worth at real population prevalence.
 
 ---
 
 ## What ships, and what does not
 
-Three panels ship. Two were built, measured, and withdrawn because the evidence did not support
-serving them. That decision is the most useful thing in this repository.
+Four panels ship. One was built, measured, and withdrawn because the evidence did not support
+serving it.
 
 | Panel | Test AUC | 95% CI | PPV at real prevalence | Flagged per true case | External test |
 |---|---|---|---|---|---|
-| **Liver disease** | 0.892 | 0.857 to 0.924 | **54.4%** | **1.8** | 3 cohorts, leave-one-out |
+| **Liver disease** | 0.892 | 0.857 to 0.924 | **54.4%** | **1.8** | 3 countries, leave-one-out |
 | General cancer | 0.966 | 0.937 to 0.989 | 20.6% | 4.9 | NHANES, 5,173 adults |
-| Breast malignancy | 0.972 | 0.940 to 0.994 | 2.44% | 41 | WPBC, partial |
-| ~~Pancreatic~~ | 0.969 | 0.938 to 0.991 | 0.19% | **525** | **none exists** |
-| ~~Prostate~~ | 0.786 | **0.505** to 0.99 | 0.22% | 453 | none |
+| Breast malignancy | 0.972 | 0.940 to 0.994 | 2.44% | 41 | WPBC, 198 patients, partial |
+| Pancreatic cancer | 0.969 | 0.938 to 0.991 | 0.19% | 525 | 3 tissue banks, leave-one-site-out |
+| ~~Prostate~~ | 0.786 | **0.505** to 0.99 | 0.22% | 453 | **none exists** |
 
 All measured on a 20% split cut before any model was fitted. Intervals are bootstrap percentile
 intervals over 2,000 resamples. Reproduce with `python evaluate.py`.
 
-### Why pancreatic was withdrawn
+### Pancreatic: withdrawn, then reinstated on evidence
 
-It had the second-highest AUC in the project. It is gone anyway.
+This panel was withdrawn for having no external test. That was wrong, and finding out why is the
+most instructive thing in this repository.
 
-- **No external cohort exists.** NHANES 2017-2018 contains exactly **one** pancreatic case, and no
-  public dataset shares this panel's feature set. Its 0.969 has never met an unseen population.
-- Where generalisation could be measured elsewhere here, it cost between **0.06 and 0.46 AUC**.
-- At real incidence it flags **525 people per true case**.
-- Calibration slope 0.46, so it stays over-confident even after isotonic calibration.
-- It does not beat plain logistic regression, 0.969 against 0.968.
-- Prospective validation would need roughly **690,000 participants**.
+Its own cohort is drawn from **three independent tissue banks**, and the site column had been
+discarded as an identifier during preprocessing. Training on two and testing on the third is a real
+test between institutions.
 
-A panel that can be neither externally nor prospectively validated, and that buries one true case
-under 500 false alarms, should not be served.
+| Held out site | Train n | Test n | Cases | AUC | 95% CI | Logistic |
+|---|---|---|---|---|---|---|
+| BPTB | 235 | 365 | 74 | 0.978 | 0.962 to 0.990 | 0.982 |
+| CPTB | 459 | 141 | 34 | 0.959 | 0.911 to 0.991 | 0.973 |
+| UPTB | 506 | 94 | 22 | 0.950 | 0.895 to 0.990 | 0.963 |
 
-### Why prostate was withdrawn
+Mean leave-one-site-out AUC **0.962**, every interval excludes chance, and the drop from the
+internal random split is **0.007**. The panel transfers between institutions, so it was reinstated.
+
+What that does not show is transfer to a screening population. All three sites are pancreatic
+tissue banks running 20 to 24 percent cases, and at real incidence this panel still flags roughly
+**525 people per true case**. Both facts are true at once and the interface reports both.
+Reproduce with `python experiments/pancreatic_multisite.py`.
+
+### Prostate: withdrawn, and the search is documented
 
 Test AUC 0.786 with a 95% CI of **0.505 to 0.99**. The lower bound sits on chance. Specificity
 0.571 with an interval of 0.167 to 1.0, which carries no information on 20 test records.
+
+External validation was searched for and does not exist:
+
+- The Stanford cohort has **no site column**, so unlike the pancreatic cohort it cannot be split by
+  institution.
+- NHANES measured serum PSA on **4,697 men** across 2005 to 2010, which looked like the answer. It
+  contains only **17 prostate cancer cases**, because men already diagnosed are excluded from the
+  PSA subsample. That is far below the roughly 96 events needed.
+
+97 records and two usable features, with no route to an external test, cannot support a clinical
+claim.
 
 ## External validation
 
@@ -155,8 +174,9 @@ cannot be chosen after seeing the data.
 - **The liver panel detects liver disease, not liver cancer.** Liver disease is roughly 300 times
   more common and is the dominant precursor to hepatocellular carcinoma, so this is a useful thing
   to detect, but it is not a cancer claim.
-- **Two panels were withdrawn.** Pancreatic and prostate are trained and measured but not served.
-  Reasons are above and on the methodology page.
+- **One panel was withdrawn.** Prostate is trained and measured but not served. Pancreatic was
+  withdrawn and then reinstated once leave-one-site-out validation was run. Both decisions and the
+  evidence behind them are above and on the methodology page.
 - **No prospective test and no IRB.** No real patient report has been followed to an outcome. A
   submittable study protocol with pre-specified statistics is drafted in [PROTOCOL.md](PROTOCOL.md).
   Its sample-size table shows the pancreatic panel would need roughly 690,000 participants to

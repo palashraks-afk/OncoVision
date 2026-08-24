@@ -242,14 +242,100 @@
   },
   "pancreatic": {
     "label": "Pancreatic Cancer Risk",
-    "shipped": false,
-    "withdrawn_reason": "Withdrawn on the same standard as prostate, once the evidence was gathered rather than assumed. No external cohort exists: NHANES 2017-2018 contains exactly one pancreatic case, and no public dataset shares this panel's feature set, so its 0.969 internal AUC has never been tested on an unseen population. Where generalisation could be measured elsewhere in this project it cost between 0.06 and 0.46 AUC. At real SEER incidence of 0.0139 percent the panel flags roughly 525 people for every one who has the disease. Its calibration slope is 0.46, so it stays over-confident even after isotonic calibration, and it does not beat plain logistic regression (0.969 against 0.968). PROTOCOL.md puts prospective validation at roughly 690,000 participants, which is not achievable at any single site. A panel that cannot be externally validated, cannot be prospectively validated, and would bury a true case under 500 false alarms should not be served.",
-    "cohort_design": "Case-control. Cases are confirmed adenocarcinoma, controls include benign hepatobiliary disease."
+    "shipped": true,
+    "features": [
+      "age",
+      "gender",
+      "creatinine",
+      "plasma_ca19_9",
+      "bilirubin",
+      "glucose"
+    ],
+    "cohort_design": "Case-control across three independent tissue banks. Cases are confirmed adenocarcinoma, controls include benign hepatobiliary disease. Validated by leave-one-site-out: mean AUC 0.962 with every site's interval excluding chance, and a drop of only 0.007 from the internal random split, so the panel transfers between institutions. It has still never met a screening population, where it would flag roughly 525 people per true case.",
+    "auc": 0.974,
+    "auc_std": 0.014,
+    "accuracy": 0.908,
+    "sensitivity": 0.923,
+    "specificity": 0.904,
+    "n_samples": 600,
+    "n_positive": 130,
+    "n_features": 6,
+    "cv_folds": 5,
+    "model_selection": {
+      "ensemble": 0.971,
+      "logistic": 0.974
+    },
+    "chosen_model": "logistic",
+    "held_out": {
+      "n_test": 120,
+      "auc": 0.969,
+      "auc_ci": [
+        0.938,
+        0.991
+      ],
+      "sensitivity": 0.731,
+      "sensitivity_ci": [
+        0.55,
+        0.9
+      ],
+      "specificity": 0.947,
+      "specificity_ci": [
+        0.895,
+        0.989
+      ],
+      "brier": 0.0617,
+      "calibration_slope": 0.46,
+      "ppv_at_population_prevalence": 0.00191,
+      "people_flagged_per_true_case": 524.6,
+      "population_prevalence": 0.000139,
+      "prevalence_source": "Pancreas, per 100,000 men and women per year",
+      "cohort_prevalence": 0.217,
+      "baseline_logistic_auc": 0.968,
+      "baseline_age_sex_auc": 0.5,
+      "subgroups": {
+        "sex: female": {
+          "n": 54,
+          "positives": 12,
+          "auc": 0.959,
+          "auc_ci": [
+            0.902,
+            0.997
+          ]
+        },
+        "sex: male": {
+          "n": 66,
+          "positives": 14,
+          "auc": 0.978,
+          "auc_ci": [
+            0.939,
+            0.999
+          ]
+        },
+        "age under 57": {
+          "n": 58,
+          "positives": 12,
+          "auc": 0.957,
+          "auc_ci": [
+            0.899,
+            0.998
+          ]
+        },
+        "age 57 and over": {
+          "n": 62,
+          "positives": 14,
+          "auc": 0.983,
+          "auc_ci": [
+            0.95,
+            1.0
+          ]
+        }
+      }
+    }
   },
   "prostate": {
     "label": "Prostate Cancer Risk",
     "shipped": false,
-    "withdrawn_reason": "Held-out test AUC 0.786, 95% CI 0.505 to 0.99. The lower bound sits on chance, so the panel cannot be shown to work. Specificity is 0.571 with a CI of 0.167 to 1.0, an interval so wide it carries no information, because the test split is 20 records. The ensemble also fails to beat plain logistic regression (0.769) by any meaningful margin. 97 records and two usable screening features cannot support a clinical claim, so this panel is trained and measured but not served.",
+    "withdrawn_reason": "Held-out test AUC 0.786, 95% CI 0.505 to 0.99. The lower bound sits on chance, so the panel cannot be shown to work. Specificity is 0.571 with a CI of 0.167 to 1.0, an interval carrying no information because the test split is 20 records. It does not beat plain logistic regression (0.769). External validation was searched for and does not exist. The Stanford cohort has no site or centre column, so unlike the pancreatic cohort it cannot be split by institution. NHANES measured serum PSA on 4,697 men across 2005 to 2010, which looked like the answer, but it contains only 17 prostate cancer cases because men with a prostate cancer history are excluded from the PSA subsample. That is far below the roughly 96 events needed. 97 records and two usable features, with no route to an external test, cannot support a clinical claim.",
     "cohort_design": "Case-control and post-prostatectomy. Gleason grade comes from the surgical specimen, not from screening."
   }
 }

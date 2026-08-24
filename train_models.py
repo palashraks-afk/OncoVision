@@ -51,27 +51,18 @@ RANDOM_STATE = 42
 # Panels that are trained and measured but deliberately not shipped.
 # evaluate.py is the evidence for each decision.
 WITHDRAWN = {
-    "pancreatic": (
-        "Withdrawn on the same standard as prostate, once the evidence was gathered rather "
-        "than assumed. No external cohort exists: NHANES 2017-2018 contains exactly one "
-        "pancreatic case, and no public dataset shares this panel's feature set, so its 0.969 "
-        "internal AUC has never been tested on an unseen population. Where generalisation "
-        "could be measured elsewhere in this project it cost between 0.06 and 0.46 AUC. At "
-        "real SEER incidence of 0.0139 percent the panel flags roughly 525 people for every "
-        "one who has the disease. Its calibration slope is 0.46, so it stays over-confident "
-        "even after isotonic calibration, and it does not beat plain logistic regression "
-        "(0.969 against 0.968). PROTOCOL.md puts prospective validation at roughly 690,000 "
-        "participants, which is not achievable at any single site. A panel that cannot be "
-        "externally validated, cannot be prospectively validated, and would bury a true case "
-        "under 500 false alarms should not be served."
-    ),
     "prostate": (
-        "Held-out test AUC 0.786, 95% CI 0.505 to 0.99. The lower bound sits on chance, "
-        "so the panel cannot be shown to work. Specificity is 0.571 with a CI of 0.167 to "
-        "1.0, an interval so wide it carries no information, because the test split is 20 "
-        "records. The ensemble also fails to beat plain logistic regression (0.769) by any "
-        "meaningful margin. 97 records and two usable screening features cannot support a "
-        "clinical claim, so this panel is trained and measured but not served."
+        "Held-out test AUC 0.786, 95% CI 0.505 to 0.99. The lower bound sits on chance, so "
+        "the panel cannot be shown to work. Specificity is 0.571 with a CI of 0.167 to 1.0, "
+        "an interval carrying no information because the test split is 20 records. It does "
+        "not beat plain logistic regression (0.769). "
+        "External validation was searched for and does not exist. The Stanford cohort has no "
+        "site or centre column, so unlike the pancreatic cohort it cannot be split by "
+        "institution. NHANES measured serum PSA on 4,697 men across 2005 to 2010, which "
+        "looked like the answer, but it contains only 17 prostate cancer cases because men "
+        "with a prostate cancer history are excluded from the PSA subsample. That is far "
+        "below the roughly 96 events needed. 97 records and two usable features, with no "
+        "route to an external test, cannot support a clinical claim."
     ),
 }
 
@@ -86,8 +77,12 @@ COHORT_DESIGN = {
     "liver": "6,059 real patients pooled across India, Germany and the United States. The only "
              "panel with genuine external validation: leave-one-cohort-out AUC is 0.58 to 0.75 "
              "depending on which country is held out. Detects liver disease, not liver cancer.",
-    "pancreatic": "Case-control. Cases are confirmed adenocarcinoma, controls include "
-                  "benign hepatobiliary disease.",
+    "pancreatic": "Case-control across three independent tissue banks. Cases are confirmed "
+                  "adenocarcinoma, controls include benign hepatobiliary disease. Validated by "
+                  "leave-one-site-out: mean AUC 0.962 with every site's interval excluding "
+                  "chance, and a drop of only 0.007 from the internal random split, so the "
+                  "panel transfers between institutions. It has still never met a screening "
+                  "population, where it would flag roughly 525 people per true case.",
     "prostate": "Case-control and post-prostatectomy. Gleason grade comes from the "
                 "surgical specimen, not from screening.",
 }

@@ -1,0 +1,63 @@
+{
+  "question": "Does the pancreatic panel transfer across the three collection sites in its own cohort?",
+  "internal_random_split_auc": 0.969,
+  "mean_leave_one_site_out_auc": 0.962,
+  "drop": 0.007,
+  "lowest_ci_bound": 0.895,
+  "every_site_beats_chance": true,
+  "per_site": {
+    "BPTB": {
+      "site": "BPTB",
+      "site_name": "Barts Pancreas Tissue Bank",
+      "n_train": 235,
+      "n_test": 365,
+      "cases_test": 74,
+      "auc": 0.978,
+      "auc_ci": [
+        0.962,
+        0.99
+      ],
+      "logistic_auc": 0.982,
+      "sensitivity": 0.878,
+      "specificity": 0.969,
+      "ppv_at_population_prevalence": 0.00393,
+      "people_flagged_per_true_case": 254.3
+    },
+    "CPTB": {
+      "site": "CPTB",
+      "site_name": "Second tissue bank",
+      "n_train": 459,
+      "n_test": 141,
+      "cases_test": 34,
+      "auc": 0.959,
+      "auc_ci": [
+        0.911,
+        0.991
+      ],
+      "logistic_auc": 0.973,
+      "sensitivity": 0.765,
+      "specificity": 0.972,
+      "ppv_at_population_prevalence": 0.00378,
+      "people_flagged_per_true_case": 264.7
+    },
+    "UPTB": {
+      "site": "UPTB",
+      "site_name": "Third tissue bank",
+      "n_train": 506,
+      "n_test": 94,
+      "cases_test": 22,
+      "auc": 0.95,
+      "auc_ci": [
+        0.895,
+        0.99
+      ],
+      "logistic_auc": 0.963,
+      "sensitivity": 0.773,
+      "specificity": 0.958,
+      "ppv_at_population_prevalence": 0.00257,
+      "people_flagged_per_true_case": 388.9
+    }
+  },
+  "prostate_note": "NHANES 2005 to 2010 measured serum PSA on 4,697 men but contains only 17 prostate cancer cases, because men with a prostate cancer history are excluded from the PSA subsample. Below the ~96 events needed, so no external prostate validation is possible from it.",
+  "caveat": "All three sites are pancreatic tissue banks with 22 to 28 percent case prevalence. This tests transfer between institutions, not transfer to a screening population, and says nothing about the 525-per-true-case precision problem at real incidence."
+}

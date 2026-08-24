@@ -55,6 +55,14 @@ const FALLBACK_METRICS: Record<string, any> = {
     baseline_logistic_auc: 0.964, baseline_age_sex_auc: null,
     n_samples: 569, n_test: 114, n_features: 4,
   },
+  pancreatic: {
+    label: "Pancreatic Cancer Risk", auc: 0.969, auc_ci: [0.938, 0.991],
+    sensitivity: 0.731, specificity: 0.947, brier: 0.0617, calibration_slope: 0.46,
+    ppv_at_population_prevalence: 0.00191, people_flagged_per_true_case: 524.6,
+    population_prevalence: 0.000139, cohort_prevalence: 0.217,
+    baseline_logistic_auc: 0.968, baseline_age_sex_auc: 0.5,
+    n_samples: 600, n_test: 120, n_features: 6,
+  },
   liver: {
     label: "Liver Disease Risk", auc: 0.892, auc_ci: [0.857, 0.924],
     sensitivity: 0.595, specificity: 0.984, brier: 0.0543, calibration_slope: 1.166,
@@ -90,33 +98,30 @@ const LEAVE_ONE_OUT = [
 // because a withdrawn panel is evidence about the method.
 const WITHDRAWN_PANELS = [
   {
-    name: "Pancreatic",
-    auc: 0.969, ci: [0.938, 0.991], logistic: 0.968,
-    specificity: 0.947, spec_ci: [0.896, 0.989],
-    n: 600, n_test: 120, features: 6,
-    reason:
-      "Withdrawn once the evidence was gathered rather than assumed. No external cohort exists: " +
-      "NHANES 2017-2018 contains exactly one pancreatic case, and no public dataset shares this " +
-      "panel's feature set, so 0.969 has never been tested on an unseen population. Where " +
-      "generalisation could be measured elsewhere here it cost between 0.06 and 0.46 AUC. At real " +
-      "incidence of 0.0139 percent the panel flags roughly 525 people for every one who has the " +
-      "disease. Its calibration slope is 0.46, so it stays over-confident even after calibration, " +
-      "and it does not beat plain logistic regression. Prospective validation would need about " +
-      "690,000 participants. A panel that can be neither externally nor prospectively validated, " +
-      "and that buries a true case under 500 false alarms, should not be served.",
-  },
-  {
     name: "Prostate",
     auc: 0.786, ci: [0.505, 0.99], logistic: 0.769,
     specificity: 0.571, spec_ci: [0.167, 1.0],
     n: 97, n_test: 20, features: 2,
     reason:
-      "The lower bound of the AUC interval sits on chance, so the panel cannot be shown to work at " +
-      "all. Specificity is 0.571 with an interval from 0.167 to 1.0, which carries no information, " +
-      "because the test split is 20 records. The ensemble does not meaningfully beat plain logistic " +
-      "regression either. 97 records and two usable screening features cannot support a clinical claim.",
+      "The lower bound of the AUC interval sits on chance, so the panel cannot be shown to work. " +
+      "Specificity is 0.571 with an interval of 0.167 to 1.0, which carries no information on 20 " +
+      "test records. External validation was searched for and does not exist: the Stanford cohort " +
+      "has no site column, so unlike the pancreatic cohort it cannot be split by institution, and " +
+      "NHANES measured PSA on 4,697 men across 2005 to 2010 but holds only 17 prostate cancer " +
+      "cases, because men already diagnosed are excluded from the PSA subsample. 97 records and " +
+      "two usable features, with no route to an external test, cannot support a clinical claim.",
   },
 ];
+
+// The pancreatic cohort turned out to be multi-site, and the site column had
+// been discarded as an identifier. Training on two tissue banks and testing on
+// the third is a real external test between institutions.
+const PANCREATIC_MULTISITE = [
+  { site: "BPTB", trainN: 235, testN: 365, cases: 74, auc: 0.978, ci: [0.962, 0.990], logistic: 0.982 },
+  { site: "CPTB", trainN: 459, testN: 141, cases: 34, auc: 0.959, ci: [0.911, 0.991], logistic: 0.973 },
+  { site: "UPTB", trainN: 506, testN: 94, cases: 22, auc: 0.950, ci: [0.895, 0.990], logistic: 0.963 },
+];
+
 
 
 const OncovisionLogo = ({ className }: { className?: string }) => (
@@ -1394,6 +1399,54 @@ export default function OncovisionDashboard() {
                     6,059 patients across three continents. Plain logistic regression also beat the
                     ensemble in all three folds, so the honest expected performance on a genuinely new
                     population is nearer 0.69 than the 0.892 measured internally.
+                  </p>
+                </div>
+
+                <h4 className="text-base display mt-8 mb-2">Pancreatic, across three institutions</h4>
+                <p className="text-sm text-[var(--ink-2)] mb-4 leading-relaxed">
+                  This panel was withdrawn for having no external test, and that was wrong. Its own
+                  cohort is drawn from three independent tissue banks, and the site column had been
+                  discarded as an identifier. Training on two and testing on the third is a real
+                  test between institutions: different centre, different collection protocol,
+                  different referral population.
+                </p>
+                <div className="overflow-x-auto">
+                  <table className="w-full text-left text-sm">
+                    <thead>
+                      <tr className="field-label border-b border-[var(--rule)]">
+                        <th className="pb-3 pr-4">Held out site</th>
+                        <th className="pb-3 pr-4">Train n</th>
+                        <th className="pb-3 pr-4">Test n</th>
+                        <th className="pb-3 pr-4">Cases</th>
+                        <th className="pb-3 pr-4">AUC</th>
+                        <th className="pb-3 pr-4">95% CI</th>
+                        <th className="pb-3">Logistic</th>
+                      </tr>
+                    </thead>
+                    <tbody className="divide-y divide-[var(--rule)]">
+                      {PANCREATIC_MULTISITE.map(r => (
+                        <tr key={r.site} className="text-[var(--ink-2)]">
+                          <td className="py-3 pr-4 display text-[var(--stamp)]">{r.site}</td>
+                          <td className="py-3 pr-4 data">{r.trainN}</td>
+                          <td className="py-3 pr-4 data">{r.testN}</td>
+                          <td className="py-3 pr-4 data">{r.cases}</td>
+                          <td className="py-3 pr-4 data text-[var(--ink)]">{r.auc}</td>
+                          <td className="py-3 pr-4 data text-[var(--ink-3)]">{r.ci[0]} to {r.ci[1]}</td>
+                          <td className="py-3 data text-[var(--ok)]">{r.logistic}</td>
+                        </tr>
+                      ))}
+                    </tbody>
+                  </table>
+                </div>
+                <div className="mt-5 p-4 border border-[var(--stamp-line)] bg-[var(--stamp-bg)]">
+                  <p className="text-xs text-[var(--ink-2)] leading-relaxed">
+                    Mean leave-one-site-out AUC is <span className="data text-[var(--ink)]">0.962</span>,
+                    every interval excludes chance, and the drop from the internal random split is{" "}
+                    <span className="data text-[var(--ink)]">0.007</span>. The panel transfers between
+                    institutions, so it was reinstated. What that does not show is transfer to a
+                    screening population: all three sites are pancreatic tissue banks running 20 to 24
+                    percent cases, and at real incidence this panel still flags roughly 525 people for
+                    every one who has the disease. Both facts are true at once and both are reported.
                   </p>
                 </div>
 
