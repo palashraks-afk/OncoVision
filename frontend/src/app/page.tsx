@@ -48,7 +48,7 @@ const FALLBACK_METRICS: Record<string, any> = {
     n_samples: 1500, n_test: 300, n_features: 8,
   },
   breast: {
-    label: "Breast Cancer Risk", auc: 0.972, auc_ci: [0.94, 0.994],
+    label: "Breast Malignancy, from biopsy imaging", auc: 0.972, auc_ci: [0.94, 0.994],
     sensitivity: 0.786, specificity: 0.958, brier: 0.0668, calibration_slope: 1.118,
     ppv_at_population_prevalence: 0.02441, people_flagged_per_true_case: 41.0,
     population_prevalence: 0.001325, cohort_prevalence: 0.373,
@@ -63,19 +63,8 @@ const FALLBACK_METRICS: Record<string, any> = {
     baseline_logistic_auc: 0.892, baseline_age_sex_auc: 0.592,
     n_samples: 6059, n_test: 1212, n_features: 8,
   },
-  pancreatic: {
-    label: "Pancreatic Cancer Risk", auc: 0.969, auc_ci: [0.938, 0.991],
-    sensitivity: 0.731, specificity: 0.947, brier: 0.0617, calibration_slope: 0.46,
-    ppv_at_population_prevalence: 0.00191, people_flagged_per_true_case: 524.6,
-    population_prevalence: 0.000139, cohort_prevalence: 0.217,
-    baseline_logistic_auc: 0.968, baseline_age_sex_auc: 0.5,
-    n_samples: 600, n_test: 120, n_features: 6,
-  },
 };
 
-// The only genuine external test in the project: train on one country's
-// patients, test on another's. Both cohorts are real, independent, and share
-// eight liver chemistry measurements after unit harmonisation.
 // Every ordered pair across three independent real liver cohorts, plus the
 // general panel against NHANES. Nothing from a test cohort touches training.
 const EXTERNAL_VALIDATION = [
@@ -101,17 +90,34 @@ const LEAVE_ONE_OUT = [
 // because a withdrawn panel is evidence about the method.
 const WITHDRAWN_PANELS = [
   {
+    name: "Pancreatic",
+    auc: 0.969, ci: [0.938, 0.991], logistic: 0.968,
+    specificity: 0.947, spec_ci: [0.896, 0.989],
+    n: 600, n_test: 120, features: 6,
+    reason:
+      "Withdrawn once the evidence was gathered rather than assumed. No external cohort exists: " +
+      "NHANES 2017-2018 contains exactly one pancreatic case, and no public dataset shares this " +
+      "panel's feature set, so 0.969 has never been tested on an unseen population. Where " +
+      "generalisation could be measured elsewhere here it cost between 0.06 and 0.46 AUC. At real " +
+      "incidence of 0.0139 percent the panel flags roughly 525 people for every one who has the " +
+      "disease. Its calibration slope is 0.46, so it stays over-confident even after calibration, " +
+      "and it does not beat plain logistic regression. Prospective validation would need about " +
+      "690,000 participants. A panel that can be neither externally nor prospectively validated, " +
+      "and that buries a true case under 500 false alarms, should not be served.",
+  },
+  {
     name: "Prostate",
     auc: 0.786, ci: [0.505, 0.99], logistic: 0.769,
     specificity: 0.571, spec_ci: [0.167, 1.0],
     n: 97, n_test: 20, features: 2,
     reason:
-      "The lower bound of the AUC interval sits on chance, so the panel cannot be shown to work at all. " +
-      "Specificity is 0.571 with an interval from 0.167 to 1.0, which carries no information, because the " +
-      "test split is 20 records. The ensemble does not meaningfully beat plain logistic regression either. " +
-      "97 records and two usable screening features cannot support a clinical claim.",
+      "The lower bound of the AUC interval sits on chance, so the panel cannot be shown to work at " +
+      "all. Specificity is 0.571 with an interval from 0.167 to 1.0, which carries no information, " +
+      "because the test split is 20 records. The ensemble does not meaningfully beat plain logistic " +
+      "regression either. 97 records and two usable screening features cannot support a clinical claim.",
   },
 ];
+
 
 const OncovisionLogo = ({ className }: { className?: string }) => (
   <svg viewBox="0 0 100 100" className={className} fill="none" xmlns="http://www.w3.org/2000/svg">

@@ -94,7 +94,7 @@
     }
   },
   "breast": {
-    "label": "Breast Cancer Risk",
+    "label": "Breast Malignancy, from biopsy imaging",
     "shipped": true,
     "features": [
       "radius_mean",
@@ -102,7 +102,7 @@
       "perimeter_mean",
       "area_mean"
     ],
-    "cohort_design": "Case-control and post-biopsy. Every record is an FNA already taken because a lesion was found, so this panel interprets a biopsy that has happened, it does not screen for one.",
+    "cohort_design": "Case-control and post-biopsy. This panel reads an aspirate that has already been taken, so it interprets a diagnostic test rather than screening for one. Rebuilding it on blood markers was tried and failed: see experiments/blood_breast_panel.py, external AUC 0.495 with a 95% CI of 0.377 to 0.607, which contains chance.",
     "auc": 0.958,
     "auc_std": 0.021,
     "accuracy": 0.895,
@@ -242,95 +242,9 @@
   },
   "pancreatic": {
     "label": "Pancreatic Cancer Risk",
-    "shipped": true,
-    "features": [
-      "age",
-      "gender",
-      "creatinine",
-      "plasma_ca19_9",
-      "bilirubin",
-      "glucose"
-    ],
-    "cohort_design": "Case-control. Cases are confirmed adenocarcinoma, controls include benign hepatobiliary disease.",
-    "auc": 0.974,
-    "auc_std": 0.014,
-    "accuracy": 0.908,
-    "sensitivity": 0.923,
-    "specificity": 0.904,
-    "n_samples": 600,
-    "n_positive": 130,
-    "n_features": 6,
-    "cv_folds": 5,
-    "model_selection": {
-      "ensemble": 0.971,
-      "logistic": 0.974
-    },
-    "chosen_model": "logistic",
-    "held_out": {
-      "n_test": 120,
-      "auc": 0.969,
-      "auc_ci": [
-        0.938,
-        0.991
-      ],
-      "sensitivity": 0.731,
-      "sensitivity_ci": [
-        0.55,
-        0.9
-      ],
-      "specificity": 0.947,
-      "specificity_ci": [
-        0.895,
-        0.989
-      ],
-      "brier": 0.0617,
-      "calibration_slope": 0.46,
-      "ppv_at_population_prevalence": 0.00191,
-      "people_flagged_per_true_case": 524.6,
-      "population_prevalence": 0.000139,
-      "prevalence_source": "Pancreas, per 100,000 men and women per year",
-      "cohort_prevalence": 0.217,
-      "baseline_logistic_auc": 0.968,
-      "baseline_age_sex_auc": 0.5,
-      "subgroups": {
-        "sex: female": {
-          "n": 54,
-          "positives": 12,
-          "auc": 0.959,
-          "auc_ci": [
-            0.902,
-            0.997
-          ]
-        },
-        "sex: male": {
-          "n": 66,
-          "positives": 14,
-          "auc": 0.978,
-          "auc_ci": [
-            0.939,
-            0.999
-          ]
-        },
-        "age under 57": {
-          "n": 58,
-          "positives": 12,
-          "auc": 0.957,
-          "auc_ci": [
-            0.899,
-            0.998
-          ]
-        },
-        "age 57 and over": {
-          "n": 62,
-          "positives": 14,
-          "auc": 0.983,
-          "auc_ci": [
-            0.95,
-            1.0
-          ]
-        }
-      }
-    }
+    "shipped": false,
+    "withdrawn_reason": "Withdrawn on the same standard as prostate, once the evidence was gathered rather than assumed. No external cohort exists: NHANES 2017-2018 contains exactly one pancreatic case, and no public dataset shares this panel's feature set, so its 0.969 internal AUC has never been tested on an unseen population. Where generalisation could be measured elsewhere in this project it cost between 0.06 and 0.46 AUC. At real SEER incidence of 0.0139 percent the panel flags roughly 525 people for every one who has the disease. Its calibration slope is 0.46, so it stays over-confident even after isotonic calibration, and it does not beat plain logistic regression (0.969 against 0.968). PROTOCOL.md puts prospective validation at roughly 690,000 participants, which is not achievable at any single site. A panel that cannot be externally validated, cannot be prospectively validated, and would bury a true case under 500 false alarms should not be served.",
+    "cohort_design": "Case-control. Cases are confirmed adenocarcinoma, controls include benign hepatobiliary disease."
   },
   "prostate": {
     "label": "Prostate Cancer Risk",

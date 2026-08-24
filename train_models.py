@@ -8,7 +8,21 @@ Design rule: a model may only be trained on features the application can
 actually collect from a patient. Training on columns the app never supplies
 would produce an AUC that does not describe how the model performs in use, so
 every dataset column is either mapped onto the app's canonical input schema or
-dropped. Each bundle therefore carries its own feature list, the training
+dropped.
+
+That rule has two classes of panel under it, and pretending otherwise was a real
+inconsistency in this project:
+
+  SCREENING panels read values from routine bloodwork that anyone can obtain.
+  General and liver are these.
+
+  INTERPRETATION panels read a diagnostic test that has already been performed.
+  Breast is this one, because nuclear morphology comes from a fine needle
+  aspirate. Rebuilding it on blood markers was attempted and failed at chance on
+  an independent cohort, which is recorded in experiments/blood_breast_panel.py.
+
+The distinction is now stated on the panel rather than glossed, because a
+screening claim and an interpretation claim are not the same claim. Each bundle therefore carries its own feature list, the training
 median for every feature (used to impute values the patient did not provide)
 and its measured cross-validated performance.
 
@@ -37,6 +51,20 @@ RANDOM_STATE = 42
 # Panels that are trained and measured but deliberately not shipped.
 # evaluate.py is the evidence for each decision.
 WITHDRAWN = {
+    "pancreatic": (
+        "Withdrawn on the same standard as prostate, once the evidence was gathered rather "
+        "than assumed. No external cohort exists: NHANES 2017-2018 contains exactly one "
+        "pancreatic case, and no public dataset shares this panel's feature set, so its 0.969 "
+        "internal AUC has never been tested on an unseen population. Where generalisation "
+        "could be measured elsewhere in this project it cost between 0.06 and 0.46 AUC. At "
+        "real SEER incidence of 0.0139 percent the panel flags roughly 525 people for every "
+        "one who has the disease. Its calibration slope is 0.46, so it stays over-confident "
+        "even after isotonic calibration, and it does not beat plain logistic regression "
+        "(0.969 against 0.968). PROTOCOL.md puts prospective validation at roughly 690,000 "
+        "participants, which is not achievable at any single site. A panel that cannot be "
+        "externally validated, cannot be prospectively validated, and would bury a true case "
+        "under 500 false alarms should not be served."
+    ),
     "prostate": (
         "Held-out test AUC 0.786, 95% CI 0.505 to 0.99. The lower bound sits on chance, "
         "so the panel cannot be shown to work. Specificity is 0.571 with a CI of 0.167 to "
@@ -50,9 +78,11 @@ WITHDRAWN = {
 # Cohort design, stated on every panel because it bounds what the numbers mean.
 COHORT_DESIGN = {
     "general": "Risk-factor cohort, not a consecutive screening series.",
-    "breast": "Case-control and post-biopsy. Every record is an FNA already taken because "
-              "a lesion was found, so this panel interprets a biopsy that has happened, it "
-              "does not screen for one.",
+    "breast": "Case-control and post-biopsy. This panel reads an aspirate that has already "
+              "been taken, so it interprets a diagnostic test rather than screening for one. "
+              "Rebuilding it on blood markers was tried and failed: see "
+              "experiments/blood_breast_panel.py, external AUC 0.495 with a 95% CI of 0.377 "
+              "to 0.607, which contains chance.",
     "liver": "6,059 real patients pooled across India, Germany and the United States. The only "
              "panel with genuine external validation: leave-one-cohort-out AUC is 0.58 to 0.75 "
              "depending on which country is held out. Detects liver disease, not liver cancer.",
@@ -119,7 +149,7 @@ DATASETS = [
     {
         "name": "breast",
         "file": "data.csv",
-        "label": "Breast Cancer Risk",
+        "label": "Breast Malignancy, from biopsy imaging",
         # Only the four nuclear morphology means the app collects. The other 26
         # columns in the Wisconsin set are deliberately left out.
         "features": {

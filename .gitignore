@@ -35,3 +35,5 @@ Thumbs.db
 dist/
 build/
 *.log
+study_data_template.csv
+prospective_results.json

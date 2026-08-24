@@ -1,0 +1,38 @@
+{
+  "question": "Can the breast panel be rebuilt on blood markers instead of biopsy morphology?",
+  "answer": "No, not on the evidence available.",
+  "features": [
+    "age",
+    "bmi",
+    "glucose",
+    "insulin",
+    "homa"
+  ],
+  "train_cohort": {
+    "name": "Breast Cancer Coimbra, UCI 451",
+    "n": 116,
+    "cases": 64,
+    "prevalence": 0.552
+  },
+  "test_cohort": {
+    "name": "NHANES 2017-2018 women 20+, fasting subsample",
+    "n": 1220,
+    "cases": 33,
+    "prevalence": 0.027
+  },
+  "internal_auc": 0.804,
+  "external_auc": 0.495,
+  "external_auc_ci": [
+    0.377,
+    0.607
+  ],
+  "external_logistic_auc": 0.518,
+  "external_logistic_ci": [
+    0.409,
+    0.631
+  ],
+  "auc_drop": 0.309,
+  "interval_contains_chance": true,
+  "caveat": "NHANES contributes only 33 cases in the fasting subsample, below the roughly 96 events needed for a tight estimate, so this shows the panel is not demonstrated to work rather than proving it cannot.",
+  "decision": "Blood-based breast panel not built. The schema rule is amended instead to acknowledge two kinds of panel: those that screen from routine blood, and one that interprets a diagnostic test already performed."
+}
