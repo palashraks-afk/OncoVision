@@ -161,23 +161,44 @@ def load_models():
             models[name] = joblib.load(os.path.join(MODEL_DIR, filename))
 
 
-def voting_members(bundle):
-    """
-    The fitted XGBoost and Extra Trees estimators inside a bundle.
-
-    Shipped models are wrapped in CalibratedClassifierCV, which holds one fitted
-    VotingClassifier per calibration fold. Any of them exposes the same members.
-    """
+def inner_estimator(bundle):
+    """Unwrap CalibratedClassifierCV to the model it actually calibrates."""
     model = bundle["model"]
-    inner = model
     cal = getattr(model, "calibrated_classifiers_", None)
     if cal:
-        inner = getattr(cal[0], "estimator", model)
-    return list(getattr(inner, "estimators_", []))
+        return getattr(cal[0], "estimator", model)
+    return model
+
+
+def voting_members(bundle):
+    """
+    The fitted members of a soft-voting ensemble, or an empty list.
+
+    Not every panel ships an ensemble. Model selection in train_models.py picks
+    logistic regression where it beats the trees on cross-validated AUC, which
+    is currently the case for liver and pancreatic, so this returns nothing for
+    those and the linear paths below handle them instead.
+    """
+    return list(getattr(inner_estimator(bundle), "estimators_", []))
+
+
+def linear_model(bundle):
+    """The fitted LogisticRegression inside a scaling pipeline, or None."""
+    inner = inner_estimator(bundle)
+    steps = getattr(inner, "named_steps", None)
+    if steps:
+        for step in steps.values():
+            if hasattr(step, "coef_"):
+                return inner, step
+    return (inner, inner) if hasattr(inner, "coef_") else (None, None)
 
 
 def ensemble_importances(bundle) -> np.ndarray:
-    """Mean global feature importance across the two members of the ensemble."""
+    """
+    Global feature importance, however this panel's model expresses it.
+    Tree ensembles report impurity importance; logistic regression reports the
+    magnitude of its standardised coefficients.
+    """
     parts = []
     for est in voting_members(bundle):
         imp = getattr(est, "feature_importances_", None)
@@ -185,6 +206,15 @@ def ensemble_importances(bundle) -> np.ndarray:
             total = float(np.sum(imp))
             if total > 0:
                 parts.append(np.asarray(imp, dtype=float) / total)
+
+    if not parts:
+        _, lin = linear_model(bundle)
+        if lin is not None:
+            coef = np.abs(np.asarray(lin.coef_, dtype=float).reshape(-1))
+            total = float(coef.sum())
+            if total > 0:
+                parts.append(coef / total)
+
     if not parts:
         n = len(bundle["feature_names"])
         return np.full(n, 1.0 / n)
@@ -224,11 +254,47 @@ def shap_attribution(name: str, bundle, frame: pd.DataFrame, supplied: set) -> l
     Only features the patient actually supplied are returned. A contribution
     from an imputed median describes the training set, not the person.
     """
+    features = bundle["feature_names"]
+
+    # Logistic panels get an exact analytic decomposition instead of SHAP.
+    # For a linear model the log-odds contribution of each feature is simply
+    # coefficient times standardised value, which is what SHAP would compute
+    # anyway, so this is the same answer without the extra dependency.
+    pipe, lin = linear_model(bundle)
+    if lin is not None:
+        try:
+            scaler = None
+            steps = getattr(pipe, "named_steps", {}) or {}
+            for step in steps.values():
+                if hasattr(step, "mean_") and hasattr(step, "scale_"):
+                    scaler = step
+                    break
+            raw = frame.to_numpy(dtype=float).reshape(-1)
+            z = (raw - scaler.mean_) / scaler.scale_ if scaler is not None else raw
+            contrib = np.asarray(lin.coef_, dtype=float).reshape(-1) * z
+            total = float(np.abs(contrib).sum())
+            if total <= 0:
+                return []
+            share = contrib / total
+            out = [
+                {
+                    "name": pretty(f),
+                    "feature": f,
+                    "share": round(float(abs(share[i])) * 100, 1),
+                    "direction": "raises" if share[i] > 0 else "lowers",
+                    "signed": round(float(share[i]) * 100, 1),
+                }
+                for i, f in enumerate(features) if f in supplied
+            ]
+            out.sort(key=lambda d: d["share"], reverse=True)
+            return out[:8]
+        except Exception:
+            return []
+
     explainers = get_explainers(name, bundle)
     if not explainers:
         return []
 
-    features = bundle["feature_names"]
     vectors = []
     for ex in explainers:
         try:

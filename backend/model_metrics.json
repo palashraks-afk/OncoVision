@@ -22,6 +22,11 @@
     "n_positive": 557,
     "n_features": 8,
     "cv_folds": 5,
+    "model_selection": {
+      "ensemble": 0.952,
+      "logistic": 0.917
+    },
+    "chosen_model": "ensemble",
     "held_out": {
       "n_test": 300,
       "auc": 0.966,
@@ -107,6 +112,11 @@
     "n_positive": 212,
     "n_features": 4,
     "cv_folds": 5,
+    "model_selection": {
+      "ensemble": 0.958,
+      "logistic": 0.955
+    },
+    "chosen_model": "ensemble",
     "held_out": {
       "n_test": 114,
       "auc": 0.972,
@@ -137,93 +147,94 @@
     }
   },
   "liver": {
-    "label": "Liver Cancer Risk",
+    "label": "Liver Disease Risk",
     "shipped": true,
     "features": [
       "age",
-      "bmi",
-      "alpha_fetoprotein_level",
       "gender",
-      "smoking",
-      "alcohol_intake",
-      "physical_activity",
-      "hepatitis_b",
-      "hepatitis_c",
-      "cirrhosis_history",
-      "family_history_cancer",
-      "diabetes"
+      "bilirubin",
+      "alkaline_phosphatase",
+      "alt",
+      "ast",
+      "protein_total",
+      "albumin"
     ],
-    "cohort_design": "Synthetic. Records are generated rather than observed, so accuracy here describes the generator, not a patient population.",
-    "auc": 0.973,
-    "auc_std": 0.003,
-    "accuracy": 0.914,
-    "sensitivity": 0.853,
-    "specificity": 0.931,
-    "n_samples": 5000,
-    "n_positive": 1089,
-    "n_features": 12,
+    "cohort_design": "583 real patients from Andhra Pradesh, India (UCI 225). Externally validated against 589 independent patients from Germany (UCI 571), which is the only panel here with a genuine external test. Detects liver disease, not liver cancer.",
+    "auc": 0.749,
+    "auc_std": 0.048,
+    "accuracy": 0.726,
+    "sensitivity": 0.675,
+    "specificity": 0.853,
+    "n_samples": 583,
+    "n_positive": 416,
+    "n_features": 8,
     "cv_folds": 5,
+    "model_selection": {
+      "ensemble": 0.748,
+      "logistic": 0.749
+    },
+    "chosen_model": "logistic",
     "held_out": {
-      "n_test": 1000,
-      "auc": 0.97,
+      "n_test": 117,
+      "auc": 0.785,
       "auc_ci": [
-        0.958,
-        0.979
+        0.697,
+        0.865
       ],
-      "sensitivity": 0.798,
+      "sensitivity": 0.928,
       "sensitivity_ci": [
-        0.745,
-        0.848
+        0.865,
+        0.976
       ],
-      "specificity": 0.986,
+      "specificity": 0.206,
       "specificity_ci": [
-        0.977,
-        0.994
+        0.077,
+        0.355
       ],
-      "brier": 0.044,
-      "calibration_slope": 0.861,
-      "ppv_at_population_prevalence": 0.00536,
-      "people_flagged_per_true_case": 186.5,
-      "population_prevalence": 9.5e-05,
-      "prevalence_source": "Liver and intrahepatic bile duct, per 100,000 per year",
-      "cohort_prevalence": 0.218,
-      "baseline_logistic_auc": 0.942,
-      "baseline_age_sex_auc": 0.634,
+      "brier": 0.1662,
+      "calibration_slope": 1.021,
+      "ppv_at_population_prevalence": 0.03603,
+      "people_flagged_per_true_case": 27.8,
+      "population_prevalence": 0.031,
+      "prevalence_source": "Cirrhosis in US adults, NHANES, per 100,000",
+      "cohort_prevalence": 0.714,
+      "baseline_logistic_auc": 0.831,
+      "baseline_age_sex_auc": 0.555,
       "subgroups": {
         "sex: female": {
-          "n": 515,
-          "positives": 103,
-          "auc": 0.971,
+          "n": 27,
+          "positives": 19,
+          "auc": 0.757,
           "auc_ci": [
-            0.955,
-            0.985
+            0.524,
+            0.941
           ]
         },
         "sex: male": {
-          "n": 485,
-          "positives": 115,
-          "auc": 0.969,
-          "auc_ci": [
-            0.954,
-            0.982
-          ]
-        },
-        "age under 58": {
-          "n": 486,
+          "n": 90,
           "positives": 64,
-          "auc": 0.973,
+          "auc": 0.796,
           "auc_ci": [
-            0.959,
-            0.985
+            0.699,
+            0.884
           ]
         },
-        "age 58 and over": {
-          "n": 514,
-          "positives": 154,
-          "auc": 0.964,
+        "age under 46": {
+          "n": 57,
+          "positives": 38,
+          "auc": 0.774,
           "auc_ci": [
-            0.947,
-            0.979
+            0.637,
+            0.893
+          ]
+        },
+        "age 46 and over": {
+          "n": 60,
+          "positives": 45,
+          "auc": 0.787,
+          "auc_ci": [
+            0.669,
+            0.893
           ]
         }
       }
@@ -241,31 +252,36 @@
       "glucose"
     ],
     "cohort_design": "Case-control. Cases are confirmed adenocarcinoma, controls include benign hepatobiliary disease.",
-    "auc": 0.971,
-    "auc_std": 0.012,
-    "accuracy": 0.9,
-    "sensitivity": 0.846,
-    "specificity": 0.915,
+    "auc": 0.974,
+    "auc_std": 0.014,
+    "accuracy": 0.908,
+    "sensitivity": 0.923,
+    "specificity": 0.904,
     "n_samples": 600,
     "n_positive": 130,
     "n_features": 6,
     "cv_folds": 5,
+    "model_selection": {
+      "ensemble": 0.971,
+      "logistic": 0.974
+    },
+    "chosen_model": "logistic",
     "held_out": {
       "n_test": 120,
       "auc": 0.969,
       "auc_ci": [
-        0.939,
-        0.991
+        0.94,
+        0.992
       ],
       "sensitivity": 0.731,
       "sensitivity_ci": [
-        0.55,
-        0.885
+        0.552,
+        0.889
       ],
       "specificity": 0.947,
       "specificity_ci": [
-        0.896,
-        0.989
+        0.898,
+        0.99
       ],
       "brier": 0.0617,
       "calibration_slope": 0.46,
@@ -282,8 +298,8 @@
           "positives": 12,
           "auc": 0.959,
           "auc_ci": [
-            0.901,
-            0.998
+            0.895,
+            0.997
           ]
         },
         "sex: male": {
@@ -291,7 +307,7 @@
           "positives": 14,
           "auc": 0.978,
           "auc_ci": [
-            0.942,
+            0.943,
             0.999
           ]
         },
@@ -309,7 +325,7 @@
           "positives": 14,
           "auc": 0.983,
           "auc_ci": [
-            0.953,
+            0.949,
             1.0
           ]
         }

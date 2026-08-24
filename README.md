@@ -23,7 +23,7 @@ Two inputs, read together:
 2. **Information about you.** 11 items no lab report contains: sex, smoking, alcohol, exercise,
    inherited risk, prior diagnosis, family history, hepatitis B and C, cirrhosis, diabetes.
 
-Four calibrated ensembles score the combination, and the interface reports what drove each score,
+Four calibrated models score the combination, and the interface reports what drove each score,
 how accurate that model is, and what the score is worth at real population prevalence.
 
 ---
@@ -34,39 +34,67 @@ All measured on a 20% test split cut **before** any model was fitted, never used
 model selection, or calibration. Intervals are bootstrap percentile intervals over 2,000 resamples.
 Reproduce with `python evaluate.py`.
 
-| Panel | Test AUC | 95% CI | Sens. | Spec. | Logistic baseline | Test n |
-|---|---|---|---|---|---|---|
-| General | 0.966 | 0.937 to 0.989 | 0.910 | 0.984 | 0.917 | 300 |
-| Breast | 0.972 | 0.940 to 0.994 | 0.786 | 0.958 | 0.964 | 114 |
-| Liver | 0.970 | 0.958 to 0.979 | 0.798 | 0.986 | 0.942 | 1000 |
-| Pancreatic | 0.969 | 0.939 to 0.991 | 0.731 | 0.947 | 0.968 | 120 |
+| Panel | Test AUC | 95% CI | Sens. | Spec. | Logistic baseline | Shipped model | Test n |
+|---|---|---|---|---|---|---|---|
+| General | 0.966 | 0.937 to 0.989 | 0.910 | 0.984 | 0.917 | ensemble | 300 |
+| Breast | 0.972 | 0.940 to 0.994 | 0.786 | 0.958 | 0.964 | ensemble | 114 |
+| Pancreatic | 0.969 | 0.940 to 0.992 | 0.731 | 0.947 | 0.968 | **logistic** | 120 |
+| Liver | 0.785 | 0.697 to 0.865 | 0.928 | 0.206 | 0.831 | **logistic** | 117 |
+
+The pipeline picks whichever model wins on cross-validated AUC inside the training data. Two panels
+ship plain logistic regression because it beat the ensemble. Assuming the fancy model wins is
+exactly the kind of thing that goes unchecked.
+
+### External validation
+
+Every number above is a held-out slice of the same cohort the model trained on. That slice shares
+the hospital, the assay machines and the population, so it measures memorisation more than
+generalisation. The liver panel is the one that can be tested properly:
+
+- **India**: ILPD, 583 real patients, Andhra Pradesh (UCI 225)
+- **Germany**: HCV data, 589 real patients (UCI 571)
+
+Independent cohorts, eight shared liver chemistry measurements, different continent, hospital,
+protocol and prevalence. The German cohort reports in SI units, so albumin, total protein and
+bilirubin had to be converted before the two were comparable at all.
+
+| Direction | Internal AUC | External AUC | 95% CI | Drop |
+|---|---|---|---|---|
+| India → Germany | 0.785 | **0.623** | 0.539 to 0.710 | 0.162 |
+| Germany → India | 0.995 | **0.698** | 0.654 to 0.741 | **0.297** |
+
+**This is the most useful result in the project.** A model trained on German patients scores 0.995
+on its own held-out data and 0.698 on Indian patients. Same model, same task, 0.297 lost purely
+because the patients came from somewhere else. Read every internal number above with that in mind,
+including the ones over 0.96 that have no external test available.
+
+Logistic regression scored 0.736 going India to Germany against the ensemble's 0.623. The simpler
+model transferred better, which is the usual outcome when a complex model has learned a cohort's
+quirks.
 
 ### The number that actually matters
 
-Every cohort here is case-control and enriched for disease. Projecting the measured sensitivity
-and specificity onto real SEER incidence gives the precision a screening user would experience.
+Cohorts here are enriched for disease. Projecting measured sensitivity and specificity onto real
+population prevalence gives the precision a user would experience.
 
-| Panel | Cohort positive | Real incidence | PPV there | People flagged per true case |
+| Panel | Cohort positive | Population prevalence | PPV there | People flagged per true case |
 |---|---|---|---|---|
 | General | 37% | 0.4507% | **20.6%** | 4.9 |
+| Liver | 71% | 3.1% | **3.6%** | 27.8 |
 | Breast | 37% | 0.1325% | **2.44%** | 41 |
-| Liver | 22% | 0.0095% | **0.54%** | 187 |
 | Pancreatic | 22% | 0.0139% | **0.19%** | 525 |
 
 Used as a population screen today, the pancreatic panel would flag about 525 people for every one
-who has the disease. No AUC figure changes that. What these models can reasonably do is rank and
-explain values for someone who already has a reason to be asking.
+who has the disease. No AUC figure changes that.
 
 ### A panel that was withdrawn
 
-**Prostate is trained, measured, and not served.** Test AUC 0.786 with a 95% CI of 0.505 to 0.99,
-so the lower bound sits on chance. Specificity 0.571 with a CI of 0.167 to 1.0, an interval that
+**Prostate is trained, measured, and not served.** Test AUC 0.786 with a 95% CI of 0.505 to 0.99, so
+the lower bound sits on chance. Specificity 0.571 with a CI of 0.167 to 1.0, an interval that
 carries no information because the test split is 20 records. It does not meaningfully beat logistic
 regression (0.769). 97 records and two usable features cannot support a clinical claim. It is
-reported rather than deleted, because a panel that failed its evaluation is evidence about
-the method.
-
----
+reported rather than deleted, because a panel that failed its evaluation is evidence about the
+method.
 
 ## Known limitations
 
@@ -74,10 +102,12 @@ the method.
 - **The breast panel contradicts the project's own schema rule.** Its inputs are nuclear morphology
   from a fine needle aspirate, which requires a biopsy that already happened. It interprets a
   biopsy, it does not screen for one.
-- **The liver cohort is synthetic.** Largest dataset, joint-highest AUC, generated rather than
-  observed. That AUC describes a generator.
-- **No external validation.** Every number comes from a held-out split of the same cohort the model
-  trained on. This is the single largest gap.
+- **The liver panel detects liver disease, not liver cancer.** It replaced a synthetic cohort with
+  583 real patients. Its specificity is 0.206, meaning it flags most people, so it is useful for
+  ruling out rather than ruling in.
+- **Only the liver panel has external validation.** General, breast and pancreatic have no
+  independent cohort available, so their numbers are internal only and should be discounted by
+  something like the 0.16 to 0.30 drop measured on liver.
 - **No prospective test and no IRB.** No real patient report has been followed to an outcome.
 - **The ensemble is within noise of logistic regression** on breast and pancreatic.
 - **No race or ethnicity in any cohort**, so accuracy across those groups is unmeasured rather than
@@ -91,7 +121,7 @@ the method.
 |---|---|
 | Frontend | Next.js 16 App Router, React 19, TypeScript, Tailwind v4, Recharts, Vercel |
 | Backend | FastAPI, Uvicorn, Pydantic, pdfplumber, pandas, Render |
-| Models | XGBoost + Extra Trees soft-voting ensembles, isotonic calibrated, SHAP for attribution |
+| Models | XGBoost + Extra Trees ensembles and logistic regression, whichever wins on CV AUC. Isotonic calibrated. SHAP for attribution |
 
 ### Endpoints
 
@@ -127,8 +157,14 @@ are excluded, since a contribution from an imputed median describes the training
 # install
 pip install -r requirements.txt
 
-# evaluate first, it produces evaluation.json which training embeds
+# download the real external cohorts first
+python fetch_external.py
+
+# evaluate, this produces evaluation.json which training embeds
 python evaluate.py
+
+# cross-country external validation of the liver panel
+python external_validation.py
 
 # train, calibrate, and write model bundles
 python train_models.py
@@ -160,6 +196,8 @@ oncovision/
 │   ├── fields.ts           input schema and glossary
 │   └── cases.ts            generated sample case pool
 ├── evaluate.py             held-out evaluation, CIs, calibration, PPV, baselines
+├── fetch_external.py       downloads the real cohorts, harmonises units
+├── external_validation.py  trains on one country, tests on another
 ├── train_models.py         training and calibration pipeline
 ├── make_cases.py           sample case generator
 ├── EVALUATION.md           full evaluation report

@@ -41,9 +41,7 @@ const API_BASE = resolveApiBase();
 const FALLBACK_METRICS: Record<string, any> = {
   general: {
     label: "General Cancer Risk", auc: 0.966, auc_ci: [0.937, 0.989],
-    sensitivity: 0.91, sensitivity_ci: [0.856, 0.961],
-    specificity: 0.984, specificity_ci: [0.964, 1.0],
-    brier: 0.0435, calibration_slope: 1.176,
+    sensitivity: 0.91, specificity: 0.984, brier: 0.0435, calibration_slope: 1.176,
     ppv_at_population_prevalence: 0.20605, people_flagged_per_true_case: 4.9,
     population_prevalence: 0.004507, cohort_prevalence: 0.371,
     baseline_logistic_auc: 0.917, baseline_age_sex_auc: 0.66,
@@ -51,35 +49,45 @@ const FALLBACK_METRICS: Record<string, any> = {
   },
   breast: {
     label: "Breast Cancer Risk", auc: 0.972, auc_ci: [0.94, 0.994],
-    sensitivity: 0.786, sensitivity_ci: [0.66, 0.902],
-    specificity: 0.958, specificity_ci: [0.904, 1.0],
-    brier: 0.0668, calibration_slope: 1.118,
+    sensitivity: 0.786, specificity: 0.958, brier: 0.0668, calibration_slope: 1.118,
     ppv_at_population_prevalence: 0.02441, people_flagged_per_true_case: 41.0,
     population_prevalence: 0.001325, cohort_prevalence: 0.373,
     baseline_logistic_auc: 0.964, baseline_age_sex_auc: null,
     n_samples: 569, n_test: 114, n_features: 4,
   },
   liver: {
-    label: "Liver Cancer Risk", auc: 0.97, auc_ci: [0.958, 0.979],
-    sensitivity: 0.798, sensitivity_ci: [0.745, 0.848],
-    specificity: 0.986, specificity_ci: [0.977, 0.994],
-    brier: 0.044, calibration_slope: 0.861,
-    ppv_at_population_prevalence: 0.00536, people_flagged_per_true_case: 186.5,
-    population_prevalence: 0.000095, cohort_prevalence: 0.218,
-    baseline_logistic_auc: 0.942, baseline_age_sex_auc: 0.634,
-    n_samples: 5000, n_test: 1000, n_features: 12,
+    label: "Liver Disease Risk", auc: 0.785, auc_ci: [0.697, 0.865],
+    sensitivity: 0.928, specificity: 0.206, brier: 0.1662, calibration_slope: 1.021,
+    ppv_at_population_prevalence: 0.03603, people_flagged_per_true_case: 27.8,
+    population_prevalence: 0.031, cohort_prevalence: 0.714,
+    baseline_logistic_auc: 0.831, baseline_age_sex_auc: 0.555,
+    n_samples: 583, n_test: 117, n_features: 8,
   },
   pancreatic: {
-    label: "Pancreatic Cancer Risk", auc: 0.969, auc_ci: [0.939, 0.991],
-    sensitivity: 0.731, sensitivity_ci: [0.55, 0.885],
-    specificity: 0.947, specificity_ci: [0.896, 0.989],
-    brier: 0.0617, calibration_slope: 0.46,
+    label: "Pancreatic Cancer Risk", auc: 0.969, auc_ci: [0.94, 0.992],
+    sensitivity: 0.731, specificity: 0.947, brier: 0.0617, calibration_slope: 0.46,
     ppv_at_population_prevalence: 0.00191, people_flagged_per_true_case: 524.6,
     population_prevalence: 0.000139, cohort_prevalence: 0.217,
     baseline_logistic_auc: 0.968, baseline_age_sex_auc: 0.5,
     n_samples: 600, n_test: 120, n_features: 6,
   },
 };
+
+// The only genuine external test in the project: train on one country's
+// patients, test on another's. Both cohorts are real, independent, and share
+// eight liver chemistry measurements after unit harmonisation.
+const EXTERNAL_VALIDATION = [
+  {
+    direction: "Trained on India, tested on Germany",
+    trainN: 583, testN: 589, internal: 0.785, external: 0.623,
+    ci: [0.539, 0.71], drop: 0.162, logisticExternal: 0.736,
+  },
+  {
+    direction: "Trained on Germany, tested on India",
+    trainN: 589, testN: 583, internal: 0.995, external: 0.698,
+    ci: [0.654, 0.741], drop: 0.297, logisticExternal: 0.493,
+  },
+];
 
 // Trained and measured, deliberately not served. Reported rather than deleted,
 // because a withdrawn panel is evidence about the method.
@@ -269,7 +277,7 @@ export default function OncovisionDashboard() {
             <button
               key={id}
               onClick={() => setCurrentPage(id)}
-              className={`w-full flex items-center gap-3 px-4 py-3 rounded-lg text-sm font-bold transition-all duration-300 ${currentPage === id ? "bg-cyan-500/10 text-cyan-400 shadow-[inset_0_0_0_1px_rgba(6,182,212,0.3)]" : "text-slate-400 hover:bg-slate-800/50 hover:text-white"}`}
+              className={`w-full flex items-center gap-3 px-4 py-3 rounded-lg text-sm font-bold transition-all duration-300 ${currentPage === id ? "bg-cyan-500/10 text-cyan-400 " : "text-slate-400 hover:bg-slate-800/50 hover:text-white"}`}
             >
               <Icon className="w-4 h-4 flex-shrink-0" /> {label}
             </button>
@@ -278,7 +286,7 @@ export default function OncovisionDashboard() {
 
         <button
           onClick={() => setCurrentPage("developer")}
-          className="p-4 m-4 bg-slate-950 border border-slate-800 rounded-xl hover:border-cyan-500/30 transition-colors duration-300 text-left"
+          className="p-4 m-4 bg-slate-950 border border-slate-800 rounded-lg hover:border-cyan-500/30 transition-colors duration-300 text-left"
         >
           <p className="text-[10px] text-slate-500 font-bold uppercase tracking-widest mb-1">Lead Developer</p>
           <p className="text-white font-black text-sm">Palash Rakshit</p>
@@ -317,7 +325,7 @@ export default function OncovisionDashboard() {
 
               {/* INPUT */}
               <div className="xl:col-span-5 flex flex-col gap-4">
-                <div className="bg-slate-900 border border-slate-800 rounded-xl p-6">
+                <div className="bg-slate-900 border border-slate-800 rounded-lg p-6">
                   <div className="flex justify-between items-start gap-4 mb-4">
                     <div>
                       <h3 className="text-base font-bold text-slate-100">Patient Data</h3>
@@ -476,7 +484,7 @@ export default function OncovisionDashboard() {
                 <button
                   onClick={calculateRisk}
                   disabled={loading}
-                  className="w-full py-5 bg-cyan-600 hover:bg-cyan-500 disabled:opacity-60 text-white font-black text-lg rounded-xl transition-all duration-300 transform hover:-translate-y-1 flex justify-center items-center gap-3 shadow-[0_0_15px_rgba(8,145,178,0.4)]"
+                  className="w-full py-5 bg-cyan-600 hover:bg-cyan-500 disabled:opacity-60 text-white font-black text-lg rounded-lg transition-all duration-300 flex justify-center items-center gap-3 "
                 >
                   {loading ? <Activity className="animate-spin w-6 h-6" /> : <Scan className="w-6 h-6" />}
                   {loading ? "ANALYZING" : "RUN ANALYSIS"}
@@ -485,7 +493,7 @@ export default function OncovisionDashboard() {
 
               {/* RESULTS */}
               <div className="xl:col-span-7">
-                <div className="bg-slate-900 border border-slate-800 rounded-xl p-6 min-h-[600px] h-full overflow-y-auto custom-scrollbar">
+                <div className="bg-slate-900 border border-slate-800 rounded-lg p-6 min-h-[600px] h-full overflow-y-auto custom-scrollbar">
                   <h3 className="text-lg font-bold text-slate-200 mb-6">Assessment Report</h3>
 
                   {!results ? (
@@ -522,21 +530,21 @@ export default function OncovisionDashboard() {
                         let head = "text-lg";
                         let num = "text-4xl";
                         if (index === 0 && !isBenign && d.risk >= 50) {
-                          box = "border-red-500 border-2 shadow-[0_0_30px_rgba(239,68,68,0.35)] p-8";
+                          box = "border-red-500 border-2 p-8";
                           head = "text-2xl text-red-400";
                           num = "text-6xl";
                         } else if (index === 0 && isBenign && d.risk >= 50) {
-                          box = "border-emerald-500 border-2 shadow-[0_0_30px_rgba(16,185,129,0.3)] p-8";
+                          box = "border-emerald-500 border-2 p-8";
                           head = "text-2xl text-emerald-400";
                           num = "text-6xl";
                         } else if (index === 1 && !isBenign && d.risk >= 50) {
-                          box = "border-orange-500 border-2 shadow-[0_0_20px_rgba(249,115,22,0.25)] p-6";
+                          box = "border-orange-500 border-2 p-6";
                           head = "text-xl text-orange-400";
                           num = "text-5xl";
                         }
 
                         return (
-                          <div key={name} className={`bg-slate-950 rounded-xl transition-all duration-500 ${box}`}>
+                          <div key={name} className={`bg-slate-950 rounded-lg transition-all duration-500 ${box}`}>
                             <div className="flex justify-between items-start gap-4 mb-3">
                               <div>
                                 <span className={`text-white font-black block ${head}`}>{name}</span>
@@ -763,7 +771,7 @@ export default function OncovisionDashboard() {
 
             <div className="space-y-10 text-slate-300">
 
-              <section className="bg-slate-900 border border-slate-800 rounded-xl p-8">
+              <section className="bg-slate-900 border border-slate-800 rounded-lg p-8">
                 <h3 className="text-2xl font-bold text-white mb-4">What this tool does</h3>
                 <p className="leading-relaxed">
                   Oncovision works from two things: <strong className="text-white">your lab reports</strong> and{" "}
@@ -796,7 +804,7 @@ export default function OncovisionDashboard() {
                     { icon: Scan, title: "Run the analysis", body: "Values are checked against the range a living patient can have, then scored by each model that has enough to work with. Anything impossible, such as a typo with an extra zero, is dropped and reported back rather than quietly changing your score." },
                     { icon: Layers, title: "Read the report", body: "Six cards come back sorted highest first: five cancer panels and a healthy baseline. Each one expands to show which inputs the model leaned on, how your values compare to their reference limits, and how accurate that model is." },
                   ].map(({ icon: Icon, title, body }) => (
-                    <div key={title} className="bg-slate-900 border border-slate-800 rounded-xl p-6">
+                    <div key={title} className="bg-slate-900 border border-slate-800 rounded-lg p-6">
                       <div className="flex items-center gap-3 mb-3">
                         <div className="p-2 rounded-lg bg-cyan-500/10"><Icon className="w-4 h-4 text-cyan-400" /></div>
                         <h4 className="font-bold text-white text-sm">{title}</h4>
@@ -807,7 +815,7 @@ export default function OncovisionDashboard() {
                 </div>
               </section>
 
-              <section className="bg-slate-900 border border-slate-800 rounded-xl p-8">
+              <section className="bg-slate-900 border border-slate-800 rounded-lg p-8">
                 <h3 className="text-2xl font-bold text-white mb-2 flex items-center gap-3">
                   <FileText className="text-cyan-500 w-6 h-6" /> Uploading a lab report
                 </h3>
@@ -850,7 +858,7 @@ export default function OncovisionDashboard() {
 
                 <div className="space-y-6">
                   {LAB_GROUPS.map(({ group, blurb, items }) => (
-                    <div key={group} className="bg-slate-900 border border-slate-800 rounded-xl overflow-hidden">
+                    <div key={group} className="bg-slate-900 border border-slate-800 rounded-lg overflow-hidden">
                       <div className="p-5 border-b border-slate-800 bg-slate-950/50">
                         <h4 className="font-bold text-white">{group}</h4>
                         <p className="text-xs text-slate-500 mt-1">{blurb}</p>
@@ -872,7 +880,7 @@ export default function OncovisionDashboard() {
                     </div>
                   ))}
 
-                  <div className="bg-slate-900 border border-slate-800 rounded-xl overflow-hidden">
+                  <div className="bg-slate-900 border border-slate-800 rounded-lg overflow-hidden">
                     <div className="p-5 border-b border-slate-800 bg-slate-950/50">
                       <h4 className="font-bold text-white">Patient history</h4>
                       <p className="text-xs text-slate-500 mt-1">
@@ -894,7 +902,7 @@ export default function OncovisionDashboard() {
                 </div>
               </section>
 
-              <section className="bg-slate-900 border border-cyan-500/20 rounded-xl p-8">
+              <section className="bg-slate-900 border border-cyan-500/20 rounded-lg p-8">
                 <h3 className="text-2xl font-bold text-white mb-2">Reading your results</h3>
                 <p className="text-slate-400 text-sm mb-6">Six cards come back, sorted from highest score to lowest.</p>
 
@@ -952,7 +960,7 @@ export default function OncovisionDashboard() {
                 </div>
               </section>
 
-              <section className="bg-slate-900/50 border border-red-500/30 rounded-xl p-8">
+              <section className="bg-slate-900/50 border border-red-500/30 rounded-lg p-8">
                 <h3 className="text-xl font-bold text-white mb-4 flex items-center gap-3">
                   <AlertTriangle className="text-red-400 w-5 h-5" /> What this tool cannot do
                 </h3>
@@ -972,14 +980,14 @@ export default function OncovisionDashboard() {
         {currentPage === "about" && (
           <div className="p-6 lg:p-16 max-w-[1000px] mx-auto animate-in fade-in duration-500 flex-1 w-full">
             <header className="mb-12 text-center">
-              <OncovisionLogo className="w-24 h-24 text-cyan-500 mx-auto mb-6 drop-shadow-[0_0_15px_rgba(6,182,212,0.4)]" />
+              <OncovisionLogo className="w-24 h-24 text-cyan-500 mx-auto mb-6 " />
               <h2 className="text-4xl font-black text-white">Project Oncovision</h2>
               <p className="text-cyan-400 text-lg mt-2 font-bold uppercase tracking-widest">Computational Oncology for the Public</p>
             </header>
 
             <div className="space-y-12 text-slate-300">
 
-              <section className="bg-slate-900 border border-slate-800 rounded-xl p-8">
+              <section className="bg-slate-900 border border-slate-800 rounded-lg p-8">
                 <h3 className="text-2xl font-bold text-white mb-4 flex items-center gap-3">
                   <Target className="text-cyan-500 w-6 h-6" /> The goal
                 </h3>
@@ -998,7 +1006,7 @@ export default function OncovisionDashboard() {
               </section>
 
               {/* THE PROBLEM */}
-              <section className="bg-slate-900 border border-slate-800 rounded-xl p-8">
+              <section className="bg-slate-900 border border-slate-800 rounded-lg p-8">
                 <h3 className="text-2xl font-bold text-white mb-2 flex items-center gap-3">
                   <AlertTriangle className="text-cyan-500 w-6 h-6" /> The problem this addresses
                 </h3>
@@ -1069,7 +1077,7 @@ export default function OncovisionDashboard() {
                 </p>
               </section>
 
-              <section className="bg-slate-900 border border-slate-800 rounded-xl p-8">
+              <section className="bg-slate-900 border border-slate-800 rounded-lg p-8">
                 <h3 className="text-2xl font-bold text-white mb-6 flex items-center gap-3">
                   <Microscope className="text-cyan-500 w-6 h-6" /> How this was built
                 </h3>
@@ -1090,7 +1098,7 @@ export default function OncovisionDashboard() {
               </section>
 
               {/* MODEL PERFORMANCE */}
-              <section className="bg-slate-900 border border-slate-800 rounded-xl p-8">
+              <section className="bg-slate-900 border border-slate-800 rounded-lg p-8">
                 <h3 className="text-2xl font-bold text-white mb-2 flex items-center gap-3">
                   <Target className="text-cyan-500 w-6 h-6" /> Measured performance
                 </h3>
@@ -1259,6 +1267,68 @@ export default function OncovisionDashboard() {
                   likelihood.
                 </p>
 
+                {/* EXTERNAL VALIDATION */}
+                <h4 className="text-lg font-bold text-white mt-10 mb-2">External validation</h4>
+                <p className="text-sm text-slate-400 mb-5 leading-relaxed">
+                  Everything above is a held-out slice of the same cohort a model trained on. That
+                  slice still shares the hospital, the assay machines, the referral patterns and the
+                  population, so it measures memorisation more than generalisation. The only way to
+                  test properly is to train on one source and test on another.
+                </p>
+                <p className="text-sm text-slate-400 mb-5 leading-relaxed">
+                  The liver panel can do this. It trains on 583 real patients from Andhra Pradesh,
+                  India, and there is an independent cohort of 589 real patients from Germany sharing
+                  the same eight liver chemistry measurements. Different continent, hospital,
+                  protocol, population and disease prevalence. The German cohort reports in SI units
+                  and the Indian one in conventional units, so albumin, total protein and bilirubin
+                  had to be converted before the two could be compared at all.
+                </p>
+
+                <div className="overflow-x-auto">
+                  <table className="w-full text-left text-sm">
+                    <thead>
+                      <tr className="text-[10px] uppercase tracking-widest text-slate-500 border-b border-slate-800">
+                        <th className="pb-3 pr-4 font-bold">Direction</th>
+                        <th className="pb-3 pr-4 font-bold">Internal AUC</th>
+                        <th className="pb-3 pr-4 font-bold">External AUC</th>
+                        <th className="pb-3 pr-4 font-bold">95% CI</th>
+                        <th className="pb-3 font-bold">Drop</th>
+                      </tr>
+                    </thead>
+                    <tbody className="divide-y divide-slate-800/60">
+                      {EXTERNAL_VALIDATION.map(e => (
+                        <tr key={e.direction} className="text-slate-400">
+                          <td className="py-3 pr-4 font-bold text-cyan-400">{e.direction}</td>
+                          <td className="py-3 pr-4 font-mono">{e.internal}</td>
+                          <td className="py-3 pr-4 font-mono font-bold text-amber-400">{e.external}</td>
+                          <td className="py-3 pr-4 font-mono text-slate-500">{e.ci[0]} to {e.ci[1]}</td>
+                          <td className="py-3 font-mono font-bold text-red-400">{e.drop}</td>
+                        </tr>
+                      ))}
+                    </tbody>
+                  </table>
+                </div>
+
+                <div className="mt-5 p-4 rounded-lg bg-slate-950 border border-amber-500/25">
+                  <p className="text-xs text-slate-400 leading-relaxed">
+                    This is the most useful result in the project. A model trained on the German
+                    cohort scores <span className="font-mono text-white">0.995</span> on its own
+                    held-out data, which looks close to perfect, and{" "}
+                    <span className="font-mono text-white">0.698</span> on Indian patients. A drop of
+                    0.297 from the same model on the same task, purely because the patients came from
+                    somewhere else. Every internal number on this page should be read with that in
+                    mind, including the ones above 0.96 that have no external test available.
+                  </p>
+                  <p className="text-xs text-slate-400 leading-relaxed mt-3">
+                    Plain logistic regression scored{" "}
+                    <span className="font-mono text-white">0.736</span> going India to Germany
+                    against the ensemble&apos;s <span className="font-mono text-white">0.623</span>.
+                    The simpler model transferred better, which is the usual outcome when a complex
+                    model has learned a cohort&apos;s quirks. That is why the liver and pancreatic
+                    panels now ship logistic regression rather than the ensemble.
+                  </p>
+                </div>
+
                 {/* WITHDRAWN */}
                 <h4 className="text-lg font-bold text-white mt-10 mb-2">Withdrawn panels</h4>
                 <p className="text-sm text-slate-400 mb-4 leading-relaxed">
@@ -1281,7 +1351,7 @@ export default function OncovisionDashboard() {
                 ))}
               </section>
 
-              <section className="bg-slate-900 border border-slate-800 rounded-xl p-8">
+              <section className="bg-slate-900 border border-slate-800 rounded-lg p-8">
                 <h3 className="text-2xl font-bold text-white mb-6 flex items-center gap-3">
                   <BrainCircuit className="text-cyan-500 w-6 h-6" /> Architecture
                 </h3>
@@ -1324,7 +1394,7 @@ export default function OncovisionDashboard() {
                 </div>
               </section>
 
-              <section className="bg-slate-900 border border-slate-800 rounded-xl p-8">
+              <section className="bg-slate-900 border border-slate-800 rounded-lg p-8">
                 <h3 className="text-2xl font-bold text-white mb-4 flex items-center gap-3">
                   <Microscope className="text-cyan-500 w-6 h-6" /> Training data
                 </h3>
@@ -1361,7 +1431,7 @@ export default function OncovisionDashboard() {
                 </div>
               </section>
 
-              <section className="bg-slate-900 border border-amber-500/20 rounded-xl p-8">
+              <section className="bg-slate-900 border border-amber-500/20 rounded-lg p-8">
                 <h3 className="text-xl font-bold text-white mb-4 flex items-center gap-3">
                   <AlertTriangle className="text-amber-400 w-5 h-5" /> Known limitations
                 </h3>
@@ -1377,7 +1447,7 @@ export default function OncovisionDashboard() {
                 </ul>
               </section>
 
-              <section className="bg-slate-900/50 border border-emerald-500/30 rounded-xl p-8">
+              <section className="bg-slate-900/50 border border-emerald-500/30 rounded-lg p-8">
                 <h3 className="text-xl font-bold text-white mb-4 flex items-center gap-3">
                   <ShieldCheck className="text-emerald-400 w-6 h-6" /> Data handling
                 </h3>
@@ -1400,7 +1470,7 @@ export default function OncovisionDashboard() {
             </header>
 
             <div className="space-y-8 text-slate-300">
-              <div className="bg-gradient-to-r from-slate-900 to-slate-950 border border-slate-800 rounded-xl p-8 flex flex-col items-center shadow-xl">
+              <div className="bg-slate-900 border border-slate-800 rounded-lg p-8 flex flex-col items-center">
                 <p className="text-[10px] text-slate-500 uppercase font-bold mb-1 tracking-widest">Founder and Lead Developer</p>
                 <p className="text-white font-black text-3xl mb-4">Palash Rakshit</p>
                 <p className="text-center text-slate-400 text-sm max-w-2xl mb-8 leading-relaxed">
@@ -1436,7 +1506,7 @@ export default function OncovisionDashboard() {
                 </div>
               </div>
 
-              <section className="bg-slate-900 border border-slate-800 rounded-xl p-8">
+              <section className="bg-slate-900 border border-slate-800 rounded-lg p-8">
                 <h3 className="text-xl font-bold text-white mb-6 flex items-center gap-3">
                   <GitBranch className="text-cyan-500 w-5 h-5" /> Stack
                 </h3>
@@ -1460,7 +1530,7 @@ export default function OncovisionDashboard() {
                 </div>
               </section>
 
-              <section className="bg-slate-900 border border-slate-800 rounded-xl p-8">
+              <section className="bg-slate-900 border border-slate-800 rounded-lg p-8">
                 <h3 className="text-xl font-bold text-white mb-6 flex items-center gap-3">
                   <Code2 className="text-cyan-500 w-5 h-5" /> Repository
                 </h3>

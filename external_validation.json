@@ -1,0 +1,106 @@
+{
+  "India_to_Germany": {
+    "train": "India",
+    "test": "Germany",
+    "internal": {
+      "setting": "internal held-out split of India",
+      "n": 117,
+      "positives": 83,
+      "prevalence": 0.709,
+      "auc": 0.785,
+      "auc_ci": [
+        0.704,
+        0.867
+      ],
+      "sensitivity": 0.928,
+      "sensitivity_ci": [
+        0.864,
+        0.976
+      ],
+      "specificity": 0.206,
+      "specificity_ci": [
+        0.077,
+        0.36
+      ],
+      "brier": 0.1662,
+      "calibration_slope": 1.021
+    },
+    "external": {
+      "setting": "external, trained on India, tested on Germany",
+      "n": 589,
+      "positives": 56,
+      "prevalence": 0.095,
+      "auc": 0.623,
+      "auc_ci": [
+        0.539,
+        0.71
+      ],
+      "sensitivity": 0.839,
+      "sensitivity_ci": [
+        0.741,
+        0.932
+      ],
+      "specificity": 0.206,
+      "specificity_ci": [
+        0.172,
+        0.24
+      ],
+      "brier": 0.3002,
+      "calibration_slope": 1.313
+    },
+    "external_logistic_auc": 0.736,
+    "auc_drop": 0.162
+  },
+  "Germany_to_India": {
+    "train": "Germany",
+    "test": "India",
+    "internal": {
+      "setting": "internal held-out split of Germany",
+      "n": 118,
+      "positives": 11,
+      "prevalence": 0.093,
+      "auc": 0.995,
+      "auc_ci": [
+        0.984,
+        1.0
+      ],
+      "sensitivity": 0.909,
+      "sensitivity_ci": [
+        0.667,
+        1.0
+      ],
+      "specificity": 0.991,
+      "specificity_ci": [
+        0.971,
+        1.0
+      ],
+      "brier": 0.0164,
+      "calibration_slope": 0.453
+    },
+    "external": {
+      "setting": "external, trained on Germany, tested on India",
+      "n": 583,
+      "positives": 416,
+      "prevalence": 0.714,
+      "auc": 0.698,
+      "auc_ci": [
+        0.654,
+        0.741
+      ],
+      "sensitivity": 0.459,
+      "sensitivity_ci": [
+        0.41,
+        0.507
+      ],
+      "specificity": 0.862,
+      "specificity_ci": [
+        0.809,
+        0.911
+      ],
+      "brier": 0.3365,
+      "calibration_slope": 0.077
+    },
+    "external_logistic_auc": 0.493,
+    "auc_drop": 0.297
+  }
+}

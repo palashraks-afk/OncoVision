@@ -24,7 +24,10 @@ import joblib
 from sklearn.calibration import CalibratedClassifierCV
 from sklearn.ensemble import ExtraTreesClassifier, VotingClassifier
 from sklearn.model_selection import StratifiedKFold, cross_val_predict, train_test_split
+from sklearn.linear_model import LogisticRegression
 from sklearn.metrics import roc_auc_score, accuracy_score, confusion_matrix
+from sklearn.pipeline import make_pipeline
+from sklearn.preprocessing import StandardScaler
 from xgboost import XGBClassifier
 
 DATA_DIR = "data"
@@ -50,8 +53,9 @@ COHORT_DESIGN = {
     "breast": "Case-control and post-biopsy. Every record is an FNA already taken because "
               "a lesion was found, so this panel interprets a biopsy that has happened, it "
               "does not screen for one.",
-    "liver": "Synthetic. Records are generated rather than observed, so accuracy here "
-             "describes the generator, not a patient population.",
+    "liver": "583 real patients from Andhra Pradesh, India (UCI 225). Externally validated "
+             "against 589 independent patients from Germany (UCI 571), which is the only "
+             "panel here with a genuine external test. Detects liver disease, not liver cancer.",
     "pancreatic": "Case-control. Cases are confirmed adenocarcinoma, controls include "
                   "benign hepatobiliary disease.",
     "prostate": "Case-control and post-prostatectomy. Gleason grade comes from the "
@@ -129,27 +133,32 @@ DATASETS = [
     },
     {
         "name": "liver",
-        "file": "synthetic_liver_cancer_dataset.csv",
-        "label": "Liver Cancer Risk",
-        # liver_function_score is excluded on purpose: it is a composite the
-        # dataset generates and no patient can supply it, so training on it
-        # would inflate the reported AUC relative to real use.
+        # Replaced the synthetic hepatocellular cohort with real patients.
+        # 583 people from Andhra Pradesh, India (UCI 225). The eight features
+        # are exactly the liver chemistry this application already parses out
+        # of a PDF, and an independent German cohort with the same eight
+        # measurements exists, which is what makes external validation
+        # possible. See fetch_external.py and external_validation.py.
+        #
+        # The target is liver disease, not liver cancer. That is a change in
+        # what the panel claims, and it is the honest one: chronic liver
+        # disease is the dominant precursor to hepatocellular carcinoma, it is
+        # roughly 300 times more common, and unlike the synthetic cohort these
+        # are real people.
+        "file": "ilpd_liver_india.csv",
+        "label": "Liver Disease Risk",
         "features": {
             "age": lambda d: d["age"],
-            "bmi": lambda d: d["bmi"],
-            "alpha_fetoprotein_level": lambda d: d["alpha_fetoprotein_level"],
-            "gender": lambda d: _map(d["gender"], {"Male": 1, "Female": 0}),
-            "smoking": lambda d: _map(d["smoking_status"], {"Never": 0, "Former": 1, "Current": 2}),
-            "alcohol_intake": lambda d: _map(d["alcohol_consumption"], {"Never": 0.0, "Occasional": 1.5, "Regular": 3.5, "Heavy": 5.0}),
-            "physical_activity": lambda d: _map(d["physical_activity_level"], {"Low": 2.0, "Moderate": 5.0, "High": 8.0}),
-            "hepatitis_b": lambda d: d["hepatitis_b"],
-            "hepatitis_c": lambda d: d["hepatitis_c"],
-            "cirrhosis_history": lambda d: d["cirrhosis_history"],
-            "family_history_cancer": lambda d: d["family_history_cancer"],
-            "diabetes": lambda d: d["diabetes"],
+            "gender": lambda d: d["gender"],
+            "bilirubin": lambda d: d["bilirubin"],
+            "alkaline_phosphatase": lambda d: d["alkaline_phosphatase"],
+            "alt": lambda d: d["alt"],
+            "ast": lambda d: d["ast"],
+            "protein_total": lambda d: d["protein_total"],
+            "albumin": lambda d: d["albumin"],
         },
-        "target": lambda d: d["liver_cancer"].astype(int),
-        "positive_means": "a liver cancer diagnosis",
+        "target": lambda d: d["liver_disease"].astype(int),
+        "positive_means": "a clinical diagnosis of liver disease, not liver cancer",
     },
     {
         "name": "pancreatic",
@@ -363,8 +372,37 @@ def main():
             }
             continue
 
-        factory = lambda: build_ensemble(len(y), pos_rate)
+        # Pick the model that actually wins rather than assuming the ensemble
+        # does. Selection is by cross validated AUC inside the training data,
+        # never on the held-out split, so this does not leak. On the liver
+        # panel plain logistic regression beats the ensemble outright, and it
+        # also generalises better across cohorts in external_validation.py,
+        # which is the sort of thing an unexamined "use the fancy model"
+        # default would hide.
+        ensemble_factory = lambda: build_ensemble(len(y), pos_rate)
+        logistic_factory = lambda: make_pipeline(
+            StandardScaler(),
+            LogisticRegression(max_iter=5000, class_weight="balanced"),
+        )
+
+        folds_sel = max(2, min(5, int(y.value_counts().min())))
+        cv_sel = StratifiedKFold(n_splits=folds_sel, shuffle=True, random_state=RANDOM_STATE)
+        candidates = {}
+        for cand_name, cand in [("ensemble", ensemble_factory), ("logistic", logistic_factory)]:
+            p = cross_val_predict(cand(), X, y, cv=cv_sel, method="predict_proba")[:, 1]
+            candidates[cand_name] = round(float(roc_auc_score(y, p)), 3)
+        chosen = max(candidates, key=lambda k: candidates[k])
+        print(f"  model selection by CV AUC: {candidates}  ->  {chosen}")
+
+        factory = ensemble_factory if chosen == "ensemble" else logistic_factory
+        algorithm = (
+            "Soft-voting ensemble: XGBoost + Extra Trees, isotonic calibrated"
+            if chosen == "ensemble"
+            else "Logistic regression, isotonic calibrated, selected over the ensemble on CV AUC"
+        )
         metrics = evaluate(factory, X, y)
+        metrics["model_selection"] = candidates
+        metrics["chosen_model"] = chosen
         print(f"  AUC {metrics['auc']} +/- {metrics['auc_std']}   "
               f"acc {metrics['accuracy']}   sens {metrics['sensitivity']}   "
               f"spec {metrics['specificity']}")
@@ -392,7 +430,7 @@ def main():
             "metrics": metrics,
             "held_out": held_out,
             "cohort_design": COHORT_DESIGN[name],
-            "algorithm": "Soft-voting ensemble: XGBoost + Extra Trees, isotonic calibrated",
+            "algorithm": algorithm,
         }
         # compress=3 keeps the bundles small enough to commit and deploy.
         for d in MODEL_DIRS:

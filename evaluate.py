@@ -63,13 +63,17 @@ SEER_INCIDENCE = {
     "breast":     (132.5, "Female breast, per 100,000 women per year"),
     "prostate":   (123.2, "Prostate, per 100,000 men per year"),
     "pancreatic": (13.9,  "Pancreas, per 100,000 men and women per year"),
-    "liver":      (9.5,   "Liver and intrahepatic bile duct, per 100,000 per year"),
+    # The liver panel detects liver disease, not liver cancer, so it is scored
+    # against cirrhosis prevalence in US adults (3.1%, NHANES) rather than
+    # liver cancer incidence. Using the cancer figure would understate the
+    # panel's precision by roughly 300 times.
+    "liver":      (3100.0, "Cirrhosis in US adults, NHANES, per 100,000"),
 }
 
 COHORT_DESIGN = {
     "general":    "Risk-factor cohort. Not a consecutive screening series.",
     "breast":     "Case-control, post-biopsy. Every record is an FNA already taken because a lesion was found.",
-    "liver":      "SYNTHETIC. Records are generated, not observed.",
+    "liver":      "583 real patients, India. Externally validated on 589 independent patients from Germany.",
     "pancreatic": "Case-control. Cases are confirmed PDAC, controls include benign hepatobiliary disease.",
     "prostate":   "Case-control, post-prostatectomy. Gleason grade comes from the surgical specimen.",
 }
