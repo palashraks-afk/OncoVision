@@ -599,45 +599,136 @@ async def predict_risk(data: PatientData):
     }
 
 
+# Printed names for each analyte, longest-first within each entry. Matching is
+# word-bounded, and on any given line the longest matching synonym wins, which is
+# what keeps "CA 19-9" from being read as calcium and stops "ast" matching inside
+# the word "fasting".
+BIOMARKER_SYNONYMS = {
+    "age": [r"age"],
+    "bmi": [r"body mass index", r"bmi"],
+    "wbc": [r"white blood cell count", r"white blood cells", r"white blood", r"leukocytes", r"wbc"],
+    "rbc": [r"red blood cell count", r"red blood cells", r"red blood", r"erythrocytes", r"rbc"],
+    "hemoglobin": [r"haemoglobin", r"hemoglobin", r"hgb", r"hb"],
+    # "Platelet Count" is singular on most reports, which the old pattern missed.
+    "platelets": [r"platelet count", r"platelets", r"platelet", r"thrombocytes", r"plt"],
+    "glucose": [r"glucose, fasting", r"fasting glucose", r"blood glucose", r"glucose", r"glu"],
+    # Bare "ca" is last, and safe only because the longest synonym on a line
+    # wins: on a CA 19-9 line the longer ca-19-9 pattern matches first.
+    "calcium": [r"calcium, total", r"total calcium", r"calcium", r"ca"],
+    "bun": [r"blood urea nitrogen", r"urea nitrogen", r"bun", r"urea"],
+    "creatinine": [r"creatinine, serum", r"creatinine", r"creat", r"crea"],
+    "protein_total": [r"total protein", r"protein, total", r"serum protein", r"protein total", r"tprot", r"tp"],
+    "albumin": [r"albumin, serum", r"albumin", r"alb"],
+    # SGOT and SGPT come first so the bare three-letter codes are a last resort.
+    "ast": [r"aspartate aminotransferase", r"ast \(sgot\)", r"sgot", r"ast"],
+    "alt": [r"alanine aminotransferase", r"alt \(sgpt\)", r"sgpt", r"alt"],
+    "bilirubin": [r"bilirubin, total", r"total bilirubin", r"bilirubin", r"tbili", r"tbil", r"bili"],
+    "alkaline_phosphatase": [r"alkaline phosphatase", r"alk phos", r"alkphos", r"alp"],
+    # The hyphenated spelling is the common one and the old pattern missed it.
+    "alpha_fetoprotein_level": [r"alpha[- ]?fetoprotein", r"afp"],
+    "psa": [r"prostate specific antigen", r"prostate-specific antigen", r"psa"],
+    "plasma_ca19_9": [r"ca[ \-_]?19[\-_]?9", r"carbohydrate antigen 19"],
+    "radius_mean": [r"radius mean", r"mean radius"],
+    "texture_mean": [r"texture mean", r"mean texture"],
+    "perimeter_mean": [r"perimeter mean", r"mean perimeter"],
+    "area_mean": [r"area mean", r"mean area"],
+}
+
+UNIT_NOISE = re.compile(
+    r"(mg/dl|g/dl|u/l|iu/l|ng/ml|k/ul|m/ul|u/ml|mmol/l|umol/l|g/l|mmhg|bpm|%|ratio)",
+    re.IGNORECASE,
+)
+
+# A reference interval, in the forms reports actually print.
+#   0.70 - 1.30      4.0-11.0      70 to 99      <1.2      0.2 – 1.2
+RANGE_PATTERNS = [
+    re.compile(r"\d+(?:\.\d+)?\s*(?:-|–|—|to)\s*\d+(?:\.\d+)?", re.IGNORECASE),
+    re.compile(r"[<>]=?\s*\d+(?:\.\d+)?"),
+]
+
+NUMBER = re.compile(r"\d+(?:\.\d+)?")
+
+
+def _strip_ranges(text: str) -> str:
+    """
+    Blank out reference intervals before looking for the patient's value.
+
+    This is the single most important step. When a report prints the expected
+    range before the result, a forward scan reaches the range first and returns
+    its lower bound, so creatinine 1.05 gets read as 0.70. Removing ranges first
+    fixes that, and it also fixes the commoner layout where the range trails the
+    result, because in both cases what is left on the line is the value.
+    """
+    for pat in RANGE_PATTERNS:
+        text = pat.sub(lambda m: " " * len(m.group(0)), text)
+    return text
+
+
+def _match_analyte(line: str):
+    """The analyte this line is about, by longest word-bounded synonym match."""
+    best = None
+    for key, synonyms in BIOMARKER_SYNONYMS.items():
+        for syn in synonyms:
+            m = re.search(r"(?<![a-z0-9])(?:" + syn + r")(?![a-z0-9])", line, re.IGNORECASE)
+            if m and (best is None or len(m.group(0)) > best[2]):
+                best = (key, m.end(), len(m.group(0)))
+    return best
+
+
+def parse_report_text(text: str) -> dict:
+    """
+    Extract analyte values from lab report text, one line at a time.
+
+    Reports are line-oriented, so the previous approach of collapsing the whole
+    document into a single string was the root problem: it let a value from one
+    analyte be picked up by another, several lines away. Working per line keeps
+    each value with its own analyte, and a one-line lookahead handles the layout
+    that prints the value beneath the name.
+    """
+    found: dict = {}
+    lines = [ln for ln in (text or "").splitlines() if ln.strip()]
+
+    for i, raw in enumerate(lines):
+        hit = _match_analyte(raw)
+        if not hit:
+            continue
+        key, name_end, _ = hit
+        if key in found:
+            continue
+
+        # After the analyte name, with ranges and units removed.
+        tail = _strip_ranges(UNIT_NOISE.sub(" ", raw[name_end:]))
+        nums = NUMBER.findall(tail)
+
+        # Value printed on the following line, as in a stacked single column.
+        if not nums and i + 1 < len(lines):
+            nxt = lines[i + 1]
+            if not _match_analyte(nxt):
+                nums = NUMBER.findall(_strip_ranges(UNIT_NOISE.sub(" ", nxt)))
+
+        for candidate in nums:
+            try:
+                val = float(candidate)
+            except ValueError:
+                continue
+            low, high = BIOLOGICAL_BOUNDS.get(key, (-1e12, 1e12))
+            if low <= val <= high:
+                found[key] = val
+                break
+
+    return found
+
+
 @app.post("/parse-pdf")
 async def parse_pdf(files: List[UploadFile] = File(...)):
     try:
-        extracted = {}
-        biomarker_map = {
-            "age": [r"age"], "bmi": [r"bmi", r"body mass index"],
-            "wbc": [r"wbc", r"white blood"], "rbc": [r"rbc", r"red blood"],
-            "hemoglobin": [r"hemoglobin", r"hgb", r"hct"],
-            "platelets": [r"platelets", r"plt"], "glucose": [r"glucose", r"glu"],
-            "calcium": [r"calcium", r"ca"], "bun": [r"bun", r"urea nitrogen"],
-            "creatinine": [r"creatinine", r"creat"], "protein_total": [r"total protein"],
-            "albumin": [r"albumin", r"alb"], "ast": [r"ast", r"sgot"],
-            "alt": [r"alt", r"sgpt"], "bilirubin": [r"bilirubin", r"bili"],
-            "alkaline_phosphatase": [r"alkaline phosphatase", r"alp"],
-            "alpha_fetoprotein_level": [r"afp", r"alpha fetoprotein"],
-            "psa": [r"psa", r"prostate specific"],
-            "plasma_ca19_9": [r"ca 19-9", r"ca19-9", r"ca19_9"],
-            "radius_mean": [r"radius mean"], "texture_mean": [r"texture mean"],
-            "perimeter_mean": [r"perimeter mean"], "area_mean": [r"area mean"],
-        }
-
+        extracted: dict = {}
         for file in files[:5]:
             contents = await file.read()
-            pdf = pdfplumber.open(io.BytesIO(contents))
-            raw_text = " ".join([p.extract_text() for p in pdf.pages if p.extract_text()])
-            clean = re.sub(r'(mg/dl|g/dl|u/l|ng/ml|k/ul|m/ul|u/ml|mmhg|bpm)', '', raw_text, flags=re.IGNORECASE)
-            clean = re.sub(r'\s+', ' ', clean).lower()
-
-            for key, synonyms in biomarker_map.items():
-                if key in extracted:
-                    continue
-                for syn in synonyms:
-                    match = re.search(syn + r"[^0-9\.]{0,30}(\d+\.\d+|\d+)", clean)
-                    if match:
-                        val = float(match.group(1))
-                        low, high = BIOLOGICAL_BOUNDS.get(key, (-1e12, 1e12))
-                        if low <= val <= high:
-                            extracted[key] = val
-                        break
+            with pdfplumber.open(io.BytesIO(contents)) as pdf:
+                text = "\n".join(p.extract_text() or "" for p in pdf.pages)
+            for key, val in parse_report_text(text).items():
+                extracted.setdefault(key, val)
 
         if not extracted:
             return {"status": "empty", "message": "No recognised biomarkers found in these documents."}

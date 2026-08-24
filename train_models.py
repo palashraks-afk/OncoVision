@@ -53,9 +53,9 @@ COHORT_DESIGN = {
     "breast": "Case-control and post-biopsy. Every record is an FNA already taken because "
               "a lesion was found, so this panel interprets a biopsy that has happened, it "
               "does not screen for one.",
-    "liver": "583 real patients from Andhra Pradesh, India (UCI 225). Externally validated "
-             "against 589 independent patients from Germany (UCI 571), which is the only "
-             "panel here with a genuine external test. Detects liver disease, not liver cancer.",
+    "liver": "6,059 real patients pooled across India, Germany and the United States. The only "
+             "panel with genuine external validation: leave-one-cohort-out AUC is 0.58 to 0.75 "
+             "depending on which country is held out. Detects liver disease, not liver cancer.",
     "pancreatic": "Case-control. Cases are confirmed adenocarcinoma, controls include "
                   "benign hepatobiliary disease.",
     "prostate": "Case-control and post-prostatectomy. Gleason grade comes from the "
@@ -133,19 +133,24 @@ DATASETS = [
     },
     {
         "name": "liver",
-        # Replaced the synthetic hepatocellular cohort with real patients.
-        # 583 people from Andhra Pradesh, India (UCI 225). The eight features
-        # are exactly the liver chemistry this application already parses out
-        # of a PDF, and an independent German cohort with the same eight
-        # measurements exists, which is what makes external validation
-        # possible. See fetch_external.py and external_validation.py.
+        # Pooled across three continents: 583 patients from India (UCI 225),
+        # 589 from Germany (UCI 571) and 4,887 from NHANES 2017-2018 in the US.
+        # 6,059 real people, 12.2% with liver disease.
+        #
+        # Pooling is an evidence-driven choice, not a convenience. Leave-one-
+        # cohort-out in external_validation.py measured mean external AUC at
+        # 0.585 when training on a single cohort and 0.644 when training on two,
+        # so cohort diversity is worth about 0.06 AUC on populations the model
+        # has never seen. NHANES also makes this the only panel whose training
+        # data includes a population-based sample rather than only clinical
+        # referrals.
         #
         # The target is liver disease, not liver cancer. That is a change in
         # what the panel claims, and it is the honest one: chronic liver
         # disease is the dominant precursor to hepatocellular carcinoma, it is
         # roughly 300 times more common, and unlike the synthetic cohort these
         # are real people.
-        "file": "ilpd_liver_india.csv",
+        "file": "liver_pooled_3cohort.csv",
         "label": "Liver Disease Risk",
         "features": {
             "age": lambda d: d["age"],

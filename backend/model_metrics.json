@@ -159,82 +159,82 @@
       "protein_total",
       "albumin"
     ],
-    "cohort_design": "583 real patients from Andhra Pradesh, India (UCI 225). Externally validated against 589 independent patients from Germany (UCI 571), which is the only panel here with a genuine external test. Detects liver disease, not liver cancer.",
-    "auc": 0.749,
-    "auc_std": 0.048,
-    "accuracy": 0.726,
-    "sensitivity": 0.675,
-    "specificity": 0.853,
-    "n_samples": 583,
-    "n_positive": 416,
+    "cohort_design": "6,059 real patients pooled across India, Germany and the United States. The only panel with genuine external validation: leave-one-cohort-out AUC is 0.58 to 0.75 depending on which country is held out. Detects liver disease, not liver cancer.",
+    "auc": 0.863,
+    "auc_std": 0.014,
+    "accuracy": 0.914,
+    "sensitivity": 0.716,
+    "specificity": 0.942,
+    "n_samples": 6059,
+    "n_positive": 741,
     "n_features": 8,
     "cv_folds": 5,
     "model_selection": {
-      "ensemble": 0.748,
-      "logistic": 0.749
+      "ensemble": 0.863,
+      "logistic": 0.862
     },
-    "chosen_model": "logistic",
+    "chosen_model": "ensemble",
     "held_out": {
-      "n_test": 117,
-      "auc": 0.785,
+      "n_test": 1212,
+      "auc": 0.892,
       "auc_ci": [
-        0.697,
-        0.865
+        0.857,
+        0.924
       ],
-      "sensitivity": 0.928,
+      "sensitivity": 0.595,
       "sensitivity_ci": [
-        0.865,
-        0.976
+        0.514,
+        0.674
       ],
-      "specificity": 0.206,
+      "specificity": 0.984,
       "specificity_ci": [
-        0.077,
-        0.355
+        0.976,
+        0.991
       ],
-      "brier": 0.1662,
-      "calibration_slope": 1.021,
-      "ppv_at_population_prevalence": 0.03603,
-      "people_flagged_per_true_case": 27.8,
+      "brier": 0.0543,
+      "calibration_slope": 1.166,
+      "ppv_at_population_prevalence": 0.5435,
+      "people_flagged_per_true_case": 1.8,
       "population_prevalence": 0.031,
       "prevalence_source": "Cirrhosis in US adults, NHANES, per 100,000",
-      "cohort_prevalence": 0.714,
-      "baseline_logistic_auc": 0.831,
-      "baseline_age_sex_auc": 0.555,
+      "cohort_prevalence": 0.122,
+      "baseline_logistic_auc": 0.892,
+      "baseline_age_sex_auc": 0.592,
       "subgroups": {
         "sex: female": {
-          "n": 27,
-          "positives": 19,
-          "auc": 0.757,
+          "n": 627,
+          "positives": 52,
+          "auc": 0.851,
           "auc_ci": [
-            0.524,
-            0.941
+            0.783,
+            0.913
           ]
         },
         "sex: male": {
-          "n": 90,
-          "positives": 64,
-          "auc": 0.796,
+          "n": 585,
+          "positives": 96,
+          "auc": 0.913,
           "auc_ci": [
-            0.699,
-            0.884
+            0.871,
+            0.951
           ]
         },
-        "age under 46": {
-          "n": 57,
-          "positives": 38,
-          "auc": 0.774,
+        "age under 52": {
+          "n": 601,
+          "positives": 73,
+          "auc": 0.907,
           "auc_ci": [
-            0.637,
-            0.893
+            0.854,
+            0.95
           ]
         },
-        "age 46 and over": {
-          "n": 60,
-          "positives": 45,
-          "auc": 0.787,
+        "age 52 and over": {
+          "n": 611,
+          "positives": 75,
+          "auc": 0.871,
           "auc_ci": [
-            0.669,
-            0.893
+            0.815,
+            0.917
           ]
         }
       }
@@ -270,18 +270,18 @@
       "n_test": 120,
       "auc": 0.969,
       "auc_ci": [
-        0.94,
-        0.992
+        0.938,
+        0.991
       ],
       "sensitivity": 0.731,
       "sensitivity_ci": [
-        0.552,
-        0.889
+        0.55,
+        0.9
       ],
       "specificity": 0.947,
       "specificity_ci": [
-        0.898,
-        0.99
+        0.895,
+        0.989
       ],
       "brier": 0.0617,
       "calibration_slope": 0.46,
@@ -298,7 +298,7 @@
           "positives": 12,
           "auc": 0.959,
           "auc_ci": [
-            0.895,
+            0.902,
             0.997
           ]
         },
@@ -307,7 +307,7 @@
           "positives": 14,
           "auc": 0.978,
           "auc_ci": [
-            0.943,
+            0.939,
             0.999
           ]
         },
@@ -325,7 +325,7 @@
           "positives": 14,
           "auc": 0.983,
           "auc_ci": [
-            0.949,
+            0.95,
             1.0
           ]
         }

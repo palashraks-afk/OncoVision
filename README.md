@@ -34,90 +34,105 @@ All measured on a 20% test split cut **before** any model was fitted, never used
 model selection, or calibration. Intervals are bootstrap percentile intervals over 2,000 resamples.
 Reproduce with `python evaluate.py`.
 
-| Panel | Test AUC | 95% CI | Sens. | Spec. | Logistic baseline | Shipped model | Test n |
-|---|---|---|---|---|---|---|---|
-| General | 0.966 | 0.937 to 0.989 | 0.910 | 0.984 | 0.917 | ensemble | 300 |
-| Breast | 0.972 | 0.940 to 0.994 | 0.786 | 0.958 | 0.964 | ensemble | 114 |
-| Pancreatic | 0.969 | 0.940 to 0.992 | 0.731 | 0.947 | 0.968 | **logistic** | 120 |
-| Liver | 0.785 | 0.697 to 0.865 | 0.928 | 0.206 | 0.831 | **logistic** | 117 |
+| Panel | Test AUC | 95% CI | Sens. | Spec. | Logistic baseline | Test n |
+|---|---|---|---|---|---|---|
+| Breast | 0.972 | 0.940 to 0.994 | 0.786 | 0.958 | 0.964 | 114 |
+| Pancreatic | 0.969 | 0.938 to 0.991 | 0.731 | 0.947 | 0.968 | 120 |
+| General | 0.966 | 0.937 to 0.989 | 0.910 | 0.984 | 0.917 | 300 |
+| Liver | 0.892 | 0.857 to 0.924 | 0.595 | 0.984 | 0.892 | 1,212 |
 
-The pipeline picks whichever model wins on cross-validated AUC inside the training data. Two panels
-ship plain logistic regression because it beat the ensemble. Assuming the fancy model wins is
-exactly the kind of thing that goes unchecked.
+The pipeline picks whichever model wins on cross-validated AUC inside the training data, rather
+than assuming the ensemble does. Two panels ship plain logistic regression because it won.
 
-### External validation
+### Precision at real prevalence, which is the number that decides usability
 
-Every held-out number above still shares a hospital, assay machines and population
-with its training data. Three of the four panels now have a genuine outside test.
-
-| Panel | External cohort | Internal | External | Drop |
-|---|---|---|---|---|
-| General | NHANES 2017-2018, 5,173 US adults | 0.966 | **0.596** | **0.370** |
-| Liver | Germany, 589 patients (trained on India) | 0.785 | **0.623** | 0.162 |
-| Liver | India, 583 patients (trained on Germany) | 0.995 | **0.698** | **0.297** |
-| Breast | WPBC, 198 independent cancer patients | 0.915 sens | **0.894 sens** | 0.021 |
-| Pancreatic | none exists publicly | 0.969 | not tested | unknown |
-
-**The general panel is the cautionary one.** It looked like the best model in the
-project at 0.966 and scores 0.596 on a nationally representative US sample, which
-is barely better than a coin flip. NHANES matters because it is not case-control:
-10.3% prevalence, sampled from the public rather than from people already being
-investigated.
-
-**The breast panel is the one that holds.** 0.894 external sensitivity against
-0.915 internal, on 198 independent confirmed cancer patients from a separate
-Wisconsin cohort. No AUC is available because that cohort has no benign class,
-so this is a partial external test and is labelled as one.
-
-**Liver was tested both directions.** A model trained on German patients scores
-0.995 on its own held-out data and 0.698 on Indian patients. Same model, same
-task, 0.297 lost purely to the change of population. The German cohort reports in
-SI units, so albumin, total protein and bilirubin had to be converted before the
-two were comparable at all.
-
-Logistic regression scored 0.736 going India to Germany against the ensemble's
-0.623, and 0.618 on NHANES against the ensemble's 0.596. The simpler model
-transferred better in both cases.
-
-### Subgroup accuracy, measured rather than disclaimed
-
-NHANES is the only cohort here carrying race and ethnicity.
-
-| Group | n | Prevalence | AUC | 95% CI |
-|---|---|---|---|---|
-| Non-Hispanic Asian | 750 | 4.1% | 0.667 | 0.560 to 0.767 |
-| Mexican American | 685 | 6.7% | 0.625 | 0.549 to 0.698 |
-| Non-Hispanic White | 1,777 | 17.4% | 0.578 | 0.542 to 0.614 |
-| Non-Hispanic Black | 1,219 | 7.4% | 0.571 | 0.511 to 0.631 |
-| Other Hispanic | 483 | 6.8% | 0.555 | 0.452 to 0.661 |
-| Other or multiracial | 259 | 10.0% | 0.563 | 0.453 to 0.668 |
-
-Every group sits between 0.55 and 0.67. The model is weak across all of them
-rather than unfair between them, which is a different problem and a real one.
-
-### The number that actually matters
-
-Cohorts here are enriched for disease. Projecting measured sensitivity and specificity onto real
-population prevalence gives the precision a user would experience.
+Cohort AUC is measured on disease-enriched data. Projecting measured sensitivity and specificity
+onto real population prevalence gives what a user would actually experience.
 
 | Panel | Cohort positive | Population prevalence | PPV there | People flagged per true case |
 |---|---|---|---|---|
-| General | 37% | 0.4507% | **20.6%** | 4.9 |
-| Liver | 71% | 3.1% | **3.6%** | 27.8 |
-| Breast | 37% | 0.1325% | **2.44%** | 41 |
-| Pancreatic | 22% | 0.0139% | **0.19%** | 525 |
+| **Liver** | 12% | 3.1% | **54.4%** | **1.8** |
+| General | 37% | 0.4507% | 20.6% | 4.9 |
+| Breast | 37% | 0.1325% | 2.44% | 41 |
+| Pancreatic | 22% | 0.0139% | **0.19%** | **525** |
 
-Used as a population screen today, the pancreatic panel would flag about 525 people for every one
-who has the disease. No AUC figure changes that.
+Read the bottom row. As a population screen the pancreatic panel would flag roughly 525 people for
+every one who has the disease. The liver panel flags fewer than two, because it is trained on real
+pooled data, its target is common, and it was built after the generalisation problem was measured
+rather than before.
+
+### External validation
+
+Every held-out number above still shares a hospital, assay machines and population with its
+training data. Three of four panels now have a genuine outside test.
+
+**Liver, three independent real cohorts:** ILPD India (583), HCV Germany (589), NHANES USA (4,887).
+Every ordered pair, so no direction is cherry-picked. The German cohort reports in SI units, so
+albumin, total protein and bilirubin had to be converted before any comparison was valid.
+
+| Direction | Internal | External | Drop |
+|---|---|---|---|
+| Germany to India | 0.995 | 0.698 | 0.297 |
+| USA to India | 0.700 | 0.640 | 0.060 |
+| India to Germany | 0.785 | 0.623 | 0.162 |
+| India to USA | 0.785 | 0.575 | 0.210 |
+| Germany to USA | 0.995 | **0.531** | **0.464** |
+| USA to Germany | 0.700 | 0.442 | 0.258 |
+
+**A model trained on German patients scores 0.995 on its own held-out data and 0.531 on Americans.**
+Same model, same task, 0.464 lost purely to the change of population. Every internal number in this
+README should be read with that in mind.
+
+**General panel to NHANES 2017-2018**, 5,173 US adults: internal 0.966, external **0.596**, a drop
+of 0.370. NHANES matters because it is not case-control. It samples the public at 10.3% prevalence.
+
+**Breast to WPBC**, 198 independent confirmed cancer patients: internal sensitivity 0.915, external
+**0.894**. No AUC, because that cohort has no benign class, so this is a partial test and is
+labelled as one. Breast is the panel that transfers.
+
+**Pancreatic**: no public cohort shares its feature set. Untested.
+
+### Leave one cohort out, and what it changed
+
+Train on two countries, test on the third.
+
+| Held out | Trained on | Train n | AUC | 95% CI | Logistic |
+|---|---|---|---|---|---|
+| India | Germany + USA | 5,476 | 0.710 | 0.664 to 0.753 | 0.753 |
+| Germany | India + USA | 5,470 | 0.641 | 0.564 to 0.724 | 0.654 |
+| USA | India + Germany | 1,172 | 0.580 | 0.547 to 0.612 | 0.655 |
+
+Mean external AUC is **0.585 training on one cohort and 0.644 training on two**, so cohort
+diversity is worth about 0.06 on a population the model has never seen. Logistic regression also
+beat the ensemble in all three folds.
+
+Both findings were acted on: the liver panel now trains on all three pooled, 6,059 patients across
+three continents. Its honest expected performance on a genuinely new population is nearer **0.69**
+than the 0.892 measured internally.
+
+### PDF parser accuracy
+
+The parser sits upstream of every model, and was previously unmeasured. `test_parser.py` renders
+lab reports in five deliberately different layouts from known ground truth and compares field by
+field.
+
+| | Before | After |
+|---|---|---|
+| Overall field accuracy | 68.9% | **100%** (90/90) |
+| Range-printed-before-result layout | 5.6% | 100% |
+
+Four real bugs were found and fixed: `ast` was matching inside the word "fasting", "Platelet Count"
+never matched the plural-only pattern, "Alpha-Fetoprotein" never matched the unhyphenated pattern,
+and reference ranges were being read as results. The root cause was flattening the whole document
+into one string; reports are line-oriented, so the parser now works line by line and blanks
+reference intervals before looking for a value.
 
 ### A panel that was withdrawn
 
-**Prostate is trained, measured, and not served.** Test AUC 0.786 with a 95% CI of 0.505 to 0.99, so
-the lower bound sits on chance. Specificity 0.571 with a CI of 0.167 to 1.0, an interval that
-carries no information because the test split is 20 records. It does not meaningfully beat logistic
-regression (0.769). 97 records and two usable features cannot support a clinical claim. It is
-reported rather than deleted, because a panel that failed its evaluation is evidence about the
-method.
+**Prostate is trained, measured, and not served.** Test AUC 0.786, 95% CI 0.505 to 0.99, so the
+lower bound sits on chance. Specificity 0.571 with a CI of 0.167 to 1.0, an interval carrying no
+information on 20 test records. It does not beat logistic regression. Reported rather than deleted,
+because a panel that failed its evaluation is evidence about the method.
 
 ## Known limitations
 
@@ -125,18 +140,21 @@ method.
 - **The breast panel contradicts the project's own schema rule.** Its inputs are nuclear morphology
   from a fine needle aspirate, which requires a biopsy that already happened. It interprets a
   biopsy, it does not screen for one.
-- **The liver panel detects liver disease, not liver cancer.** It replaced a synthetic cohort with
-  583 real patients. Its specificity is 0.206, meaning it flags most people, so it is useful for
-  ruling out rather than ruling in.
-- **The pancreatic panel has no external test.** No public cohort shares its feature set. Its 0.969
-  should be discounted by something like the 0.16 to 0.37 generalisation loss measured elsewhere.
+- **The liver panel detects liver disease, not liver cancer.** Liver disease is roughly 300 times
+  more common and is the dominant precursor to hepatocellular carcinoma, so this is a useful thing
+  to detect, but it is not a cancer claim.
+- **The pancreatic panel has no external test and is the weakest claim here.** No public cohort
+  shares its feature set. Its 0.969 should be discounted by something like the 0.06 to 0.46
+  generalisation loss measured on liver, and at real incidence it flags 525 people per true case.
+  PROTOCOL.md shows validating it prospectively would need roughly 690,000 participants. There is a
+  reasonable argument it should be withdrawn on the same grounds as prostate.
 - **No prospective test and no IRB.** No real patient report has been followed to an outcome. A
   submittable study protocol with pre-specified statistics is drafted in [PROTOCOL.md](PROTOCOL.md).
   Its sample-size table shows the pancreatic panel would need roughly 690,000 participants to
   validate at real incidence, which is why that panel carries the strongest caution here.
 - **The ensemble is within noise of logistic regression** on breast and pancreatic.
-- **No race or ethnicity in any cohort**, so accuracy across those groups is unmeasured rather than
-  acceptable. AUC by sex and age band is in `EVALUATION.md`.
+- **Race and ethnicity exist only in the NHANES cohorts.** Subgroup AUC is measured for the general
+  panel across six groups and runs 0.555 to 0.667. For breast and pancreatic it remains unmeasured.
 
 ---
 
@@ -188,8 +206,11 @@ python fetch_external.py
 # evaluate, this produces evaluation.json which training embeds
 python evaluate.py
 
-# cross-country external validation of the liver panel
+# cross-country external validation and leave-one-cohort-out
 python external_validation.py
+
+# PDF parser accuracy, needs the API running
+python test_parser.py
 
 # train, calibrate, and write model bundles
 python train_models.py
@@ -221,6 +242,7 @@ oncovision/
 │   ├── fields.ts           input schema and glossary
 │   └── cases.ts            generated sample case pool
 ├── evaluate.py             held-out evaluation, CIs, calibration, PPV, baselines
+├── test_parser.py          renders 5 lab report layouts, measures parser accuracy
 ├── fetch_external.py       downloads the real cohorts, harmonises units
 ├── external_validation.py  trains on one country, tests on another
 ├── train_models.py         training and calibration pipeline

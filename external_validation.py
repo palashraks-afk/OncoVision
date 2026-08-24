@@ -44,8 +44,9 @@ FEATURES = ["age", "gender", "bilirubin", "alkaline_phosphatase",
 TARGET = "liver_disease"
 
 COHORTS = {
-    "India": ("data/ilpd_liver_india.csv", "ILPD, Andhra Pradesh, UCI 225"),
-    "Germany": ("data/hcv_liver_germany.csv", "HCV data, Germany, UCI 571"),
+    "India": ("data/ilpd_liver_india.csv", "ILPD, Andhra Pradesh, UCI 225, clinical"),
+    "Germany": ("data/hcv_liver_germany.csv", "HCV data, Germany, UCI 571, clinical"),
+    "USA": ("data/nhanes_liver_usa.csv", "NHANES 2017-2018, CDC, population based"),
 }
 
 # SEER liver and intrahepatic bile duct incidence, used only to show what the
@@ -125,6 +126,47 @@ def run_direction(train_name, test_name):
         "external_logistic_auc": lr_external,
         "auc_drop": round(internal["auc"] - external["auc"], 3),
     }
+
+
+def leave_one_cohort_out():
+    """
+    Leave-one-cohort-out validation, which is the correct design once more than
+    one source exists.
+
+    Single-source training is the problem the pairwise table exposes: a model
+    fitted on one cohort learns that cohort's referral pattern, its assay
+    calibration and its prevalence, and loses between 0.06 and 0.46 AUC when
+    moved. Training on two cohorts and testing on the third measures whether
+    diversity in the training data buys generalisation, and it is also the
+    honest way to estimate what a model trained on everything would do on the
+    next unseen population.
+
+    The held-out cohort contributes nothing to fitting or calibration.
+    """
+    results = {}
+    for held in COHORTS:
+        train_names = [c for c in COHORTS if c != held]
+        Xs, ys = zip(*[load(c) for c in train_names])
+        X_tr = pd.concat(Xs, ignore_index=True)
+        y_tr = pd.concat(ys, ignore_index=True)
+        X_te, y_te = load(held)
+
+        model = fit(X_tr, y_tr)
+        p = model.predict_proba(X_te)[:, 1]
+
+        lr = make_pipeline(StandardScaler(),
+                           LogisticRegression(max_iter=5000, class_weight="balanced"))
+        lr.fit(X_tr, y_tr)
+        lr_auc = round(float(roc_auc_score(y_te, lr.predict_proba(X_te)[:, 1])), 3)
+
+        results[held] = {
+            "trained_on": train_names,
+            "n_train": int(len(y_tr)),
+            "held_out": held,
+            **metrics(y_te, p, f"trained on {' + '.join(train_names)}, tested on {held}"),
+            "logistic_auc": lr_auc,
+        }
+    return results
 
 
 def validate_general_on_nhanes():
@@ -207,7 +249,9 @@ def main():
               f"({y.mean():.1%}) - {desc}")
 
     results = {}
-    for a, b in [("India", "Germany"), ("Germany", "India")]:
+    # Every ordered pair, so no direction is cherry-picked.
+    pairs = [(a, b) for a in COHORTS for b in COHORTS if a != b]
+    for a, b in pairs:
         print(f"\nTraining on {a}, testing on {b}")
         r = run_direction(a, b)
         results[f"{a}_to_{b}"] = r
@@ -232,16 +276,36 @@ def main():
         print(f"    {k:<24} n={v['n']:<6} prev={v['prevalence']:<7} AUC={v['auc']}  "
               f"CI {v['auc_ci'][0]} to {v['auc_ci'][1]}")
 
+    print("\nLeave-one-cohort-out, the correct design once three sources exist")
+    loco = leave_one_cohort_out()
+    results["leave_one_cohort_out"] = loco
+    for held, r in loco.items():
+        print(f"  held out {held:<8} trained on {' + '.join(r['trained_on']):<18} "
+              f"n={r['n_train']:<5} AUC {r['auc']}  "
+              f"(95% CI {r['auc_ci'][0]} to {r['auc_ci'][1]})  logistic {r['logistic_auc']}")
+
     with open("external_validation.json", "w") as f:
         json.dump(results, f, indent=2)
 
+    pairwise = {k: v for k, v in results.items() if k != "leave_one_cohort_out"}
     print("\n" + "=" * 88)
     print(f"{'direction':<22}{'internal':<12}{'external':<12}{'drop':<10}{'external 95% CI'}")
     print("=" * 88)
-    for k, r in results.items():
+    for k, r in pairwise.items():
         ci = r["external"]["auc_ci"]
         print(f"{k.replace('_', ' '):<22}{r['internal']['auc']:<12}{r['external']['auc']:<12}"
               f"{r['auc_drop']:<10}{ci[0]} to {ci[1]}")
+
+    liver_pairs = [r for k, r in pairwise.items() if k != "general_to_nhanes"]
+    if liver_pairs:
+        mean_single = sum(r["external"]["auc"] for r in liver_pairs) / len(liver_pairs)
+        mean_loco = sum(r["auc"] for r in loco.values()) / len(loco)
+        print("\n" + "=" * 88)
+        print(f"Liver panel, mean external AUC")
+        print(f"  trained on ONE cohort   {mean_single:.3f}   ({len(liver_pairs)} directions)")
+        print(f"  trained on TWO cohorts  {mean_loco:.3f}   ({len(loco)} held-out cohorts)")
+        print(f"  gain from cohort diversity: {mean_loco - mean_single:+.3f}")
+
     print("\nwrote external_validation.json")
 
 

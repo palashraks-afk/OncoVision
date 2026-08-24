@@ -1,0 +1,94 @@
+{
+  "truth": {
+    "age": 58,
+    "wbc": 7.2,
+    "rbc": 4.55,
+    "hemoglobin": 13.6,
+    "platelets": 233,
+    "glucose": 104,
+    "calcium": 9.7,
+    "bun": 17,
+    "creatinine": 1.05,
+    "protein_total": 7.1,
+    "albumin": 4.2,
+    "ast": 31,
+    "alt": 27,
+    "bilirubin": 0.8,
+    "alkaline_phosphatase": 92,
+    "psa": 2.4,
+    "alpha_fetoprotein_level": 5.1,
+    "plasma_ca19_9": 22.0
+  },
+  "per_layout": {
+    "layout_1_two_column_table.pdf": {
+      "layout": "Two-column table with reference range column",
+      "status": "success",
+      "fields_expected": 18,
+      "correct": 18,
+      "wrong": [],
+      "missed": [],
+      "unexpected": [],
+      "accuracy": 1.0
+    },
+    "layout_2_stacked_single_column.pdf": {
+      "layout": "Narrow single column, value beneath the name",
+      "status": "success",
+      "fields_expected": 18,
+      "correct": 18,
+      "wrong": [],
+      "missed": [],
+      "unexpected": [],
+      "accuracy": 1.0
+    },
+    "layout_3_range_before_result.pdf": {
+      "layout": "Reference range printed before the result",
+      "status": "success",
+      "fields_expected": 18,
+      "correct": 18,
+      "wrong": [],
+      "missed": [],
+      "unexpected": [],
+      "accuracy": 1.0
+    },
+    "layout_4_abbreviation_codes.pdf": {
+      "layout": "Abbreviation codes, no full names",
+      "status": "success",
+      "fields_expected": 18,
+      "correct": 18,
+      "wrong": [],
+      "missed": [],
+      "unexpected": [],
+      "accuracy": 1.0
+    },
+    "layout_5_flag_markers.pdf": {
+      "layout": "Flag letters in the value column",
+      "status": "success",
+      "fields_expected": 18,
+      "correct": 18,
+      "wrong": [],
+      "missed": [],
+      "unexpected": [],
+      "accuracy": 1.0
+    }
+  },
+  "per_field": {
+    "age": "5/5",
+    "wbc": "5/5",
+    "rbc": "5/5",
+    "hemoglobin": "5/5",
+    "platelets": "5/5",
+    "glucose": "5/5",
+    "calcium": "5/5",
+    "bun": "5/5",
+    "creatinine": "5/5",
+    "protein_total": "5/5",
+    "albumin": "5/5",
+    "ast": "5/5",
+    "alt": "5/5",
+    "bilirubin": "5/5",
+    "alkaline_phosphatase": "5/5",
+    "psa": "5/5",
+    "alpha_fetoprotein_level": "5/5",
+    "plasma_ca19_9": "5/5"
+  }
+}

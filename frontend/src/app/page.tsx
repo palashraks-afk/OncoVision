@@ -56,15 +56,15 @@ const FALLBACK_METRICS: Record<string, any> = {
     n_samples: 569, n_test: 114, n_features: 4,
   },
   liver: {
-    label: "Liver Disease Risk", auc: 0.785, auc_ci: [0.697, 0.865],
-    sensitivity: 0.928, specificity: 0.206, brier: 0.1662, calibration_slope: 1.021,
-    ppv_at_population_prevalence: 0.03603, people_flagged_per_true_case: 27.8,
-    population_prevalence: 0.031, cohort_prevalence: 0.714,
-    baseline_logistic_auc: 0.831, baseline_age_sex_auc: 0.555,
-    n_samples: 583, n_test: 117, n_features: 8,
+    label: "Liver Disease Risk", auc: 0.892, auc_ci: [0.857, 0.924],
+    sensitivity: 0.595, specificity: 0.984, brier: 0.0543, calibration_slope: 1.166,
+    ppv_at_population_prevalence: 0.5435, people_flagged_per_true_case: 1.8,
+    population_prevalence: 0.031, cohort_prevalence: 0.122,
+    baseline_logistic_auc: 0.892, baseline_age_sex_auc: 0.592,
+    n_samples: 6059, n_test: 1212, n_features: 8,
   },
   pancreatic: {
-    label: "Pancreatic Cancer Risk", auc: 0.969, auc_ci: [0.94, 0.992],
+    label: "Pancreatic Cancer Risk", auc: 0.969, auc_ci: [0.938, 0.991],
     sensitivity: 0.731, specificity: 0.947, brier: 0.0617, calibration_slope: 0.46,
     ppv_at_population_prevalence: 0.00191, people_flagged_per_true_case: 524.6,
     population_prevalence: 0.000139, cohort_prevalence: 0.217,
@@ -76,17 +76,25 @@ const FALLBACK_METRICS: Record<string, any> = {
 // The only genuine external test in the project: train on one country's
 // patients, test on another's. Both cohorts are real, independent, and share
 // eight liver chemistry measurements after unit harmonisation.
+// Every ordered pair across three independent real liver cohorts, plus the
+// general panel against NHANES. Nothing from a test cohort touches training.
 const EXTERNAL_VALIDATION = [
-  {
-    direction: "Trained on India, tested on Germany",
-    trainN: 583, testN: 589, internal: 0.785, external: 0.623,
-    ci: [0.539, 0.71], drop: 0.162, logisticExternal: 0.736,
-  },
-  {
-    direction: "Trained on Germany, tested on India",
-    trainN: 589, testN: 583, internal: 0.995, external: 0.698,
-    ci: [0.654, 0.741], drop: 0.297, logisticExternal: 0.493,
-  },
+  { direction: "General panel to NHANES, 5,173 US adults", internal: 0.966, external: 0.596, ci: [0.572, 0.621], drop: 0.370 },
+  { direction: "Liver, Germany to India", internal: 0.995, external: 0.698, ci: [0.651, 0.741], drop: 0.297 },
+  { direction: "Liver, USA to India", internal: 0.700, external: 0.640, ci: [0.590, 0.690], drop: 0.060 },
+  { direction: "Liver, India to Germany", internal: 0.785, external: 0.623, ci: [0.539, 0.710], drop: 0.162 },
+  { direction: "Liver, India to USA", internal: 0.785, external: 0.575, ci: [0.539, 0.612], drop: 0.210 },
+  { direction: "Liver, Germany to USA", internal: 0.995, external: 0.531, ci: [0.510, 0.553], drop: 0.464 },
+  { direction: "Liver, USA to Germany", internal: 0.700, external: 0.442, ci: [0.371, 0.513], drop: 0.258 },
+];
+
+// Leave-one-cohort-out: train on two countries, test on the third. This is the
+// design the pairwise table argues for, and it is what the shipped liver panel
+// is built on.
+const LEAVE_ONE_OUT = [
+  { held: "India", trained: "Germany + USA", n: 5476, auc: 0.710, ci: [0.664, 0.753], logistic: 0.753 },
+  { held: "Germany", trained: "India + USA", n: 5470, auc: 0.641, ci: [0.564, 0.724], logistic: 0.654 },
+  { held: "USA", trained: "India + Germany", n: 1172, auc: 0.580, ci: [0.547, 0.612], logistic: 0.655 },
 ];
 
 // Trained and measured, deliberately not served. Reported rather than deleted,
@@ -1335,6 +1343,51 @@ export default function OncovisionDashboard() {
                     The simpler model transferred better, which is the usual outcome when a complex
                     model has learned a cohort&apos;s quirks. That is why the liver and pancreatic
                     panels now ship logistic regression rather than the ensemble.
+                  </p>
+                </div>
+
+
+                <h4 className="text-base display mt-8 mb-2">Leave one cohort out</h4>
+                <p className="text-sm text-[var(--ink-2)] mb-4 leading-relaxed">
+                  The pairwise table says single-source training does not survive a change of
+                  population. The fix is to train on more than one. Each row below trains on two
+                  countries and tests on the third, which the held-out country contributes nothing to.
+                </p>
+                <div className="overflow-x-auto">
+                  <table className="w-full text-left text-sm">
+                    <thead>
+                      <tr className="field-label border-b border-[var(--rule)]">
+                        <th className="pb-3 pr-4">Held out</th>
+                        <th className="pb-3 pr-4">Trained on</th>
+                        <th className="pb-3 pr-4">Train n</th>
+                        <th className="pb-3 pr-4">AUC</th>
+                        <th className="pb-3 pr-4">95% CI</th>
+                        <th className="pb-3">Logistic</th>
+                      </tr>
+                    </thead>
+                    <tbody className="divide-y divide-[var(--rule)]">
+                      {LEAVE_ONE_OUT.map(r => (
+                        <tr key={r.held} className="text-[var(--ink-2)]">
+                          <td className="py-3 pr-4 display text-[var(--stamp)]">{r.held}</td>
+                          <td className="py-3 pr-4">{r.trained}</td>
+                          <td className="py-3 pr-4 data">{r.n.toLocaleString()}</td>
+                          <td className="py-3 pr-4 data text-[var(--ink)]">{r.auc}</td>
+                          <td className="py-3 pr-4 data text-[var(--ink-3)]">{r.ci[0]} to {r.ci[1]}</td>
+                          <td className="py-3 data text-[var(--ok)]">{r.logistic}</td>
+                        </tr>
+                      ))}
+                    </tbody>
+                  </table>
+                </div>
+                <div className="mt-5 p-4 border border-[var(--stamp-line)] bg-[var(--stamp-bg)]">
+                  <p className="text-xs text-[var(--ink-2)] leading-relaxed">
+                    Mean external AUC is <span className="data text-[var(--ink)]">0.585</span> when the
+                    model trains on one cohort and <span className="data text-[var(--ink)]">0.644</span>{" "}
+                    when it trains on two. Cohort diversity is worth about 0.06 AUC on a population the
+                    model has never seen, which is why the liver panel now trains on all three pooled,
+                    6,059 patients across three continents. Plain logistic regression also beat the
+                    ensemble in all three folds, so the honest expected performance on a genuinely new
+                    population is nearer 0.69 than the 0.892 measured internally.
                   </p>
                 </div>
 

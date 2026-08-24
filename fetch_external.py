@@ -250,6 +250,67 @@ def fetch_nhanes() -> pd.DataFrame:
     return out.dropna(subset=["age", "gender", "bmi", "smoking", "any_cancer"])
 
 
+def fetch_nhanes_liver() -> pd.DataFrame:
+    """
+    NHANES 2017-2018 liver cohort, United States. A third independent test for
+    the liver panel, and the only population-based one.
+
+    India and Germany are both clinical cohorts: people appeared in them because
+    someone ordered a test. NHANES samples the public, so its 5% liver-condition
+    prevalence is closer to what a screening tool would actually meet, and it
+    carries race and ethnicity, which neither of the other two do.
+
+    Uses the same eight features. NHANES publishes these analytes in
+    conventional units (LBXSTB in mg/dL, LBXSAL and LBXSTP in g/dL), which match
+    the Indian cohort, so no conversion is needed here. That was checked rather
+    than assumed, because the German cohort did need converting.
+
+    Label is MCQ160L, ever told by a doctor you had a liver condition.
+    """
+    import io
+    import ssl
+    import urllib.request
+
+    base = "https://wwwn.cdc.gov/Nchs/Data/Nhanes/Public/2017/DataFiles/"
+    ctx = ssl.create_default_context()
+    ctx.check_hostname = False
+    ctx.verify_mode = ssl.CERT_NONE
+
+    def grab(fname):
+        req = urllib.request.Request(base + fname, headers={"User-Agent": "Mozilla/5.0"})
+        raw = urllib.request.urlopen(req, timeout=300, context=ctx).read()
+        return pd.read_sas(io.BytesIO(raw), format="xport")
+
+    demo = grab("DEMO_J.XPT")[["SEQN", "RIAGENDR", "RIDAGEYR", "RIDRETH3"]]
+    bio = grab("BIOPRO_J.XPT")[
+        ["SEQN", "LBXSTB", "LBXSAPSI", "LBXSATSI", "LBXSASSI", "LBXSTP", "LBXSAL"]
+    ]
+    mcq = grab("MCQ_J.XPT")[["SEQN", "MCQ160L"]]
+
+    df = demo.merge(bio, on="SEQN", how="inner").merge(mcq, on="SEQN", how="inner")
+    df = df[df["RIDAGEYR"] >= 20]
+
+    race = df["RIDRETH3"].map({
+        1: "Mexican American", 2: "Other Hispanic", 3: "Non-Hispanic White",
+        4: "Non-Hispanic Black", 6: "Non-Hispanic Asian", 7: "Other or multiracial",
+    })
+
+    out = pd.DataFrame({
+        "age": pd.to_numeric(df["RIDAGEYR"], errors="coerce"),
+        "gender": (df["RIAGENDR"] == 1).astype(int),
+        "bilirubin": pd.to_numeric(df["LBXSTB"], errors="coerce"),
+        "alkaline_phosphatase": pd.to_numeric(df["LBXSAPSI"], errors="coerce"),
+        "alt": pd.to_numeric(df["LBXSATSI"], errors="coerce"),
+        "ast": pd.to_numeric(df["LBXSASSI"], errors="coerce"),
+        "protein_total": pd.to_numeric(df["LBXSTP"], errors="coerce"),
+        "albumin": pd.to_numeric(df["LBXSAL"], errors="coerce"),
+        "race_ethnicity": race,
+        # 1 = yes, 2 = no. 7 and 9 are refused and don't know, dropped.
+        "liver_disease": df["MCQ160L"].map({1: 1, 2: 0}),
+    })
+    return out.dropna(subset=[c for c in out.columns if c != "race_ethnicity"])
+
+
 def main():
     print("Indian Liver Patient Dataset (UCI 225), India")
     ilpd = fetch_ilpd()
@@ -269,6 +330,13 @@ def main():
          f"{int(coi.breast_cancer.sum())} patients, "
          f"{int((1 - coi.breast_cancer).sum())} controls")
 
+    print("\nNHANES 2017-2018 liver cohort (CDC), United States")
+    nhl = fetch_nhanes_liver()
+    save(nhl, "nhanes_liver_usa.csv",
+         f"{int(nhl.liver_disease.sum())} with a liver condition, "
+         f"{int((1 - nhl.liver_disease).sum())} without "
+         f"({nhl.liver_disease.mean():.1%}, population based rather than clinical)")
+
     print("\nWisconsin Prognostic Breast Cancer (UCI 16)")
     wp = fetch_wpbc()
     save(wp, "wpbc_breast_external.csv",
@@ -282,6 +350,27 @@ def main():
          f"{int((1 - nh.any_cancer).sum())} not ({nh.any_cancer.mean():.1%} prevalence, "
          f"nationally representative rather than case-control)")
     print("    race and ethnicity present:", nh.race_ethnicity.value_counts().to_dict())
+
+    # Pooled three-continent liver cohort, which is what the shipped panel
+    # trains on. Leave-one-cohort-out in external_validation.py shows training
+    # on two cohorts instead of one raises mean external AUC by about 0.06, so
+    # pooling is not a convenience, it is the measured better choice. The cohort
+    # column is kept so that validation can hold one source out.
+    shared_cols = ["age", "gender", "bilirubin", "alkaline_phosphatase",
+                   "alt", "ast", "protein_total", "albumin", "liver_disease"]
+    pooled = pd.concat(
+        [
+            ilpd[shared_cols].assign(cohort="India"),
+            hcv[shared_cols].assign(cohort="Germany"),
+            nhl[shared_cols].assign(cohort="USA"),
+        ],
+        ignore_index=True,
+    )
+    print("\nPooled liver cohort across three continents")
+    save(pooled, "liver_pooled_3cohort.csv",
+         f"{int(pooled.liver_disease.sum())} with liver disease of {len(pooled)} "
+         f"({pooled.liver_disease.mean():.1%}), from "
+         + ", ".join(f"{k} {v}" for k, v in pooled.cohort.value_counts().items()))
 
     shared = sorted(set(ilpd.columns) & set(hcv.columns) - {"liver_disease"})
     print(f"\nShared liver features across India and Germany ({len(shared)}): {', '.join(shared)}")

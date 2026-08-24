@@ -348,9 +348,9 @@
   "liver": {
     "domain": "liver",
     "cohort_design": "583 real patients, India. Externally validated on 589 independent patients from Germany.",
-    "n_total": 583,
-    "n_train": 466,
-    "n_test": 117,
+    "n_total": 6059,
+    "n_train": 4847,
+    "n_test": 1212,
     "n_features": 8,
     "features": [
       "age",
@@ -362,111 +362,123 @@
       "protein_total",
       "albumin"
     ],
-    "cohort_prevalence": 0.714,
-    "cv_auc_train_only": 0.735,
+    "cohort_prevalence": 0.122,
+    "cv_auc_train_only": 0.857,
     "uncalibrated": {
       "variant": "uncalibrated",
-      "auc": 0.781,
+      "auc": 0.896,
       "auc_ci": [
-        0.691,
-        0.86
+        0.862,
+        0.929
       ],
-      "sensitivity": 0.795,
+      "sensitivity": 0.716,
       "sensitivity_ci": [
-        0.702,
-        0.875
+        0.648,
+        0.788
       ],
-      "specificity": 0.529,
+      "specificity": 0.942,
       "specificity_ci": [
-        0.346,
-        0.697
+        0.927,
+        0.955
       ],
-      "ppv_in_cohort": 0.805,
-      "brier": 0.1757,
-      "calibration_slope": 1.301,
-      "calibration_intercept": 0.34,
+      "ppv_in_cohort": 0.631,
+      "brier": 0.111,
+      "calibration_slope": 2.097,
+      "calibration_intercept": -1.276,
       "reliability": [
         {
+          "bin": "0.0 to 0.2",
+          "n": 191,
+          "predicted": 0.179,
+          "observed": 0.016
+        },
+        {
           "bin": "0.2 to 0.4",
-          "n": 21,
-          "predicted": 0.322,
-          "observed": 0.429
+          "n": 736,
+          "predicted": 0.281,
+          "observed": 0.035
         },
         {
           "bin": "0.4 to 0.6",
-          "n": 29,
-          "predicted": 0.506,
-          "observed": 0.552
+          "n": 152,
+          "predicted": 0.466,
+          "observed": 0.138
         },
         {
           "bin": "0.6 to 0.8",
-          "n": 46,
-          "predicted": 0.703,
-          "observed": 0.804
+          "n": 73,
+          "predicted": 0.705,
+          "observed": 0.562
         },
         {
           "bin": "0.8 to 1.0",
-          "n": 21,
-          "predicted": 0.862,
-          "observed": 1.0
+          "n": 60,
+          "predicted": 0.856,
+          "observed": 0.95
         }
       ],
-      "ppv_at_population_prevalence": 0.05129,
-      "npv_at_population_prevalence": 0.98777,
-      "people_flagged_per_true_case": 19.5,
+      "ppv_at_population_prevalence": 0.28224,
+      "npv_at_population_prevalence": 0.99045,
+      "people_flagged_per_true_case": 3.5,
       "population_prevalence": 0.031,
       "prevalence_source": "Cirrhosis in US adults, NHANES, per 100,000"
     },
     "calibrated": {
       "variant": "isotonic calibrated",
-      "auc": 0.785,
+      "auc": 0.892,
       "auc_ci": [
-        0.697,
-        0.865
+        0.857,
+        0.924
       ],
-      "sensitivity": 0.928,
+      "sensitivity": 0.595,
       "sensitivity_ci": [
-        0.865,
-        0.976
+        0.514,
+        0.674
       ],
-      "specificity": 0.206,
+      "specificity": 0.984,
       "specificity_ci": [
-        0.077,
-        0.355
+        0.976,
+        0.991
       ],
-      "ppv_in_cohort": 0.74,
-      "brier": 0.1662,
-      "calibration_slope": 1.021,
-      "calibration_intercept": -1.499,
+      "ppv_in_cohort": 0.838,
+      "brier": 0.0543,
+      "calibration_slope": 1.166,
+      "calibration_intercept": 0.729,
       "reliability": [
         {
+          "bin": "0.0 to 0.2",
+          "n": 1060,
+          "predicted": 0.054,
+          "observed": 0.042
+        },
+        {
           "bin": "0.2 to 0.4",
-          "n": 6,
-          "predicted": 0.309,
-          "observed": 0.333
+          "n": 34,
+          "predicted": 0.263,
+          "observed": 0.294
         },
         {
           "bin": "0.4 to 0.6",
-          "n": 23,
-          "predicted": 0.523,
-          "observed": 0.522
+          "n": 33,
+          "predicted": 0.51,
+          "observed": 0.545
         },
         {
           "bin": "0.6 to 0.8",
-          "n": 40,
-          "predicted": 0.711,
-          "observed": 0.6
+          "n": 43,
+          "predicted": 0.695,
+          "observed": 0.791
         },
         {
           "bin": "0.8 to 1.0",
-          "n": 48,
-          "predicted": 0.926,
-          "observed": 0.938
+          "n": 42,
+          "predicted": 0.91,
+          "observed": 0.976
         }
       ],
-      "ppv_at_population_prevalence": 0.03603,
-      "npv_at_population_prevalence": 0.98889,
-      "people_flagged_per_true_case": 27.8,
+      "ppv_at_population_prevalence": 0.5435,
+      "npv_at_population_prevalence": 0.98699,
+      "people_flagged_per_true_case": 1.8,
       "population_prevalence": 0.031,
       "prevalence_source": "Cirrhosis in US adults, NHANES, per 100,000"
     },
@@ -475,10 +487,10 @@
         "auc": 0.5
       },
       "logistic_regression": {
-        "auc": 0.831,
+        "auc": 0.892,
         "auc_ci": [
-          0.758,
-          0.899
+          0.857,
+          0.923
         ]
       },
       "age_sex_only": {
@@ -486,48 +498,48 @@
           "age",
           "gender"
         ],
-        "auc": 0.555,
+        "auc": 0.592,
         "auc_ci": [
-          0.435,
-          0.666
+          0.546,
+          0.642
         ]
       }
     },
     "subgroups": {
       "sex: female": {
-        "n": 27,
-        "positives": 19,
-        "auc": 0.757,
+        "n": 627,
+        "positives": 52,
+        "auc": 0.851,
         "auc_ci": [
-          0.524,
-          0.941
+          0.783,
+          0.913
         ]
       },
       "sex: male": {
-        "n": 90,
-        "positives": 64,
-        "auc": 0.796,
+        "n": 585,
+        "positives": 96,
+        "auc": 0.913,
         "auc_ci": [
-          0.699,
-          0.884
+          0.871,
+          0.951
         ]
       },
-      "age under 46": {
-        "n": 57,
-        "positives": 38,
-        "auc": 0.774,
+      "age under 52": {
+        "n": 601,
+        "positives": 73,
+        "auc": 0.907,
         "auc_ci": [
-          0.637,
-          0.893
+          0.854,
+          0.95
         ]
       },
-      "age 46 and over": {
-        "n": 60,
-        "positives": 45,
-        "auc": 0.787,
+      "age 52 and over": {
+        "n": 611,
+        "positives": 75,
+        "auc": 0.871,
         "auc_ci": [
-          0.669,
-          0.893
+          0.815,
+          0.917
         ]
       }
     }
@@ -553,17 +565,17 @@
       "variant": "uncalibrated",
       "auc": 0.968,
       "auc_ci": [
-        0.939,
+        0.937,
         0.991
       ],
       "sensitivity": 0.846,
       "sensitivity_ci": [
-        0.692,
-        0.964
+        0.69,
+        0.968
       ],
       "specificity": 0.915,
       "specificity_ci": [
-        0.855,
+        0.856,
         0.968
       ],
       "ppv_in_cohort": 0.733,
@@ -612,18 +624,18 @@
       "variant": "isotonic calibrated",
       "auc": 0.969,
       "auc_ci": [
-        0.94,
-        0.992
+        0.938,
+        0.991
       ],
       "sensitivity": 0.731,
       "sensitivity_ci": [
-        0.552,
-        0.889
+        0.55,
+        0.9
       ],
       "specificity": 0.947,
       "specificity_ci": [
-        0.898,
-        0.99
+        0.895,
+        0.989
       ],
       "ppv_in_cohort": 0.792,
       "brier": 0.0617,
@@ -674,8 +686,8 @@
       "logistic_regression": {
         "auc": 0.968,
         "auc_ci": [
-          0.936,
-          0.991
+          0.935,
+          0.99
         ]
       },
       "age_sex_only": {
@@ -685,8 +697,8 @@
         ],
         "auc": 0.5,
         "auc_ci": [
-          0.37,
-          0.622
+          0.379,
+          0.625
         ]
       }
     },
@@ -696,7 +708,7 @@
         "positives": 12,
         "auc": 0.959,
         "auc_ci": [
-          0.895,
+          0.902,
           0.997
         ]
       },
@@ -705,7 +717,7 @@
         "positives": 14,
         "auc": 0.978,
         "auc_ci": [
-          0.943,
+          0.939,
           0.999
         ]
       },
@@ -723,7 +735,7 @@
         "positives": 14,
         "auc": 0.983,
         "auc_ci": [
-          0.949,
+          0.95,
           1.0
         ]
       }
@@ -746,8 +758,8 @@
       "variant": "uncalibrated",
       "auc": 0.753,
       "auc_ci": [
-        0.438,
-        0.989
+        0.445,
+        0.98
       ],
       "sensitivity": 0.769,
       "sensitivity_ci": [
@@ -793,12 +805,12 @@
       "variant": "isotonic calibrated",
       "auc": 0.786,
       "auc_ci": [
-        0.505,
-        1.0
+        0.485,
+        0.99
       ],
       "sensitivity": 0.769,
       "sensitivity_ci": [
-        0.529,
+        0.533,
         1.0
       ],
       "specificity": 0.571,
@@ -855,8 +867,8 @@
       "logistic_regression": {
         "auc": 0.769,
         "auc_ci": [
-          0.5,
-          0.97
+          0.49,
+          0.976
         ]
       },
       "age_sex_only": {
@@ -865,8 +877,8 @@
         ],
         "auc": 0.676,
         "auc_ci": [
-          0.412,
-          0.913
+          0.407,
+          0.909
         ]
       }
     },
