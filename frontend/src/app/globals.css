@@ -1,27 +1,54 @@
 @import "tailwindcss";
 
 /*
-  Palette taken from a laser-printed clinical requisition, not from a UI kit.
-  Paper is very slightly warm, ink is near-black rather than pure, rules are a
-  cool hairline grey, and there are exactly two signal colours: the red of an
-  H/L flag stamp and the dark teal of a department stamp.
+  Dark, but not the neon-on-black look every AI app ships.
+
+  Two rules keep it out of that territory. Nothing glows: no coloured box
+  shadows, no gradients, and separation comes from hairline rules the way it
+  does on a printed report. And the accents are desaturated: the cyan is a
+  muted instrument teal rather than #06b6d4, the red is a signal red rather
+  than a hot one, so a flagged value stands out because everything around it
+  is quiet.
+
+  Every colour in the interface is declared here and nowhere else.
 */
 :root {
-  --paper: #fcfcfa;
-  --paper-2: #f3f3ef;
-  --paper-3: #eceae4;
-  --ink: #141414;
-  --ink-2: #4a4a45;
-  --ink-3: #77776f;
-  --rule: #d8d8d2;
-  --rule-strong: #b9b9b1;
-  --flag: #b3261e;
-  --flag-bg: #fbeceb;
-  --stamp: #1f4e4a;
-  --stamp-bg: #edf3f2;
-  --ok: #2f6b4f;
-  --warn: #8a5a00;
-  --warn-bg: #fdf4e3;
+  /* Ground and surfaces */
+  --paper: #0d1014;
+  --paper-2: #141922;
+  --paper-3: #1c222c;
+  --surface: #11161e;
+
+  /* Text, stepping down in weight rather than in hue */
+  --ink: #e6e9ed;
+  --ink-2: #a2a9b4;
+  --ink-3: #78808c;
+  --ink-4: #5a626d;
+
+  /* Structure */
+  --rule: #232a35;
+  --rule-strong: #333c4a;
+
+  /* Signals. Muted on purpose. */
+  --stamp: #5aa4ab;
+  --stamp-hover: #74bcc2;
+  --stamp-bg: #14232a;
+  --stamp-line: #2f5c63;
+  /* Primary action. Deep enough that it does not dominate the page. */
+  --stamp-solid: #1e4348;
+  --stamp-solid-hover: #275860;
+
+  --flag: #d2685e;
+  --flag-bg: #2a1715;
+  --flag-line: #6b342e;
+
+  --ok: #6aa383;
+  --ok-bg: #142019;
+  --ok-line: #35563f;
+
+  --warn: #c2954e;
+  --warn-bg: #241c10;
+  --warn-line: #5c4726;
 }
 
 html,
@@ -100,6 +127,11 @@ body {
   background: var(--paper-3);
   border-left: 1px solid var(--rule-strong);
   border-right: 1px solid var(--rule-strong);
+}
+
+/* Label sitting under the shaded reference region. */
+.refbar-caption {
+  color: var(--ink-4);
 }
 
 .refbar-tick {
