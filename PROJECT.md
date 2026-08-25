@@ -436,21 +436,44 @@ a session and are gone when the tab closes.
 
 Stated in the application itself, not only here.
 
-**Every cohort is case-control, not a screening series.** These records come from people who
-already had a reason to be tested, so the cohorts run 21 to 37 percent positive against real
+**Most cohorts are case-control, not screening series.** These records come from people who
+already had a reason to be tested, so several cohorts run 6 to 49 percent positive against real
 incidence measured in hundredths of a percent. That gap is why the precision table matters more
-than the AUC table.
+than the AUC table. The two NHANES panels are the exceptions: they are nationally representative.
+
+**Two panels are triage, not screening, and must not be read as screening.** The ovarian panel
+assumes a mass has already been found; the cervical panel assumes a woman is already being
+assessed. Their precision is projected onto referral prevalence. Applied to an unselected
+population the cervical panel would flag roughly 7,383 women per true case. The prior is printed
+on each panel for exactly this reason.
+
+**The cervical panel is the weakest evidence here.** Cross-validated AUC 0.587 against a held-out
+0.725, on 55 positive biopsies. The gap means the held-out split was favourable and the honest
+estimate is nearer 0.6. It ships because its interval excludes chance and it beats age alone by
+0.267, but it is the one panel whose headline number should be treated with suspicion.
+
+**The ovarian panel has no external cohort.** Single centre, single country, 349 patients, one
+eight-year window. It is the strongest new panel by internal measurement and the least tested
+across institutions. A second ovarian cohort is the highest-value thing that could be added next.
 
 **The breast panel contradicts the schema rule.** Its four inputs are nuclear morphology from a
 fine needle aspirate, which requires a biopsy that already happened. It interprets a biopsy rather
-than screening for one.
+than screening for one. It also carries no age, sex or race, so it has no subgroup measurement at
+all.
 
 **The liver panel detects liver disease, not liver cancer.** It trains on 35,511 real NHANES
 adults and is externally tested against India and Germany. Germany remains the hardest transfer
-at 0.442, which is kept visible.
+at 0.442, below chance, which points at a probable unit or encoding mismatch in that mapping
+rather than genuine model failure. It is unresolved and kept visible rather than dropped.
 
-**No external validation.** Every number comes from a held-out split of the same cohort the model
-trained on. This is the single largest remaining gap.
+**The general panel barely beats age and sex**, 0.732 against 0.727. Routine bloodwork was
+measured and made it worse. It is shipped with that number stated because removing it would hide
+a real result about what lab reports can and cannot do.
+
+**External validation is uneven.** Pancreatic is validated leave-one-tissue-bank-out, liver
+against India, Germany and later NHANES cycles, general against a held-out cycle, breast against
+WPBC for sensitivity only. Ovarian and cervical have none. Prostate was withdrawn partly because
+none could be found.
 
 **No prospective test and no IRB.** No real patient report has been run through this and followed
 to an outcome. There is no ethics approval, registration, or clinical validation of any kind.

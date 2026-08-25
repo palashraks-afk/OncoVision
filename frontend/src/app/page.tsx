@@ -899,7 +899,7 @@ export default function OncovisionDashboard() {
                   A full panel gives you twenty or thirty numbers, and most look fine on their own. What is hard
                   for a person to do, and straightforward for a trained model, is to read all of them together
                   alongside your history and ask whether that combination resembles patients who turned out to
-                  have cancer. Oncovision runs that comparison against four models trained on anonymised patient
+                  have cancer. Oncovision runs that comparison against six models trained on anonymised patient
                   records and returns a probability for each cancer type alongside a healthy baseline. It is a
                   second read on data you already own. It is not a diagnosis and it does not replace your doctor.
                 </p>
