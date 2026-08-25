@@ -1,0 +1,73 @@
+{
+  "lung": {
+    "n": 45395,
+    "cases": 117,
+    "baseline_features": [
+      "age",
+      "gender",
+      "smoking"
+    ],
+    "model_mean": 0.857,
+    "baseline_mean": 0.84,
+    "mean_difference": 0.017,
+    "difference_range": [
+      0.008,
+      0.028
+    ],
+    "wins": 5,
+    "repeats": 5,
+    "verdict": "helps"
+  },
+  "colorectal": {
+    "n": 45624,
+    "cases": 346,
+    "baseline_features": [
+      "age",
+      "gender"
+    ],
+    "model_mean": 0.827,
+    "baseline_mean": 0.825,
+    "mean_difference": 0.003,
+    "difference_range": [
+      -0.001,
+      0.008
+    ],
+    "wins": 2,
+    "repeats": 5,
+    "verdict": "adds nothing"
+  },
+  "prostate": {
+    "n": 22549,
+    "cases": 738,
+    "baseline_features": [
+      "age"
+    ],
+    "model_mean": 0.875,
+    "baseline_mean": 0.875,
+    "mean_difference": -0.0,
+    "difference_range": [
+      -0.002,
+      0.001
+    ],
+    "wins": 2,
+    "repeats": 5,
+    "verdict": "adds nothing"
+  },
+  "breast": {
+    "n": 24156,
+    "cases": 689,
+    "baseline_features": [
+      "age"
+    ],
+    "model_mean": 0.794,
+    "baseline_mean": 0.79,
+    "mean_difference": 0.004,
+    "difference_range": [
+      -0.0,
+      0.007
+    ],
+    "wins": 4,
+    "repeats": 5,
+    "verdict": "adds nothing"
+  }
+}
