@@ -1,0 +1,107 @@
+{
+  "shipped_seed": 42,
+  "panels": {
+    "general": {
+      "n_rows": 23923,
+      "n_positive": 750,
+      "n_splits": 5,
+      "mean_auc": 0.743,
+      "median_auc": 0.75,
+      "std_auc": 0.028,
+      "min_auc": 0.692,
+      "max_auc": 0.772,
+      "split_range_2p5_97p5": [
+        0.696,
+        0.771
+      ],
+      "shipped_split_auc": 0.732,
+      "shipped_split_percentile": 20.0,
+      "shipped_minus_mean": -0.011
+    },
+    "breast": {
+      "n_rows": 569,
+      "n_positive": 212,
+      "n_splits": 30,
+      "mean_auc": 0.959,
+      "median_auc": 0.964,
+      "std_auc": 0.02,
+      "min_auc": 0.901,
+      "max_auc": 0.991,
+      "split_range_2p5_97p5": [
+        0.915,
+        0.989
+      ],
+      "shipped_split_auc": 0.972,
+      "shipped_split_percentile": 73.3,
+      "shipped_minus_mean": 0.013
+    },
+    "liver": {
+      "n_rows": 35511,
+      "n_positive": 1436,
+      "n_splits": 5,
+      "mean_auc": 0.75,
+      "median_auc": 0.751,
+      "std_auc": 0.005,
+      "min_auc": 0.744,
+      "max_auc": 0.756,
+      "split_range_2p5_97p5": [
+        0.745,
+        0.756
+      ],
+      "shipped_split_auc": 0.753,
+      "shipped_split_percentile": 60.0,
+      "shipped_minus_mean": 0.002
+    },
+    "pancreatic": {
+      "n_rows": 600,
+      "n_positive": 130,
+      "n_splits": 30,
+      "mean_auc": 0.969,
+      "median_auc": 0.968,
+      "std_auc": 0.013,
+      "min_auc": 0.939,
+      "max_auc": 0.995,
+      "split_range_2p5_97p5": [
+        0.946,
+        0.988
+      ],
+      "shipped_split_auc": 0.969,
+      "shipped_split_percentile": 50.0,
+      "shipped_minus_mean": 0.0
+    },
+    "ovarian": {
+      "n_rows": 349,
+      "n_positive": 171,
+      "n_splits": 30,
+      "mean_auc": 0.928,
+      "median_auc": 0.928,
+      "std_auc": 0.026,
+      "min_auc": 0.852,
+      "max_auc": 0.969,
+      "split_range_2p5_97p5": [
+        0.876,
+        0.962
+      ],
+      "shipped_split_auc": 0.949,
+      "shipped_split_percentile": 70.0,
+      "shipped_minus_mean": 0.021
+    },
+    "cervical": {
+      "n_rows": 858,
+      "n_positive": 55,
+      "n_splits": 30,
+      "mean_auc": 0.594,
+      "median_auc": 0.603,
+      "std_auc": 0.096,
+      "min_auc": 0.421,
+      "max_auc": 0.789,
+      "split_range_2p5_97p5": [
+        0.429,
+        0.736
+      ],
+      "shipped_split_auc": 0.725,
+      "shipped_split_percentile": 96.7,
+      "shipped_minus_mean": 0.13
+    }
+  }
+}

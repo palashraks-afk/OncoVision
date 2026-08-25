@@ -51,7 +51,7 @@ NORMAL = {
 LABELS = {
     "general": "General", "breast": "Breast", "liver": "Liver",
     "pancreatic": "Pancreatic", "prostate": "Prostate",
-    "ovarian": "Ovarian", "cervical": "Cervical",
+    "ovarian": "Ovarian", "cervical": "Cervical", "colorectal": "Bowel",
 }
 
 SOURCES = {
@@ -62,6 +62,7 @@ SOURCES = {
     "prostate": "Stanford prostate cohort",
     "ovarian": "Soochow ovarian mass cohort",
     "cervical": "Caracas colposcopy referral cohort",
+    "colorectal": "NHANES 2005-2014, US adults",
 }
 
 models = {
@@ -114,6 +115,10 @@ def note_for(domain: str, v: dict) -> str:
                 f"creatinine {v['creatinine']:g}.")
     if domain == "prostate":
         return f"{age} year old man. PSA at {v['psa']:g} ng/mL, everything else normal."
+    if domain == "colorectal":
+        return (f"{age} year old {who}. Blood count and chemistry only: haemoglobin "
+                f"{v['hemoglobin']:g}, platelets {v['platelets']:g}, WBC {v['wbc']:g}, "
+                f"albumin {v['albumin']:g}. No bowel symptoms recorded.")
     if domain == "ovarian":
         when = "post-menopausal" if v.get("menopause") == 1 else "pre-menopausal"
         return (f"{age} year old {when} woman with an ovarian mass already found on "

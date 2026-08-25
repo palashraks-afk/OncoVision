@@ -1,0 +1,155 @@
+{
+  "lung": {
+    "lifetime_events": 57,
+    "windows": [
+      {
+        "window": "4y",
+        "events": 34,
+        "verdict": "too few events"
+      },
+      {
+        "window": "8y",
+        "events": 45,
+        "verdict": "too few events"
+      },
+      {
+        "window": "12y",
+        "events": 50,
+        "verdict": "too few events"
+      },
+      {
+        "window": "20y",
+        "events": 54,
+        "verdict": "too few events"
+      },
+      {
+        "window": "lifetime",
+        "events": 57,
+        "verdict": "too few events"
+      }
+    ]
+  },
+  "colorectal": {
+    "lifetime_events": 173,
+    "windows": [
+      {
+        "window": "4y",
+        "events": 60,
+        "verdict": "too few events"
+      },
+      {
+        "window": "8y",
+        "events": 96,
+        "baseline_auc": 0.774,
+        "with_blood_auc": 0.804,
+        "with_blood_ci": [
+          0.767,
+          0.84
+        ],
+        "gain": 0.03,
+        "verdict": "usable"
+      },
+      {
+        "window": "12y",
+        "events": 113,
+        "baseline_auc": 0.801,
+        "with_blood_auc": 0.819,
+        "with_blood_ci": [
+          0.786,
+          0.85
+        ],
+        "gain": 0.018,
+        "verdict": "bloodwork adds nothing"
+      },
+      {
+        "window": "20y",
+        "events": 143,
+        "baseline_auc": 0.798,
+        "with_blood_auc": 0.838,
+        "with_blood_ci": [
+          0.812,
+          0.862
+        ],
+        "gain": 0.04,
+        "verdict": "usable"
+      },
+      {
+        "window": "lifetime",
+        "events": 173,
+        "baseline_auc": 0.817,
+        "with_blood_auc": 0.838,
+        "with_blood_ci": [
+          0.814,
+          0.861
+        ],
+        "gain": 0.021,
+        "verdict": "usable"
+      }
+    ]
+  },
+  "prostate": {
+    "lifetime_events": 373,
+    "windows": [
+      {
+        "window": "4y",
+        "events": 153,
+        "baseline_auc": 0.84,
+        "with_blood_auc": 0.831,
+        "with_blood_ci": [
+          0.808,
+          0.853
+        ],
+        "gain": -0.008,
+        "verdict": "bloodwork adds nothing"
+      },
+      {
+        "window": "8y",
+        "events": 254,
+        "baseline_auc": 0.858,
+        "with_blood_auc": 0.858,
+        "with_blood_ci": [
+          0.842,
+          0.873
+        ],
+        "gain": 0.0,
+        "verdict": "bloodwork adds nothing"
+      },
+      {
+        "window": "12y",
+        "events": 314,
+        "baseline_auc": 0.861,
+        "with_blood_auc": 0.862,
+        "with_blood_ci": [
+          0.848,
+          0.875
+        ],
+        "gain": 0.0,
+        "verdict": "bloodwork adds nothing"
+      },
+      {
+        "window": "20y",
+        "events": 356,
+        "baseline_auc": 0.87,
+        "with_blood_auc": 0.872,
+        "with_blood_ci": [
+          0.86,
+          0.884
+        ],
+        "gain": 0.002,
+        "verdict": "bloodwork adds nothing"
+      },
+      {
+        "window": "lifetime",
+        "events": 373,
+        "baseline_auc": 0.874,
+        "with_blood_auc": 0.876,
+        "with_blood_ci": [
+          0.864,
+          0.887
+        ],
+        "gain": 0.002,
+        "verdict": "bloodwork adds nothing"
+      }
+    ]
+  }
+}

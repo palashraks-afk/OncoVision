@@ -336,6 +336,109 @@
       }
     }
   },
+  "colorectal": {
+    "label": "Bowel Cancer Risk",
+    "shipped": true,
+    "features": [
+      "age",
+      "gender",
+      "wbc",
+      "rbc",
+      "hemoglobin",
+      "platelets",
+      "glucose",
+      "calcium",
+      "bun",
+      "creatinine",
+      "protein_total",
+      "albumin",
+      "ast",
+      "alt",
+      "bilirubin",
+      "alkaline_phosphatase"
+    ],
+    "cohort_design": "23,794 US adults from NHANES 2005 to 2014, nationally representative. Age, sex and a complete blood count, which is the ColonFlag feature set, built from open data. 96 cases diagnosed within eight years of the draw, the smallest event count of any shipped panel, so its interval is correspondingly wide. Bloodwork adds 0.030 over age and sex. Lung and prostate were tested the same way and failed: lung on events, prostate because bloodwork adds nothing without PSA.",
+    "auc": 0.825,
+    "auc_std": 0.017,
+    "accuracy": 0.876,
+    "sensitivity": 0.421,
+    "specificity": 0.878,
+    "n_samples": 23794,
+    "n_positive": 96,
+    "n_features": 16,
+    "cv_folds": 5,
+    "threshold": 0.01,
+    "model_selection": {
+      "ensemble": 0.814,
+      "logistic": 0.832
+    },
+    "chosen_model": "logistic",
+    "held_out": {
+      "n_test": 4759,
+      "auc": 0.793,
+      "auc_ci": [
+        0.708,
+        0.867
+      ],
+      "sensitivity": 0.526,
+      "sensitivity_ci": [
+        0.286,
+        0.75
+      ],
+      "specificity": 0.853,
+      "specificity_ci": [
+        0.843,
+        0.862
+      ],
+      "brier": 0.004,
+      "calibration_slope": 0.656,
+      "ppv_at_population_prevalence": 0.0013,
+      "people_flagged_per_true_case": 768.4,
+      "population_prevalence": 0.000365,
+      "prevalence_source": "Colon and rectum, per 100,000 men and women per year",
+      "cohort_prevalence": 0.004,
+      "baseline_logistic_auc": 0.8,
+      "baseline_age_sex_auc": 0.817,
+      "subgroups": {
+        "sex: female": {
+          "n": 2525,
+          "positives": 13,
+          "auc": 0.809,
+          "auc_ci": [
+            0.696,
+            0.903
+          ]
+        },
+        "sex: male": {
+          "n": 2234,
+          "positives": 6,
+          "auc": 0.743,
+          "auc_ci": [
+            0.602,
+            0.876
+          ]
+        },
+        "age under 47": {
+          "n": 2333,
+          "positives": 1,
+          "auc": 0.69,
+          "auc_ci": [
+            0.674,
+            0.704
+          ]
+        },
+        "age 47 and over": {
+          "n": 2426,
+          "positives": 18,
+          "auc": 0.647,
+          "auc_ci": [
+            0.521,
+            0.767
+          ]
+        }
+      }
+    }
+  },
   "ovarian": {
     "label": "Ovarian Malignancy, in a known ovarian mass",
     "shipped": true,
@@ -388,17 +491,17 @@
       "n_test": 70,
       "auc": 0.949,
       "auc_ci": [
-        0.888,
-        0.993
+        0.886,
+        0.994
       ],
       "sensitivity": 0.853,
       "sensitivity_ci": [
-        0.72,
+        0.731,
         0.968
       ],
       "specificity": 0.944,
       "specificity_ci": [
-        0.853,
+        0.857,
         1.0
       ],
       "brier": 0.0797,
@@ -416,7 +519,7 @@
           "positives": 6,
           "auc": 0.818,
           "auc_ci": [
-            0.545,
+            0.539,
             1.0
           ]
         },
@@ -425,92 +528,8 @@
           "positives": 28,
           "auc": 0.972,
           "auc_ci": [
-            0.905,
+            0.909,
             1.0
-          ]
-        }
-      }
-    }
-  },
-  "cervical": {
-    "label": "Cervical Pre-cancer Risk",
-    "shipped": true,
-    "features": [
-      "age",
-      "sexual_partners",
-      "first_intercourse_age",
-      "pregnancies",
-      "smokes",
-      "smoking_years",
-      "smoking_packyears",
-      "hormonal_contraceptives",
-      "hormonal_contraceptives_years",
-      "iud",
-      "iud_years",
-      "stds",
-      "stds_number",
-      "stds_hpv",
-      "stds_diagnoses"
-    ],
-    "cohort_design": "858 women assessed for colposcopy at one hospital in Caracas, 55 with a positive biopsy. Prior-diagnosis columns are dropped as leakage. 55 events is below the roughly 96 needed for a tight estimate, so the interval runs 0.539 to 0.888: it excludes chance and beats age alone, 0.725 against 0.458, but it is the least certain panel here. Precision is projected onto the 6.4 percent prevalence among referred women, because at population incidence it would flag about 7,383 women per true case and would not be shippable.",
-    "auc": 0.615,
-    "auc_std": 0.066,
-    "accuracy": 0.651,
-    "sensitivity": 0.636,
-    "specificity": 0.652,
-    "n_samples": 858,
-    "n_positive": 55,
-    "n_features": 15,
-    "cv_folds": 5,
-    "threshold": 0.0636,
-    "model_selection": {
-      "ensemble": 0.638,
-      "logistic": 0.503
-    },
-    "chosen_model": "ensemble",
-    "held_out": {
-      "n_test": 172,
-      "auc": 0.725,
-      "auc_ci": [
-        0.547,
-        0.881
-      ],
-      "sensitivity": 0.636,
-      "sensitivity_ci": [
-        0.333,
-        0.909
-      ],
-      "specificity": 0.634,
-      "specificity_ci": [
-        0.556,
-        0.71
-      ],
-      "brier": 0.0568,
-      "calibration_slope": 1.087,
-      "ppv_at_population_prevalence": 0.10613,
-      "people_flagged_per_true_case": 9.4,
-      "population_prevalence": 0.064,
-      "prevalence_source": "Positive biopsy among women assessed for colposcopy, this cohort",
-      "cohort_prevalence": 0.064,
-      "baseline_logistic_auc": 0.572,
-      "baseline_age_sex_auc": 0.458,
-      "subgroups": {
-        "age under 25": {
-          "n": 82,
-          "positives": 7,
-          "auc": 0.78,
-          "auc_ci": [
-            0.578,
-            0.975
-          ]
-        },
-        "age 25 and over": {
-          "n": 90,
-          "positives": 4,
-          "auc": 0.709,
-          "auc_ci": [
-            0.275,
-            0.971
           ]
         }
       }

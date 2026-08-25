@@ -106,7 +106,7 @@ export type HistoryField = {
   // Which heading this sits under. The list runs to 22 fields once the
   // cervical panel's risk history is included, which is too many to read as
   // one flat block.
-  group: "General" | "Reproductive and sexual history";
+  group: "General" | "Reproductive history";
   type: "select" | "number";
   options?: { value: number; label: string }[];
   min?: number;
@@ -156,7 +156,10 @@ export const HISTORY_FIELDS: HistoryField[] = [
     options: [{ value: 0, label: "No" }, { value: 1, label: "Yes" }],
   },
 
-  // Read by the cervical panel, which is built almost entirely on these.
+  // Only menopausal status survives here. The cervical panel that read the
+  // sexual and reproductive history was withdrawn once repeated splits showed
+  // its published AUC was a lucky shuffle, and this project does not ask a
+  // patient for information no shipped model reads.
   // Cervical cancer is caused by persistent HPV infection, so these fields are
   // the exposure proxies for it rather than moral bookkeeping. Cutting the list
   // was tried and measured: eight of them scored 0.665 with an interval that
@@ -167,99 +170,15 @@ export const HISTORY_FIELDS: HistoryField[] = [
   // median, and the cervical panel reports reduced coverage when that happens.
   {
     key: "menopause", label: "Menopausal status", type: "select",
-    group: "Reproductive and sexual history",
+    group: "Reproductive history",
     meaning: "Read by the ovarian panel. CA 125 and HE4 are interpreted against different cut-offs before and after menopause.",
     options: [{ value: 0, label: "Pre-menopausal" }, { value: 1, label: "Post-menopausal" }],
-  },
-  {
-    key: "sexual_partners", label: "Lifetime sexual partners", type: "number",
-    group: "Reproductive and sexual history",
-    meaning: "A proxy for cumulative HPV exposure, which is the cause of nearly all cervical cancer.",
-    min: 0, max: 50, step: 1,
-  },
-  {
-    key: "first_intercourse_age", label: "Age at first intercourse", type: "number",
-    group: "Reproductive and sexual history",
-    meaning: "Earlier exposure means the cervix is exposed to HPV while it is still developing, which raises risk.",
-    min: 8, max: 60, step: 1, suffix: "years",
-  },
-  {
-    key: "pregnancies", label: "Pregnancies", type: "number",
-    group: "Reproductive and sexual history",
-    meaning: "Higher parity is an established cervical cancer risk factor, independent of HPV exposure.",
-    min: 0, max: 20, step: 1,
-  },
-  {
-    key: "smokes", label: "Currently smokes", type: "select",
-    group: "Reproductive and sexual history",
-    meaning: "Smoking roughly doubles cervical cancer risk in women who carry HPV.",
-    options: [{ value: 0, label: "No" }, { value: 1, label: "Yes" }],
-  },
-  {
-    key: "smoking_years", label: "Years smoking", type: "number",
-    group: "Reproductive and sexual history",
-    meaning: "Duration of tobacco exposure.",
-    min: 0, max: 70, step: 1, suffix: "years",
-  },
-  {
-    key: "smoking_packyears", label: "Pack-years", type: "number",
-    group: "Reproductive and sexual history",
-    meaning: "Packs per day multiplied by years smoked. The standard measure of total tobacco dose.",
-    min: 0, max: 200, step: 0.5, suffix: "pack-yrs",
-  },
-  {
-    key: "hormonal_contraceptives", label: "Hormonal contraceptives", type: "select",
-    group: "Reproductive and sexual history",
-    meaning: "Long term use is associated with a modest rise in cervical risk that reverses after stopping.",
-    options: [{ value: 0, label: "No" }, { value: 1, label: "Yes" }],
-  },
-  {
-    key: "hormonal_contraceptives_years", label: "Years on hormonal contraceptives", type: "number",
-    group: "Reproductive and sexual history",
-    meaning: "Duration matters more than use alone.",
-    min: 0, max: 50, step: 0.5, suffix: "years",
-  },
-  {
-    key: "iud", label: "IUD", type: "select",
-    group: "Reproductive and sexual history",
-    meaning: "Intrauterine device use is associated with lower cervical cancer risk in large pooled studies.",
-    options: [{ value: 0, label: "No" }, { value: 1, label: "Yes" }],
-  },
-  {
-    key: "iud_years", label: "Years with an IUD", type: "number",
-    group: "Reproductive and sexual history",
-    meaning: "Duration of intrauterine device use.",
-    min: 0, max: 50, step: 0.5, suffix: "years",
-  },
-  {
-    key: "stds", label: "Any sexually transmitted infection", type: "select",
-    group: "Reproductive and sexual history",
-    meaning: "A history of any STI indicates exposure through the same route HPV takes.",
-    options: [{ value: 0, label: "No" }, { value: 1, label: "Yes" }],
-  },
-  {
-    key: "stds_number", label: "Number of STIs", type: "number",
-    group: "Reproductive and sexual history",
-    meaning: "How many separate infections have been diagnosed.",
-    min: 0, max: 20, step: 1,
-  },
-  {
-    key: "stds_hpv", label: "HPV", type: "select",
-    group: "Reproductive and sexual history",
-    meaning: "A recorded HPV infection. Persistent high risk HPV is the direct cause of nearly all cervical cancer.",
-    options: [{ value: 0, label: "Negative" }, { value: 1, label: "Positive" }],
-  },
-  {
-    key: "stds_diagnoses", label: "STI diagnoses on record", type: "number",
-    group: "Reproductive and sexual history",
-    meaning: "The count of distinct diagnoses in the record, which can exceed the number of infections.",
-    min: 0, max: 20, step: 1,
   },
 ];
 
 export const HISTORY_GROUPS: HistoryField["group"][] = [
   "General",
-  "Reproductive and sexual history",
+  "Reproductive history",
 ];
 
 export const HISTORY_KEYS = HISTORY_FIELDS.map(f => f.key);

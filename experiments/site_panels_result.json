@@ -1,0 +1,80 @@
+{
+  "lung": {
+    "lifetime_cases_with_bloodwork": 57,
+    "recent_cases_with_bloodwork": 34,
+    "min_events_required": 96,
+    "verdict": "NOT ENOUGH EVENTS"
+  },
+  "colorectal": {
+    "lifetime_cases_with_bloodwork": 173,
+    "recent_cases_with_bloodwork": 60,
+    "min_events_required": 96,
+    "arms": [
+      {
+        "arm": "baseline: age, sex",
+        "n_features": 2,
+        "auc": 0.817,
+        "auc_ci": [
+          0.786,
+          0.844
+        ]
+      },
+      {
+        "arm": "baseline + bloodwork",
+        "n_features": 16,
+        "auc": 0.838,
+        "auc_ci": [
+          0.812,
+          0.86
+        ]
+      },
+      {
+        "arm": "bloodwork only",
+        "n_features": 14,
+        "auc": 0.728,
+        "auc_ci": [
+          0.691,
+          0.763
+        ]
+      }
+    ],
+    "gain_over_baseline": 0.021,
+    "verdict": "SHIP"
+  },
+  "prostate": {
+    "lifetime_cases_with_bloodwork": 373,
+    "recent_cases_with_bloodwork": 153,
+    "min_events_required": 96,
+    "arms": [
+      {
+        "arm": "baseline: age, sex",
+        "n_features": 1,
+        "auc": 0.874,
+        "auc_ci": [
+          0.861,
+          0.886
+        ]
+      },
+      {
+        "arm": "baseline + bloodwork",
+        "n_features": 15,
+        "auc": 0.876,
+        "auc_ci": [
+          0.864,
+          0.888
+        ]
+      },
+      {
+        "arm": "bloodwork only",
+        "n_features": 14,
+        "auc": 0.75,
+        "auc_ci": [
+          0.727,
+          0.773
+        ]
+      }
+    ],
+    "gain_over_baseline": 0.002,
+    "verdict": "BLOODWORK ADDS NOTHING"
+  }
+}

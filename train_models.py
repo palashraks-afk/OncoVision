@@ -64,6 +64,27 @@ WITHDRAWN = {
         "below the roughly 96 events needed. 97 records and two usable features, with no "
         "route to an external test, cannot support a clinical claim."
     ),
+    "cervical": (
+        "Withdrawn after the published 0.725 turned out to be a lucky split. "
+        "Repeating the identical 80/20 protocol 30 times with different seeds gives a mean "
+        "AUC of 0.594 with a standard deviation of 0.096 and a spread from 0.421 to 0.789. "
+        "The 0.725 that was being published sits at the 97th percentile of that "
+        "distribution, so it described one favourable shuffle rather than the model. Every "
+        "other panel's shipped split lands between the 20th and 73rd percentile of its own "
+        "distribution and is representative; this one was not. "
+        "At a mean of 0.594 the spread includes chance, which is the same reason prostate "
+        "was withdrawn, and the standard has to apply to both. "
+        "The cause is 55 positive biopsies against the roughly 96 events needed, so a single "
+        "test split carries about 11 cases and cannot estimate anything stably. "
+        "An external cohort was built rather than assumed missing: 11,100 women from NHANES "
+        "2005 to 2014 with the same risk history and 184 cervical cancers, in "
+        "fetch_nhanes_cervical.py. It remains available if the panel is ever rebuilt on a "
+        "cohort with enough events. See experiments/split_stability.py. "
+        "The training config was removed alongside the 14 sexual-history fields it needed, "
+        "because the schema guard correctly refuses features the app no longer collects. "
+        "fetch_cervical.py, fetch_nhanes_cervical.py and experiments/cervical_panel.py are "
+        "kept, so restoring the panel means re-adding those fields and the DATASETS entry."
+    ),
 }
 
 # Cohort design, stated on every panel because it bounds what the numbers mean.
@@ -89,6 +110,13 @@ COHORT_DESIGN = {
                   "chance, and a drop of only 0.007 from the internal random split, so the "
                   "panel transfers between institutions. It has still never met a screening "
                   "population, where it would flag roughly 525 people per true case.",
+    "colorectal": "23,794 US adults from NHANES 2005 to 2014, nationally representative. Age, "
+                  "sex and a complete blood count, which is the ColonFlag feature set, built "
+                  "from open data. 96 cases diagnosed within eight years of the draw, the "
+                  "smallest event count of any shipped panel, so its interval is correspondingly "
+                  "wide. Bloodwork adds 0.030 over age and sex. Lung and prostate were tested "
+                  "the same way and failed: lung on events, prostate because bloodwork adds "
+                  "nothing without PSA.",
     "ovarian": "349 women operated on at one Chinese hospital between 2011 and 2018. The "
                "controls are women whose ovarian mass proved benign, not healthy volunteers, "
                "so this separates malignant from benign rather than sick from well. It is a "
@@ -138,17 +166,11 @@ LAB_FIELDS = [
 HISTORY_FIELDS = [
     "gender", "smoking", "alcohol_intake", "physical_activity",
     "hepatitis_b", "hepatitis_c", "diabetes",
-    # Reproductive and sexual history. The cervical panel is built almost
-    # entirely on these, because cervical cancer is an HPV disease and these
-    # fields are the exposure proxies for it. Cutting the list was tried and
-    # measured: eight fields scored 0.665 with an interval containing chance
-    # and six scored 0.552, against 0.725 for the full set. See
-    # experiments/cervical_panel.py.
-    "menopause", "sexual_partners", "first_intercourse_age", "pregnancies",
-    "smokes", "smoking_years", "smoking_packyears",
-    "hormonal_contraceptives", "hormonal_contraceptives_years",
-    "iud", "iud_years",
-    "stds", "stds_number", "stds_hpv", "stds_diagnoses",
+    # Menopausal status, read by the ovarian panel. The rest of the
+    # reproductive and sexual history went with the cervical panel when it was
+    # withdrawn: no shipped model reads it, and asking a patient for fourteen
+    # intimate questions that nothing consumes is pure friction.
+    "menopause",
 ]
 
 APP_FIELDS = LAB_FIELDS + HISTORY_FIELDS
@@ -267,6 +289,56 @@ DATASETS = [
         "positive_means": "pancreatic ductal adenocarcinoma, separated from both healthy controls and benign hepatobiliary disease",
     },
     {
+        "name": "colorectal",
+        # 23,794 NHANES adults, 96 diagnosed with colon or rectal cancer within
+        # eight years of the blood draw.
+        #
+        # This is the ColonFlag idea built from open data: age, sex and a
+        # complete blood count. ColonFlag is the best known colorectal
+        # early-detection model, is exactly that feature set, reports AUCs in
+        # the low 0.80s, and is proprietary with no public data behind it. This
+        # reaches 0.804 against 0.774 for age and sex alone.
+        #
+        # The eight year window was swept, not chosen. Four years is the cleaner
+        # target but leaves 60 events, below the roughly 96 this project treats
+        # as a floor. Eight is the tightest window that clears it, at exactly
+        # 96, which makes this the smallest shipped panel by event count and
+        # the interval says so.
+        #
+        # Anyone diagnosed longer ago than the window is excluded rather than
+        # counted as a control, because labelling a survivor healthy is worse
+        # than the problem it would solve.
+        #
+        # Lung and prostate were tested the same way and are not shipped. Lung
+        # has 57 events at any window. Prostate has 373 and bloodwork adds
+        # +0.002, because prostate needs PSA and NHANES excludes diagnosed men
+        # from PSA testing. See experiments/site_window_sweep.py.
+        "file": "nhanes_colorectal.csv",
+        "label": "Bowel Cancer Risk",
+        "features": {
+            "age": lambda d: d["age"],
+            "gender": lambda d: d["gender"],
+            "wbc": lambda d: d["wbc"],
+            "rbc": lambda d: d["rbc"],
+            "hemoglobin": lambda d: d["hemoglobin"],
+            "platelets": lambda d: d["platelets"],
+            "glucose": lambda d: d["glucose"],
+            "calcium": lambda d: d["calcium"],
+            "bun": lambda d: d["bun"],
+            "creatinine": lambda d: d["creatinine"],
+            "protein_total": lambda d: d["protein_total"],
+            "albumin": lambda d: d["albumin"],
+            "ast": lambda d: d["ast"],
+            "alt": lambda d: d["alt"],
+            "bilirubin": lambda d: d["bilirubin"],
+            "alkaline_phosphatase": lambda d: d["alkaline_phosphatase"],
+        },
+        "target": lambda d: d["colorectal_cancer"].astype(int),
+        "positive_means": ("colon or rectal cancer diagnosed within eight years of the "
+                           "blood draw, with longer-ago survivors excluded rather than "
+                           "counted as healthy"),
+    },
+    {
         "name": "ovarian",
         # 349 women operated on at the Third Affiliated Hospital of Soochow
         # University, 171 with ovarian cancer and 178 with a benign ovarian
@@ -322,44 +394,6 @@ DATASETS = [
         "target": lambda d: d["ovarian_cancer"].astype(int),
         "positive_means": ("ovarian cancer on histology, separated from a benign ovarian "
                            "tumour rather than from a healthy woman"),
-    },
-    {
-        "name": "cervical",
-        # 858 women assessed at Hospital Universitario de Caracas, 55 with a
-        # positive cervical biopsy.
-        #
-        # Dx, Dx:Cancer, Dx:CIN and Dx:HPV are dropped in fetch_cervical.py.
-        # They record a diagnosis the patient already carries, so training on
-        # them would predict a biopsy result from the fact that the disease is
-        # already known. That single decision is the difference between the
-        # 0.725 here and the near-perfect numbers usually reported on this set.
-        #
-        # 55 positives is below the roughly 96 events needed to pin an estimate
-        # down, so the interval is wide, 0.539 to 0.888. It excludes chance and
-        # it beats age alone by a very wide margin, 0.725 against 0.458. The
-        # width ships with the panel rather than being hidden.
-        "file": "cervical_caracas.csv",
-        "label": "Cervical Pre-cancer Risk",
-        "features": {
-            "age": lambda d: d["age"],
-            "sexual_partners": lambda d: d["sexual_partners"],
-            "first_intercourse_age": lambda d: d["first_intercourse_age"],
-            "pregnancies": lambda d: d["pregnancies"],
-            "smokes": lambda d: d["smokes"],
-            "smoking_years": lambda d: d["smoking_years"],
-            "smoking_packyears": lambda d: d["smoking_packyears"],
-            "hormonal_contraceptives": lambda d: d["hormonal_contraceptives"],
-            "hormonal_contraceptives_years": lambda d: d["hormonal_contraceptives_years"],
-            "iud": lambda d: d["iud"],
-            "iud_years": lambda d: d["iud_years"],
-            "stds": lambda d: d["stds"],
-            "stds_number": lambda d: d["stds_number"],
-            "stds_hpv": lambda d: d["stds_hpv"],
-            "stds_diagnoses": lambda d: d["stds_diagnoses"],
-        },
-        "target": lambda d: d["cervical_biopsy_positive"].astype(int),
-        "positive_means": ("a positive cervical biopsy, meaning pre-cancerous or cancerous "
-                           "cells confirmed on histology"),
     },
     {
         "name": "prostate",

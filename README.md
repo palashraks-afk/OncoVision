@@ -33,16 +33,17 @@ how accurate that model is, and what the score is worth at real prevalence.
 
 ## What ships
 
-Six panels ship. One was withdrawn because the evidence did not support serving it.
+Six panels ship. Two were withdrawn because the evidence did not support serving them.
 
 | Panel | Trained on | Test AUC | 95% CI | Threshold | Sens | Spec | Flagged per true case |
 |---|---|---|---|---|---|---|---|
 | Breast malignancy | 569 Wisconsin biopsies | 0.972 | 0.942 to 0.994 | 38.8% | 0.81 | 0.94 | 52.7 |
 | Pancreatic cancer | 600 samples, 3 tissue banks | 0.969 | 0.938 to 0.991 | 16.6% | 1.00 | 0.88 | 842.8 |
-| Ovarian malignancy | 349 operated ovarian masses | 0.949 | 0.888 to 0.993 | 58.1% | 0.85 | 0.94 | 1.3 |
+| Ovarian malignancy | 349 operated ovarian masses | 0.949 | 0.886 to 0.994 | 58.1% | 0.85 | 0.94 | 1.3 |
+| Bowel cancer | 23,794 NHANES adults | 0.793 | 0.708 to 0.867 | 1.0% | 0.53 | 0.85 | 768.4 |
 | Liver disease | 35,511 NHANES adults | 0.753 | 0.723 to 0.784 | 4.2% | 0.55 | 0.80 | 9.9 |
 | General cancer | 23,923 NHANES adults | 0.732 | 0.692 to 0.770 | 2.9% | 0.68 | 0.65 | 16.9 |
-| Cervical pre-cancer | 858 Caracas referrals | 0.725 | **0.547** to 0.881 | 5.9% | 0.64 | 0.63 | 9.4 |
+| ~~Cervical~~ | 858 Caracas referrals | 0.725 | withdrawn, see below | | | | |
 | ~~Prostate~~ | 97 Stanford records | 0.786 | **0.505** to 0.99 | withdrawn | | | |
 
 ### Does each panel beat the obvious baseline?
@@ -50,12 +51,111 @@ Six panels ship. One was withdrawn because the evidence did not support serving 
 | Panel | Model | Logistic | Age and sex alone | Gain |
 |---|---|---|---|---|
 | Pancreatic | 0.969 | 0.968 | 0.500 | +0.469 |
-| Cervical | 0.725 | 0.572 | 0.458 | +0.267 |
-| Ovarian | 0.949 | 0.911 | 0.813 | +0.136 |
 | Liver | 0.753 | 0.731 | 0.602 | +0.151 |
+| Ovarian | 0.949 | 0.911 | 0.813 | +0.136 |
+| Bowel | 0.809 | 0.800 | 0.771 | +0.038 |
 | General | 0.732 | 0.731 | 0.727 | **+0.005** |
 
+Bowel is quoted from 20 paired repeats rather than a single split, for the
+reason given under "Colorectal had the same conflict" below. Its single-split
+figures are 0.793 against an 0.817 baseline, which is why one split was not
+allowed to decide it.
+
 The general panel is the weak one, and the interface says so rather than hiding it.
+
+### One split is not an estimate, and cervical proved it
+
+Every panel here published an AUC from a single 80/20 split with seed 42. That
+is the standard protocol and it hides a real problem: a split is one draw from
+a distribution, and on a small cohort that distribution is wide.
+
+So the whole protocol was repeated with different seeds, refitting from
+scratch each time, and the shipped split was located inside its own
+distribution. Reproduce with `python experiments/split_stability.py`.
+
+| Panel | Rows | Events | Mean AUC | Spread across splits | Shipped split | Percentile |
+|---|---|---|---|---|---|---|
+| Pancreatic | 600 | 130 | 0.969 | 0.939 to 0.995 | 0.969 | 50th |
+| Breast | 569 | 212 | 0.959 | 0.901 to 0.991 | 0.972 | 73rd |
+| Ovarian | 349 | 171 | 0.928 | 0.852 to 0.969 | 0.949 | 70th |
+| Liver | 35,511 | 1,436 | 0.750 | 0.744 to 0.756 | 0.753 | 60th |
+| General | 23,923 | 750 | 0.743 | 0.692 to 0.772 | 0.732 | 20th |
+| Cervical | 858 | 55 | **0.594** | **0.421 to 0.789** | 0.725 | **97th** |
+
+Five panels sit between the 20th and 73rd percentile of their own split
+distribution, which is what a representative number looks like. Cervical sat at
+the 97th. Its published 0.725 described one favourable shuffle, not the model.
+
+### Cervical is withdrawn
+
+At a mean of 0.594 with a spread running 0.421 to 0.789, the interval includes
+chance. That is the same standard prostate was withdrawn under, and applying it
+to one panel and not the other would make the standard meaningless.
+
+The cause is arithmetic rather than bad luck: 55 positive biopsies against the
+roughly 96 events needed, so a single test split carries about 11 cases and
+cannot estimate anything stably.
+
+The external cohort that was built for it survives the withdrawal. 11,100 women
+from NHANES 2005 to 2014 carrying the same risk history, with 184 cervical
+cancers, in `fetch_nhanes_cervical.py`. If the panel is ever rebuilt on a cohort
+with enough events, the transfer test is already there.
+
+### Colorectal had the same conflict, and won it
+
+Colorectal showed the mirror image and had to be arbitrated the same way rather
+than by picking the flattering number.
+
+    cross-validation, all 96 events    model 0.804, age and sex 0.774   +0.030
+    single held-out split, ~19 events  model 0.793, age and sex 0.817   -0.024
+
+Nineteen events cannot settle that. Twenty paired repeats on identical folds
+can: the model won **20 out of 20**, mean difference **+0.038**, with a 95 percent
+range of +0.011 to +0.066 that excludes zero. Reproduce with
+`python experiments/colorectal_vs_age.py`.
+
+So colorectal ships and cervical does not, and both decisions come from the same
+test rather than from which answer was more convenient.
+
+### Lung, colorectal and prostate were all requested. One survived measurement.
+
+All three were tested identically against NHANES, sweeping the diagnosis window
+from four years out to lifetime, because a lifetime target counts someone cured
+thirty years ago as positive and mostly predicts age. Reproduce with
+`python experiments/site_window_sweep.py`.
+
+| Site | Events at best window | Age and sex baseline | With bloodwork | Gain | Outcome |
+|---|---|---|---|---|---|
+| Colorectal | 96 at 8 years | 0.774 | **0.804** | **+0.030** | ships |
+| Prostate | 373 lifetime | 0.874 | 0.876 | +0.002 | not shipped |
+| Lung | 57 lifetime | n/a | n/a | n/a | not shipped |
+
+**Colorectal ships.** This is the ColonFlag idea rebuilt from open data: age,
+sex and a complete blood count. ColonFlag is the best known colorectal
+early-detection model, uses exactly that feature set, reports AUCs in the low
+0.80s, and is proprietary with no public data behind it. The eight year window
+is the tightest one clearing the roughly 96 event floor, which makes this the
+smallest shipped panel by event count and gives it the widest interval of any
+NHANES panel.
+
+**Prostate is not shipped, and the reason is structural rather than fixable.**
+Bloodwork adds between 0.000 and 0.002 over age alone at every single window
+tested, from 153 events at four years to 373 at lifetime. It is an age model
+wearing a lab coat. Prostate risk lives in PSA, and NHANES excludes men with a
+prostate cancer history from the PSA subsample by design, which leaves 17 cases
+paired with a PSA value. The older Stanford cohort has 97 records and a
+confidence interval whose lower bound sits on chance. Shipping any of these
+would mean printing a cancer risk score driven entirely by the patient's
+birthday.
+
+**Lung is not shipped for lack of events.** 34 cases at four years, rising only
+to 57 at lifetime, against a floor of roughly 96. Widening the window does not
+rescue it because the ceiling is how many people NHANES sampled who had lung
+cancer and survived to be interviewed, which is itself a survival bias. No
+public tabular cohort pairs lung cancer with a lab panel either: the open lung
+datasets are CT imaging, and the large screening trials that would answer this,
+NLST and PLCO, require an application and a data use agreement rather than a
+download.
 
 ### Two panels are triage, not population screening
 

@@ -47,6 +47,22 @@ app.add_middleware(
 MODEL_DIR = os.path.join(os.path.dirname(os.path.abspath(__file__)), "models")
 models = {}
 
+# Panels that only apply to one sex, using the app's coding: 0 female, 1 male.
+# Without this a man's lab report came back carrying an ovarian and a cervical
+# risk score.
+SEX_SPECIFIC = {
+    "ovarian": 0,
+    "cervical": 0,
+    "prostate": 1,
+}
+
+# The share of a panel's inputs that has to be real, rather than filled in from
+# a training median, before the panel is allowed to report a number. Set here
+# rather than per panel because the argument is the same for all of them: a
+# score assembled mostly out of medians describes the median patient, not the
+# person reading it.
+MIN_COVERAGE = 0.5
+
 # Ranges outside which a value cannot belong to a living patient. Anything
 # beyond these is treated as a typo and excluded rather than clamped.
 BIOLOGICAL_BOUNDS = {
@@ -529,10 +545,24 @@ async def predict_risk(data: PatientData):
         return {"status": "error", "message": "No usable values were provided."}
 
     results = {}
+    skipped = {}
 
     for name, bundle in models.items():
         features = bundle["feature_names"]
         medians = bundle.get("feature_medians", {})
+
+        # Anatomy gate. Reporting an ovarian or cervical risk score for a man is
+        # not a rounding error, it is nonsense, and it happened: a male lab
+        # report with a PSA on it came back with a "Raised" cervical panel.
+        # Sex is only a gate when the patient actually told us their sex.
+        required_sex = SEX_SPECIFIC.get(name)
+        if required_sex is not None and "gender" in values:
+            if float(values["gender"]) != float(required_sex):
+                skipped[bundle.get("label", name)] = (
+                    "Not applicable. This panel only applies to "
+                    + ("women." if required_sex == 0 else "men.")
+                )
+                continue
 
         row, supplied = [], []
         for feat in features:
@@ -543,6 +573,27 @@ async def predict_risk(data: PatientData):
                 row.append(medians.get(feat, 0.0))
 
         if not supplied:
+            continue
+
+        # Coverage gate. Anything the patient did not provide is filled with a
+        # training median, which is the right default for one or two blanks and
+        # completely wrong as the basis for a score. The cervical panel was
+        # reporting "Raised" from a single input out of fifteen: it knew the
+        # patient's age and invented the other fourteen.
+        #
+        # A panel has to know enough to be worth showing. That means a real
+        # share of its inputs, and at least one input that is not simply age or
+        # sex, since a score built only on demographics is not reading the lab
+        # report at all.
+        informative = [f for f in supplied if f not in ("age", "gender")]
+        coverage = len(supplied) / len(features)
+        if coverage < MIN_COVERAGE or not informative:
+            need = max(1, int(np.ceil(MIN_COVERAGE * len(features))))
+            skipped[bundle.get("label", name)] = (
+                f"Not enough information. This panel reads {len(features)} values and "
+                f"you have supplied {len(supplied)}. It needs at least {need}, "
+                f"including something beyond age and sex, before a score means anything."
+            )
             continue
 
         try:
@@ -614,15 +665,27 @@ async def predict_risk(data: PatientData):
         # threshold is chosen on training data by Youden's J and frozen in the
         # bundle, so the interface, the evaluation and the prospective analysis
         # all use the same number.
+        # The wording here is deliberately plain. "Above the operating threshold
+        # selected by Youden's J" is precise and means nothing to the person
+        # reading it, so the band says what it means in ordinary words and the
+        # exact number stays on the card underneath, unchanged.
         threshold_pct = float(bundle.get("threshold", 0.5)) * 100.0
         if proba >= threshold_pct * 2:
-            band = "Well above threshold"
+            band = "Clearly raised"
+            meaning = ("Well above the level this panel treats as worth a second look. "
+                       "Worth showing to a doctor, alongside the rest of your results.")
         elif proba >= threshold_pct:
-            band = "Above threshold"
+            band = "Raised"
+            meaning = ("Above the level this panel treats as worth a second look. "
+                       "That is a reason to ask a question, not a reason to panic.")
         elif proba >= threshold_pct * 0.5:
-            band = "Near threshold"
+            band = "Borderline"
+            meaning = ("Below the level this panel flags, but not by much. "
+                       "Usually nothing, and worth mentioning if you have symptoms.")
         else:
-            band = "Within range"
+            band = "Nothing unusual"
+            meaning = ("Nothing in the values you entered looks unusual to this panel. "
+                       "A normal result does not rule anything out.")
 
         metrics = bundle.get("metrics", {})
         held = bundle.get("held_out", {})
@@ -630,6 +693,7 @@ async def predict_risk(data: PatientData):
             "key": name,
             "risk": round(proba, 1),
             "band": band,
+            "meaning": meaning,
             "threshold": round(threshold_pct, 1),
             "above_threshold": bool(proba >= threshold_pct),
             "contributors": contributors[:6],
@@ -671,7 +735,16 @@ async def predict_risk(data: PatientData):
     baseline = {
         "key": "benign",
         "risk": round(100 - top, 1),
-        "band": "Nothing above threshold" if not flagged_panels else "Outranked by a flagged panel",
+        "band": "Nothing stood out" if not flagged_panels else "Something else stood out",
+        "meaning": (
+            "None of the panels found anything above the level it treats as worth a "
+            "second look. That is reassuring, but it is not a clean bill of health: "
+            "many cancers produce completely normal lab results early on."
+            if not flagged_panels else
+            "At least one panel found something worth a second look, so this "
+            "healthy-baseline score is correspondingly lower. Read the flagged "
+            "panel above rather than this number."
+        ),
         "threshold": None,
         "above_threshold": False,
         "contributors": [],
@@ -683,18 +756,22 @@ async def predict_risk(data: PatientData):
         "missing": [],
         "auc": None,
         "note": (
-            "Complement of the highest panel score. "
-            f"{len(flagged_panels)} panel(s) above their operating threshold, "
-            f"{all_flags} clinical marker threshold(s) crossed."
+            f"This is simply 100 minus the highest panel score above. "
+            f"{len(flagged_panels)} panel(s) came back raised, and "
+            f"{all_flags} individual lab value(s) sit outside their normal range."
         ),
     }
-    results["No Cancer Detected (Benign)"] = baseline
+    results["Nothing Flagged"] = baseline
 
     ordered = dict(sorted(results.items(), key=lambda kv: kv[1]["risk"], reverse=True))
 
     return {
         "status": "success",
         "predictions": ordered,
+        # Panels that did not run, and why. Returned rather than dropped so the
+        # interface can say "this needs more information" instead of quietly
+        # showing one fewer card, which reads like something broke.
+        "skipped": skipped,
         "ignored": ignored,
         "values_used": len(values),
     }

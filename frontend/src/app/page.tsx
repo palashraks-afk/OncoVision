@@ -48,7 +48,6 @@ const FALLBACK_METRICS: Record<string, any> = {
     people_flagged_per_true_case: 52.7,
     population_prevalence: 0.001325, cohort_prevalence: 0.373,
     baseline_logistic_auc: 0.964, baseline_age_sex_auc: null,
-    cv_auc: null,
     n_samples: 569, n_test: 114, n_features: 4,
   },
   pancreatic: {
@@ -60,11 +59,10 @@ const FALLBACK_METRICS: Record<string, any> = {
     people_flagged_per_true_case: 842.8,
     population_prevalence: 0.000139, cohort_prevalence: 0.217,
     baseline_logistic_auc: 0.968, baseline_age_sex_auc: 0.5,
-    cv_auc: null,
     n_samples: 600, n_test: 120, n_features: 6,
   },
   ovarian: {
-    label: "Ovarian Malignancy, in a known ovarian mass", auc: 0.949, auc_ci: [0.888, 0.993],
+    label: "Ovarian Malignancy, in a known ovarian mass", auc: 0.949, auc_ci: [0.886, 0.994],
     threshold: 58.1,
     sensitivity: 0.853, specificity: 0.944,
     brier: 0.0797, calibration_slope: 0.455,
@@ -72,8 +70,18 @@ const FALLBACK_METRICS: Record<string, any> = {
     people_flagged_per_true_case: 1.3,
     population_prevalence: 0.2, cohort_prevalence: 0.49,
     baseline_logistic_auc: 0.911, baseline_age_sex_auc: 0.813,
-    cv_auc: null,
     n_samples: 349, n_test: 70, n_features: 27,
+  },
+  colorectal: {
+    label: "Bowel Cancer Risk", auc: 0.793, auc_ci: [0.708, 0.867],
+    threshold: 1.0,
+    sensitivity: 0.526, specificity: 0.853,
+    brier: 0.004, calibration_slope: 0.656,
+    ppv_at_population_prevalence: 0.0013,
+    people_flagged_per_true_case: 768.4,
+    population_prevalence: 0.000365, cohort_prevalence: 0.004,
+    baseline_logistic_auc: 0.8, baseline_age_sex_auc: 0.817,
+    n_samples: 23794, n_test: 4759, n_features: 16,
   },
   liver: {
     label: "Liver Disease Risk", auc: 0.753, auc_ci: [0.723, 0.784],
@@ -84,7 +92,6 @@ const FALLBACK_METRICS: Record<string, any> = {
     people_flagged_per_true_case: 9.9,
     population_prevalence: 0.04, cohort_prevalence: 0.04,
     baseline_logistic_auc: 0.731, baseline_age_sex_auc: 0.602,
-    cv_auc: null,
     n_samples: 35511, n_test: 7103, n_features: 11,
   },
   general: {
@@ -96,20 +103,7 @@ const FALLBACK_METRICS: Record<string, any> = {
     people_flagged_per_true_case: 16.9,
     population_prevalence: 0.0314, cohort_prevalence: 0.031,
     baseline_logistic_auc: 0.731, baseline_age_sex_auc: 0.727,
-    cv_auc: null,
     n_samples: 23923, n_test: 4785, n_features: 5,
-  },
-  cervical: {
-    label: "Cervical Pre-cancer Risk", auc: 0.725, auc_ci: [0.547, 0.881],
-    threshold: 5.9,
-    sensitivity: 0.636, specificity: 0.634,
-    brier: 0.0568, calibration_slope: 1.087,
-    ppv_at_population_prevalence: 0.10613,
-    people_flagged_per_true_case: 9.4,
-    population_prevalence: 0.064, cohort_prevalence: 0.064,
-    baseline_logistic_auc: 0.572, baseline_age_sex_auc: 0.458,
-    cv_auc: null,
-    n_samples: 858, n_test: 172, n_features: 15,
   },
 };
 
@@ -122,8 +116,8 @@ const EXTERNAL_VALIDATION = [
   { direction: "General, NHANES held-out cycle 2013-2014", internal: 0.761, external: 0.748, ci: [0.711, 0.784], drop: 0.013 },
   { direction: "Liver, trained USA tested India", internal: 0.734, external: 0.640, ci: [0.590, 0.690], drop: 0.094 },
   { direction: "Liver, trained USA tested Germany", internal: 0.734, external: 0.442, ci: [0.371, 0.513], drop: 0.292 },
+  { direction: "Colorectal, single NHANES cohort, no external yet", internal: 0.809, external: null, ci: null, drop: null },
   { direction: "Ovarian, single centre, no external cohort found", internal: 0.949, external: null, ci: null, drop: null },
-  { direction: "Cervical, single centre, no external cohort found", internal: 0.725, external: null, ci: null, drop: null },
 ];
 
 // Leave-one-cohort-out: train on two countries, test on the third. This is the
@@ -131,11 +125,16 @@ const EXTERNAL_VALIDATION = [
 // is built on.
 // Measured, not assumed: routine bloodwork does not detect general cancer.
 // Tested on a held-out NHANES cycle against a recent-diagnosis target.
-const BLOODWORK_TEST = [
-  { arm: "Age and sex only", n: 2, auc: 0.729 },
-  { arm: "Age, sex, lifestyle (shipped)", n: 5, auc: 0.748 },
-  { arm: "All 14 blood values only", n: 14, auc: 0.663 },
-  { arm: "Everything combined", n: 19, auc: 0.737 },
+// One split is one draw. Repeating the whole 80/20 protocol with different
+// seeds shows where each shipped number actually sits in its own distribution.
+// This is what withdrew the cervical panel.
+const SPLIT_STABILITY = [
+  { panel: "Pancreatic", mean: 0.969, spread: "0.939 to 0.995", shipped: 0.969, pct: 50, ok: true },
+  { panel: "Breast", mean: 0.959, spread: "0.901 to 0.991", shipped: 0.972, pct: 73, ok: true },
+  { panel: "Ovarian", mean: 0.928, spread: "0.852 to 0.969", shipped: 0.949, pct: 70, ok: true },
+  { panel: "Liver", mean: 0.750, spread: "0.744 to 0.756", shipped: 0.753, pct: 60, ok: true },
+  { panel: "General", mean: 0.743, spread: "0.692 to 0.772", shipped: 0.732, pct: 20, ok: true },
+  { panel: "Cervical, withdrawn", mean: 0.594, spread: "0.421 to 0.789", shipped: 0.725, pct: 97, ok: false },
 ];
 
 // Trained and measured, deliberately not served. Reported rather than deleted,
@@ -188,6 +187,10 @@ export default function OncovisionDashboard() {
   const [loading, setLoading] = useState(false);
   const [parsing, setParsing] = useState(false);
   const [results, setResults] = useState<any>(null);
+  // Panels the API declined to score, and why. Shown rather than dropped: a
+  // card that silently disappears reads as a bug, and "this panel needs more
+  // information" is the actual answer.
+  const [skipped, setSkipped] = useState<Record<string, string>>({});
   const [ignored, setIgnored] = useState<Record<string, string>>({});
   const [expanded, setExpanded] = useState<string | null>(null);
   const [uploadedFiles, setUploadedFiles] = useState<string[]>([]);
@@ -221,6 +224,7 @@ export default function OncovisionDashboard() {
     setActiveCase(drawn);
     setFormData({ ...EMPTY, ...asStrings(caseValues(drawn)) });
     setResults(null);
+    setSkipped({});
     setIgnored({});
     setExpanded(null);
     setUploadedFiles([]);
@@ -231,6 +235,7 @@ export default function OncovisionDashboard() {
     setFormData({ ...EMPTY });
     setActiveCase(null);
     setResults(null);
+    setSkipped({});
     setIgnored({});
     setExpanded(null);
     setUploadedFiles([]);
@@ -290,6 +295,7 @@ export default function OncovisionDashboard() {
       } else {
         setResults(data.predictions);
         setIgnored(data.ignored || {});
+        setSkipped(data.skipped || {});
       }
     } catch {
       setNotice("Analysis failed. The server may still be starting up, so try again in a moment.");
@@ -302,16 +308,19 @@ export default function OncovisionDashboard() {
   // against real prevalence, so on a 4 percent condition a genuinely concerning
   // result sits near 10 percent.
   const bandStyle = (d: any, isBenign: boolean) => {
+    // Wording is plain on purpose. The precise number stays on the card; the
+    // label just has to be readable by someone who is worried and not a
+    // statistician.
     if (isBenign) {
       return d.risk >= 50
-        ? { text: "text-[var(--ok)]", bg: "bg-[var(--ok)]", label: "Nothing above threshold" }
-        : { text: "text-[var(--ink-2)]", bg: "bg-[var(--ink-4)]", label: "Outranked by a flagged panel" };
+        ? { text: "text-[var(--ok)]", bg: "bg-[var(--ok)]", label: "Nothing stood out" }
+        : { text: "text-[var(--ink-2)]", bg: "bg-[var(--ink-4)]", label: "Something else stood out" };
     }
     const t = d.threshold ?? 50;
-    if (d.risk >= t * 2) return { text: "text-[var(--flag)]", bg: "bg-[var(--flag)]", label: "Well above threshold" };
-    if (d.risk >= t) return { text: "text-[var(--flag)]", bg: "bg-[var(--flag)]", label: "Above threshold" };
-    if (d.risk >= t * 0.5) return { text: "text-[var(--warn)]", bg: "bg-[var(--warn)]", label: "Near threshold" };
-    return { text: "text-[var(--ok)]", bg: "bg-[var(--ok)]", label: "Within range" };
+    if (d.risk >= t * 2) return { text: "text-[var(--flag)]", bg: "bg-[var(--flag)]", label: "Clearly raised" };
+    if (d.risk >= t) return { text: "text-[var(--flag)]", bg: "bg-[var(--flag)]", label: "Raised" };
+    if (d.risk >= t * 0.5) return { text: "text-[var(--warn)]", bg: "bg-[var(--warn)]", label: "Borderline" };
+    return { text: "text-[var(--ok)]", bg: "bg-[var(--ok)]", label: "Nothing unusual" };
   };
 
   const sortedResults = results ? Object.entries(results) : [];
@@ -703,15 +712,31 @@ export default function OncovisionDashboard() {
                               methodology page under "Precision once the disease
                               is rare", so the numbers remain in the project.
                             */}
+                            {/*
+                              Plain English first, the statistics underneath.
+                              Someone reading a cancer risk score is often
+                              frightened, and "above the operating threshold"
+                              tells them nothing. The exact numbers are
+                              unchanged and still on the card.
+                            */}
+                            {d.meaning && (
+                              <p className="text-[11px] text-[var(--ink-2)] leading-relaxed mb-3">
+                                {d.meaning}
+                              </p>
+                            )}
                             {!isBenign && (
                               <div className="flex flex-wrap gap-x-4 gap-y-1 text-[10px] text-[var(--ink-3)] font-bold uppercase tracking-wider">
-                                <span>
-                                  AUC {d.auc}
-                                  {d.auc_ci && <span className="text-[var(--ink-4)] normal-case"> (95% CI {d.auc_ci[0]} to {d.auc_ci[1]})</span>}
+                                <span title="How well this panel separated people who had the disease from people who did not, on data it had never seen. 0.5 is a coin flip, 1.0 is perfect.">
+                                  Accuracy {d.auc}
+                                  {d.auc_ci && <span className="text-[var(--ink-4)] normal-case"> (likely between {d.auc_ci[0]} and {d.auc_ci[1]})</span>}
                                 </span>
-                                <span>Sens {d.sensitivity}</span>
-                                <span>Spec {d.specificity}</span>
-                                <span>{d.inputs_used} of {d.inputs_total} inputs supplied</span>
+                                <span title="Of people who did have the disease, the share this panel correctly flagged.">
+                                  Catches {Math.round((d.sensitivity ?? 0) * 100)}%
+                                </span>
+                                <span title="Of people who did not have the disease, the share this panel correctly left alone.">
+                                  Correctly clears {Math.round((d.specificity ?? 0) * 100)}%
+                                </span>
+                                <span>{d.inputs_used} of {d.inputs_total} values used</span>
                               </div>
                             )}
                             {isBenign && d.note && (
@@ -859,6 +884,28 @@ export default function OncovisionDashboard() {
                           </div>
                         );
                       })}
+
+                      {/*
+                        Panels that did not run. Shown on purpose. A card that
+                        quietly disappears looks like the app broke, and the
+                        real answer is more useful: either it needs more of
+                        your values, or it does not apply to you.
+                      */}
+                      {Object.keys(skipped).length > 0 && (
+                        <div className="mt-2 p-4 border border-[var(--rule)] bg-[var(--paper-2)]">
+                          <p className="text-[10px] text-[var(--ink-3)] uppercase font-bold tracking-widest mb-2">
+                            Panels not scored
+                          </p>
+                          <div className="space-y-2">
+                            {Object.entries(skipped).map(([panel, why]) => (
+                              <div key={panel} className="text-[11px] leading-relaxed">
+                                <span className="font-bold text-[var(--ink-2)]">{panel}.</span>{" "}
+                                <span className="text-[var(--ink-3)]">{why}</span>
+                              </div>
+                            ))}
+                          </div>
+                        </div>
+                      )}
                     </div>
                   )}
                 </div>
