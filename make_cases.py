@@ -37,11 +37,21 @@ NORMAL = {
     "radius_mean": 11.4, "texture_mean": 17.2, "perimeter_mean": 72.6, "area_mean": 400,
     "gender": 0, "smoking": 0, "alcohol_intake": 0.5, "physical_activity": 6,
     "hepatitis_b": 0, "hepatitis_c": 0, "diabetes": 0,
+    # Red cell and platelet indices, GGT, and the pelvic-mass tumour markers.
+    "hematocrit": 42, "mcv": 89, "mch": 30, "rdw": 13.1, "mpv": 9.8,
+    "neutrophil_pct": 58, "ggt": 22, "ca125": 12, "he4": 45, "cea": 1.5,
+    # Reproductive and sexual history, at an unremarkable reading.
+    "menopause": 0, "sexual_partners": 2, "first_intercourse_age": 19,
+    "pregnancies": 1, "smokes": 0, "smoking_years": 0, "smoking_packyears": 0,
+    "hormonal_contraceptives": 0, "hormonal_contraceptives_years": 0,
+    "iud": 0, "iud_years": 0, "stds": 0, "stds_number": 0, "stds_hpv": 0,
+    "stds_diagnoses": 0,
 }
 
 LABELS = {
     "general": "General", "breast": "Breast", "liver": "Liver",
     "pancreatic": "Pancreatic", "prostate": "Prostate",
+    "ovarian": "Ovarian", "cervical": "Cervical",
 }
 
 SOURCES = {
@@ -50,6 +60,8 @@ SOURCES = {
     "liver": "NHANES 2005-2018, US adults",
     "pancreatic": "Pancreatic biomarker cohort",
     "prostate": "Stanford prostate cohort",
+    "ovarian": "Soochow ovarian mass cohort",
+    "cervical": "Caracas colposcopy referral cohort",
 }
 
 models = {
@@ -102,6 +114,21 @@ def note_for(domain: str, v: dict) -> str:
                 f"creatinine {v['creatinine']:g}.")
     if domain == "prostate":
         return f"{age} year old man. PSA at {v['psa']:g} ng/mL, everything else normal."
+    if domain == "ovarian":
+        when = "post-menopausal" if v.get("menopause") == 1 else "pre-menopausal"
+        return (f"{age} year old {when} woman with an ovarian mass already found on "
+                f"imaging. CA 125 at {v['ca125']:g} U/mL, HE4 at {v['he4']:g} pmol/L, "
+                f"CEA {v['cea']:g}, platelets {v['platelets']:g}, albumin {v['albumin']:g}.")
+    if domain == "cervical":
+        bits = []
+        if v.get("stds_hpv") == 1: bits.append("HPV on record")
+        if v.get("smokes") == 1: bits.append(f"smokes, {v['smoking_packyears']:g} pack-years")
+        if float(v.get("hormonal_contraceptives_years", 0)) > 0:
+            bits.append(f"{v['hormonal_contraceptives_years']:g} years on hormonal contraceptives")
+        tail = ", ".join(bits) if bits else "no HPV recorded and no tobacco use"
+        return (f"{age} year old woman being assessed for colposcopy. "
+                f"{int(v['sexual_partners'])} lifetime partners, first intercourse at "
+                f"{int(v['first_intercourse_age'])}, {int(v['pregnancies'])} pregnancies. {tail}.")
     smoke = {0: "never smoked", 1: "former smoker", 2: "current smoker"}[int(v.get("smoking", 0))]
     drink = float(v.get("alcohol_intake", 0))
     return (f"{age} year old {who}, {smoke}. BMI {v['bmi']:g}, "

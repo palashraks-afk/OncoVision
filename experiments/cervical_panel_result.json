@@ -1,0 +1,46 @@
+{
+  "question": "Can a cervical panel replace the withdrawn prostate one?",
+  "n": 858,
+  "cases": 55,
+  "features": [
+    "Age",
+    "Number of sexual partners",
+    "First sexual intercourse",
+    "Num of pregnancies",
+    "Smokes",
+    "Smokes (years)",
+    "Smokes (packs/year)",
+    "Hormonal Contraceptives",
+    "Hormonal Contraceptives (years)",
+    "IUD",
+    "IUD (years)",
+    "STDs",
+    "STDs (number)",
+    "STDs:HPV",
+    "STDs: Number of diagnosis"
+  ],
+  "dropped_as_leakage": [
+    "Dx:Cancer",
+    "Dx:CIN",
+    "Dx:HPV",
+    "Dx"
+  ],
+  "auc": 0.725,
+  "auc_ci": [
+    0.539,
+    0.888
+  ],
+  "logistic_auc": 0.572,
+  "age_only_auc": 0.458,
+  "threshold": 0.0593,
+  "sensitivity": 0.636,
+  "specificity": 0.634,
+  "referral_prevalence": 0.064,
+  "ppv_at_referral_prevalence": 0.1061,
+  "npv_at_referral_prevalence": 0.9622,
+  "referred_per_true_case": 9.4,
+  "ppv_at_population_incidence": 0.000135,
+  "flagged_per_true_case_population": 7383.3,
+  "beats_chance": true,
+  "beats_age_alone": true
+}

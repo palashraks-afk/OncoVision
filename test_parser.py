@@ -60,6 +60,20 @@ TRUTH = {
     "psa": 2.4,
     "alpha_fetoprotein_level": 5.1,
     "plasma_ca19_9": 22.0,
+    # Added when the ovarian and cervical panels shipped. CA 125 is the one
+    # that matters most here: "CA" is also the abbreviation for calcium, so if
+    # longest-synonym-wins ever regressed, a CA 125 of 18.4 would be read as a
+    # calcium of 18.4, which is an incompatible-with-life reading.
+    "ca125": 18.4,
+    "he4": 61.3,
+    "cea": 1.9,
+    "ggt": 34,
+    "hematocrit": 41.2,
+    "mcv": 90.5,
+    "mch": 29.9,
+    "rdw": 13.4,
+    "mpv": 10.1,
+    "neutrophil_pct": 62.5,
 }
 
 # How each analyte is printed, per layout style: full name, abbreviation, units
@@ -83,6 +97,16 @@ ANALYTES = [
     ("psa",                     "Prostate Specific Antigen", "PSA", "ng/mL", "0.0 - 4.0"),
     ("alpha_fetoprotein_level", "Alpha-Fetoprotein",       "AFP",   "ng/mL", "0.0 - 10.0"),
     ("plasma_ca19_9",           "CA 19-9",                 "CA19-9", "U/mL", "0 - 37"),
+    ("ca125",                   "Cancer Antigen 125",      "CA 125", "U/mL", "0 - 35"),
+    ("he4",                     "Human Epididymis Protein 4", "HE4", "pmol/L", "0 - 140"),
+    ("cea",                     "Carcinoembryonic Antigen", "CEA",  "ng/mL", "0.0 - 5.0"),
+    ("ggt",                     "Gamma-Glutamyl Transferase", "GGT", "U/L",  "8 - 50"),
+    ("hematocrit",              "Hematocrit",              "HCT",   "%",     "38.5 - 50.0"),
+    ("mcv",                     "Mean Corpuscular Volume", "MCV",   "fL",    "80.0 - 100.0"),
+    ("mch",                     "Mean Corpuscular Hemoglobin", "MCH", "pg",  "27.0 - 33.0"),
+    ("rdw",                     "Red Cell Distribution Width", "RDW", "%",   "11.5 - 14.5"),
+    ("mpv",                     "Mean Platelet Volume",    "MPV",   "fL",    "7.5 - 12.0"),
+    ("neutrophil_pct",          "Neutrophils",             "NEUT",  "%",     "40.0 - 70.0"),
 ]
 
 

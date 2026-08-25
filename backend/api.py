@@ -63,6 +63,19 @@ BIOLOGICAL_BOUNDS = {
     "physical_activity": (0, 10), "genetic_risk": (0, 2), "cancer_history": (0, 1),
     "family_history_cancer": (0, 1), "hepatitis_b": (0, 1), "hepatitis_c": (0, 1),
     "cirrhosis_history": (0, 1), "diabetes": (0, 1),
+    # Red cell and platelet indices, GGT, and the pelvic-mass tumour markers.
+    "hematocrit": (0.0, 70.0), "mcv": (0.0, 150.0), "mch": (0.0, 60.0),
+    "rdw": (0.0, 40.0), "mpv": (0.0, 20.0), "neutrophil_pct": (0.0, 100.0),
+    "ggt": (0.0, 2000.0), "ca125": (0.0, 50000.0), "he4": (0.0, 50000.0),
+    "cea": (0.0, 10000.0),
+    # Reproductive and sexual history, read by the cervical panel.
+    "menopause": (0, 1), "sexual_partners": (0, 50),
+    "first_intercourse_age": (8, 60), "pregnancies": (0, 20),
+    "smokes": (0, 1), "smoking_years": (0, 70), "smoking_packyears": (0, 200),
+    "hormonal_contraceptives": (0, 1), "hormonal_contraceptives_years": (0, 50),
+    "iud": (0, 1), "iud_years": (0, 50),
+    "stds": (0, 1), "stds_number": (0, 20), "stds_hpv": (0, 1),
+    "stds_diagnoses": (0, 20),
 }
 
 # Upper limit of the normal reference range for each measurable marker.
@@ -73,6 +86,11 @@ REFERENCE_RANGES = {
     "bilirubin": 1.2, "alkaline_phosphatase": 120.0, "alpha_fetoprotein_level": 10.0,
     "psa": 4.0, "plasma_ca19_9": 37.0, "radius_mean": 15.0, "texture_mean": 22.0,
     "perimeter_mean": 95.0, "area_mean": 600.0, "bmi": 25.0,
+    "hematocrit": 46.0, "mcv": 100.0, "mch": 33.0, "rdw": 14.5, "mpv": 12.0,
+    "neutrophil_pct": 70.0, "ggt": 50.0,
+    # CA125 above 35 U/mL is the conventional cut. HE4 is assay dependent and
+    # 140 pmol/L is the common premenopausal cut used in the ROMA index.
+    "ca125": 35.0, "he4": 140.0, "cea": 5.0,
 }
 
 # Markers with an established clinical decision threshold. Crossing one is
@@ -92,6 +110,10 @@ CLINICAL_THRESHOLDS = {
     "radius_mean": ("Nuclear radius", 15.0, ["breast"]),
     "area_mean": ("Nuclear area", 600.0, ["breast"]),
     "perimeter_mean": ("Nuclear perimeter", 95.0, ["breast"]),
+    "ca125": ("CA 125", 35.0, ["ovarian"]),
+    "he4": ("HE4", 140.0, ["ovarian"]),
+    "cea": ("CEA", 5.0, ["ovarian"]),
+    "ggt": ("GGT", 50.0, ["liver", "ovarian"]),
 }
 
 # History answers worth surfacing when they are positive.
@@ -102,6 +124,9 @@ HISTORY_FLAGS = {
     "cancer_history": ("Prior cancer diagnosis", ["general"]),
     "family_history_cancer": ("Family history of cancer", ["liver", "general"]),
     "diabetes": ("Diabetes", ["liver", "pancreatic"]),
+    "stds_hpv": ("HPV", ["cervical"]),
+    "stds": ("Sexually transmitted infection history", ["cervical"]),
+    "menopause": ("Post-menopausal", ["ovarian"]),
 }
 
 # Coded history answers rendered back into words for the driver breakdown.
@@ -115,6 +140,12 @@ CODED_VALUES = {
     "hepatitis_c": {0: "Negative", 1: "Positive"},
     "cirrhosis_history": {0: "No", 1: "Yes"},
     "diabetes": {0: "No", 1: "Yes"},
+    "menopause": {0: "Pre-menopausal", 1: "Post-menopausal"},
+    "smokes": {0: "No", 1: "Yes"},
+    "hormonal_contraceptives": {0: "No", 1: "Yes"},
+    "iud": {0: "No", 1: "Yes"},
+    "stds": {0: "No", 1: "Yes"},
+    "stds_hpv": {0: "Negative", 1: "Positive"},
 }
 
 UNITS = {
@@ -124,6 +155,12 @@ UNITS = {
     "bilirubin": "mg/dL", "alkaline_phosphatase": "U/L",
     "alpha_fetoprotein_level": "ng/mL", "psa": "ng/mL", "plasma_ca19_9": "U/mL",
     "age": "years", "alcohol_intake": "of 5", "physical_activity": "hrs/week",
+    "hematocrit": "%", "mcv": "fL", "mch": "pg", "rdw": "%", "mpv": "fL",
+    "neutrophil_pct": "%", "ggt": "U/L",
+    "ca125": "U/mL", "he4": "pmol/L", "cea": "ng/mL",
+    "first_intercourse_age": "years", "smoking_years": "years",
+    "smoking_packyears": "pack-years", "hormonal_contraceptives_years": "years",
+    "iud_years": "years",
 }
 
 DISPLAY_NAMES = {
@@ -135,6 +172,18 @@ DISPLAY_NAMES = {
     "bmi": "BMI", "hemoglobin": "Hemoglobin", "platelets": "Platelets",
     "glucose": "Glucose", "calcium": "Calcium", "creatinine": "Creatinine",
     "albumin": "Albumin", "bilirubin": "Bilirubin", "age": "Age",
+    "hematocrit": "Hematocrit", "mcv": "MCV", "mch": "MCH", "rdw": "RDW",
+    "mpv": "MPV", "neutrophil_pct": "Neutrophils", "ggt": "GGT",
+    "ca125": "CA 125", "he4": "HE4", "cea": "CEA",
+    "menopause": "Menopausal status", "sexual_partners": "Sexual partners",
+    "first_intercourse_age": "Age at first intercourse",
+    "pregnancies": "Pregnancies", "smokes": "Smokes",
+    "smoking_years": "Years smoking", "smoking_packyears": "Pack-years",
+    "hormonal_contraceptives": "Hormonal contraceptives",
+    "hormonal_contraceptives_years": "Years on hormonal contraceptives",
+    "iud": "IUD", "iud_years": "Years with an IUD",
+    "stds": "STI history", "stds_number": "Number of STIs",
+    "stds_hpv": "HPV", "stds_diagnoses": "STI diagnoses",
 }
 
 
@@ -352,6 +401,12 @@ class PatientData(BaseModel):
     rbc: Optional[float] = None
     hemoglobin: Optional[float] = None
     platelets: Optional[float] = None
+    hematocrit: Optional[float] = None
+    mcv: Optional[float] = None
+    mch: Optional[float] = None
+    rdw: Optional[float] = None
+    mpv: Optional[float] = None
+    neutrophil_pct: Optional[float] = None
 
     # Metabolic panel
     glucose: Optional[float] = None
@@ -366,11 +421,15 @@ class PatientData(BaseModel):
     alt: Optional[float] = None
     bilirubin: Optional[float] = None
     alkaline_phosphatase: Optional[float] = None
+    ggt: Optional[float] = None
 
     # Tumour markers
     alpha_fetoprotein_level: Optional[float] = None
     psa: Optional[float] = None
     plasma_ca19_9: Optional[float] = None
+    ca125: Optional[float] = None
+    he4: Optional[float] = None
+    cea: Optional[float] = None
 
     # Breast mass morphology
     radius_mean: Optional[float] = None
@@ -390,6 +449,24 @@ class PatientData(BaseModel):
     hepatitis_c: Optional[float] = None
     cirrhosis_history: Optional[float] = None
     diabetes: Optional[float] = None
+
+    # Reproductive and sexual history. Read by the cervical panel, and
+    # menopausal status is also read by the ovarian panel.
+    menopause: Optional[float] = None
+    sexual_partners: Optional[float] = None
+    first_intercourse_age: Optional[float] = None
+    pregnancies: Optional[float] = None
+    smokes: Optional[float] = None
+    smoking_years: Optional[float] = None
+    smoking_packyears: Optional[float] = None
+    hormonal_contraceptives: Optional[float] = None
+    hormonal_contraceptives_years: Optional[float] = None
+    iud: Optional[float] = None
+    iud_years: Optional[float] = None
+    stds: Optional[float] = None
+    stds_number: Optional[float] = None
+    stds_hpv: Optional[float] = None
+    stds_diagnoses: Optional[float] = None
 
 
 @app.get("/")
@@ -471,6 +548,13 @@ async def predict_risk(data: PatientData):
         try:
             frame = pd.DataFrame([row], columns=features)
             proba = float(bundle["model"].predict_proba(frame)[0][1]) * 100.0
+            # Isotonic calibration maps the top bin to exactly 1.0, so an
+            # extreme record can come back as a flat 100 percent. No model here
+            # has earned certainty: the best panel's confidence interval still
+            # runs to 0.993, and reporting 100 would claim a precision the
+            # held-out test cannot support. Clipped at both ends for the same
+            # reason.
+            proba = min(max(proba, 0.1), 99.9)
         except Exception:
             continue
 
@@ -645,6 +729,19 @@ BIOMARKER_SYNONYMS = {
     "alpha_fetoprotein_level": [r"alpha[- ]?fetoprotein", r"afp"],
     "psa": [r"prostate specific antigen", r"prostate-specific antigen", r"psa"],
     "plasma_ca19_9": [r"ca[ \-_]?19[\-_]?9", r"carbohydrate antigen 19"],
+    # Longest-match-wins keeps these away from calcium's bare "ca".
+    "ca125": [r"cancer antigen 125", r"ca[ \-_]?125"],
+    "he4": [r"human epididymis protein 4", r"human epididymis protein", r"he[ \-_]?4"],
+    "cea": [r"carcinoembryonic antigen", r"cea"],
+    # Word-bounded matching stops "mch" firing inside "mchc", which is a
+    # different analyte that appears on the same line block.
+    "hematocrit": [r"haematocrit", r"hematocrit", r"hct"],
+    "mcv": [r"mean corpuscular volume", r"mcv"],
+    "mch": [r"mean corpuscular hemoglobin", r"mean corpuscular haemoglobin", r"mch"],
+    "rdw": [r"red cell distribution width", r"rdw[\-_ ]?cv", r"rdw"],
+    "mpv": [r"mean platelet volume", r"mpv"],
+    "neutrophil_pct": [r"neutrophils?[ ,]*%", r"neutrophil percent", r"neutrophils?", r"neut"],
+    "ggt": [r"gamma[- ]?glutamyl transferase", r"gamma[- ]?gt", r"ggtp", r"ggt"],
     "radius_mean": [r"radius mean", r"mean radius"],
     "texture_mean": [r"texture mean", r"mean texture"],
     "perimeter_mean": [r"perimeter mean", r"mean perimeter"],
@@ -652,7 +749,14 @@ BIOMARKER_SYNONYMS = {
 }
 
 UNIT_NOISE = re.compile(
-    r"(mg/dl|g/dl|u/l|iu/l|ng/ml|k/ul|m/ul|u/ml|mmol/l|umol/l|g/l|mmhg|bpm|%|ratio)",
+    # These were literal backspace bytes rather than word boundaries: a shell
+    # escape turned the boundary marks into 0x08 when this file was written, so
+    # the pattern could never match and unit text was never actually stripped.
+    # These were literal backspace bytes rather than word boundaries: a shell
+    # escape turned the boundary marks into 0x08 when this file was written, so
+    # the pattern could never match and unit text was never actually stripped.
+    r"\b(mg/dl|g/dl|u/l|iu/l|ng/ml|k/ul|m/ul|u/ml|mmol/l|umol/l|pmol/l|g/l|"
+    r"mmhg|bpm|fl|pg|ratio)\b|%",
     re.IGNORECASE,
 )
 

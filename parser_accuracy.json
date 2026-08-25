@@ -17,14 +17,24 @@
     "alkaline_phosphatase": 92,
     "psa": 2.4,
     "alpha_fetoprotein_level": 5.1,
-    "plasma_ca19_9": 22.0
+    "plasma_ca19_9": 22.0,
+    "ca125": 18.4,
+    "he4": 61.3,
+    "cea": 1.9,
+    "ggt": 34,
+    "hematocrit": 41.2,
+    "mcv": 90.5,
+    "mch": 29.9,
+    "rdw": 13.4,
+    "mpv": 10.1,
+    "neutrophil_pct": 62.5
   },
   "per_layout": {
     "layout_1_two_column_table.pdf": {
       "layout": "Two-column table with reference range column",
       "status": "success",
-      "fields_expected": 18,
-      "correct": 18,
+      "fields_expected": 28,
+      "correct": 28,
       "wrong": [],
       "missed": [],
       "unexpected": [],
@@ -33,8 +43,8 @@
     "layout_2_stacked_single_column.pdf": {
       "layout": "Narrow single column, value beneath the name",
       "status": "success",
-      "fields_expected": 18,
-      "correct": 18,
+      "fields_expected": 28,
+      "correct": 28,
       "wrong": [],
       "missed": [],
       "unexpected": [],
@@ -43,8 +53,8 @@
     "layout_3_range_before_result.pdf": {
       "layout": "Reference range printed before the result",
       "status": "success",
-      "fields_expected": 18,
-      "correct": 18,
+      "fields_expected": 28,
+      "correct": 28,
       "wrong": [],
       "missed": [],
       "unexpected": [],
@@ -53,8 +63,8 @@
     "layout_4_abbreviation_codes.pdf": {
       "layout": "Abbreviation codes, no full names",
       "status": "success",
-      "fields_expected": 18,
-      "correct": 18,
+      "fields_expected": 28,
+      "correct": 28,
       "wrong": [],
       "missed": [],
       "unexpected": [],
@@ -63,8 +73,8 @@
     "layout_5_flag_markers.pdf": {
       "layout": "Flag letters in the value column",
       "status": "success",
-      "fields_expected": 18,
-      "correct": 18,
+      "fields_expected": 28,
+      "correct": 28,
       "wrong": [],
       "missed": [],
       "unexpected": [],
@@ -89,6 +99,16 @@
     "alkaline_phosphatase": "5/5",
     "psa": "5/5",
     "alpha_fetoprotein_level": "5/5",
-    "plasma_ca19_9": "5/5"
+    "plasma_ca19_9": "5/5",
+    "ca125": "5/5",
+    "he4": "5/5",
+    "cea": "5/5",
+    "ggt": "5/5",
+    "hematocrit": "5/5",
+    "mcv": "5/5",
+    "mch": "5/5",
+    "rdw": "5/5",
+    "mpv": "5/5",
+    "neutrophil_pct": "5/5"
   }
 }

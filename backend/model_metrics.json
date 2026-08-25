@@ -336,6 +336,186 @@
       }
     }
   },
+  "ovarian": {
+    "label": "Ovarian Malignancy, in a known ovarian mass",
+    "shipped": true,
+    "features": [
+      "age",
+      "menopause",
+      "albumin",
+      "protein_total",
+      "glucose",
+      "calcium",
+      "creatinine",
+      "bun",
+      "bilirubin",
+      "alt",
+      "ast",
+      "alkaline_phosphatase",
+      "ggt",
+      "hemoglobin",
+      "rbc",
+      "platelets",
+      "hematocrit",
+      "mcv",
+      "mch",
+      "rdw",
+      "mpv",
+      "neutrophil_pct",
+      "ca125",
+      "he4",
+      "cea",
+      "alpha_fetoprotein_level",
+      "plasma_ca19_9"
+    ],
+    "cohort_design": "349 women operated on at one Chinese hospital between 2011 and 2018. The controls are women whose ovarian mass proved benign, not healthy volunteers, so this separates malignant from benign rather than sick from well. It is a triage panel for a mass that has already been found, which is why precision is projected onto the roughly 20 percent malignancy rate among women taken to surgery rather than onto SEER incidence. Single centre and single country, so it has no external cohort yet and that is its main open limitation.",
+    "auc": 0.936,
+    "auc_std": 0.029,
+    "accuracy": 0.9,
+    "sensitivity": 0.853,
+    "specificity": 0.944,
+    "n_samples": 349,
+    "n_positive": 171,
+    "n_features": 27,
+    "cv_folds": 5,
+    "threshold": 0.5286,
+    "model_selection": {
+      "ensemble": 0.943,
+      "logistic": 0.897
+    },
+    "chosen_model": "ensemble",
+    "held_out": {
+      "n_test": 70,
+      "auc": 0.949,
+      "auc_ci": [
+        0.888,
+        0.993
+      ],
+      "sensitivity": 0.853,
+      "sensitivity_ci": [
+        0.72,
+        0.968
+      ],
+      "specificity": 0.944,
+      "specificity_ci": [
+        0.853,
+        1.0
+      ],
+      "brier": 0.0797,
+      "calibration_slope": 0.455,
+      "ppv_at_population_prevalence": 0.79331,
+      "people_flagged_per_true_case": 1.3,
+      "population_prevalence": 0.2,
+      "prevalence_source": "Malignancy among women taken to surgery for an adnexal mass",
+      "cohort_prevalence": 0.49,
+      "baseline_logistic_auc": 0.911,
+      "baseline_age_sex_auc": 0.813,
+      "subgroups": {
+        "age under 43": {
+          "n": 33,
+          "positives": 6,
+          "auc": 0.818,
+          "auc_ci": [
+            0.545,
+            1.0
+          ]
+        },
+        "age 43 and over": {
+          "n": 37,
+          "positives": 28,
+          "auc": 0.972,
+          "auc_ci": [
+            0.905,
+            1.0
+          ]
+        }
+      }
+    }
+  },
+  "cervical": {
+    "label": "Cervical Pre-cancer Risk",
+    "shipped": true,
+    "features": [
+      "age",
+      "sexual_partners",
+      "first_intercourse_age",
+      "pregnancies",
+      "smokes",
+      "smoking_years",
+      "smoking_packyears",
+      "hormonal_contraceptives",
+      "hormonal_contraceptives_years",
+      "iud",
+      "iud_years",
+      "stds",
+      "stds_number",
+      "stds_hpv",
+      "stds_diagnoses"
+    ],
+    "cohort_design": "858 women assessed for colposcopy at one hospital in Caracas, 55 with a positive biopsy. Prior-diagnosis columns are dropped as leakage. 55 events is below the roughly 96 needed for a tight estimate, so the interval runs 0.539 to 0.888: it excludes chance and beats age alone, 0.725 against 0.458, but it is the least certain panel here. Precision is projected onto the 6.4 percent prevalence among referred women, because at population incidence it would flag about 7,383 women per true case and would not be shippable.",
+    "auc": 0.615,
+    "auc_std": 0.066,
+    "accuracy": 0.651,
+    "sensitivity": 0.636,
+    "specificity": 0.652,
+    "n_samples": 858,
+    "n_positive": 55,
+    "n_features": 15,
+    "cv_folds": 5,
+    "threshold": 0.0636,
+    "model_selection": {
+      "ensemble": 0.638,
+      "logistic": 0.503
+    },
+    "chosen_model": "ensemble",
+    "held_out": {
+      "n_test": 172,
+      "auc": 0.725,
+      "auc_ci": [
+        0.547,
+        0.881
+      ],
+      "sensitivity": 0.636,
+      "sensitivity_ci": [
+        0.333,
+        0.909
+      ],
+      "specificity": 0.634,
+      "specificity_ci": [
+        0.556,
+        0.71
+      ],
+      "brier": 0.0568,
+      "calibration_slope": 1.087,
+      "ppv_at_population_prevalence": 0.10613,
+      "people_flagged_per_true_case": 9.4,
+      "population_prevalence": 0.064,
+      "prevalence_source": "Positive biopsy among women assessed for colposcopy, this cohort",
+      "cohort_prevalence": 0.064,
+      "baseline_logistic_auc": 0.572,
+      "baseline_age_sex_auc": 0.458,
+      "subgroups": {
+        "age under 25": {
+          "n": 82,
+          "positives": 7,
+          "auc": 0.78,
+          "auc_ci": [
+            0.578,
+            0.975
+          ]
+        },
+        "age 25 and over": {
+          "n": 90,
+          "positives": 4,
+          "auc": 0.709,
+          "auc_ci": [
+            0.275,
+            0.971
+          ]
+        }
+      }
+    }
+  },
   "prostate": {
     "label": "Prostate Cancer Risk",
     "shipped": false,

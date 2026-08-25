@@ -1,0 +1,179 @@
+{
+  "question": "Does the ovarian panel beat age alone?",
+  "n": 349,
+  "cases": 171,
+  "cohort_prevalence": 0.49,
+  "referral_prevalence_used": 0.2,
+  "arms": [
+    {
+      "arm": "A age and menopause only",
+      "features": [
+        "age",
+        "menopause"
+      ],
+      "n_features": 2,
+      "auc": 0.792,
+      "auc_ci": [
+        0.669,
+        0.9
+      ],
+      "logistic_auc": 0.815,
+      "threshold": 0.4149,
+      "sensitivity": 0.676,
+      "specificity": 0.806,
+      "ppv_at_referral_prevalence": 0.4652,
+      "npv_at_referral_prevalence": 0.9088,
+      "referred_per_true_case": 2.1
+    },
+    {
+      "arm": "B routine bloodwork only",
+      "features": [
+        "albumin",
+        "protein_total",
+        "glucose",
+        "calcium",
+        "creatinine",
+        "bun",
+        "bilirubin",
+        "alt",
+        "ast",
+        "alkaline_phosphatase",
+        "ggt",
+        "hemoglobin",
+        "rbc",
+        "platelets",
+        "hematocrit",
+        "mcv",
+        "mch",
+        "rdw",
+        "mpv",
+        "neutrophil_pct"
+      ],
+      "n_features": 20,
+      "auc": 0.938,
+      "auc_ci": [
+        0.874,
+        0.987
+      ],
+      "logistic_auc": 0.841,
+      "threshold": 0.6008,
+      "sensitivity": 0.676,
+      "specificity": 0.944,
+      "ppv_at_referral_prevalence": 0.7527,
+      "npv_at_referral_prevalence": 0.9211,
+      "referred_per_true_case": 1.3
+    },
+    {
+      "arm": "C routine bloodwork + age",
+      "features": [
+        "age",
+        "menopause",
+        "albumin",
+        "protein_total",
+        "glucose",
+        "calcium",
+        "creatinine",
+        "bun",
+        "bilirubin",
+        "alt",
+        "ast",
+        "alkaline_phosphatase",
+        "ggt",
+        "hemoglobin",
+        "rbc",
+        "platelets",
+        "hematocrit",
+        "mcv",
+        "mch",
+        "rdw",
+        "mpv",
+        "neutrophil_pct"
+      ],
+      "n_features": 22,
+      "auc": 0.933,
+      "auc_ci": [
+        0.866,
+        0.983
+      ],
+      "logistic_auc": 0.866,
+      "threshold": 0.4197,
+      "sensitivity": 0.824,
+      "specificity": 0.861,
+      "ppv_at_referral_prevalence": 0.5972,
+      "npv_at_referral_prevalence": 0.9513,
+      "referred_per_true_case": 1.7
+    },
+    {
+      "arm": "D tumour markers only",
+      "features": [
+        "ca125",
+        "he4",
+        "cea",
+        "alpha_fetoprotein_level",
+        "plasma_ca19_9"
+      ],
+      "n_features": 5,
+      "auc": 0.931,
+      "auc_ci": [
+        0.855,
+        0.985
+      ],
+      "logistic_auc": 0.932,
+      "threshold": 0.5493,
+      "sensitivity": 0.824,
+      "specificity": 0.972,
+      "ppv_at_referral_prevalence": 0.8811,
+      "npv_at_referral_prevalence": 0.9566,
+      "referred_per_true_case": 1.1
+    },
+    {
+      "arm": "E everything",
+      "features": [
+        "age",
+        "menopause",
+        "albumin",
+        "protein_total",
+        "glucose",
+        "calcium",
+        "creatinine",
+        "bun",
+        "bilirubin",
+        "alt",
+        "ast",
+        "alkaline_phosphatase",
+        "ggt",
+        "hemoglobin",
+        "rbc",
+        "platelets",
+        "hematocrit",
+        "mcv",
+        "mch",
+        "rdw",
+        "mpv",
+        "neutrophil_pct",
+        "ca125",
+        "he4",
+        "cea",
+        "alpha_fetoprotein_level",
+        "plasma_ca19_9"
+      ],
+      "n_features": 27,
+      "auc": 0.941,
+      "auc_ci": [
+        0.876,
+        0.989
+      ],
+      "logistic_auc": 0.912,
+      "threshold": 0.769,
+      "sensitivity": 0.794,
+      "specificity": 0.972,
+      "ppv_at_referral_prevalence": 0.8773,
+      "npv_at_referral_prevalence": 0.9497,
+      "referred_per_true_case": 1.1
+    }
+  ],
+  "age_only_auc": 0.792,
+  "bloodwork_only_auc": 0.938,
+  "gain_over_age": 0.149,
+  "verdict": "SHIP"
+}

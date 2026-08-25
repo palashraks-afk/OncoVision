@@ -194,11 +194,32 @@ Every model was trained on de-identified, publicly released clinical research da
 
 | Panel | Source | Records | What counts as positive |
 |---|---|---|---|
-| Liver | Hepatocellular cohort | 5,000 | A liver cancer diagnosis |
-| General | Cancer risk cohort | 1,500 | A recorded cancer diagnosis |
-| Pancreatic | Pancreatic biomarker cohort | 600 | Confirmed adenocarcinoma |
+| Liver | NHANES 2005-2018, US adults | 35,511 | A clinical liver disease diagnosis, not liver cancer |
+| General | NHANES 2005-2014, US adults | 23,923 | A cancer diagnosis within four years of the blood draw |
+| Cervical | Hospital Universitario de Caracas | 858 | A positive cervical biopsy |
+| Pancreatic | Pancreatic biomarker cohort, 3 tissue banks | 600 | Confirmed adenocarcinoma |
 | Breast | Wisconsin Diagnostic Breast Cancer | 569 | A malignant fine needle aspirate |
-| Prostate | Stanford prostate cohort | 97 | Gleason score of 7 or above |
+| Ovarian | Third Affiliated Hospital of Soochow University | 349 | Ovarian cancer on histology, against a benign ovarian tumour |
+| ~~Prostate~~ | Stanford prostate cohort | 97 | Gleason score of 7 or above, withdrawn |
+
+Two of the newer cohorts deserve a note on how their controls were chosen, because it changes
+what the number means.
+
+The **ovarian** controls are not healthy volunteers. They are 178 women whose ovarian mass turned
+out to be benign, against 171 whose mass turned out to be cancer, all of them operated on and all
+labelled from the resected specimen. Healthy versus cancer would be an easy problem and a useless
+one, since nobody needs a model to tell a woman with a large pelvic mass apart from a woman
+without one. Malignant versus benign is the decision a clinician actually faces.
+
+Its source values are SI and are converted to conventional US units at load time in
+`fetch_ovarian.py`, because the rest of this project reads American lab reports. Albumin at 42 is
+4.2 g/dL, not a critical value. Silently mixing unit systems is what drove the German liver
+transfer below chance, so every conversion is explicit and listed in that file.
+
+The **cervical** cohort ships with four columns deliberately deleted. Dx, Dx:Cancer, Dx:CIN and
+Dx:HPV record a diagnosis the patient already carries, so training on them would predict a biopsy
+result from the fact that the disease is already known. That single decision is the difference
+between the 0.725 reported here and the near-perfect numbers usually published on this dataset.
 
 The pancreatic target deserves a note. Its diagnosis column has three classes: healthy controls,
 benign hepatobiliary disease, and pancreatic ductal adenocarcinoma. Treating it as binary and
@@ -217,35 +238,70 @@ Reproduce with `python evaluate.py`.
 |---|---|---|---|---|---|---|---|
 | Breast malignancy | 569 Wisconsin biopsies | 0.972 | 0.942 to 0.994 | 38.8% | 0.81 | 0.94 | 52.7 |
 | Pancreatic cancer | 600 samples, 3 tissue banks | 0.969 | 0.938 to 0.991 | 16.6% | 1.00 | 0.88 | 842.8 |
+| Ovarian malignancy | 349 operated ovarian masses | 0.949 | 0.888 to 0.993 | 58.1% | 0.85 | 0.94 | 1.3 |
 | Liver disease | 35,511 NHANES adults | 0.753 | 0.723 to 0.784 | 4.2% | 0.55 | 0.80 | 9.9 |
 | General cancer | 23,923 NHANES adults | 0.732 | 0.692 to 0.770 | 2.9% | 0.68 | 0.65 | 16.9 |
-| ~~Prostate~~ | 97 Stanford records | 0.786 | 0.505 to 0.99 | withdrawn | | | |
+| Cervical pre-cancer | 858 Caracas referrals | 0.725 | **0.547** to 0.881 | 5.9% | 0.64 | 0.63 | 9.4 |
+| ~~Prostate~~ | 97 Stanford records | 0.786 | **0.505** to 0.99 | withdrawn | | | |
 
 ### Does each panel beat the obvious baseline?
 
 | Panel | Model | Logistic | Age and sex alone | Gain |
 |---|---|---|---|---|
 | Pancreatic | 0.969 | 0.968 | 0.500 | +0.469 |
+| Cervical | 0.725 | 0.572 | 0.458 | +0.267 |
 | Liver | 0.753 | 0.731 | 0.602 | +0.151 |
+| Ovarian | 0.949 | 0.911 | 0.813 | +0.136 |
 | General | 0.732 | 0.731 | 0.727 | **+0.005** |
 
-The general panel is the weak one and the page says so. It adds very little over
-knowing someone's age and sex, which is a real limitation rather than a rounding
-error.
+The general panel is the weak one and the page says so. It adds very little over knowing
+someone's age and sex, which is a real limitation rather than a rounding error.
 
-### The general panel was rebuilt around a screening question
+### Cross-validated against held-out, which is where cervical shows its weakness
 
-It used to predict "have you ever been told you had cancer". A person cured
-thirty years ago counted as positive, so the model was largely predicting age.
+| Panel | CV AUC | Held-out AUC | Gap |
+|---|---|---|---|
+| Pancreatic | 0.972 | 0.969 | -0.003 |
+| Ovarian | 0.942 | 0.949 | +0.007 |
+| Breast | 0.954 | 0.972 | +0.018 |
+| Liver | 0.734 | 0.753 | +0.019 |
+| General | 0.761 | 0.732 | -0.029 |
+| Cervical | 0.587 | 0.725 | **+0.138** |
 
-NHANES 2005 to 2014 records age at diagnosis, so the cohort can be cut properly:
-positives are people diagnosed **within four years of the blood draw**, and
-long-ago survivors are excluded rather than relabelled. That is a screening
-question. On a held-out cycle the gain over age and sex rose from 0.004 to 0.019.
+Five panels agree with themselves to within 0.03. Cervical does not. A 0.138 gap on 55 positive
+biopsies means the held-out split was a favourable one and the honest estimate sits nearer 0.6
+than 0.725. It still excludes chance and still beats age alone by 0.267, which is why it ships,
+but it is the least certain thing in this project and both numbers are published rather than only
+the flattering one.
 
-### Routine bloodwork does not detect general cancer
+### Triage panels are judged against referral prevalence, not SEER
 
-Measured rather than assumed, on a held-out NHANES cycle:
+Ovarian and cervical run after something has already been found, so the prior that matters is
+prevalence in the referred group. Ovarian uses the roughly 20 percent malignancy rate among women
+taken to surgery for an adnexal mass. Cervical uses the 6.4 percent positive-biopsy rate in its
+own referral cohort.
+
+The alternative is not a rounding difference. At SEER population incidence the cervical panel
+would flag about **7,383 women per true case**. At referral prevalence it flags 9.4, at 96.2
+percent NPV. The model is identical and only the prior changed. That is exactly why neither panel
+is offered as a population screen, and why the prior is printed on the panel itself.
+
+### Where the bloodwork earns its place, and where it does not
+
+The ovarian panel is the one that vindicates the premise of this application. Its cases are
+seventeen years older than its controls, 53 against 36, which is the same trap the general panel
+fell into, so age was made a baseline and had to be beaten:
+
+| Feature set | Inputs | AUC |
+|---|---|---|
+| Age and menopausal status | 2 | 0.792 |
+| Routine bloodwork only, no age, no tumour markers | 20 | **0.938** |
+| Tumour markers only | 5 | 0.931 |
+| Everything | 27 | **0.941** |
+
+A blood count and a metabolic panel, carrying no age and no tumour markers, reach 0.938.
+
+The general panel is the mirror image, measured the same way on a held-out NHANES cycle:
 
 | Feature set | Inputs | AUC |
 |---|---|---|
@@ -254,20 +310,33 @@ Measured rather than assumed, on a held-out NHANES cycle:
 | All 14 routine blood values | 14 | **0.663** |
 | Everything combined | 19 | 0.737 |
 
-Fourteen blood values score worse than knowing someone's age. A complete blood
-count and metabolic panel are not cancer detection tests, which is exactly why
-the specific panels here use disease specific markers, and why commercial
-multi-cancer blood tests use cell-free DNA rather than routine chemistry.
+Fourteen blood values score worse than knowing someone's age. Routine chemistry is not a general
+cancer detection test, which is why the specific panels here use disease specific markers and why
+commercial multi-cancer blood tests use cell-free DNA rather than routine chemistry.
 
-The general panel therefore reads risk factors, not the lab report, and that is
-a measured decision rather than an oversight.
+Taken together, those two tables are the honest summary of this whole project. Reading a lab
+report works when there is a specific disease and a specific marker to read, and it does not work
+as an undirected sweep for any cancer at all.
+
+### The general panel was rebuilt around a screening question
+
+It used to predict "have you ever been told you had cancer". A person cured thirty years ago
+counted as positive, so the model was largely predicting age.
+
+NHANES 2005 to 2014 records age at diagnosis, so the cohort can be cut properly: positives are
+people diagnosed **within four years of the blood draw**, and long-ago survivors are excluded
+rather than relabelled. That is a screening question. On a held-out cycle the gain over age and
+sex rose from 0.004 to 0.019.
 
 ### Choosing the operating point
 
-A fixed 0.5 threshold drove measured sensitivity to 0.008 once prevalence was
-realistic. Each panel now selects its threshold by Youden's J on out-of-fold
-predictions inside the training data and freezes it in the bundle, so the
-interface, the evaluation and the prospective analysis use one number.
+A fixed 0.5 threshold drove measured sensitivity to 0.008 once prevalence was realistic. Each
+panel now selects its threshold by Youden's J on out-of-fold predictions inside the training data
+and freezes it in the bundle, so the interface, the evaluation and the prospective analysis all
+use one number.
+
+Probabilities are clipped to the 0.1 to 99.9 range before display. Isotonic calibration maps its
+top bin to exactly 1.0, and no panel here has earned the right to print 100 percent.
 
 ## 6. The sample case system
 

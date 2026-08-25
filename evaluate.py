@@ -69,6 +69,14 @@ SEER_INCIDENCE = {
     "prostate":   (123.2, "Prostate, per 100,000 men per year"),
     "pancreatic": (13.9,  "Pancreas, per 100,000 men and women per year"),
     "liver":      (4000.0, "Ever told had a liver condition, US adults, NHANES 2005-2018"),
+    # The ovarian and cervical panels are triage steps, not population screens.
+    # They run after a mass has been found or a woman has been referred, so the
+    # prior that matters is prevalence in the referred group, not in the street.
+    # Using SEER here would be arithmetically correct and clinically meaningless:
+    # cervical at population incidence flags about 7,383 women per true case,
+    # which is precisely why neither panel is offered as a population screen.
+    "ovarian":    (20000.0, "Malignancy among women taken to surgery for an adnexal mass"),
+    "cervical":   (6400.0, "Positive biopsy among women assessed for colposcopy, this cohort"),
 }
 
 COHORT_DESIGN = {
@@ -77,6 +85,8 @@ COHORT_DESIGN = {
     "liver":      "35,511 US adults, NHANES 2005-2018. Externally validated on India and Germany.",
     "pancreatic": "Case-control. Cases are confirmed PDAC, controls include benign hepatobiliary disease.",
     "prostate":   "Case-control, post-prostatectomy. Gleason grade comes from the surgical specimen.",
+    "ovarian":    "349 women operated on at one Chinese hospital. Controls are benign ovarian tumours, not healthy women.",
+    "cervical":   "858 women assessed for colposcopy in Caracas, 55 biopsy-positive. Prior-diagnosis columns dropped as leakage.",
 }
 
 

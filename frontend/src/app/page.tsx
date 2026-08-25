@@ -12,7 +12,7 @@ import {
   Radar, RadarChart, PolarGrid, PolarAngleAxis, PolarRadiusAxis,
 } from "recharts";
 
-import { LAB_GROUPS, LAB_KEYS, HISTORY_FIELDS, ALL_KEYS } from "./fields";
+import { LAB_GROUPS, LAB_KEYS, HISTORY_FIELDS, HISTORY_GROUPS, ALL_KEYS } from "./fields";
 import { CASE_POOL, OPENING_CASE, caseValues, randomCase, type DemoCase } from "./cases";
 
 // The Render service that deploys backend/ from this repo. The host is
@@ -39,28 +39,6 @@ const API_BASE = resolveApiBase();
 // anything was fitted and never used for training, selection, or calibration.
 // Used until the live registry responds.
 const FALLBACK_METRICS: Record<string, any> = {
-  general: {
-    label: "General Cancer Risk", auc: 0.732, auc_ci: [0.692, 0.77],
-    threshold: 2.9,
-    sensitivity: 0.68, specificity: 0.65,
-    brier: 0.03, calibration_slope: 0.753,
-    ppv_at_population_prevalence: 0.05923,
-    people_flagged_per_true_case: 16.9,
-    population_prevalence: 0.0314, cohort_prevalence: 0.031,
-    baseline_logistic_auc: 0.731, baseline_age_sex_auc: 0.727,
-    n_samples: 23923, n_test: 4785, n_features: 5,
-  },
-  liver: {
-    label: "Liver Disease Risk", auc: 0.753, auc_ci: [0.723, 0.784],
-    threshold: 4.2,
-    sensitivity: 0.551, specificity: 0.795,
-    brier: 0.0358, calibration_slope: 1.049,
-    ppv_at_population_prevalence: 0.10072,
-    people_flagged_per_true_case: 9.9,
-    population_prevalence: 0.04, cohort_prevalence: 0.04,
-    baseline_logistic_auc: 0.731, baseline_age_sex_auc: 0.602,
-    n_samples: 35511, n_test: 7103, n_features: 11,
-  },
   breast: {
     label: "Breast Malignancy, from biopsy imaging", auc: 0.972, auc_ci: [0.942, 0.994],
     threshold: 38.8,
@@ -70,6 +48,7 @@ const FALLBACK_METRICS: Record<string, any> = {
     people_flagged_per_true_case: 52.7,
     population_prevalence: 0.001325, cohort_prevalence: 0.373,
     baseline_logistic_auc: 0.964, baseline_age_sex_auc: null,
+    cv_auc: null,
     n_samples: 569, n_test: 114, n_features: 4,
   },
   pancreatic: {
@@ -81,7 +60,56 @@ const FALLBACK_METRICS: Record<string, any> = {
     people_flagged_per_true_case: 842.8,
     population_prevalence: 0.000139, cohort_prevalence: 0.217,
     baseline_logistic_auc: 0.968, baseline_age_sex_auc: 0.5,
+    cv_auc: null,
     n_samples: 600, n_test: 120, n_features: 6,
+  },
+  ovarian: {
+    label: "Ovarian Malignancy, in a known ovarian mass", auc: 0.949, auc_ci: [0.888, 0.993],
+    threshold: 58.1,
+    sensitivity: 0.853, specificity: 0.944,
+    brier: 0.0797, calibration_slope: 0.455,
+    ppv_at_population_prevalence: 0.79331,
+    people_flagged_per_true_case: 1.3,
+    population_prevalence: 0.2, cohort_prevalence: 0.49,
+    baseline_logistic_auc: 0.911, baseline_age_sex_auc: 0.813,
+    cv_auc: null,
+    n_samples: 349, n_test: 70, n_features: 27,
+  },
+  liver: {
+    label: "Liver Disease Risk", auc: 0.753, auc_ci: [0.723, 0.784],
+    threshold: 4.2,
+    sensitivity: 0.551, specificity: 0.795,
+    brier: 0.0358, calibration_slope: 1.049,
+    ppv_at_population_prevalence: 0.10072,
+    people_flagged_per_true_case: 9.9,
+    population_prevalence: 0.04, cohort_prevalence: 0.04,
+    baseline_logistic_auc: 0.731, baseline_age_sex_auc: 0.602,
+    cv_auc: null,
+    n_samples: 35511, n_test: 7103, n_features: 11,
+  },
+  general: {
+    label: "General Cancer Risk", auc: 0.732, auc_ci: [0.692, 0.77],
+    threshold: 2.9,
+    sensitivity: 0.68, specificity: 0.65,
+    brier: 0.03, calibration_slope: 0.753,
+    ppv_at_population_prevalence: 0.05923,
+    people_flagged_per_true_case: 16.9,
+    population_prevalence: 0.0314, cohort_prevalence: 0.031,
+    baseline_logistic_auc: 0.731, baseline_age_sex_auc: 0.727,
+    cv_auc: null,
+    n_samples: 23923, n_test: 4785, n_features: 5,
+  },
+  cervical: {
+    label: "Cervical Pre-cancer Risk", auc: 0.725, auc_ci: [0.547, 0.881],
+    threshold: 5.9,
+    sensitivity: 0.636, specificity: 0.634,
+    brier: 0.0568, calibration_slope: 1.087,
+    ppv_at_population_prevalence: 0.10613,
+    people_flagged_per_true_case: 9.4,
+    population_prevalence: 0.064, cohort_prevalence: 0.064,
+    baseline_logistic_auc: 0.572, baseline_age_sex_auc: 0.458,
+    cv_auc: null,
+    n_samples: 858, n_test: 172, n_features: 15,
   },
 };
 
@@ -94,6 +122,8 @@ const EXTERNAL_VALIDATION = [
   { direction: "General, NHANES held-out cycle 2013-2014", internal: 0.761, external: 0.748, ci: [0.711, 0.784], drop: 0.013 },
   { direction: "Liver, trained USA tested India", internal: 0.734, external: 0.640, ci: [0.590, 0.690], drop: 0.094 },
   { direction: "Liver, trained USA tested Germany", internal: 0.734, external: 0.442, ci: [0.371, 0.513], drop: 0.292 },
+  { direction: "Ovarian, single centre, no external cohort found", internal: 0.949, external: null, ci: null, drop: null },
+  { direction: "Cervical, single centre, no external cohort found", internal: 0.725, external: null, ci: null, drop: null },
 ];
 
 // Leave-one-cohort-out: train on two countries, test on the third. This is the
@@ -482,8 +512,19 @@ export default function OncovisionDashboard() {
                       Information about you that is not printed on a lab report.
                     </p>
 
-                    <div className="grid grid-cols-2 gap-x-3 gap-y-2 overflow-y-auto max-h-[300px] pr-2 custom-scrollbar">
-                      {HISTORY_FIELDS.map(f => (
+                    <div className="overflow-y-auto max-h-[300px] pr-2 custom-scrollbar">
+                    {HISTORY_GROUPS.map(gname => (
+                    <div key={gname}>
+                      {gname !== "General" && (
+                        <p className="text-[10px] text-[var(--ink-3)] uppercase font-bold tracking-widest mt-4 mb-2 pt-3 border-t border-[var(--rule)]">
+                          {gname}
+                          <span className="block normal-case tracking-normal font-normal text-[var(--ink-4)] mt-0.5">
+                            Read by the cervical and ovarian panels. Leave blank if you would rather not answer.
+                          </span>
+                        </p>
+                      )}
+                    <div className="grid grid-cols-2 gap-x-3 gap-y-2">
+                      {HISTORY_FIELDS.filter(f => f.group === gname).map(f => (
                         <div key={f.key} className={`p-2 rounded bg-[var(--paper-2)] border transition-colors focus-within:border-[var(--stamp)] ${formData[f.key] !== "" ? "border-[var(--stamp-line)]" : "border-[var(--rule)]"}`} title={f.meaning}>
                           <label htmlFor={`f-${f.key}`} className="field-label block mb-1 truncate">
                             {f.label}
@@ -516,6 +557,9 @@ export default function OncovisionDashboard() {
                           )}
                         </div>
                       ))}
+                    </div>
+                    </div>
+                    ))}
                     </div>
                   </div>
                 </div>
@@ -1366,9 +1410,13 @@ export default function OncovisionDashboard() {
                         <tr key={e.direction} className="text-[var(--ink-2)]">
                           <td className="py-3 pr-4 font-bold text-[var(--stamp)]">{e.direction}</td>
                           <td className="py-3 pr-4 font-mono">{e.internal}</td>
-                          <td className="py-3 pr-4 font-mono font-bold text-[var(--warn)]">{e.external}</td>
-                          <td className="py-3 pr-4 font-mono text-[var(--ink-3)]">{e.ci[0]} to {e.ci[1]}</td>
-                          <td className="py-3 font-mono font-bold text-[var(--flag)]">{e.drop}</td>
+                          <td className="py-3 pr-4 font-mono font-bold text-[var(--warn)]">
+                            {e.external ?? "none yet"}
+                          </td>
+                          <td className="py-3 pr-4 font-mono text-[var(--ink-3)]">
+                            {e.ci ? `${e.ci[0]} to ${e.ci[1]}` : "-"}
+                          </td>
+                          <td className="py-3 font-mono font-bold text-[var(--flag)]">{e.drop ?? "-"}</td>
                         </tr>
                       ))}
                     </tbody>

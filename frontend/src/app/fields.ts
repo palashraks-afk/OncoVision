@@ -35,6 +35,12 @@ export const LAB_GROUPS: LabGroup[] = [
       { key: "rbc", label: "RBC, red blood cells", unit: "M/uL", normal: "4.2 to 5.5", meaning: "Oxygen carrying cell count. A low count often goes with slow, hidden bleeding from a tumour in the gut." },
       { key: "hemoglobin", label: "Hemoglobin", unit: "g/dL", normal: "12.0 to 15.0", meaning: "The protein inside red cells that carries oxygen. An unexplained drop is one of the earliest signs of chronic disease." },
       { key: "platelets", label: "Platelets", unit: "K/uL", normal: "150 to 400", meaning: "Clotting cells. A count that runs high is a known finding in ovarian, lung and gastrointestinal cancer." },
+      { key: "hematocrit", label: "Hematocrit", unit: "%", normal: "36 to 46", meaning: "The share of blood made up of red cells. It falls alongside haemoglobin in chronic disease and slow blood loss." },
+      { key: "mcv", label: "MCV, mean cell volume", unit: "fL", normal: "80 to 100", meaning: "Average red cell size. Small cells point to iron loss, which is how a bleeding gut tumour often shows itself first." },
+      { key: "mch", label: "MCH, mean cell haemoglobin", unit: "pg", normal: "27 to 33", meaning: "Average haemoglobin per red cell. Read next to MCV to separate the causes of anaemia." },
+      { key: "rdw", label: "RDW, red cell distribution width", unit: "%", normal: "11.5 to 14.5", meaning: "How unevenly sized the red cells are. A raised RDW is one of the earliest and least specific signs of chronic illness." },
+      { key: "mpv", label: "MPV, mean platelet volume", unit: "fL", normal: "7.5 to 12.0", meaning: "Average platelet size. It shifts with the raised platelet turnover seen in several cancers." },
+      { key: "neutrophil_pct", label: "Neutrophils", unit: "%", normal: "40 to 70", meaning: "The share of white cells that are neutrophils. A high proportion alongside low lymphocytes is a recognised inflammatory pattern in cancer." },
     ],
   },
   {
@@ -57,6 +63,7 @@ export const LAB_GROUPS: LabGroup[] = [
       { key: "alt", label: "ALT", unit: "U/L", normal: "under 40", meaning: "The more liver specific of the two enzymes. AST and ALT rising together means active liver cell injury." },
       { key: "bilirubin", label: "Total bilirubin", unit: "mg/dL", normal: "under 1.2", meaning: "The yellow pigment left over from broken down red cells. Jaundice without pain, with bilirubin climbing, is a common way pancreatic head tumours present." },
       { key: "alkaline_phosphatase", label: "Alkaline phosphatase", unit: "U/L", normal: "44 to 120", meaning: "An enzyme from the bile ducts and bone. A raised level suggests bile duct blockage or cancer that has spread to bone." },
+      { key: "ggt", label: "GGT", unit: "U/L", normal: "under 50", meaning: "A bile duct enzyme. It confirms that a raised alkaline phosphatase came from the liver rather than from bone." },
     ],
   },
   {
@@ -66,6 +73,9 @@ export const LAB_GROUPS: LabGroup[] = [
       { key: "alpha_fetoprotein_level", label: "AFP, alpha fetoprotein", unit: "ng/mL", normal: "under 10", meaning: "The main blood marker for liver cancer. It also rises in some testicular tumours and in pregnancy." },
       { key: "psa", label: "PSA, prostate specific antigen", unit: "ng/mL", normal: "under 4.0", meaning: "The main screening marker for prostate cancer. A benign enlarged prostate raises it too, so it is never read alone." },
       { key: "plasma_ca19_9", label: "CA 19-9", unit: "U/mL", normal: "under 37", meaning: "The main blood marker for pancreatic cancer. Bile duct blockage and pancreatitis also raise it." },
+      { key: "ca125", label: "CA 125", unit: "U/mL", normal: "under 35", meaning: "The main blood marker for ovarian cancer. Endometriosis, fibroids and even menstruation raise it too, which is why it is read next to HE4 rather than alone." },
+      { key: "he4", label: "HE4", unit: "pmol/L", normal: "under 140", meaning: "Human epididymis protein 4. It stays normal in most benign gynaecological conditions, so it is the more specific half of the ovarian pair." },
+      { key: "cea", label: "CEA", unit: "ng/mL", normal: "under 5", meaning: "Carcinoembryonic antigen. Mainly a colorectal marker, and used alongside CA 125 to tell a bowel primary from an ovarian one." },
     ],
   },
   {
@@ -93,6 +103,10 @@ export type HistoryField = {
   key: string;
   label: string;
   meaning: string;
+  // Which heading this sits under. The list runs to 22 fields once the
+  // cervical panel's risk history is included, which is too many to read as
+  // one flat block.
+  group: "General" | "Reproductive and sexual history";
   type: "select" | "number";
   options?: { value: number; label: string }[];
   min?: number;
@@ -103,12 +117,12 @@ export type HistoryField = {
 
 export const HISTORY_FIELDS: HistoryField[] = [
   {
-    key: "gender", label: "Sex at birth", type: "select",
+    key: "gender", label: "Sex at birth", type: "select", group: "General",
     meaning: "Used by the general, liver and pancreatic models.",
     options: [{ value: 0, label: "Female" }, { value: 1, label: "Male" }],
   },
   {
-    key: "smoking", label: "Smoking", type: "select",
+    key: "smoking", label: "Smoking", type: "select", group: "General",
     meaning: "Tobacco exposure is a direct risk factor for liver and pancreatic cancer.",
     options: [
       { value: 0, label: "Never" },
@@ -117,30 +131,135 @@ export const HISTORY_FIELDS: HistoryField[] = [
     ],
   },
   {
-    key: "alcohol_intake", label: "Alcohol intake", type: "number",
+    key: "alcohol_intake", label: "Alcohol intake", type: "number", group: "General",
     meaning: "On a scale of 0 for none to 5 for heavy. The main driver of cirrhosis, which precedes most liver cancer.",
     min: 0, max: 5, step: 0.5, suffix: "of 5",
   },
   {
-    key: "physical_activity", label: "Exercise", type: "number",
+    key: "physical_activity", label: "Exercise", type: "number", group: "General",
     meaning: "Hours of activity in a normal week.",
     min: 0, max: 10, step: 0.5, suffix: "hrs/week",
   },
   {
-    key: "hepatitis_b", label: "Hepatitis B", type: "select",
+    key: "hepatitis_b", label: "Hepatitis B", type: "select", group: "General",
     meaning: "Chronic hepatitis B is one of the strongest liver cancer risk factors known.",
     options: [{ value: 0, label: "Negative" }, { value: 1, label: "Positive" }],
   },
   {
-    key: "hepatitis_c", label: "Hepatitis C", type: "select",
+    key: "hepatitis_c", label: "Hepatitis C", type: "select", group: "General",
     meaning: "Chronic hepatitis C carries the same risk through the same route.",
     options: [{ value: 0, label: "Negative" }, { value: 1, label: "Positive" }],
   },
   {
-    key: "diabetes", label: "Diabetes", type: "select",
+    key: "diabetes", label: "Diabetes", type: "select", group: "General",
     meaning: "Long standing diabetes raises both liver and pancreatic risk.",
     options: [{ value: 0, label: "No" }, { value: 1, label: "Yes" }],
   },
+
+  // Read by the cervical panel, which is built almost entirely on these.
+  // Cervical cancer is caused by persistent HPV infection, so these fields are
+  // the exposure proxies for it rather than moral bookkeeping. Cutting the list
+  // was tried and measured: eight of them scored 0.665 with an interval that
+  // contains chance, and six scored 0.552, against 0.725 for the full set.
+  // Every one of them is here because removing it costs accuracy.
+  //
+  // Leaving them blank is fine. Anything missing is filled with the training
+  // median, and the cervical panel reports reduced coverage when that happens.
+  {
+    key: "menopause", label: "Menopausal status", type: "select",
+    group: "Reproductive and sexual history",
+    meaning: "Read by the ovarian panel. CA 125 and HE4 are interpreted against different cut-offs before and after menopause.",
+    options: [{ value: 0, label: "Pre-menopausal" }, { value: 1, label: "Post-menopausal" }],
+  },
+  {
+    key: "sexual_partners", label: "Lifetime sexual partners", type: "number",
+    group: "Reproductive and sexual history",
+    meaning: "A proxy for cumulative HPV exposure, which is the cause of nearly all cervical cancer.",
+    min: 0, max: 50, step: 1,
+  },
+  {
+    key: "first_intercourse_age", label: "Age at first intercourse", type: "number",
+    group: "Reproductive and sexual history",
+    meaning: "Earlier exposure means the cervix is exposed to HPV while it is still developing, which raises risk.",
+    min: 8, max: 60, step: 1, suffix: "years",
+  },
+  {
+    key: "pregnancies", label: "Pregnancies", type: "number",
+    group: "Reproductive and sexual history",
+    meaning: "Higher parity is an established cervical cancer risk factor, independent of HPV exposure.",
+    min: 0, max: 20, step: 1,
+  },
+  {
+    key: "smokes", label: "Currently smokes", type: "select",
+    group: "Reproductive and sexual history",
+    meaning: "Smoking roughly doubles cervical cancer risk in women who carry HPV.",
+    options: [{ value: 0, label: "No" }, { value: 1, label: "Yes" }],
+  },
+  {
+    key: "smoking_years", label: "Years smoking", type: "number",
+    group: "Reproductive and sexual history",
+    meaning: "Duration of tobacco exposure.",
+    min: 0, max: 70, step: 1, suffix: "years",
+  },
+  {
+    key: "smoking_packyears", label: "Pack-years", type: "number",
+    group: "Reproductive and sexual history",
+    meaning: "Packs per day multiplied by years smoked. The standard measure of total tobacco dose.",
+    min: 0, max: 200, step: 0.5, suffix: "pack-yrs",
+  },
+  {
+    key: "hormonal_contraceptives", label: "Hormonal contraceptives", type: "select",
+    group: "Reproductive and sexual history",
+    meaning: "Long term use is associated with a modest rise in cervical risk that reverses after stopping.",
+    options: [{ value: 0, label: "No" }, { value: 1, label: "Yes" }],
+  },
+  {
+    key: "hormonal_contraceptives_years", label: "Years on hormonal contraceptives", type: "number",
+    group: "Reproductive and sexual history",
+    meaning: "Duration matters more than use alone.",
+    min: 0, max: 50, step: 0.5, suffix: "years",
+  },
+  {
+    key: "iud", label: "IUD", type: "select",
+    group: "Reproductive and sexual history",
+    meaning: "Intrauterine device use is associated with lower cervical cancer risk in large pooled studies.",
+    options: [{ value: 0, label: "No" }, { value: 1, label: "Yes" }],
+  },
+  {
+    key: "iud_years", label: "Years with an IUD", type: "number",
+    group: "Reproductive and sexual history",
+    meaning: "Duration of intrauterine device use.",
+    min: 0, max: 50, step: 0.5, suffix: "years",
+  },
+  {
+    key: "stds", label: "Any sexually transmitted infection", type: "select",
+    group: "Reproductive and sexual history",
+    meaning: "A history of any STI indicates exposure through the same route HPV takes.",
+    options: [{ value: 0, label: "No" }, { value: 1, label: "Yes" }],
+  },
+  {
+    key: "stds_number", label: "Number of STIs", type: "number",
+    group: "Reproductive and sexual history",
+    meaning: "How many separate infections have been diagnosed.",
+    min: 0, max: 20, step: 1,
+  },
+  {
+    key: "stds_hpv", label: "HPV", type: "select",
+    group: "Reproductive and sexual history",
+    meaning: "A recorded HPV infection. Persistent high risk HPV is the direct cause of nearly all cervical cancer.",
+    options: [{ value: 0, label: "Negative" }, { value: 1, label: "Positive" }],
+  },
+  {
+    key: "stds_diagnoses", label: "STI diagnoses on record", type: "number",
+    group: "Reproductive and sexual history",
+    meaning: "The count of distinct diagnoses in the record, which can exceed the number of infections.",
+    min: 0, max: 20, step: 1,
+  },
+];
+
+export const HISTORY_GROUPS: HistoryField["group"][] = [
+  "General",
+  "Reproductive and sexual history",
 ];
 
 export const HISTORY_KEYS = HISTORY_FIELDS.map(f => f.key);

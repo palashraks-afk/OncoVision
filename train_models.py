@@ -89,6 +89,20 @@ COHORT_DESIGN = {
                   "chance, and a drop of only 0.007 from the internal random split, so the "
                   "panel transfers between institutions. It has still never met a screening "
                   "population, where it would flag roughly 525 people per true case.",
+    "ovarian": "349 women operated on at one Chinese hospital between 2011 and 2018. The "
+               "controls are women whose ovarian mass proved benign, not healthy volunteers, "
+               "so this separates malignant from benign rather than sick from well. It is a "
+               "triage panel for a mass that has already been found, which is why precision "
+               "is projected onto the roughly 20 percent malignancy rate among women taken "
+               "to surgery rather than onto SEER incidence. Single centre and single country, "
+               "so it has no external cohort yet and that is its main open limitation.",
+    "cervical": "858 women assessed for colposcopy at one hospital in Caracas, 55 with a "
+                "positive biopsy. Prior-diagnosis columns are dropped as leakage. 55 events "
+                "is below the roughly 96 needed for a tight estimate, so the interval runs "
+                "0.539 to 0.888: it excludes chance and beats age alone, 0.725 against 0.458, "
+                "but it is the least certain panel here. Precision is projected onto the 6.4 "
+                "percent prevalence among referred women, because at population incidence it "
+                "would flag about 7,383 women per true case and would not be shippable.",
     "prostate": "Case-control and post-prostatectomy. Gleason grade comes from the "
                 "surgical specimen, not from screening.",
 }
@@ -102,6 +116,11 @@ LAB_FIELDS = [
     "age", "bmi", "wbc", "rbc", "hemoglobin", "platelets", "glucose", "calcium",
     "bun", "creatinine", "protein_total", "albumin", "ast", "alt", "bilirubin",
     "alkaline_phosphatase", "alpha_fetoprotein_level", "psa", "plasma_ca19_9",
+    # Red cell and platelet indices, and GGT. Printed on every CBC and liver
+    # panel already, and the ovarian panel reads them.
+    "hematocrit", "mcv", "mch", "rdw", "mpv", "neutrophil_pct", "ggt",
+    # Tumour markers ordered when a pelvic mass is being worked up.
+    "ca125", "he4", "cea",
     "radius_mean", "texture_mean", "perimeter_mean", "area_mean",
 ]
 
@@ -119,6 +138,17 @@ LAB_FIELDS = [
 HISTORY_FIELDS = [
     "gender", "smoking", "alcohol_intake", "physical_activity",
     "hepatitis_b", "hepatitis_c", "diabetes",
+    # Reproductive and sexual history. The cervical panel is built almost
+    # entirely on these, because cervical cancer is an HPV disease and these
+    # fields are the exposure proxies for it. Cutting the list was tried and
+    # measured: eight fields scored 0.665 with an interval containing chance
+    # and six scored 0.552, against 0.725 for the full set. See
+    # experiments/cervical_panel.py.
+    "menopause", "sexual_partners", "first_intercourse_age", "pregnancies",
+    "smokes", "smoking_years", "smoking_packyears",
+    "hormonal_contraceptives", "hormonal_contraceptives_years",
+    "iud", "iud_years",
+    "stds", "stds_number", "stds_hpv", "stds_diagnoses",
 ]
 
 APP_FIELDS = LAB_FIELDS + HISTORY_FIELDS
@@ -235,6 +265,101 @@ DATASETS = [
         },
         "target": lambda d: (d["diagnosis"].astype(int) == 3).astype(int),
         "positive_means": "pancreatic ductal adenocarcinoma, separated from both healthy controls and benign hepatobiliary disease",
+    },
+    {
+        "name": "ovarian",
+        # 349 women operated on at the Third Affiliated Hospital of Soochow
+        # University, 171 with ovarian cancer and 178 with a benign ovarian
+        # tumour, every label taken from the resected specimen.
+        #
+        # The controls are the point. They are not healthy volunteers, they are
+        # women whose ovarian mass turned out to be benign, so the panel has to
+        # separate malignant from benign rather than sick from well. That is
+        # the decision a clinician actually faces once a mass has been found,
+        # and it is the same decision the ROMA and RMI indices are used for.
+        #
+        # Age had to be beaten before this could ship: cases run seventeen years
+        # older than controls, 53 against 36, which is exactly the trap the
+        # general panel fell into. Age and menopausal status alone reach 0.792.
+        # Routine bloodwork with no age and no tumour markers reaches 0.938, and
+        # the full set reaches 0.941. So the lab report is doing the work here,
+        # which is not true of the general panel and is worth stating.
+        #
+        # Source values are SI and are converted to conventional units in
+        # fetch_ovarian.py. Mixing the two is what broke the German liver
+        # transfer, so it is done once, explicitly, at load time.
+        "file": "ovarian_soochow.csv",
+        "label": "Ovarian Malignancy, in a known ovarian mass",
+        "features": {
+            "age": lambda d: d["age"],
+            "menopause": lambda d: d["menopause"],
+            "albumin": lambda d: d["albumin"],
+            "protein_total": lambda d: d["protein_total"],
+            "glucose": lambda d: d["glucose"],
+            "calcium": lambda d: d["calcium"],
+            "creatinine": lambda d: d["creatinine"],
+            "bun": lambda d: d["bun"],
+            "bilirubin": lambda d: d["bilirubin"],
+            "alt": lambda d: d["alt"],
+            "ast": lambda d: d["ast"],
+            "alkaline_phosphatase": lambda d: d["alkaline_phosphatase"],
+            "ggt": lambda d: d["ggt"],
+            "hemoglobin": lambda d: d["hemoglobin"],
+            "rbc": lambda d: d["rbc"],
+            "platelets": lambda d: d["platelets"],
+            "hematocrit": lambda d: d["hematocrit"],
+            "mcv": lambda d: d["mcv"],
+            "mch": lambda d: d["mch"],
+            "rdw": lambda d: d["rdw"],
+            "mpv": lambda d: d["mpv"],
+            "neutrophil_pct": lambda d: d["neutrophil_pct"],
+            "ca125": lambda d: d["ca125"],
+            "he4": lambda d: d["he4"],
+            "cea": lambda d: d["cea"],
+            "alpha_fetoprotein_level": lambda d: d["alpha_fetoprotein_level"],
+            "plasma_ca19_9": lambda d: d["plasma_ca19_9"],
+        },
+        "target": lambda d: d["ovarian_cancer"].astype(int),
+        "positive_means": ("ovarian cancer on histology, separated from a benign ovarian "
+                           "tumour rather than from a healthy woman"),
+    },
+    {
+        "name": "cervical",
+        # 858 women assessed at Hospital Universitario de Caracas, 55 with a
+        # positive cervical biopsy.
+        #
+        # Dx, Dx:Cancer, Dx:CIN and Dx:HPV are dropped in fetch_cervical.py.
+        # They record a diagnosis the patient already carries, so training on
+        # them would predict a biopsy result from the fact that the disease is
+        # already known. That single decision is the difference between the
+        # 0.725 here and the near-perfect numbers usually reported on this set.
+        #
+        # 55 positives is below the roughly 96 events needed to pin an estimate
+        # down, so the interval is wide, 0.539 to 0.888. It excludes chance and
+        # it beats age alone by a very wide margin, 0.725 against 0.458. The
+        # width ships with the panel rather than being hidden.
+        "file": "cervical_caracas.csv",
+        "label": "Cervical Pre-cancer Risk",
+        "features": {
+            "age": lambda d: d["age"],
+            "sexual_partners": lambda d: d["sexual_partners"],
+            "first_intercourse_age": lambda d: d["first_intercourse_age"],
+            "pregnancies": lambda d: d["pregnancies"],
+            "smokes": lambda d: d["smokes"],
+            "smoking_years": lambda d: d["smoking_years"],
+            "smoking_packyears": lambda d: d["smoking_packyears"],
+            "hormonal_contraceptives": lambda d: d["hormonal_contraceptives"],
+            "hormonal_contraceptives_years": lambda d: d["hormonal_contraceptives_years"],
+            "iud": lambda d: d["iud"],
+            "iud_years": lambda d: d["iud_years"],
+            "stds": lambda d: d["stds"],
+            "stds_number": lambda d: d["stds_number"],
+            "stds_hpv": lambda d: d["stds_hpv"],
+            "stds_diagnoses": lambda d: d["stds_diagnoses"],
+        },
+        "target": lambda d: d["cervical_biopsy_positive"].astype(int),
+        "positive_means": ("a positive cervical biopsy, meaning pre-cancerous or cancerous "
+                           "cells confirmed on histology"),
     },
     {
         "name": "prostate",

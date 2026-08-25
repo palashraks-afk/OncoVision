@@ -11,7 +11,9 @@ before any model was fitted and was not used for training, model selection, or c
 | breast | 0.972 | 0.942 to 0.994 | 0.964 | n/a | marginal |
 | liver | 0.753 | 0.723 to 0.784 | 0.731 | 0.602 | yes |
 | pancreatic | 0.969 | 0.938 to 0.991 | 0.968 | 0.5 | marginal |
-| prostate | 0.786 | 0.495 to 0.989 | 0.769 | 0.676 | marginal |
+| ovarian | 0.949 | 0.888 to 0.993 | 0.911 | 0.813 | yes |
+| cervical | 0.725 | 0.547 to 0.881 | 0.572 | 0.458 | yes |
+| prostate | 0.786 | 0.49 to 1.0 | 0.769 | 0.676 | marginal |
 
 ## Precision at real population prevalence
 
@@ -25,6 +27,8 @@ whether a screening tool is usable.
 | breast | 0.1325% | 0.81 | 0.944 | **1.90%** | 52.7 |
 | liver | 4.0000% | 0.551 | 0.795 | **10.07%** | 9.9 |
 | pancreatic | 0.0139% | 1.0 | 0.883 | **0.12%** | 842.8 |
+| ovarian | 20.0000% | 0.853 | 0.944 | **79.33%** | 1.3 |
+| cervical | 6.4000% | 0.636 | 0.634 | **10.61%** | 9.4 |
 | prostate | 0.1232% | 0.769 | 0.571 | **0.22%** | 452.7 |
 
 ## Calibration
@@ -37,6 +41,8 @@ Slope 1.0 and intercept 0.0 is perfect. Slope below 1 means the model is over-co
 | breast | 0.0678 | 0.0668 | 1.118 | 0.179 |
 | liver | 0.1684 | 0.0358 | 1.049 | 0.463 |
 | pancreatic | 0.0694 | 0.0617 | 0.46 | 3.531 |
+| ovarian | 0.0851 | 0.0797 | 0.455 | 0.918 |
+| cervical | 0.1192 | 0.0568 | 1.087 | 0.125 |
 | prostate | 0.1927 | 0.1927 | 0.464 | 0.022 |
 
 ## Per panel detail
@@ -150,14 +156,67 @@ Slope 1.0 and intercept 0.0 is perfect. Slope below 1 means the model is over-co
   | 0.6 to 0.8 | 3 | 0.674 | 0.0 |
   | 0.8 to 1.0 | 21 | 0.985 | 0.905 |
 
+### ovarian
+
+- **Cohort design**: 349 women operated on at one Chinese hospital. Controls are benign ovarian tumours, not healthy women.
+- **Records**: 349 total, 279 train, 70 held-out test
+- **Features** (27): age, menopause, albumin, protein_total, glucose, calcium, creatinine, bun, bilirubin, alt, ast, alkaline_phosphatase, ggt, hemoglobin, rbc, platelets, hematocrit, mcv, mch, rdw, mpv, neutrophil_pct, ca125, he4, cea, alpha_fetoprotein_level, plasma_ca19_9
+- **Cohort prevalence**: 49.0% vs population 20.0000%
+- **Test AUC**: 0.949 (95% CI 0.888 to 0.993)
+- **Sensitivity**: 0.853 (95% CI 0.72 to 0.968)
+- **Specificity**: 0.944 (95% CI 0.853 to 1.0)
+- **PPV at SEER prevalence**: 79.33%, about 1.3 people flagged per true case
+
+  Subgroups:
+
+  | Group | n | positives | AUC | 95% CI |
+  |---|---|---|---|---|
+  | age under 43 | 33 | 6 | 0.818 | 0.545 to 1.0 |
+  | age 43 and over | 37 | 28 | 0.972 | 0.905 to 1.0 |
+
+  Reliability (calibrated):
+
+  | Predicted bin | n | mean predicted | observed rate |
+  |---|---|---|---|
+  | 0.0 to 0.2 | 38 | 0.065 | 0.105 |
+  | 0.2 to 0.4 | 1 | 0.209 | 1.0 |
+  | 0.6 to 0.8 | 4 | 0.692 | 0.5 |
+  | 0.8 to 1.0 | 27 | 0.973 | 1.0 |
+
+### cervical
+
+- **Cohort design**: 858 women assessed for colposcopy in Caracas, 55 biopsy-positive. Prior-diagnosis columns dropped as leakage.
+- **Records**: 858 total, 686 train, 172 held-out test
+- **Features** (15): age, sexual_partners, first_intercourse_age, pregnancies, smokes, smoking_years, smoking_packyears, hormonal_contraceptives, hormonal_contraceptives_years, iud, iud_years, stds, stds_number, stds_hpv, stds_diagnoses
+- **Cohort prevalence**: 6.4% vs population 6.4000%
+- **Test AUC**: 0.725 (95% CI 0.547 to 0.881)
+- **Sensitivity**: 0.636 (95% CI 0.333 to 0.909)
+- **Specificity**: 0.634 (95% CI 0.556 to 0.71)
+- **PPV at SEER prevalence**: 10.61%, about 9.4 people flagged per true case
+
+  Subgroups:
+
+  | Group | n | positives | AUC | 95% CI |
+  |---|---|---|---|---|
+  | age under 25 | 82 | 7 | 0.78 | 0.578 to 0.975 |
+  | age 25 and over | 90 | 4 | 0.709 | 0.275 to 0.971 |
+
+  Reliability (calibrated):
+
+  | Predicted bin | n | mean predicted | observed rate |
+  |---|---|---|---|
+  | 0.0 to 0.2 | 165 | 0.059 | 0.055 |
+  | 0.2 to 0.4 | 6 | 0.301 | 0.333 |
+  | 0.4 to 0.6 | 1 | 0.447 | 0.0 |
+
 ### prostate
 
 - **Cohort design**: Case-control, post-prostatectomy. Gleason grade comes from the surgical specimen.
 - **Records**: 97 total, 77 train, 20 held-out test
 - **Features** (2): age, psa
 - **Cohort prevalence**: 63.9% vs population 0.1232%
-- **Test AUC**: 0.786 (95% CI 0.495 to 0.989)
-- **Sensitivity**: 0.769 (95% CI 0.533 to 1.0)
+- **Test AUC**: 0.786 (95% CI 0.49 to 1.0)
+- **Sensitivity**: 0.769 (95% CI 0.5 to 1.0)
 - **Specificity**: 0.571 (95% CI 0.167 to 1.0)
 - **PPV at SEER prevalence**: 0.22%, about 452.7 people flagged per true case
 

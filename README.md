@@ -17,28 +17,32 @@ Built as a mentored research project under the guidance of a clinical oncologist
 
 Two inputs, read together:
 
-1. **Your lab reports.** 23 values across body metrics, complete blood count, metabolic panel,
-   liver panel, tumour markers, and breast mass morphology. Uploaded as PDFs and parsed
-   automatically, or typed in.
-2. **Information about you.** 7 items no lab report contains: sex, smoking, alcohol, exercise,
-   hepatitis B and C, diabetes. Inherited risk, prior diagnosis, family history and cirrhosis were
-   removed once no shipped panel read them, because asking for what nothing uses is only friction.
+1. **Your lab reports.** 33 values across body metrics, complete blood count and red cell
+   indices, metabolic panel, liver panel, tumour markers, and breast mass morphology. Uploaded
+   as PDFs and parsed automatically, or typed in. The parser reads all 33 at 100 percent across
+   five different report layouts; see `test_parser.py`.
+2. **Information about you.** 22 items no lab report contains. Sex, smoking, alcohol, exercise,
+   hepatitis B and C and diabetes, plus the reproductive and sexual history the cervical panel
+   is built on. Inherited risk, prior diagnosis, family history and cirrhosis were removed once
+   no shipped panel read them, because asking for what nothing uses is only friction.
 
-Four calibrated models score the combination, and the interface reports what drove each score,
-how accurate that model is, and what the score is worth at real population prevalence.
+Six calibrated models score the combination, and the interface reports what drove each score,
+how accurate that model is, and what the score is worth at real prevalence.
 
 ---
 
 ## What ships
 
-Four panels ship. One was withdrawn because the evidence did not support serving it.
+Six panels ship. One was withdrawn because the evidence did not support serving it.
 
 | Panel | Trained on | Test AUC | 95% CI | Threshold | Sens | Spec | Flagged per true case |
 |---|---|---|---|---|---|---|---|
 | Breast malignancy | 569 Wisconsin biopsies | 0.972 | 0.942 to 0.994 | 38.8% | 0.81 | 0.94 | 52.7 |
 | Pancreatic cancer | 600 samples, 3 tissue banks | 0.969 | 0.938 to 0.991 | 16.6% | 1.00 | 0.88 | 842.8 |
+| Ovarian malignancy | 349 operated ovarian masses | 0.949 | 0.888 to 0.993 | 58.1% | 0.85 | 0.94 | 1.3 |
 | Liver disease | 35,511 NHANES adults | 0.753 | 0.723 to 0.784 | 4.2% | 0.55 | 0.80 | 9.9 |
 | General cancer | 23,923 NHANES adults | 0.732 | 0.692 to 0.770 | 2.9% | 0.68 | 0.65 | 16.9 |
+| Cervical pre-cancer | 858 Caracas referrals | 0.725 | **0.547** to 0.881 | 5.9% | 0.64 | 0.63 | 9.4 |
 | ~~Prostate~~ | 97 Stanford records | 0.786 | **0.505** to 0.99 | withdrawn | | | |
 
 ### Does each panel beat the obvious baseline?
@@ -46,10 +50,50 @@ Four panels ship. One was withdrawn because the evidence did not support serving
 | Panel | Model | Logistic | Age and sex alone | Gain |
 |---|---|---|---|---|
 | Pancreatic | 0.969 | 0.968 | 0.500 | +0.469 |
+| Cervical | 0.725 | 0.572 | 0.458 | +0.267 |
+| Ovarian | 0.949 | 0.911 | 0.813 | +0.136 |
 | Liver | 0.753 | 0.731 | 0.602 | +0.151 |
 | General | 0.732 | 0.731 | 0.727 | **+0.005** |
 
 The general panel is the weak one, and the interface says so rather than hiding it.
+
+### Two panels are triage, not population screening
+
+The ovarian and cervical panels run *after* something has already been found. Ovarian separates
+a malignant ovarian mass from a benign one in women going to surgery; cervical prioritises women
+already being assessed for colposcopy. Their precision is therefore projected onto prevalence in
+the referred group, not onto SEER population incidence.
+
+That distinction is not cosmetic. Projected onto population incidence the cervical panel would
+flag roughly **7,383 women per true case**, which would be indefensible to ship. Projected onto
+the 6.4 percent prevalence among referred women it flags 9.4 per case at 96.2 percent NPV.
+Same model, same numbers, completely different meaning, so the prior is stated on the panel.
+
+### The ovarian panel is the one where the bloodwork does the work
+
+Cases in that cohort are seventeen years older than controls, 53 against 36, which is exactly the
+trap the general panel fell into. So age was made a baseline and had to be beaten:
+
+| Feature set | Inputs | AUC |
+|---|---|---|
+| Age and menopausal status | 2 | 0.792 |
+| Routine bloodwork only, no age, no tumour markers | 20 | **0.938** |
+| Tumour markers only | 5 | 0.931 |
+| Everything | 27 | **0.941** |
+
+Routine chemistry and a blood count, with no age and no tumour markers, reach 0.938. This is the
+one panel where the lab report itself carries the signal, and it is worth contrasting with the
+general panel below, where it does not.
+
+### Cervical is the least certain panel here, and it says so
+
+Cross-validated AUC is 0.587 while the held-out split gives 0.725. That gap means the held-out
+number is optimistic and the truth sits nearer 0.6. With 55 positive biopsies the interval runs
+0.547 to 0.881: it excludes chance, and it beats age alone by a very wide margin (0.458), which
+is why it ships, but it is the weakest evidence in the project and is labelled that way.
+
+Cutting its 15 input fields was tried and failed: eight fields scored 0.665 with an interval
+containing chance, and six scored 0.552. All fifteen are needed, so all fifteen are asked for.
 
 ### The general panel now answers a screening question
 
