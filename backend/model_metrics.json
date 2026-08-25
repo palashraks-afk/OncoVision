@@ -7,86 +7,85 @@
       "gender",
       "bmi",
       "smoking",
-      "alcohol_intake",
-      "physical_activity"
+      "alcohol_intake"
     ],
-    "cohort_design": "37,564 US adults from NHANES 2005 to 2018, nationally representative rather than case-control. Temporally validated: trained on cycles up to 2014 and tested on 2015 to 2018 it reaches 0.804, against 0.574 for the risk-factor cohort it replaced.",
-    "auc": 0.788,
-    "auc_std": 0.01,
-    "accuracy": 0.655,
-    "sensitivity": 0.774,
-    "specificity": 0.643,
-    "n_samples": 37564,
-    "n_positive": 3536,
-    "n_features": 6,
+    "cohort_design": "23,923 US adults from NHANES 2005 to 2014, nationally representative. The target is a cancer diagnosis within four years of the blood draw, with long-ago survivors excluded, so this is a screening question rather than a lifetime one. It adds 0.019 over knowing age and sex alone, which is small and is stated rather than hidden. Adding routine bloodwork was measured and made it worse, so this panel reads risk factors, not the lab report.",
+    "auc": 0.76,
+    "auc_std": 0.015,
+    "accuracy": 0.72,
+    "sensitivity": 0.64,
+    "specificity": 0.723,
+    "n_samples": 23923,
+    "n_positive": 750,
+    "n_features": 5,
     "cv_folds": 5,
-    "threshold": 0.0926,
+    "threshold": 0.0362,
     "model_selection": {
-      "ensemble": 0.788,
-      "logistic": 0.784
+      "ensemble": 0.758,
+      "logistic": 0.762
     },
-    "chosen_model": "ensemble",
+    "chosen_model": "logistic",
     "held_out": {
-      "n_test": 7513,
-      "auc": 0.781,
+      "n_test": 4785,
+      "auc": 0.732,
       "auc_ci": [
-        0.764,
-        0.797
+        0.692,
+        0.77
       ],
-      "sensitivity": 0.799,
+      "sensitivity": 0.68,
       "sensitivity_ci": [
-        0.768,
-        0.829
+        0.603,
+        0.754
       ],
-      "specificity": 0.617,
+      "specificity": 0.65,
       "specificity_ci": [
-        0.605,
-        0.628
+        0.636,
+        0.663
       ],
-      "brier": 0.077,
-      "calibration_slope": 0.947,
-      "ppv_at_population_prevalence": 0.17778,
-      "people_flagged_per_true_case": 5.6,
-      "population_prevalence": 0.094,
-      "prevalence_source": "Ever told had cancer, US adults, NHANES 2005-2018",
-      "cohort_prevalence": 0.094,
-      "baseline_logistic_auc": 0.781,
-      "baseline_age_sex_auc": 0.777,
+      "brier": 0.03,
+      "calibration_slope": 0.753,
+      "ppv_at_population_prevalence": 0.05923,
+      "people_flagged_per_true_case": 16.9,
+      "population_prevalence": 0.0314,
+      "prevalence_source": "Cancer diagnosed within 4 years, US adults, NHANES 2005-2014",
+      "cohort_prevalence": 0.031,
+      "baseline_logistic_auc": 0.731,
+      "baseline_age_sex_auc": 0.727,
       "subgroups": {
         "sex: female": {
-          "n": 3884,
-          "positives": 387,
-          "auc": 0.732,
+          "n": 2414,
+          "positives": 77,
+          "auc": 0.672,
           "auc_ci": [
-            0.706,
-            0.758
+            0.607,
+            0.734
           ]
         },
         "sex: male": {
-          "n": 3629,
-          "positives": 320,
-          "auc": 0.825,
+          "n": 2371,
+          "positives": 73,
+          "auc": 0.771,
           "auc_ci": [
-            0.803,
-            0.846
+            0.72,
+            0.821
           ]
         },
-        "age under 49": {
-          "n": 3668,
-          "positives": 98,
-          "auc": 0.699,
+        "age under 47": {
+          "n": 2389,
+          "positives": 25,
+          "auc": 0.614,
           "auc_ci": [
-            0.646,
-            0.753
+            0.495,
+            0.73
           ]
         },
-        "age 49 and over": {
-          "n": 3845,
-          "positives": 609,
-          "auc": 0.679,
+        "age 47 and over": {
+          "n": 2396,
+          "positives": 125,
+          "auc": 0.637,
           "auc_ci": [
-            0.656,
-            0.7
+            0.583,
+            0.687
           ]
         }
       }
@@ -121,17 +120,17 @@
       "n_test": 114,
       "auc": 0.972,
       "auc_ci": [
-        0.941,
+        0.942,
         0.994
       ],
       "sensitivity": 0.81,
       "sensitivity_ci": [
-        0.69,
-        0.921
+        0.683,
+        0.925
       ],
       "specificity": 0.944,
       "specificity_ci": [
-        0.886,
+        0.887,
         0.987
       ],
       "brier": 0.0668,
@@ -182,18 +181,18 @@
       "n_test": 7103,
       "auc": 0.753,
       "auc_ci": [
-        0.721,
-        0.782
+        0.723,
+        0.784
       ],
       "sensitivity": 0.551,
       "sensitivity_ci": [
-        0.495,
-        0.607
+        0.493,
+        0.61
       ],
       "specificity": 0.795,
       "specificity_ci": [
         0.786,
-        0.804
+        0.805
       ],
       "brier": 0.0358,
       "calibration_slope": 1.049,
@@ -210,8 +209,8 @@
           "positives": 141,
           "auc": 0.765,
           "auc_ci": [
-            0.724,
-            0.808
+            0.722,
+            0.805
           ]
         },
         "sex: male": {
@@ -219,8 +218,8 @@
           "positives": 146,
           "auc": 0.739,
           "auc_ci": [
-            0.695,
-            0.784
+            0.693,
+            0.781
           ]
         },
         "age under 49": {
@@ -228,8 +227,8 @@
           "positives": 85,
           "auc": 0.762,
           "auc_ci": [
-            0.709,
-            0.811
+            0.71,
+            0.81
           ]
         },
         "age 49 and over": {
@@ -237,8 +236,8 @@
           "positives": 202,
           "auc": 0.713,
           "auc_ci": [
-            0.673,
-            0.755
+            0.672,
+            0.752
           ]
         }
       }
@@ -275,7 +274,7 @@
       "n_test": 120,
       "auc": 0.969,
       "auc_ci": [
-        0.937,
+        0.938,
         0.991
       ],
       "sensitivity": 1.0,
@@ -285,8 +284,8 @@
       ],
       "specificity": 0.883,
       "specificity_ci": [
-        0.813,
-        0.941
+        0.814,
+        0.947
       ],
       "brier": 0.0617,
       "calibration_slope": 0.46,
@@ -303,7 +302,7 @@
           "positives": 12,
           "auc": 0.959,
           "auc_ci": [
-            0.901,
+            0.906,
             0.998
           ]
         },
@@ -313,7 +312,7 @@
           "auc": 0.978,
           "auc_ci": [
             0.944,
-            1.0
+            0.998
           ]
         },
         "age under 57": {
@@ -321,7 +320,7 @@
           "positives": 12,
           "auc": 0.957,
           "auc_ci": [
-            0.899,
+            0.897,
             0.997
           ]
         },
@@ -330,7 +329,7 @@
           "positives": 14,
           "auc": 0.983,
           "auc_ci": [
-            0.951,
+            0.952,
             1.0
           ]
         }

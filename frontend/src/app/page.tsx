@@ -40,18 +40,18 @@ const API_BASE = resolveApiBase();
 // Used until the live registry responds.
 const FALLBACK_METRICS: Record<string, any> = {
   general: {
-    label: "General Cancer Risk", auc: 0.781, auc_ci: [0.764, 0.797],
-    threshold: 8.6,
-    sensitivity: 0.799, specificity: 0.617,
-    brier: 0.077, calibration_slope: 0.947,
-    ppv_at_population_prevalence: 0.17778,
-    people_flagged_per_true_case: 5.6,
-    population_prevalence: 0.094, cohort_prevalence: 0.094,
-    baseline_logistic_auc: 0.781, baseline_age_sex_auc: 0.777,
-    n_samples: 37564, n_test: 7513, n_features: 6,
+    label: "General Cancer Risk", auc: 0.732, auc_ci: [0.692, 0.77],
+    threshold: 2.9,
+    sensitivity: 0.68, specificity: 0.65,
+    brier: 0.03, calibration_slope: 0.753,
+    ppv_at_population_prevalence: 0.05923,
+    people_flagged_per_true_case: 16.9,
+    population_prevalence: 0.0314, cohort_prevalence: 0.031,
+    baseline_logistic_auc: 0.731, baseline_age_sex_auc: 0.727,
+    n_samples: 23923, n_test: 4785, n_features: 5,
   },
   liver: {
-    label: "Liver Disease Risk", auc: 0.753, auc_ci: [0.721, 0.782],
+    label: "Liver Disease Risk", auc: 0.753, auc_ci: [0.723, 0.784],
     threshold: 4.2,
     sensitivity: 0.551, specificity: 0.795,
     brier: 0.0358, calibration_slope: 1.049,
@@ -62,7 +62,7 @@ const FALLBACK_METRICS: Record<string, any> = {
     n_samples: 35511, n_test: 7103, n_features: 11,
   },
   breast: {
-    label: "Breast Malignancy, from biopsy imaging", auc: 0.972, auc_ci: [0.941, 0.994],
+    label: "Breast Malignancy, from biopsy imaging", auc: 0.972, auc_ci: [0.942, 0.994],
     threshold: 38.8,
     sensitivity: 0.81, specificity: 0.944,
     brier: 0.0668, calibration_slope: 1.118,
@@ -73,7 +73,7 @@ const FALLBACK_METRICS: Record<string, any> = {
     n_samples: 569, n_test: 114, n_features: 4,
   },
   pancreatic: {
-    label: "Pancreatic Cancer Risk", auc: 0.969, auc_ci: [0.937, 0.991],
+    label: "Pancreatic Cancer Risk", auc: 0.969, auc_ci: [0.938, 0.991],
     threshold: 16.6,
     sensitivity: 1.0, specificity: 0.883,
     brier: 0.0617, calibration_slope: 0.46,
@@ -88,21 +88,24 @@ const FALLBACK_METRICS: Record<string, any> = {
 // Every ordered pair across three independent real liver cohorts, plus the
 // general panel against NHANES. Nothing from a test cohort touches training.
 const EXTERNAL_VALIDATION = [
-  { direction: "General, NHANES 2005-2014 to 2015-2018", internal: 0.789, external: 0.804, ci: [0.790, 0.819], drop: -0.015 },
-  { direction: "Liver, NHANES 2005-2014 to 2015-2018", internal: 0.734, external: 0.716, ci: [0.692, 0.738], drop: 0.018 },
-  { direction: "Liver, trained USA, tested India", internal: 0.734, external: 0.640, ci: [0.590, 0.690], drop: 0.094 },
-  { direction: "Liver, trained USA, tested Germany", internal: 0.734, external: 0.442, ci: [0.371, 0.513], drop: 0.292 },
-  { direction: "Pancreatic, leave-one-site-out mean", internal: 0.969, external: 0.962, ci: [0.895, 0.990], drop: 0.007 },
-  { direction: "Breast, WPBC sensitivity", internal: 0.915, external: 0.894, ci: [0.85, 0.94], drop: 0.021 },
+  { direction: "Pancreatic, leave-one-tissue-bank-out mean", internal: 0.969, external: 0.962, ci: [0.895, 0.990], drop: 0.007 },
+  { direction: "Breast, WPBC 198 patients, sensitivity", internal: 0.915, external: 0.894, ci: [0.85, 0.94], drop: 0.021 },
+  { direction: "Liver, NHANES unseen cycles 2015-2018", internal: 0.734, external: 0.716, ci: [0.692, 0.738], drop: 0.018 },
+  { direction: "General, NHANES held-out cycle 2013-2014", internal: 0.761, external: 0.748, ci: [0.711, 0.784], drop: 0.013 },
+  { direction: "Liver, trained USA tested India", internal: 0.734, external: 0.640, ci: [0.590, 0.690], drop: 0.094 },
+  { direction: "Liver, trained USA tested Germany", internal: 0.734, external: 0.442, ci: [0.371, 0.513], drop: 0.292 },
 ];
 
 // Leave-one-cohort-out: train on two countries, test on the third. This is the
 // design the pairwise table argues for, and it is what the shipped liver panel
 // is built on.
-const LEAVE_ONE_OUT = [
-  { held: "India", trained: "Germany + USA", n: 5476, auc: 0.710, ci: [0.664, 0.753], logistic: 0.753 },
-  { held: "Germany", trained: "India + USA", n: 5470, auc: 0.641, ci: [0.564, 0.724], logistic: 0.654 },
-  { held: "USA", trained: "India + Germany", n: 1172, auc: 0.580, ci: [0.547, 0.612], logistic: 0.655 },
+// Measured, not assumed: routine bloodwork does not detect general cancer.
+// Tested on a held-out NHANES cycle against a recent-diagnosis target.
+const BLOODWORK_TEST = [
+  { arm: "Age and sex only", n: 2, auc: 0.729 },
+  { arm: "Age, sex, lifestyle (shipped)", n: 5, auc: 0.748 },
+  { arm: "All 14 blood values only", n: 14, auc: 0.663 },
+  { arm: "Everything combined", n: 19, auc: 0.737 },
 ];
 
 // Trained and measured, deliberately not served. Reported rather than deleted,
@@ -852,7 +855,7 @@ export default function OncovisionDashboard() {
                   A full panel gives you twenty or thirty numbers, and most look fine on their own. What is hard
                   for a person to do, and straightforward for a trained model, is to read all of them together
                   alongside your history and ask whether that combination resembles patients who turned out to
-                  have cancer. Oncovision runs that comparison against five models trained on anonymised patient
+                  have cancer. Oncovision runs that comparison against four models trained on anonymised patient
                   records and returns a probability for each cancer type alongside a healthy baseline. It is a
                   second read on data you already own. It is not a diagnosis and it does not replace your doctor.
                 </p>
@@ -1391,101 +1394,7 @@ export default function OncovisionDashboard() {
                     panels now ship logistic regression rather than the ensemble.
                   </p>
                 </div>
-
-
-                <h4 className="text-base display mt-8 mb-2">Leave one cohort out</h4>
-                <p className="text-sm text-[var(--ink-2)] mb-4 leading-relaxed">
-                  The pairwise table says single-source training does not survive a change of
-                  population. The fix is to train on more than one. Each row below trains on two
-                  countries and tests on the third, which the held-out country contributes nothing to.
-                </p>
-                <div className="overflow-x-auto">
-                  <table className="w-full text-left text-sm">
-                    <thead>
-                      <tr className="field-label border-b border-[var(--rule)]">
-                        <th className="pb-3 pr-4">Held out</th>
-                        <th className="pb-3 pr-4">Trained on</th>
-                        <th className="pb-3 pr-4">Train n</th>
-                        <th className="pb-3 pr-4">AUC</th>
-                        <th className="pb-3 pr-4">95% CI</th>
-                        <th className="pb-3">Logistic</th>
-                      </tr>
-                    </thead>
-                    <tbody className="divide-y divide-[var(--rule)]">
-                      {LEAVE_ONE_OUT.map(r => (
-                        <tr key={r.held} className="text-[var(--ink-2)]">
-                          <td className="py-3 pr-4 display text-[var(--stamp)]">{r.held}</td>
-                          <td className="py-3 pr-4">{r.trained}</td>
-                          <td className="py-3 pr-4 data">{r.n.toLocaleString()}</td>
-                          <td className="py-3 pr-4 data text-[var(--ink)]">{r.auc}</td>
-                          <td className="py-3 pr-4 data text-[var(--ink-3)]">{r.ci[0]} to {r.ci[1]}</td>
-                          <td className="py-3 data text-[var(--ok)]">{r.logistic}</td>
-                        </tr>
-                      ))}
-                    </tbody>
-                  </table>
-                </div>
-                <div className="mt-5 p-4 border border-[var(--stamp-line)] bg-[var(--stamp-bg)]">
-                  <p className="text-xs text-[var(--ink-2)] leading-relaxed">
-                    Mean external AUC is <span className="data text-[var(--ink)]">0.585</span> when the
-                    model trains on one cohort and <span className="data text-[var(--ink)]">0.644</span>{" "}
-                    when it trains on two. Cohort diversity is worth about 0.06 AUC on a population the
-                    model has never seen, which is why the liver panel now trains on all three pooled,
-                    6,059 patients across three continents. Plain logistic regression also beat the
-                    ensemble in all three folds, so the honest expected performance on a genuinely new
-                    population is nearer 0.69 than the 0.892 measured internally.
-                  </p>
-                </div>
-
-                <h4 className="text-base display mt-8 mb-2">Pancreatic, across three institutions</h4>
-                <p className="text-sm text-[var(--ink-2)] mb-4 leading-relaxed">
-                  This panel was withdrawn for having no external test, and that was wrong. Its own
-                  cohort is drawn from three independent tissue banks, and the site column had been
-                  discarded as an identifier. Training on two and testing on the third is a real
-                  test between institutions: different centre, different collection protocol,
-                  different referral population.
-                </p>
-                <div className="overflow-x-auto">
-                  <table className="w-full text-left text-sm">
-                    <thead>
-                      <tr className="field-label border-b border-[var(--rule)]">
-                        <th className="pb-3 pr-4">Held out site</th>
-                        <th className="pb-3 pr-4">Train n</th>
-                        <th className="pb-3 pr-4">Test n</th>
-                        <th className="pb-3 pr-4">Cases</th>
-                        <th className="pb-3 pr-4">AUC</th>
-                        <th className="pb-3 pr-4">95% CI</th>
-                        <th className="pb-3">Logistic</th>
-                      </tr>
-                    </thead>
-                    <tbody className="divide-y divide-[var(--rule)]">
-                      {PANCREATIC_MULTISITE.map(r => (
-                        <tr key={r.site} className="text-[var(--ink-2)]">
-                          <td className="py-3 pr-4 display text-[var(--stamp)]">{r.site}</td>
-                          <td className="py-3 pr-4 data">{r.trainN}</td>
-                          <td className="py-3 pr-4 data">{r.testN}</td>
-                          <td className="py-3 pr-4 data">{r.cases}</td>
-                          <td className="py-3 pr-4 data text-[var(--ink)]">{r.auc}</td>
-                          <td className="py-3 pr-4 data text-[var(--ink-3)]">{r.ci[0]} to {r.ci[1]}</td>
-                          <td className="py-3 data text-[var(--ok)]">{r.logistic}</td>
-                        </tr>
-                      ))}
-                    </tbody>
-                  </table>
-                </div>
-                <div className="mt-5 p-4 border border-[var(--stamp-line)] bg-[var(--stamp-bg)]">
-                  <p className="text-xs text-[var(--ink-2)] leading-relaxed">
-                    Mean leave-one-site-out AUC is <span className="data text-[var(--ink)]">0.962</span>,
-                    every interval excludes chance, and the drop from the internal random split is{" "}
-                    <span className="data text-[var(--ink)]">0.007</span>. The panel transfers between
-                    institutions, so it was reinstated. What that does not show is transfer to a
-                    screening population: all three sites are pancreatic tissue banks running 20 to 24
-                    percent cases, and at real incidence this panel still flags roughly 525 people for
-                    every one who has the disease. Both facts are true at once and both are reported.
-                  </p>
-                </div>
-
-                {/* WITHDRAWN */}
+{/* WITHDRAWN */}
                 <h4 className="text-lg font-bold text-[var(--ink)] mt-10 mb-2">Withdrawn panels</h4>
                 <p className="text-sm text-[var(--ink-2)] mb-4 leading-relaxed">
                   Reported rather than deleted, because a panel that failed its evaluation is evidence about
@@ -1594,7 +1503,7 @@ export default function OncovisionDashboard() {
                 <ul className="space-y-3 text-sm text-[var(--ink-2)] leading-relaxed list-disc pl-5">
                   <li><strong className="text-[var(--ink)]">Every cohort is case-control, not a screening series.</strong> These records come from people who already had a reason to be tested, so the cohorts run 21 to 37 percent positive against a real incidence measured in hundredths of a percent. That gap is why the precision table above matters more than the AUC table.</li>
                   <li><strong className="text-[var(--ink)]">The breast panel contradicts the schema rule.</strong> Its four inputs are nuclear morphology from a fine needle aspirate, which requires a biopsy that has already happened. It interprets a biopsy rather than screening for one, and calling it a screening panel would be wrong.</li>
-                  <li><strong className="text-[var(--ink)]">The liver cohort is synthetic.</strong> It is the largest dataset here at 5,000 records and posts the joint-highest AUC, and the records are generated rather than observed. That AUC describes a generator, not a patient population.</li>
+                  <li><strong className="text-[var(--ink)]">The general panel barely beats age and sex.</strong> It reaches 0.732 against 0.727 for age and sex alone. Adding all 14 routine blood values was measured and made it worse, 0.737 against 0.748 on a held-out cycle, so routine chemistry does not detect general cancer and this panel reads risk factors rather than the lab report.</li>
                   <li><strong className="text-[var(--ink)]">No external validation.</strong> Every number comes from a held-out split of the same cohort the model trained on. Nothing here has been tested against a dataset collected somewhere else, which is the single largest gap.</li>
                   <li><strong className="text-[var(--ink)]">No prospective test and no IRB.</strong> No real patient report has been run through this and followed to an outcome. There is no ethics approval, no registration, and no clinical validation of any kind.</li>
                   <li><strong className="text-[var(--ink)]">The ensemble is within noise of logistic regression on two panels.</strong> Breast at 0.972 against 0.964, pancreatic at 0.969 against 0.968. The added complexity is not clearly earning its place there.</li>

@@ -64,7 +64,7 @@ SEER_INCIDENCE = {
     # incidence would be comparing a prevalence model to an incidence prior
     # and would understate precision by more than an order of magnitude, so
     # both use the prevalence NHANES itself measures on the same question.
-    "general":    (9400.0, "Ever told had cancer, US adults, NHANES 2005-2018"),
+    "general":    (3140.0, "Cancer diagnosed within 4 years, US adults, NHANES 2005-2014"),
     "breast":     (132.5, "Female breast, per 100,000 women per year"),
     "prostate":   (123.2, "Prostate, per 100,000 men per year"),
     "pancreatic": (13.9,  "Pancreas, per 100,000 men and women per year"),
@@ -72,7 +72,7 @@ SEER_INCIDENCE = {
 }
 
 COHORT_DESIGN = {
-    "general":    "37,564 US adults, NHANES 2005-2018, nationally representative.",
+    "general":    "23,923 US adults, NHANES 2005-2014. Recent diagnosis, survivors excluded.",
     "breast":     "Case-control, post-biopsy. Every record is an FNA already taken because a lesion was found.",
     "liver":      "35,511 US adults, NHANES 2005-2018. Externally validated on India and Germany.",
     "pancreatic": "Case-control. Cases are confirmed PDAC, controls include benign hepatobiliary disease.",

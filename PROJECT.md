@@ -28,10 +28,9 @@ The first is **your lab reports**, and not only a blood test. It covers whatever
 run: the complete blood count, metabolic and liver chemistry, tumour markers, and measurements
 taken from biopsy imaging.
 
-The second is **information about you**, meaning everything a lab report does not contain. Age,
-sex, smoking, alcohol, exercise, inherited risk, previous diagnoses, family history, and conditions
-such as hepatitis, cirrhosis or diabetes. Several of the models draw more from this half than from
-the chemistry, so neither side is sufficient alone.
+The second is **information about you**, meaning what a lab report does not contain. Age, sex,
+smoking, alcohol, exercise, hepatitis B and C, and diabetes. Several of the models draw more from
+this half than from the chemistry, so neither side is sufficient alone.
 
 Both are scored against patterns learned from anonymised patient records, and the system returns a
 per-cancer probability with a plain English explanation of what drove it.
@@ -89,10 +88,9 @@ automated parsing system pulls the specific medical variables out of them and fi
 blood count, metabolic panel, liver panel, tumour markers, and breast mass morphology. Anything the
 parser misread can be typed over, and anything the patient does not have is left blank.
 
-**Answer the history questions.** Eleven items that are not on a lab report and cannot be parsed
-from one: sex, smoking, alcohol, exercise, inherited risk, previous cancer diagnosis, family
-history, hepatitis B, hepatitis C, cirrhosis, and diabetes. This is information about the patient that no lab report contains, and it carries real weight in
-the scoring, so answering it materially changes the result.
+**Answer the history questions.** Seven items that are not on a lab report and cannot be parsed
+from one: sex, smoking, alcohol, exercise, hepatitis B, hepatitis C and diabetes. Fields no shipped
+panel reads were removed rather than collected for nothing.
 
 Pressing **Generate case** loads a real record drawn at random from the training data so the system
 can be tried without entering anything, and states up front which result to expect.
@@ -130,7 +128,7 @@ and shown to the user. Clamping would silently change a score. Dropping and repo
 
 This is the design decision the accuracy of the whole system rests on.
 
-The five source datasets were collected independently and share no common schema. The Wisconsin
+The source datasets were collected independently and share no common schema. The Wisconsin
 breast set has thirty morphology columns. The pancreatic cohort has urinary protein assays. The
 prostate cohort has surgical findings. If each model is trained on everything its own dataset
 happens to contain, then at prediction time it receives a handful of real values and nothing for
@@ -212,68 +210,64 @@ from both of the other two.
 
 ## 5. Measured performance
 
-All figures come from a 20% test split cut **before** any model was fitted, never used for
-training, model selection, or calibration. Intervals are bootstrap percentile intervals over 2,000
-resamples. Reproduce with `python evaluate.py`. Full report in `EVALUATION.md`.
+Held-out split cut before any model was fitted. Bootstrap intervals, 2,000 resamples.
+Reproduce with `python evaluate.py`.
 
-| Panel | Test AUC | 95% CI | Sensitivity | Specificity | Logistic baseline | Test n |
-|---|---|---|---|---|---|---|
-| General | 0.966 | 0.937 to 0.989 | 0.910 | 0.984 | 0.917 | 300 |
-| Breast | 0.972 | 0.940 to 0.994 | 0.786 | 0.958 | 0.964 | 114 |
-| Liver | 0.970 | 0.958 to 0.979 | 0.798 | 0.986 | 0.942 | 1000 |
-| Pancreatic | 0.969 | 0.939 to 0.991 | 0.731 | 0.947 | 0.968 | 120 |
+| Panel | Trained on | Test AUC | 95% CI | Threshold | Sens | Spec | Flagged per true case |
+|---|---|---|---|---|---|---|---|
+| Breast malignancy | 569 Wisconsin biopsies | 0.972 | 0.942 to 0.994 | 38.8% | 0.81 | 0.94 | 52.7 |
+| Pancreatic cancer | 600 samples, 3 tissue banks | 0.969 | 0.938 to 0.991 | 16.6% | 1.00 | 0.88 | 842.8 |
+| Liver disease | 35,511 NHANES adults | 0.753 | 0.723 to 0.784 | 4.2% | 0.55 | 0.80 | 9.9 |
+| General cancer | 23,923 NHANES adults | 0.732 | 0.692 to 0.770 | 2.9% | 0.68 | 0.65 | 16.9 |
+| ~~Prostate~~ | 97 Stanford records | 0.786 | 0.505 to 0.99 | withdrawn | | | |
 
-### Precision once the disease is rare
+### Does each panel beat the obvious baseline?
 
-AUC above 0.95 sounds decisive and on its own is close to meaningless for screening. Every cohort
-here is enriched for disease. Projecting measured sensitivity and specificity onto SEER incidence
-gives the precision a real user would experience.
-
-| Panel | Cohort positive | Real incidence | PPV there | Flagged per true case |
+| Panel | Model | Logistic | Age and sex alone | Gain |
 |---|---|---|---|---|
-| General | 37% | 0.4507% | **20.6%** | 4.9 |
-| Breast | 37% | 0.1325% | **2.44%** | 41 |
-| Liver | 22% | 0.0095% | **0.54%** | 187 |
-| Pancreatic | 22% | 0.0139% | **0.19%** | 525 |
+| Pancreatic | 0.969 | 0.968 | 0.500 | +0.469 |
+| Liver | 0.753 | 0.731 | 0.602 | +0.151 |
+| General | 0.732 | 0.731 | 0.727 | **+0.005** |
 
-Used as a population screen today, the pancreatic panel would flag roughly 525 people for every one
-who has the disease. No AUC figure changes that.
+The general panel is the weak one and the page says so. It adds very little over
+knowing someone's age and sex, which is a real limitation rather than a rounding
+error.
 
-### Does the ensemble earn its complexity?
+### The general panel was rebuilt around a screening question
 
-Trained and tested on identical splits.
+It used to predict "have you ever been told you had cancer". A person cured
+thirty years ago counted as positive, so the model was largely predicting age.
 
-| Panel | Ensemble | Logistic regression | Age and sex only | Verdict |
-|---|---|---|---|---|
-| General | 0.966 | 0.917 | 0.660 | worth it |
-| Liver | 0.970 | 0.942 | 0.634 | worth it |
-| Breast | 0.972 | 0.964 | n/a | within noise |
-| Pancreatic | 0.969 | 0.968 | 0.500 | within noise |
+NHANES 2005 to 2014 records age at diagnosis, so the cohort can be cut properly:
+positives are people diagnosed **within four years of the blood draw**, and
+long-ago survivors are excluded rather than relabelled. That is a screening
+question. On a held-out cycle the gain over age and sex rose from 0.004 to 0.019.
 
-On breast and pancreatic a reviewer would be right to say the simpler model should ship.
+### Routine bloodwork does not detect general cancer
 
-### Calibration
+Measured rather than assumed, on a held-out NHANES cycle:
 
-Every shipped model is wrapped in isotonic calibration fitted by internal cross validation, because
-the interface shows people a percentage.
-
-| Panel | Brier | Calibration slope |
+| Feature set | Inputs | AUC |
 |---|---|---|
-| General | 0.0435 | 1.176 |
-| Liver | 0.0440 | 0.861 |
-| Breast | 0.0668 | 1.118 |
-| Pancreatic | 0.0617 | 0.460 |
+| Age and sex only | 2 | 0.729 |
+| Age, sex, lifestyle | 5 | **0.748** |
+| All 14 routine blood values | 14 | **0.663** |
+| Everything combined | 19 | 0.737 |
 
-The pancreatic slope of 0.46 is the weak one. Treat that panel's percentage as a ranking rather
-than a literal likelihood.
+Fourteen blood values score worse than knowing someone's age. A complete blood
+count and metabolic panel are not cancer detection tests, which is exactly why
+the specific panels here use disease specific markers, and why commercial
+multi-cancer blood tests use cell-free DNA rather than routine chemistry.
 
-### A panel that was withdrawn
+The general panel therefore reads risk factors, not the lab report, and that is
+a measured decision rather than an oversight.
 
-**Prostate is trained, measured, and not served.** Test AUC 0.786, 95% CI 0.505 to 0.99, so the
-lower bound sits on chance. Specificity 0.571 with a CI of 0.167 to 1.0, an interval carrying no
-information because the test split is 20 records. It does not meaningfully beat logistic regression
-(0.769). 97 records and two usable features cannot support a clinical claim. It is reported rather
-than deleted, because a panel that failed its evaluation is evidence about the method.
+### Choosing the operating point
+
+A fixed 0.5 threshold drove measured sensitivity to 0.008 once prevalence was
+realistic. Each panel now selects its threshold by Youden's J on out-of-fold
+predictions inside the training data and freezes it in the bundle, so the
+interface, the evaluation and the prospective analysis use one number.
 
 ## 6. The sample case system
 
@@ -382,8 +376,9 @@ than the AUC table.
 fine needle aspirate, which requires a biopsy that already happened. It interprets a biopsy rather
 than screening for one.
 
-**The liver cohort is synthetic.** Largest dataset, joint-highest AUC, generated rather than
-observed. That AUC describes a generator, not a patient population.
+**The liver panel detects liver disease, not liver cancer.** It trains on 35,511 real NHANES
+adults and is externally tested against India and Germany. Germany remains the hardest transfer
+at 0.442, which is kept visible.
 
 **No external validation.** Every number comes from a held-out split of the same cohort the model
 trained on. This is the single largest remaining gap.

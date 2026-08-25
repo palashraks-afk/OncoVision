@@ -68,10 +68,12 @@ WITHDRAWN = {
 
 # Cohort design, stated on every panel because it bounds what the numbers mean.
 COHORT_DESIGN = {
-    "general": "37,564 US adults from NHANES 2005 to 2018, nationally representative rather "
-               "than case-control. Temporally validated: trained on cycles up to 2014 and "
-               "tested on 2015 to 2018 it reaches 0.804, against 0.574 for the risk-factor "
-               "cohort it replaced.",
+    "general": "23,923 US adults from NHANES 2005 to 2014, nationally representative. The "
+               "target is a cancer diagnosis within four years of the blood draw, with "
+               "long-ago survivors excluded, so this is a screening question rather than a "
+               "lifetime one. It adds 0.019 over knowing age and sex alone, which is small "
+               "and is stated rather than hidden. Adding routine bloodwork was measured and "
+               "made it worse, so this panel reads risk factors, not the lab report.",
     "breast": "Case-control and post-biopsy. This panel reads an aspirate that has already "
               "been taken, so it interprets a diagnostic test rather than screening for one. "
               "Rebuilding it on blood markers was tried and failed: see "
@@ -132,20 +134,31 @@ def _map(series, table, default=np.nan):
 DATASETS = [
     {
         "name": "general",
-        # Retrained on NHANES 2005 to 2018, 37,564 adults with 3,536 cancer
-        # diagnoses, replacing a 1,500 record risk-factor cohort.
+        # A screening target, not a lifetime one.
         #
-        # This was the worst panel in the project and the reason was the data.
-        # Trained on that cohort it scored 0.966 on its own held-out slice and
-        # 0.574 on a representative sample of US adults, so it was measuring its
-        # cohort rather than cancer risk. Retrained on NHANES and tested on
-        # cycles it never saw, it reaches 0.804. See
-        # experiments/retrain_on_nhanes.py.
+        # The previous version predicted "have you EVER been told you had
+        # cancer". A person cured thirty years ago counted as positive, so the
+        # model was largely predicting age: it reached 0.781 while age and sex
+        # alone reached 0.777, a gain of 0.004.
         #
-        # The target is a lifetime diagnosis, "ever told you had cancer", not an
-        # incident one, so it is scored against the prevalence NHANES itself
-        # measures rather than against SEER annual incidence.
-        "file": "nhanes_general_multicycle.csv",
+        # NHANES 2005 to 2014 records age at diagnosis, so the cohort can be cut
+        # properly. Positives are people diagnosed within four years of the exam,
+        # meaning the disease was present or recent when the blood was drawn.
+        # Long-ago survivors are EXCLUDED rather than relabelled, because their
+        # bloodwork reflects treatment and elapsed time rather than detection.
+        # 23,923 adults, 750 recent diagnoses, 3.14 percent.
+        #
+        # On that target the gain over age and sex rises to 0.019. Small, and
+        # real, and honestly reported on the panel.
+        #
+        # Bloodwork is deliberately NOT in this feature set, and that was
+        # measured rather than assumed. Adding all 14 routine blood values made
+        # the panel worse, 0.737 against 0.748, and bloodwork alone reached only
+        # 0.663, below age and sex. Routine chemistry does not detect cancer in
+        # a general population, which is precisely why the specific panels here
+        # use disease specific markers and why commercial multi-cancer tests use
+        # cell-free DNA. See experiments/screening_vs_age.py.
+        "file": "nhanes_screening_general.csv",
         "label": "General Cancer Risk",
         "features": {
             "age": lambda d: d["age"],
@@ -153,10 +166,10 @@ DATASETS = [
             "bmi": lambda d: d["bmi"],
             "smoking": lambda d: d["smoking"],
             "alcohol_intake": lambda d: d["alcohol_intake"],
-            "physical_activity": lambda d: d["physical_activity"],
         },
-        "target": lambda d: d["any_cancer"].astype(int),
-        "positive_means": "ever having been told by a doctor that you had cancer",
+        "target": lambda d: d["recent_cancer"].astype(int),
+        "positive_means": ("a cancer diagnosis within four years of the blood draw, so recent "
+                           "or current disease rather than a lifetime history"),
     },
     {
         "name": "breast",

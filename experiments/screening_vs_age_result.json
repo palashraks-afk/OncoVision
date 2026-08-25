@@ -1,0 +1,114 @@
+{
+  "prevalence": 0.0314,
+  "arms": [
+    {
+      "arm": "A age and sex only",
+      "features": [
+        "age",
+        "gender"
+      ],
+      "n_features": 2,
+      "auc": 0.729,
+      "auc_ci": [
+        0.69,
+        0.767
+      ],
+      "logistic_auc": 0.737,
+      "threshold": 0.0343,
+      "sensitivity": 0.631,
+      "specificity": 0.708,
+      "ppv_at_prevalence": 0.0654,
+      "flagged_per_true_case": 15.3
+    },
+    {
+      "arm": "B age, sex, lifestyle",
+      "features": [
+        "age",
+        "gender",
+        "bmi",
+        "smoking",
+        "alcohol_intake"
+      ],
+      "n_features": 5,
+      "auc": 0.748,
+      "auc_ci": [
+        0.711,
+        0.784
+      ],
+      "logistic_auc": 0.739,
+      "threshold": 0.0321,
+      "sensitivity": 0.705,
+      "specificity": 0.668,
+      "ppv_at_prevalence": 0.0644,
+      "flagged_per_true_case": 15.5
+    },
+    {
+      "arm": "C bloodwork only",
+      "features": [
+        "wbc",
+        "rbc",
+        "hemoglobin",
+        "platelets",
+        "glucose",
+        "calcium",
+        "bun",
+        "creatinine",
+        "protein_total",
+        "albumin",
+        "ast",
+        "alt",
+        "bilirubin",
+        "alkaline_phosphatase"
+      ],
+      "n_features": 14,
+      "auc": 0.663,
+      "auc_ci": [
+        0.616,
+        0.709
+      ],
+      "logistic_auc": 0.68,
+      "threshold": 0.0372,
+      "sensitivity": 0.537,
+      "specificity": 0.715,
+      "ppv_at_prevalence": 0.0576,
+      "flagged_per_true_case": 17.4
+    },
+    {
+      "arm": "D bloodwork + demographics + lifestyle",
+      "features": [
+        "age",
+        "gender",
+        "bmi",
+        "smoking",
+        "alcohol_intake",
+        "wbc",
+        "rbc",
+        "hemoglobin",
+        "platelets",
+        "glucose",
+        "calcium",
+        "bun",
+        "creatinine",
+        "protein_total",
+        "albumin",
+        "ast",
+        "alt",
+        "bilirubin",
+        "alkaline_phosphatase"
+      ],
+      "n_features": 19,
+      "auc": 0.737,
+      "auc_ci": [
+        0.699,
+        0.773
+      ],
+      "logistic_auc": 0.749,
+      "threshold": 0.0303,
+      "sensitivity": 0.725,
+      "specificity": 0.616,
+      "ppv_at_prevalence": 0.0577,
+      "flagged_per_true_case": 17.3
+    }
+  ],
+  "gain_over_age_sex": 0.019
+}

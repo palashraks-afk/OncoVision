@@ -33,53 +33,63 @@ how accurate that model is, and what the score is worth at real population preva
 
 Four panels ship. One was withdrawn because the evidence did not support serving it.
 
-| Panel | Trained on | Test AUC | 95% CI | Sens | Spec | Flagged per true case |
-|---|---|---|---|---|---|---|
-| General cancer | 37,564 US adults, NHANES 2005-2018 | 0.781 | 0.764 to 0.797 | 0.80 | 0.62 | 5.6 |
-| Liver disease | 35,511 US adults, NHANES 2005-2018 | 0.753 | 0.721 to 0.782 | 0.55 | 0.80 | 9.9 |
-| Breast malignancy | 569 biopsies, Wisconsin | 0.972 | 0.941 to 0.994 | 0.81 | 0.94 | 52.7 |
-| Pancreatic cancer | 600 samples, 3 tissue banks | 0.969 | 0.937 to 0.991 | 1.00 | 0.88 | 842.8 |
-| ~~Prostate~~ | 97 records, Stanford | 0.786 | **0.505** to 0.99 | | | withdrawn |
+| Panel | Trained on | Test AUC | 95% CI | Threshold | Sens | Spec | Flagged per true case |
+|---|---|---|---|---|---|---|---|
+| Breast malignancy | 569 Wisconsin biopsies | 0.972 | 0.942 to 0.994 | 38.8% | 0.81 | 0.94 | 52.7 |
+| Pancreatic cancer | 600 samples, 3 tissue banks | 0.969 | 0.938 to 0.991 | 16.6% | 1.00 | 0.88 | 842.8 |
+| Liver disease | 35,511 NHANES adults | 0.753 | 0.723 to 0.784 | 4.2% | 0.55 | 0.80 | 9.9 |
+| General cancer | 23,923 NHANES adults | 0.732 | 0.692 to 0.770 | 2.9% | 0.68 | 0.65 | 16.9 |
+| ~~Prostate~~ | 97 Stanford records | 0.786 | **0.505** to 0.99 | withdrawn | | | |
 
-All measured on a 20% split cut before any model was fitted. Reproduce with `python evaluate.py`.
+### Does each panel beat the obvious baseline?
 
-### The general panel was rebuilt, and its AUC fell on purpose
+| Panel | Model | Logistic | Age and sex alone | Gain |
+|---|---|---|---|---|
+| Pancreatic | 0.969 | 0.968 | 0.500 | +0.469 |
+| Liver | 0.753 | 0.731 | 0.602 | +0.151 |
+| General | 0.732 | 0.731 | 0.727 | **+0.005** |
 
-It used to report 0.966. That number was worthless: trained on a 1,500-record risk-factor cohort,
-it scored **0.574** on a representative sample of US adults. It was measuring its cohort, not
-cancer risk.
+The general panel is the weak one, and the interface says so rather than hiding it.
 
-Retrained on **37,564 NHANES adults** and tested on cycles it never saw, it reports 0.781, and
-holds at **0.804** under temporal validation. A lower number that is true is worth more than a
-higher one that is not.
+### The general panel now answers a screening question
 
-The liver panel moved the same way: 35,511 NHANES adults, chemistry plus diabetes and hepatitis
-serology, with India and Germany kept as independent external cohorts instead of training data.
+It used to predict "have you ever been told you had cancer". Someone cured thirty years ago counted
+as positive, so the model was largely predicting age: 0.781 against 0.777 for age and sex alone, a
+gain of 0.004.
 
-### Choosing the operating point instead of assuming 0.5
+NHANES 2005 to 2014 records **age at diagnosis**, so the cohort can be cut properly. Positives are
+people diagnosed **within four years of the blood draw**, and long-ago survivors are excluded rather
+than relabelled. That is a screening question. On a held-out cycle the gain over age and sex rises
+from 0.004 to **0.019**.
 
-Once the panels trained on real prevalence, a fixed 0.5 threshold drove measured sensitivity to
-**0.008**. That was not a broken model. A calibrated model on a 4 percent condition is correctly
-reporting that almost nobody is more likely than not to have it, and 0.5 is simply the wrong cut.
+### Routine bloodwork does not detect general cancer
 
-Each panel now picks its threshold by Youden's J on out-of-fold predictions inside the training
-data, and freezes it in the model bundle so the interface, the evaluation and the prospective
-analysis all use the same number.
+Measured, not assumed, on a held-out NHANES cycle against the recent-diagnosis target:
 
-| Panel | Threshold | Sensitivity |
+| Feature set | Inputs | AUC |
 |---|---|---|
-| Liver | 3.6% | 0.55 |
-| General | 9.3% | 0.80 |
-| Pancreatic | 25.8% | 1.00 |
-| Breast | 40.5% | 0.81 |
+| Age and sex only | 2 | 0.729 |
+| Age, sex, lifestyle (shipped) | 5 | **0.748** |
+| All 14 routine blood values | 14 | **0.663** |
+| Everything combined | 19 | 0.737 |
 
-The interface shows the calibrated probability against that panel's reference band, the way a lab
-report shows a value against its reference interval, rather than colouring everything by a
-universal 50 percent line.
+**Fourteen blood values score worse than knowing someone's age.** A complete blood count and
+metabolic panel are not cancer detection tests. That is exactly why the specific panels here use
+disease-specific markers, and why commercial multi-cancer blood tests use cell-free DNA rather than
+routine chemistry. Reproduce with `python experiments/screening_vs_age.py`.
 
-One thing this fixed by accident: the threshold was first chosen on uncalibrated out-of-fold scores
-and applied to calibrated probabilities. Two different scales, and the symptom was a
-reasonable-looking threshold that caught nobody.
+The general panel therefore reads risk factors, not the lab report, and that is a measured decision
+rather than an oversight.
+
+### Choosing the operating point
+
+A fixed 0.5 threshold drove measured sensitivity to **0.008** once prevalence was realistic. That is
+not a broken model: a calibrated model on a 3 percent condition is correctly reporting that almost
+nobody is more likely than not to have it.
+
+Each panel now selects its threshold by Youden's J on out-of-fold predictions inside the training
+data and freezes it in the bundle, so the interface, the evaluation and the prospective analysis all
+use one number.
 
 ### External validation
 

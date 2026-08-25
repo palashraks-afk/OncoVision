@@ -60,97 +60,34 @@ export type DemoCase = {
 
 export const CASE_POOL: DemoCase[] = [
   {
-    id: "general-0",
-    domain: "General",
-    expect: "General",
-    positive: true,
-    source: "NHANES 2005-2018, US adults, positive record",
-    note: "80 year old man, former smoker. BMI 30.8, 6 hours of exercise a week, alcohol 2 of 5.",
-    delta: { age: 80, bmi: 30.8, gender: 1, smoking: 1, alcohol_intake: 2 },
-  },
-  {
-    id: "general-1",
-    domain: "General",
-    expect: "General",
-    positive: true,
-    source: "NHANES 2005-2018, US adults, positive record",
-    note: "80 year old man, former smoker. BMI 28.1, 7 hours of exercise a week, alcohol 1 of 5.",
-    delta: { age: 80, bmi: 28.1, gender: 1, smoking: 1, alcohol_intake: 1, physical_activity: 7 },
-  },
-  {
-    id: "general-2",
-    domain: "General",
-    expect: "General",
-    positive: true,
-    source: "NHANES 2005-2018, US adults, positive record",
-    note: "80 year old man, former smoker. BMI 28.54, 7 hours of exercise a week, alcohol 1 of 5.",
-    delta: { age: 80, bmi: 28.54, gender: 1, smoking: 1, alcohol_intake: 1, physical_activity: 7 },
-  },
-  {
-    id: "general-3",
-    domain: "General",
-    expect: "General",
-    positive: true,
-    source: "NHANES 2005-2018, US adults, positive record",
-    note: "80 year old man, former smoker. BMI 23, 8 hours of exercise a week, alcohol 2 of 5.",
-    delta: { age: 80, bmi: 23, gender: 1, smoking: 1, alcohol_intake: 2, physical_activity: 8 },
-  },
-  {
-    id: "general-4",
-    domain: "General",
-    expect: "General",
-    positive: true,
-    source: "NHANES 2005-2018, US adults, positive record",
-    note: "80 year old man, former smoker. BMI 23.7, 7.75 hours of exercise a week, alcohol 1 of 5.",
-    delta: { age: 80, bmi: 23.7, gender: 1, smoking: 1, alcohol_intake: 1, physical_activity: 7.75 },
-  },
-  {
-    id: "general-5",
-    domain: "General",
-    expect: "General",
-    positive: true,
-    source: "NHANES 2005-2018, US adults, positive record",
-    note: "80 year old man, former smoker. BMI 24, 7.5 hours of exercise a week, alcohol 1 of 5.",
-    delta: { age: 80, bmi: 24, gender: 1, smoking: 1, alcohol_intake: 1, physical_activity: 7.5 },
-  },
-  {
-    id: "general-6",
-    domain: "General",
-    expect: "General",
-    positive: true,
-    source: "NHANES 2005-2018, US adults, positive record",
-    note: "80 year old man, former smoker. BMI 28.15, 8 hours of exercise a week, alcohol 1 of 5.",
-    delta: { age: 80, bmi: 28.15, gender: 1, smoking: 1, alcohol_intake: 1, physical_activity: 8 },
-  },
-  {
-    id: "general-neg-7",
+    id: "general-neg-0",
     domain: "General",
     expect: "No cancer detected",
     positive: false,
     source: "NHANES 2005-2018, US adults, negative record",
-    note: "24 year old man, current smoker. BMI 26.49, 0 hours of exercise a week, alcohol 3 of 5.",
-    delta: { age: 24, bmi: 26.49, gender: 1, smoking: 2, alcohol_intake: 3, physical_activity: 0 },
+    note: "21 year old man, never smoked. BMI 25.03, 6 hours of exercise a week, alcohol 2 of 5.",
+    delta: { age: 21, bmi: 25.03, gender: 1, alcohol_intake: 2 },
   },
   {
-    id: "general-neg-8",
+    id: "general-neg-1",
     domain: "General",
     expect: "No cancer detected",
     positive: false,
     source: "NHANES 2005-2018, US adults, negative record",
-    note: "20 year old man, never smoked. BMI 24.4, 10 hours of exercise a week, alcohol 2 of 5.",
-    delta: { age: 20, bmi: 24.4, gender: 1, alcohol_intake: 2, physical_activity: 10 },
+    note: "22 year old man, never smoked. BMI 21.84, 6 hours of exercise a week, alcohol 5 of 5.",
+    delta: { age: 22, bmi: 21.84, gender: 1, alcohol_intake: 5 },
   },
   {
-    id: "general-neg-9",
+    id: "general-neg-2",
     domain: "General",
     expect: "No cancer detected",
     positive: false,
     source: "NHANES 2005-2018, US adults, negative record",
-    note: "28 year old man, former smoker. BMI 27.07, 10 hours of exercise a week, alcohol 5 of 5.",
-    delta: { age: 28, bmi: 27.07, gender: 1, smoking: 1, alcohol_intake: 5, physical_activity: 10 },
+    note: "20 year old man, never smoked. BMI 28.48, 6 hours of exercise a week, alcohol 4 of 5.",
+    delta: { age: 20, bmi: 28.48, gender: 1, alcohol_intake: 4 },
   },
   {
-    id: "breast-10",
+    id: "breast-3",
     domain: "Breast",
     expect: "Breast",
     positive: true,
@@ -159,7 +96,7 @@ export const CASE_POOL: DemoCase[] = [
     delta: { radius_mean: 13.48, texture_mean: 20.82, perimeter_mean: 88.4, area_mean: 559.2 },
   },
   {
-    id: "breast-11",
+    id: "breast-4",
     domain: "Breast",
     expect: "Breast",
     positive: true,
@@ -168,7 +105,7 @@ export const CASE_POOL: DemoCase[] = [
     delta: { radius_mean: 14.71, texture_mean: 21.59, perimeter_mean: 95.55, area_mean: 656.9 },
   },
   {
-    id: "breast-12",
+    id: "breast-5",
     domain: "Breast",
     expect: "Breast",
     positive: true,
@@ -177,7 +114,7 @@ export const CASE_POOL: DemoCase[] = [
     delta: { radius_mean: 13.82, texture_mean: 24.49, perimeter_mean: 92.33, area_mean: 595.9 },
   },
   {
-    id: "breast-13",
+    id: "breast-6",
     domain: "Breast",
     expect: "Breast",
     positive: true,
@@ -186,7 +123,7 @@ export const CASE_POOL: DemoCase[] = [
     delta: { radius_mean: 15.08, texture_mean: 25.74, perimeter_mean: 98, area_mean: 716.6 },
   },
   {
-    id: "breast-14",
+    id: "breast-7",
     domain: "Breast",
     expect: "Breast",
     positive: true,
@@ -195,7 +132,7 @@ export const CASE_POOL: DemoCase[] = [
     delta: { radius_mean: 15.1, texture_mean: 22.02, perimeter_mean: 97.26, area_mean: 712.8 },
   },
   {
-    id: "breast-15",
+    id: "breast-8",
     domain: "Breast",
     expect: "Breast",
     positive: true,
@@ -204,7 +141,7 @@ export const CASE_POOL: DemoCase[] = [
     delta: { radius_mean: 17.3, texture_mean: 17.08, perimeter_mean: 113, area_mean: 928.2 },
   },
   {
-    id: "breast-16",
+    id: "breast-9",
     domain: "Breast",
     expect: "Breast",
     positive: true,
@@ -213,7 +150,7 @@ export const CASE_POOL: DemoCase[] = [
     delta: { radius_mean: 16.02, texture_mean: 23.24, perimeter_mean: 102.7, area_mean: 797.8 },
   },
   {
-    id: "breast-neg-17",
+    id: "breast-neg-10",
     domain: "Breast",
     expect: "No cancer detected",
     positive: false,
@@ -222,7 +159,7 @@ export const CASE_POOL: DemoCase[] = [
     delta: { radius_mean: 9.504, texture_mean: 12.44, perimeter_mean: 60.34, area_mean: 273.9 },
   },
   {
-    id: "breast-neg-18",
+    id: "breast-neg-11",
     domain: "Breast",
     expect: "No cancer detected",
     positive: false,
@@ -231,7 +168,7 @@ export const CASE_POOL: DemoCase[] = [
     delta: { radius_mean: 6.981, texture_mean: 13.43, perimeter_mean: 43.79, area_mean: 143.5 },
   },
   {
-    id: "breast-neg-19",
+    id: "breast-neg-12",
     domain: "Breast",
     expect: "No cancer detected",
     positive: false,
@@ -240,7 +177,7 @@ export const CASE_POOL: DemoCase[] = [
     delta: { radius_mean: 11.43, texture_mean: 17.31, perimeter_mean: 73.66, area_mean: 398 },
   },
   {
-    id: "liver-20",
+    id: "liver-13",
     domain: "Liver",
     expect: "Liver",
     positive: true,
@@ -249,7 +186,7 @@ export const CASE_POOL: DemoCase[] = [
     delta: { age: 49, protein_total: 7.7, albumin: 3.9, ast: 37, alt: 28, alkaline_phosphatase: 99, hepatitis_c: 1 },
   },
   {
-    id: "liver-21",
+    id: "liver-14",
     domain: "Liver",
     expect: "Liver",
     positive: true,
@@ -258,7 +195,7 @@ export const CASE_POOL: DemoCase[] = [
     delta: { age: 56, protein_total: 7.4, albumin: 3.7, ast: 46, alt: 62, alkaline_phosphatase: 74, gender: 1, hepatitis_c: 1 },
   },
   {
-    id: "liver-22",
+    id: "liver-15",
     domain: "Liver",
     expect: "Liver",
     positive: true,
@@ -267,7 +204,7 @@ export const CASE_POOL: DemoCase[] = [
     delta: { age: 61, protein_total: 7.6, albumin: 3.3, ast: 88, alt: 83, bilirubin: 0.7, alkaline_phosphatase: 38, gender: 1, hepatitis_c: 1, diabetes: 1 },
   },
   {
-    id: "liver-23",
+    id: "liver-16",
     domain: "Liver",
     expect: "Liver",
     positive: true,
@@ -276,7 +213,7 @@ export const CASE_POOL: DemoCase[] = [
     delta: { age: 59, protein_total: 7.3, albumin: 3.6, ast: 51, alt: 56, bilirubin: 0.9, alkaline_phosphatase: 127, gender: 1, hepatitis_c: 1 },
   },
   {
-    id: "liver-24",
+    id: "liver-17",
     domain: "Liver",
     expect: "Liver",
     positive: true,
@@ -285,7 +222,7 @@ export const CASE_POOL: DemoCase[] = [
     delta: { age: 60, protein_total: 8.9, albumin: 3.4, ast: 61, alt: 49, bilirubin: 1.4, alkaline_phosphatase: 98, gender: 1, hepatitis_c: 1 },
   },
   {
-    id: "liver-25",
+    id: "liver-18",
     domain: "Liver",
     expect: "Liver",
     positive: true,
@@ -294,7 +231,7 @@ export const CASE_POOL: DemoCase[] = [
     delta: { age: 61, albumin: 3.4, ast: 55, alt: 73, bilirubin: 0.8, alkaline_phosphatase: 75, gender: 1, hepatitis_c: 1, diabetes: 1 },
   },
   {
-    id: "liver-26",
+    id: "liver-19",
     domain: "Liver",
     expect: "Liver",
     positive: true,
@@ -303,7 +240,7 @@ export const CASE_POOL: DemoCase[] = [
     delta: { age: 65, protein_total: 7.1, albumin: 3.5, ast: 67, alt: 50, alkaline_phosphatase: 96, gender: 1, hepatitis_c: 1, diabetes: 1 },
   },
   {
-    id: "liver-neg-27",
+    id: "liver-neg-20",
     domain: "Liver",
     expect: "No cancer detected",
     positive: false,
@@ -312,7 +249,7 @@ export const CASE_POOL: DemoCase[] = [
     delta: { age: 24, protein_total: 6.2, albumin: 3.2, alt: 21, bilirubin: 0.4, alkaline_phosphatase: 121 },
   },
   {
-    id: "liver-neg-28",
+    id: "liver-neg-21",
     domain: "Liver",
     expect: "No cancer detected",
     positive: false,
@@ -321,7 +258,7 @@ export const CASE_POOL: DemoCase[] = [
     delta: { age: 21, protein_total: 6, albumin: 2.8, ast: 19, alt: 13, bilirubin: 0.2, alkaline_phosphatase: 67 },
   },
   {
-    id: "liver-neg-29",
+    id: "liver-neg-22",
     domain: "Liver",
     expect: "No cancer detected",
     positive: false,
@@ -330,7 +267,7 @@ export const CASE_POOL: DemoCase[] = [
     delta: { age: 25, protein_total: 5.4, albumin: 2.6, ast: 23, alt: 14, bilirubin: 0.3, alkaline_phosphatase: 166 },
   },
   {
-    id: "pancreatic-30",
+    id: "pancreatic-23",
     domain: "Pancreatic",
     expect: "Pancreatic",
     positive: true,
@@ -339,7 +276,7 @@ export const CASE_POOL: DemoCase[] = [
     delta: { age: 73, glucose: 120.34, creatinine: 1.212, bilirubin: 2.7186, plasma_ca19_9: 263.9545, gender: 1 },
   },
   {
-    id: "pancreatic-31",
+    id: "pancreatic-24",
     domain: "Pancreatic",
     expect: "Pancreatic",
     positive: true,
@@ -348,7 +285,7 @@ export const CASE_POOL: DemoCase[] = [
     delta: { age: 75, glucose: 97.2, creatinine: 1.4591, bilirubin: 2.5663, plasma_ca19_9: 248.4114, gender: 1 },
   },
   {
-    id: "pancreatic-32",
+    id: "pancreatic-25",
     domain: "Pancreatic",
     expect: "Pancreatic",
     positive: true,
@@ -357,7 +294,7 @@ export const CASE_POOL: DemoCase[] = [
     delta: { age: 31, glucose: 99.93, creatinine: 1.5987, bilirubin: 1.6069, plasma_ca19_9: 334.7348, gender: 1 },
   },
   {
-    id: "pancreatic-33",
+    id: "pancreatic-26",
     domain: "Pancreatic",
     expect: "Pancreatic",
     positive: true,
@@ -366,7 +303,7 @@ export const CASE_POOL: DemoCase[] = [
     delta: { age: 49, glucose: 130.85, creatinine: 1.3822, bilirubin: 3.2066, plasma_ca19_9: 303.4284 },
   },
   {
-    id: "pancreatic-34",
+    id: "pancreatic-27",
     domain: "Pancreatic",
     expect: "Pancreatic",
     positive: true,
@@ -375,7 +312,7 @@ export const CASE_POOL: DemoCase[] = [
     delta: { age: 74, glucose: 122.54, creatinine: 1.6178, bilirubin: 1.0744, plasma_ca19_9: 461.786 },
   },
   {
-    id: "pancreatic-35",
+    id: "pancreatic-28",
     domain: "Pancreatic",
     expect: "Pancreatic",
     positive: true,
@@ -384,7 +321,7 @@ export const CASE_POOL: DemoCase[] = [
     delta: { age: 50, glucose: 83.7, creatinine: 1.3564, bilirubin: 2.3407, plasma_ca19_9: 377.1267 },
   },
   {
-    id: "pancreatic-36",
+    id: "pancreatic-29",
     domain: "Pancreatic",
     expect: "Pancreatic",
     positive: true,
@@ -393,7 +330,7 @@ export const CASE_POOL: DemoCase[] = [
     delta: { age: 31, glucose: 68.24, creatinine: 1.6912, bilirubin: 2.8241, plasma_ca19_9: 310.0204, gender: 1 },
   },
   {
-    id: "pancreatic-neg-37",
+    id: "pancreatic-neg-30",
     domain: "Pancreatic",
     expect: "No cancer detected",
     positive: false,
@@ -402,7 +339,7 @@ export const CASE_POOL: DemoCase[] = [
     delta: { age: 64, glucose: 111.77, creatinine: 0.8561, bilirubin: 1.0505, plasma_ca19_9: 91.2875, gender: 1 },
   },
   {
-    id: "pancreatic-neg-38",
+    id: "pancreatic-neg-31",
     domain: "Pancreatic",
     expect: "No cancer detected",
     positive: false,
@@ -411,7 +348,7 @@ export const CASE_POOL: DemoCase[] = [
     delta: { age: 82, glucose: 98.74, creatinine: 0.9238, bilirubin: 0.7391, plasma_ca19_9: 9.1618, gender: 1 },
   },
   {
-    id: "pancreatic-neg-39",
+    id: "pancreatic-neg-32",
     domain: "Pancreatic",
     expect: "No cancer detected",
     positive: false,
@@ -434,4 +371,4 @@ export function randomCase(previousId?: string): DemoCase {
  * matches between server and client. Every press of Generate case after that
  * draws at random.
  */
-export const OPENING_CASE = CASE_POOL.find(c => c.id === "breast-14")!;
+export const OPENING_CASE = CASE_POOL.find(c => c.id === "breast-7")!;
