@@ -69,6 +69,23 @@
       "shipped_split_percentile": 50.0,
       "shipped_minus_mean": 0.0
     },
+    "colorectal": {
+      "n_rows": 23794,
+      "n_positive": 96,
+      "n_splits": 5,
+      "mean_auc": 0.799,
+      "median_auc": 0.796,
+      "std_auc": 0.012,
+      "min_auc": 0.785,
+      "max_auc": 0.817,
+      "split_range_2p5_97p5": [
+        0.786,
+        0.816
+      ],
+      "shipped_split_auc": 0.793,
+      "shipped_split_percentile": 40.0,
+      "shipped_minus_mean": -0.006
+    },
     "ovarian": {
       "n_rows": 349,
       "n_positive": 171,
@@ -86,22 +103,39 @@
       "shipped_split_percentile": 70.0,
       "shipped_minus_mean": 0.021
     },
-    "cervical": {
-      "n_rows": 858,
-      "n_positive": 55,
-      "n_splits": 30,
-      "mean_auc": 0.594,
-      "median_auc": 0.603,
-      "std_auc": 0.096,
-      "min_auc": 0.421,
-      "max_auc": 0.789,
+    "lung": {
+      "n_rows": 21916,
+      "n_positive": 104,
+      "n_splits": 5,
+      "mean_auc": 0.839,
+      "median_auc": 0.832,
+      "std_auc": 0.015,
+      "min_auc": 0.822,
+      "max_auc": 0.86,
       "split_range_2p5_97p5": [
-        0.429,
-        0.736
+        0.822,
+        0.859
       ],
-      "shipped_split_auc": 0.725,
-      "shipped_split_percentile": 96.7,
-      "shipped_minus_mean": 0.13
+      "shipped_split_auc": 0.829,
+      "shipped_split_percentile": 40.0,
+      "shipped_minus_mean": -0.01
+    },
+    "prostate": {
+      "n_rows": 212,
+      "n_positive": 121,
+      "n_splits": 30,
+      "mean_auc": 0.822,
+      "median_auc": 0.819,
+      "std_auc": 0.044,
+      "min_auc": 0.732,
+      "max_auc": 0.909,
+      "split_range_2p5_97p5": [
+        0.748,
+        0.896
+      ],
+      "shipped_split_auc": 0.84,
+      "shipped_split_percentile": 70.0,
+      "shipped_minus_mean": 0.018
     }
   }
 }

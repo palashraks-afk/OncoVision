@@ -1,0 +1,42 @@
+{
+  "n": 21916,
+  "cases": 104,
+  "cotinine_cut": 3.0,
+  "baseline_auc": 0.792,
+  "arms": {
+    "B plus pack-years": {
+      "mean_auc": 0.793,
+      "gain": 0.001,
+      "range": [
+        -0.009,
+        0.018
+      ],
+      "wins": 5,
+      "repeats": 10,
+      "helps": false
+    },
+    "C plus cotinine": {
+      "mean_auc": 0.808,
+      "gain": 0.016,
+      "range": [
+        0.006,
+        0.03
+      ],
+      "wins": 10,
+      "repeats": 10,
+      "helps": true
+    },
+    "D plus whole lab report": {
+      "mean_auc": 0.821,
+      "gain": 0.029,
+      "range": [
+        0.02,
+        0.035
+      ],
+      "wins": 10,
+      "repeats": 10,
+      "helps": true
+    }
+  },
+  "lab_over_packyears": 0.028
+}

@@ -13,8 +13,8 @@ before any model was fitted and was not used for training, model selection, or c
 | pancreatic | 0.969 | 0.938 to 0.991 | 0.968 | 0.5 | marginal |
 | colorectal | 0.793 | 0.708 to 0.867 | 0.8 | 0.817 | marginal |
 | ovarian | 0.949 | 0.886 to 0.994 | 0.911 | 0.813 | yes |
-| cervical | 0.725 | 0.538 to 0.88 | 0.572 | 0.458 | yes |
-| prostate | 0.786 | 0.515 to 0.989 | 0.769 | 0.676 | marginal |
+| lung | 0.829 | 0.73 to 0.902 | 0.785 | 0.778 | yes |
+| prostate | 0.84 | 0.705 to 0.952 | 0.876 | 0.661 | **no** |
 
 ## Precision at real population prevalence
 
@@ -30,8 +30,8 @@ whether a screening tool is usable.
 | pancreatic | 0.0139% | 1.0 | 0.883 | **0.12%** | 842.8 |
 | colorectal | 0.0365% | 0.526 | 0.853 | **0.13%** | 768.4 |
 | ovarian | 20.0000% | 0.853 | 0.944 | **79.33%** | 1.3 |
-| cervical | 6.4000% | 0.636 | 0.634 | **10.61%** | 9.4 |
-| prostate | 0.1232% | 0.769 | 0.571 | **0.22%** | 452.7 |
+| lung | 0.4750% | 0.571 | 0.852 | **1.81%** | 55.1 |
+| prostate | 40.0000% | 0.8 | 0.778 | **70.59%** | 1.4 |
 
 ## Calibration
 
@@ -45,8 +45,8 @@ Slope 1.0 and intercept 0.0 is perfect. Slope below 1 means the model is over-co
 | pancreatic | 0.0694 | 0.0617 | 0.46 | 3.531 |
 | colorectal | 0.0274 | 0.004 | 0.656 | 1.963 |
 | ovarian | 0.0851 | 0.0797 | 0.455 | 0.918 |
-| cervical | 0.1192 | 0.0568 | 1.087 | 0.125 |
-| prostate | 0.1927 | 0.1927 | 0.464 | 0.022 |
+| lung | 0.0256 | 0.0047 | 0.619 | 2.926 |
+| prostate | 0.1594 | 0.1642 | 0.86 | -0.464 |
 
 ## Per panel detail
 
@@ -212,49 +212,56 @@ Slope 1.0 and intercept 0.0 is perfect. Slope below 1 means the model is over-co
   | 0.6 to 0.8 | 4 | 0.692 | 0.5 |
   | 0.8 to 1.0 | 27 | 0.973 | 1.0 |
 
-### cervical
+### lung
 
-- **Cohort design**: 858 women assessed for colposcopy in Caracas, 55 biopsy-positive. Prior-diagnosis columns dropped as leakage.
-- **Records**: 858 total, 686 train, 172 held-out test
-- **Features** (15): age, sexual_partners, first_intercourse_age, pregnancies, smokes, smoking_years, smoking_packyears, hormonal_contraceptives, hormonal_contraceptives_years, iud, iud_years, stds, stds_number, stds_hpv, stds_diagnoses
-- **Cohort prevalence**: 6.4% vs population 6.4000%
-- **Test AUC**: 0.725 (95% CI 0.538 to 0.88)
-- **Sensitivity**: 0.636 (95% CI 0.333 to 0.917)
-- **Specificity**: 0.634 (95% CI 0.556 to 0.705)
-- **PPV at SEER prevalence**: 10.61%, about 9.4 people flagged per true case
+- **Cohort design**: 21,916 US adults with tobacco exposure, NHANES 1999-2018. Controls are smokers, not the general population.
+- **Records**: 21916 total, 17532 train, 4384 held-out test
+- **Features** (24): age, gender, smoking, smoking_packyears, cotinine, crp, wbc, rbc, hemoglobin, platelets, hematocrit, mcv, rdw, mpv, glucose, calcium, bun, creatinine, protein_total, albumin, ast, alt, bilirubin, alkaline_phosphatase
+- **Cohort prevalence**: 0.5% vs population 0.4750%
+- **Test AUC**: 0.829 (95% CI 0.73 to 0.902)
+- **Sensitivity**: 0.571 (95% CI 0.333 to 0.792)
+- **Specificity**: 0.852 (95% CI 0.842 to 0.863)
+- **PPV at SEER prevalence**: 1.81%, about 55.1 people flagged per true case
 
   Subgroups:
 
   | Group | n | positives | AUC | 95% CI |
   |---|---|---|---|---|
-  | age under 25 | 82 | 7 | 0.78 | 0.575 to 0.97 |
-  | age 25 and over | 90 | 4 | 0.709 | 0.283 to 0.966 |
+  | sex: female | 1745 | 10 | 0.867 | 0.791 to 0.935 |
+  | sex: male | 2639 | 11 | 0.809 | 0.649 to 0.932 |
+  | age under 48 | 2116 | 2 | 0.629 | 0.293 to 0.964 |
+  | age 48 and over | 2268 | 19 | 0.759 | 0.66 to 0.851 |
 
   Reliability (calibrated):
 
   | Predicted bin | n | mean predicted | observed rate |
   |---|---|---|---|
-  | 0.0 to 0.2 | 165 | 0.059 | 0.055 |
-  | 0.2 to 0.4 | 6 | 0.301 | 0.333 |
-  | 0.4 to 0.6 | 1 | 0.447 | 0.0 |
+  | 0.0 to 0.2 | 4384 | 0.005 | 0.005 |
 
 ### prostate
 
-- **Cohort design**: Case-control, post-prostatectomy. Gleason grade comes from the surgical specimen.
-- **Records**: 97 total, 77 train, 20 held-out test
-- **Features** (2): age, psa
-- **Cohort prevalence**: 63.9% vs population 0.1232%
-- **Test AUC**: 0.786 (95% CI 0.515 to 0.989)
-- **Sensitivity**: 0.769 (95% CI 0.5 to 1.0)
-- **Specificity**: 0.571 (95% CI 0.167 to 1.0)
-- **PPV at SEER prevalence**: 0.22%, about 452.7 people flagged per true case
+- **Cohort design**: 212 men biopsied at one centre. Controls are benign biopsies. Needs an MRI PI-RADS score.
+- **Records**: 212 total, 169 train, 43 held-out test
+- **Features** (6): age, psa, prostate_volume, psa_density, bmi, pi_rads
+- **Cohort prevalence**: 57.1% vs population 40.0000%
+- **Test AUC**: 0.84 (95% CI 0.705 to 0.952)
+- **Sensitivity**: 0.8 (95% CI 0.63 to 0.945)
+- **Specificity**: 0.778 (95% CI 0.571 to 0.947)
+- **PPV at SEER prevalence**: 70.59%, about 1.4 people flagged per true case
+
+  Subgroups:
+
+  | Group | n | positives | AUC | 95% CI |
+  |---|---|---|---|---|
+  | age under 69 | 21 | 10 | 0.745 | 0.5 to 0.945 |
+  | age 69 and over | 22 | 15 | 0.91 | 0.748 to 1.0 |
 
   Reliability (calibrated):
 
   | Predicted bin | n | mean predicted | observed rate |
   |---|---|---|---|
-  | 0.0 to 0.2 | 2 | 0.029 | 0.0 |
-  | 0.2 to 0.4 | 4 | 0.285 | 0.5 |
-  | 0.4 to 0.6 | 1 | 0.404 | 1.0 |
-  | 0.6 to 0.8 | 2 | 0.749 | 0.5 |
-  | 0.8 to 1.0 | 11 | 0.935 | 0.818 |
+  | 0.0 to 0.2 | 7 | 0.081 | 0.143 |
+  | 0.2 to 0.4 | 5 | 0.319 | 0.4 |
+  | 0.4 to 0.6 | 5 | 0.54 | 0.4 |
+  | 0.6 to 0.8 | 5 | 0.701 | 0.4 |
+  | 0.8 to 1.0 | 21 | 0.909 | 0.857 |

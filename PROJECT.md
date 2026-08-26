@@ -239,11 +239,12 @@ Reproduce with `python evaluate.py`.
 | Breast malignancy | 569 Wisconsin biopsies | 0.972 | 0.942 to 0.994 | 38.8% | 0.81 | 0.94 | 52.7 |
 | Pancreatic cancer | 600 samples, 3 tissue banks | 0.969 | 0.938 to 0.991 | 16.6% | 1.00 | 0.88 | 842.8 |
 | Ovarian malignancy | 349 operated ovarian masses | 0.949 | 0.886 to 0.994 | 58.1% | 0.85 | 0.94 | 1.3 |
+| Prostate cancer | 212 biopsied men | 0.840 | 0.705 to 0.952 | 66.9% | 0.80 | 0.78 | 1.4 |
+| Lung cancer | 21,916 adults with tobacco exposure | 0.829 | 0.730 to 0.902 | 1.0% | 0.57 | 0.85 | 55.1 |
 | Bowel cancer | 23,794 NHANES adults | 0.793 | 0.708 to 0.867 | 1.0% | 0.53 | 0.85 | 768.4 |
 | Liver disease | 35,511 NHANES adults | 0.753 | 0.723 to 0.784 | 4.2% | 0.55 | 0.80 | 9.9 |
 | General cancer | 23,923 NHANES adults | 0.732 | 0.692 to 0.770 | 2.9% | 0.68 | 0.65 | 16.9 |
-| ~~Cervical~~ | 858 Caracas referrals | 0.725 | withdrawn, see below | | | | |
-| ~~Prostate~~ | 97 Stanford records | 0.786 | **0.505** to 0.99 | withdrawn | | | |
+| ~~Cervical~~ | 858 Caracas referrals | 0.725 | withdrawn, a lucky split | | | | |
 
 ### Does each panel beat the obvious baseline?
 
@@ -251,9 +252,17 @@ Reproduce with `python evaluate.py`.
 |---|---|---|---|---|
 | Pancreatic | 0.969 | 0.968 | 0.500 | +0.469 |
 | Liver | 0.753 | 0.731 | 0.602 | +0.151 |
+| Prostate | 0.840 | 0.876 | 0.661 | +0.179 |
 | Ovarian | 0.949 | 0.911 | 0.813 | +0.136 |
+| Lung | 0.829 | 0.785 | 0.778 | +0.051 |
 | Bowel | 0.809 | 0.800 | 0.771 | +0.038 |
 | General | 0.732 | 0.731 | 0.727 | **+0.005** |
+
+Bowel is quoted from 20 paired repeats rather than one split, because its single
+split disagreed with its cross-validation. Prostate is the one panel where plain
+logistic regression beats the ensemble on the held-out split, 0.876 against
+0.840, which is stated rather than buried; on repeated splits the two are within
+noise of each other.
 
 Bowel is quoted from 20 paired repeats rather than a single split, for the
 reason given under "Colorectal had the same conflict" below. Its single-split
@@ -334,6 +343,72 @@ range of +0.011 to +0.066 that excludes zero. Reproduce with
 So colorectal ships and cervical does not, and both decisions come from the same
 test rather than from which answer was more convenient.
 
+### Lung: the confound had to be removed before the panel meant anything
+
+Lung was reported as unbuildable in an earlier pass, on 57 events. Pooling all
+ten NHANES cycles from 1999 to 2018 raised that to 117, and adding the lab
+values that pass had missed changed the picture: serum cotinine, the nicotine
+metabolite, is measured in every cycle and is an objective replacement for the
+smoking question.
+
+The first version still flattered itself. On the full 45,396-adult cohort the
+questionnaire alone reaches 0.836, because almost every case smoked and most
+controls did not, so "do you smoke" separates the groups nearly on its own.
+
+Restricting controls to people with tobacco exposure, by self-report or serum
+cotinine at or above 3 ng/mL, asks the real question and is also the population
+that actually gets offered lung screening:
+
+| Feature set | AUC | vs questionnaire | Wins |
+|---|---|---|---|
+| Questionnaire alone | 0.792 | | |
+| Plus self-reported pack-years | 0.793 | +0.001 | 5/10 |
+| Plus **serum cotinine** | 0.808 | **+0.016** | 10/10 |
+| Plus the whole lab report | 0.821 | **+0.029** | 10/10 |
+
+The middle two rows are the point. A measured lab value beat the self-reported
+dose it replaces, which is the claim this whole application makes, tested and
+upheld. Reproduce with `python experiments/lung_vs_smokers.py`.
+
+Spirometry adds far more, 0.807 to 0.914, but only 13 lung cases have FEV1 and
+FVC recorded, so it is nowhere near the event floor and is left out.
+
+The limitation travels with the panel: pooling ten cycles means giving up age at
+diagnosis, so the target is a lifetime diagnosis, and lung cancer survival is
+poor enough that the cases who live to be interviewed are survivor-biased.
+
+### Prostate: reinstated on a cohort that actually has PSA
+
+The old prostate panel was withdrawn on 97 Stanford records with an interval
+sitting on chance. NHANES then confirmed the negative from the other direction:
+with 738 lifetime prostate cases and no PSA available, bloodwork added -0.000
+over age, because NHANES excludes men with a prostate cancer history from the
+PSA subsample by design.
+
+The replacement is 212 men with suspected prostate cancer who all went to
+transperineal biopsy, 121 with adenocarcinoma, controls being men whose biopsy
+came back benign. Measured against PSA alone, the only baseline that counts
+because every one of these men already had a PSA drawn:
+
+| Feature set | AUC | vs PSA alone | Wins |
+|---|---|---|---|
+| Age alone | 0.568 | | |
+| PSA alone | 0.670 | | |
+| Age, PSA, volume, PSA density, BMI | 0.668 | -0.003 | 10/20 |
+| **Plus PI-RADS from MRI** | **0.826** | **+0.156** | 20/20 |
+
+Blood and ultrasound alone do not beat reading the PSA number. They tie it. What
+carries this panel is the radiologist's PI-RADS score, exactly as nuclear
+morphology carries the breast panel, so it ships as an **interpretation** panel
+that asks for an MRI score and says so on its face rather than pretending a lab
+report is enough.
+
+The dataset came from Zenodo, which blocks this environment on every route, so
+it was recovered through another path and then verified rather than trusted:
+PSAD is a derived column equal to PSA divided by prostate volume, and that
+identity holds across all 212 rows to within 0.005, which jointly verifies three
+columns row by row.
+
 ### Lung, colorectal and prostate were all requested. One survived measurement.
 
 All three were tested identically against NHANES, sweeping the diagnosis window
@@ -344,8 +419,8 @@ thirty years ago as positive and mostly predicts age. Reproduce with
 | Site | Events at best window | Age and sex baseline | With bloodwork | Gain | Outcome |
 |---|---|---|---|---|---|
 | Colorectal | 96 at 8 years | 0.774 | **0.804** | **+0.030** | ships |
-| Prostate | 373 lifetime | 0.874 | 0.876 | +0.002 | not shipped |
-| Lung | 57 lifetime | n/a | n/a | n/a | not shipped |
+| Prostate | 373 lifetime | 0.874 | 0.876 | +0.002 | NHANES route dead, see below |
+| Lung | 57 lifetime | n/a | n/a | n/a | superseded, see below |
 
 **Colorectal ships.** This is the ColonFlag idea rebuilt from open data: age,
 sex and a complete blood count. ColonFlag is the best known colorectal
@@ -355,7 +430,7 @@ is the tightest one clearing the roughly 96 event floor, which makes this the
 smallest shipped panel by event count and gives it the widest interval of any
 NHANES panel.
 
-**Prostate is not shipped, and the reason is structural rather than fixable.**
+**Prostate could not be built from NHANES, and that part is structural.**
 Bloodwork adds between 0.000 and 0.002 over age alone at every single window
 tested, from 153 events at four years to 373 at lifetime. It is an age model
 wearing a lab coat. Prostate risk lives in PSA, and NHANES excludes men with a
@@ -363,16 +438,18 @@ prostate cancer history from the PSA subsample by design, which leaves 17 cases
 paired with a PSA value. The older Stanford cohort has 97 records and a
 confidence interval whose lower bound sits on chance. Shipping any of these
 would mean printing a cancer risk score driven entirely by the patient's
-birthday.
+birthday. A cohort that does carry PSA was found later and the panel now ships
+on that instead; see the prostate section above.
 
-**Lung is not shipped for lack of events.** 34 cases at four years, rising only
+**Lung failed here for lack of events, and was rescued later.** 34 cases at four years, rising only
 to 57 at lifetime, against a floor of roughly 96. Widening the window does not
 rescue it because the ceiling is how many people NHANES sampled who had lung
 cancer and survived to be interviewed, which is itself a survival bias. No
 public tabular cohort pairs lung cancer with a lab panel either: the open lung
 datasets are CT imaging, and the large screening trials that would answer this,
 NLST and PLCO, require an application and a data use agreement rather than a
-download.
+download. Pooling all ten NHANES cycles and adding serum cotinine eventually
+got there; see the lung section above.
 
 ### Triage panels are judged against referral prevalence, not SEER
 

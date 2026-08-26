@@ -46,12 +46,16 @@ NORMAL = {
     "hormonal_contraceptives": 0, "hormonal_contraceptives_years": 0,
     "iud": 0, "iud_years": 0, "stds": 0, "stds_number": 0, "stds_hpv": 0,
     "stds_diagnoses": 0,
+    # Tobacco exposure, inflammation, prostate work-up.
+    "cotinine": 0.05, "crp": 1.2, "smoking_packyears": 0,
+    "prostate_volume": 28, "psa_density": 0.1, "pi_rads": 2,
 }
 
 LABELS = {
     "general": "General", "breast": "Breast", "liver": "Liver",
     "pancreatic": "Pancreatic", "prostate": "Prostate",
     "ovarian": "Ovarian", "cervical": "Cervical", "colorectal": "Bowel",
+    "lung": "Lung",
 }
 
 SOURCES = {
@@ -59,10 +63,11 @@ SOURCES = {
     "breast": "Wisconsin Diagnostic Breast Cancer",
     "liver": "NHANES 2005-2018, US adults",
     "pancreatic": "Pancreatic biomarker cohort",
-    "prostate": "Stanford prostate cohort",
+    "prostate": "Transperineal biopsy cohort, 212 men",
     "ovarian": "Soochow ovarian mass cohort",
     "cervical": "Caracas colposcopy referral cohort",
     "colorectal": "NHANES 2005-2014, US adults",
+    "lung": "NHANES 1999-2018, adults with tobacco exposure",
 }
 
 models = {
@@ -114,7 +119,14 @@ def note_for(domain: str, v: dict) -> str:
                 f"bilirubin {v['bilirubin']:g}, glucose {v['glucose']:g}, "
                 f"creatinine {v['creatinine']:g}.")
     if domain == "prostate":
-        return f"{age} year old man. PSA at {v['psa']:g} ng/mL, everything else normal."
+        return (f"{age} year old man referred for prostate biopsy. PSA {v['psa']:g} ng/mL, "
+                f"prostate volume {v['prostate_volume']:g} mL, PSA density "
+                f"{v['psa_density']:g}, PI-RADS {int(v['pi_rads'])} on MRI.")
+    if domain == "lung":
+        smoke = {0: "never smoked", 1: "former smoker", 2: "current smoker"}[int(v.get("smoking", 0))]
+        return (f"{age} year old {who}, {smoke}, {v['smoking_packyears']:g} pack-years. "
+                f"Serum cotinine {v['cotinine']:g} ng/mL, CRP {v['crp']:g} mg/L, "
+                f"WBC {v['wbc']:g}, haemoglobin {v['hemoglobin']:g}.")
     if domain == "colorectal":
         return (f"{age} year old {who}. Blood count and chemistry only: haemoglobin "
                 f"{v['hemoglobin']:g}, platelets {v['platelets']:g}, WBC {v['wbc']:g}, "
@@ -145,6 +157,17 @@ def build(domain: str, config: dict):
     X, y, _ = tm.prepare(config)
 
     cases = [{**NORMAL, **{k: float(v) for k, v in row.items()}} for _, row in X.iterrows()]
+
+    # Sex-specific panels do not carry gender as a model feature, because within
+    # those cohorts it is constant and therefore useless to the model. That left
+    # generated prostate cases inheriting the default of female, so a case
+    # narrated as "62 year old man" arrived at the API without a sex and picked
+    # up an ovarian score. Set it explicitly here so the sample cases exercise
+    # the same anatomy gate a real user would.
+    forced_sex = {"prostate": 1.0, "ovarian": 0.0, "cervical": 0.0}.get(domain)
+    if forced_sex is not None:
+        for c in cases:
+            c["gender"] = forced_sex
     per_model = probabilities(cases)
     own = per_model[domain]
 

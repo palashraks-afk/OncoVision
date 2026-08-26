@@ -66,12 +66,15 @@ SEER_INCIDENCE = {
     # both use the prevalence NHANES itself measures on the same question.
     "general":    (3140.0, "Cancer diagnosed within 4 years, US adults, NHANES 2005-2014"),
     "breast":     (132.5, "Female breast, per 100,000 women per year"),
-    "prostate":   (123.2, "Prostate, per 100,000 men per year"),
+    "prostate":   (40000.0, "Adenocarcinoma among men taken to prostate biopsy"),
     "pancreatic": (13.9,  "Pancreas, per 100,000 men and women per year"),
     "liver":      (4000.0, "Ever told had a liver condition, US adults, NHANES 2005-2018"),
     # Colorectal is a genuine population screen, so it gets the real SEER
     # incidence rather than a referral prior.
     "colorectal": (36.5, "Colon and rectum, per 100,000 men and women per year"),
+    # Lung is offered to people with tobacco exposure, so the prior is lung
+    # cancer prevalence in that group rather than in the whole population.
+    "lung":       (475.0, "Lung cancer among US adults with tobacco exposure, NHANES 1999-2018"),
     # The ovarian and cervical panels are triage steps, not population screens.
     # They run after a mass has been found or a woman has been referred, so the
     # prior that matters is prevalence in the referred group, not in the street.
@@ -87,8 +90,9 @@ COHORT_DESIGN = {
     "breast":     "Case-control, post-biopsy. Every record is an FNA already taken because a lesion was found.",
     "liver":      "35,511 US adults, NHANES 2005-2018. Externally validated on India and Germany.",
     "pancreatic": "Case-control. Cases are confirmed PDAC, controls include benign hepatobiliary disease.",
-    "prostate":   "Case-control, post-prostatectomy. Gleason grade comes from the surgical specimen.",
+    "prostate":   "212 men biopsied at one centre. Controls are benign biopsies. Needs an MRI PI-RADS score.",
     "colorectal": "23,794 US adults, NHANES 2005-2014. Diagnosed within 8 years; longer-ago survivors excluded.",
+    "lung":       "21,916 US adults with tobacco exposure, NHANES 1999-2018. Controls are smokers, not the general population.",
     "ovarian":    "349 women operated on at one Chinese hospital. Controls are benign ovarian tumours, not healthy women.",
     "cervical":   "858 women assessed for colposcopy in Caracas, 55 biopsy-positive. Prior-diagnosis columns dropped as leakage.",
 }

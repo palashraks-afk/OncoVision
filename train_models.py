@@ -51,19 +51,6 @@ RANDOM_STATE = 42
 # Panels that are trained and measured but deliberately not shipped.
 # evaluate.py is the evidence for each decision.
 WITHDRAWN = {
-    "prostate": (
-        "Held-out test AUC 0.786, 95% CI 0.505 to 0.99. The lower bound sits on chance, so "
-        "the panel cannot be shown to work. Specificity is 0.571 with a CI of 0.167 to 1.0, "
-        "an interval carrying no information because the test split is 20 records. It does "
-        "not beat plain logistic regression (0.769). "
-        "External validation was searched for and does not exist. The Stanford cohort has no "
-        "site or centre column, so unlike the pancreatic cohort it cannot be split by "
-        "institution. NHANES measured serum PSA on 4,697 men across 2005 to 2010, which "
-        "looked like the answer, but it contains only 17 prostate cancer cases because men "
-        "with a prostate cancer history are excluded from the PSA subsample. That is far "
-        "below the roughly 96 events needed. 97 records and two usable features, with no "
-        "route to an external test, cannot support a clinical claim."
-    ),
     "cervical": (
         "Withdrawn after the published 0.725 turned out to be a lucky split. "
         "Repeating the identical 80/20 protocol 30 times with different seeds gives a mean "
@@ -117,6 +104,22 @@ COHORT_DESIGN = {
                   "wide. Bloodwork adds 0.030 over age and sex. Lung and prostate were tested "
                   "the same way and failed: lung on events, prostate because bloodwork adds "
                   "nothing without PSA.",
+    "lung": "21,916 US adults with tobacco exposure from NHANES 1999 to 2018, 104 with lung "
+            "cancer. Controls are restricted to smokers on purpose: on the unrestricted cohort "
+            "the smoking question alone reaches 0.836 and any lab model inherits the credit. "
+            "On the restricted comparison the baseline is 0.792 and the lab report adds 0.029, "
+            "winning every repeat. Serum cotinine alone adds 0.016 while self-reported "
+            "pack-years adds 0.001, so the measured value beats the questionnaire it replaces. "
+            "The target is a lifetime diagnosis, and lung cancer survival is poor, so the cases "
+            "are survivor-biased. Spirometry helps far more but only 13 cases have it.",
+    "prostate": "212 men with suspected prostate cancer, all biopsied transperineally at one "
+                "centre in 2022 to 2023, 121 with adenocarcinoma. Controls are men whose biopsy "
+                "came back benign, mostly BPH. This is an INTERPRETATION panel: it needs a "
+                "PI-RADS score from an MRI, because blood and ultrasound alone tie PSA rather "
+                "than beat it (0.668 against 0.670), while adding PI-RADS reaches 0.826 and "
+                "wins every repeat. Single centre, no external cohort. Precision is projected "
+                "onto the roughly 40 percent malignancy rate among men taken to biopsy, not "
+                "onto SEER, because this runs after referral.",
     "ovarian": "349 women operated on at one Chinese hospital between 2011 and 2018. The "
                "controls are women whose ovarian mass proved benign, not healthy volunteers, "
                "so this separates malignant from benign rather than sick from well. It is a "
@@ -149,6 +152,13 @@ LAB_FIELDS = [
     "hematocrit", "mcv", "mch", "rdw", "mpv", "neutrophil_pct", "ggt",
     # Tumour markers ordered when a pelvic mass is being worked up.
     "ca125", "he4", "cea",
+    # Prostate work-up. Volume comes off the ultrasound report and PSA density
+    # is PSA divided by it; PI-RADS is the radiologist's score from an MRI.
+    "prostate_volume", "psa_density", "pi_rads",
+    # Serum cotinine is the nicotine metabolite and the objective measure of
+    # tobacco exposure. It is a lab value, which is the point: it beats the
+    # smoking question it replaces. CRP captures chronic inflammation.
+    "cotinine", "crp",
     "radius_mean", "texture_mean", "perimeter_mean", "area_mean",
 ]
 
@@ -171,6 +181,11 @@ HISTORY_FIELDS = [
     # withdrawn: no shipped model reads it, and asking a patient for fourteen
     # intimate questions that nothing consumes is pure friction.
     "menopause",
+    # Tobacco dose. Kept because the lung panel is offered to people with
+    # tobacco exposure and dose is the thing a clinician would ask for, even
+    # though the measurement below beats it: pack-years added 0.001 over the
+    # smoking question while serum cotinine added 0.016.
+    "smoking_packyears",
 ]
 
 APP_FIELDS = LAB_FIELDS + HISTORY_FIELDS
@@ -396,18 +411,117 @@ DATASETS = [
                            "tumour rather than from a healthy woman"),
     },
     {
-        "name": "prostate",
-        "file": "prostate.csv",
-        "label": "Prostate Cancer Risk",
-        # lpsa is the natural log of PSA, converted back to the ng/mL the app
-        # collects. The remaining columns (tumour volume, capsular penetration,
-        # seminal vesicle invasion) are surgical findings, not screening inputs.
+        "name": "lung",
+        # 21,916 NHANES adults WITH TOBACCO EXPOSURE, 104 of them with lung
+        # cancer, pooled across all ten cycles 1999 to 2018.
+        #
+        # The restriction is the whole design. On the full 45,396-adult cohort
+        # the questionnaire alone scores 0.836, because almost every case smoked
+        # and most controls did not, so "do you smoke" separates the groups by
+        # itself and any lab model inherits the credit. That is not a lung
+        # panel, it is a smoking detector.
+        #
+        # Restricting controls to people with tobacco exposure, by self-report
+        # or serum cotinine at or above 3 ng/mL, drops the baseline to 0.792 and
+        # asks the real question: among people who smoke, whose blood looks like
+        # cancer. It is also the population that actually gets offered lung
+        # screening.
+        #
+        # On that harder comparison, measured over 10 paired repeats:
+        #
+        #     questionnaire alone            0.792
+        #     plus pack-years                0.793   +0.001, wins 5/10
+        #     plus serum cotinine            0.808   +0.016, wins 10/10
+        #     plus the whole lab report      0.821   +0.029, wins 10/10
+        #
+        # The middle two lines are the finding worth keeping: a measured lab
+        # value beat the self-reported dose it replaces. That is the claim this
+        # whole application makes, tested and upheld.
+        #
+        # Spirometry adds far more, 0.807 to 0.914, but only 13 lung cases have
+        # FEV1 and FVC recorded, so it is nowhere near the event floor and is
+        # left out. See experiments/lung_panel.py.
+        #
+        # Limitation carried onto the panel: pooling all ten cycles means giving
+        # up age at diagnosis, so the target is a LIFETIME diagnosis. Lung cancer
+        # five year survival is about a quarter, so the cases who survive to be
+        # interviewed are a survivor-biased minority.
+        "file": "nhanes_lung_smokers.csv",
+        "label": "Lung Cancer Risk, with tobacco exposure",
         "features": {
             "age": lambda d: d["age"],
-            "psa": lambda d: np.exp(d["lpsa"]),
+            "gender": lambda d: d["gender"],
+            "smoking": lambda d: d["smoking"],
+            "smoking_packyears": lambda d: d["smoking_packyears"],
+            "cotinine": lambda d: d["cotinine"],
+            "crp": lambda d: d["crp"],
+            "wbc": lambda d: d["wbc"],
+            "rbc": lambda d: d["rbc"],
+            "hemoglobin": lambda d: d["hemoglobin"],
+            "platelets": lambda d: d["platelets"],
+            "hematocrit": lambda d: d["hematocrit"],
+            "mcv": lambda d: d["mcv"],
+            "rdw": lambda d: d["rdw"],
+            "mpv": lambda d: d["mpv"],
+            "glucose": lambda d: d["glucose"],
+            "calcium": lambda d: d["calcium"],
+            "bun": lambda d: d["bun"],
+            "creatinine": lambda d: d["creatinine"],
+            "protein_total": lambda d: d["protein_total"],
+            "albumin": lambda d: d["albumin"],
+            "ast": lambda d: d["ast"],
+            "alt": lambda d: d["alt"],
+            "bilirubin": lambda d: d["bilirubin"],
+            "alkaline_phosphatase": lambda d: d["alkaline_phosphatase"],
         },
-        "target": lambda d: (d["gleason"] >= 7).astype(int),
-        "positive_means": "a Gleason score of 7 or above, the threshold for clinically significant disease",
+        "target": lambda d: d["lung_cancer"].astype(int),
+        "positive_means": ("a lung cancer diagnosis, among people who smoke or have "
+                           "measurable tobacco exposure"),
+    },
+    {
+        "name": "prostate",
+        # 212 men with suspected prostate cancer, all of whom went to
+        # transperineal biopsy at one centre between May 2022 and November 2023.
+        # 121 came back adenocarcinoma. Zenodo 10.5281/zenodo.17623285, CC-BY 4.0.
+        #
+        # This replaces the 97-record Stanford cohort that was withdrawn. The
+        # controls here are men whose biopsy came back benign, 67 of them BPH,
+        # which is the decision a urologist actually faces once a man has been
+        # referred. Separating a biopsied man from the general population is not
+        # a decision at all.
+        #
+        # THIS IS AN INTERPRETATION PANEL, not a screening one, and the
+        # distinction is load bearing. Measured against PSA alone, which is the
+        # only baseline that counts because every one of these men already had a
+        # PSA drawn:
+        #
+        #     age alone                            0.568
+        #     PSA alone                            0.670
+        #     age, PSA, volume, PSA density, BMI   0.668   -0.003, wins 10/20
+        #     the above plus PI-RADS               0.826   +0.156, wins 20/20
+        #
+        # A panel built only from blood and ultrasound does NOT beat reading the
+        # PSA number. It ties it. What carries this panel is PI-RADS, the
+        # radiologist's score off an MRI, exactly as nuclear morphology carries
+        # the breast panel. So it ships requiring an MRI score and says so,
+        # rather than pretending a lab report is enough.
+        #
+        # NHANES independently confirms the negative: with 738 lifetime prostate
+        # cases and no PSA available, bloodwork added -0.000 over age.
+        # See experiments/prostate_biopsy.py and experiments/pooled_sites.py.
+        "file": "prostate_biopsy_zenodo.csv",
+        "label": "Prostate Cancer Risk, with an MRI score",
+        "features": {
+            "age": lambda d: d["Age"],
+            "psa": lambda d: d["PSA"],
+            "prostate_volume": lambda d: d["Prostate_Volume"],
+            "psa_density": lambda d: d["PSAD"],
+            "bmi": lambda d: d["BMI"],
+            "pi_rads": lambda d: d["PI_RADS"],
+        },
+        "target": lambda d: (d["Pathology"].astype(str).str.strip() == "Adenocarcinoma").astype(int),
+        "positive_means": ("adenocarcinoma on biopsy, separated from a benign biopsy result "
+                           "rather than from an unbiopsied man"),
     },
 ]
 

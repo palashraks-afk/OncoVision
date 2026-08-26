@@ -92,6 +92,9 @@ BIOLOGICAL_BOUNDS = {
     "iud": (0, 1), "iud_years": (0, 50),
     "stds": (0, 1), "stds_number": (0, 20), "stds_hpv": (0, 1),
     "stds_diagnoses": (0, 20),
+    # Tobacco exposure, inflammation, and the prostate work-up.
+    "cotinine": (0.0, 2000.0), "crp": (0.0, 500.0),
+    "prostate_volume": (1.0, 300.0), "psa_density": (0.0, 50.0), "pi_rads": (1, 5),
 }
 
 # Upper limit of the normal reference range for each measurable marker.
@@ -107,6 +110,8 @@ REFERENCE_RANGES = {
     # CA125 above 35 U/mL is the conventional cut. HE4 is assay dependent and
     # 140 pmol/L is the common premenopausal cut used in the ROMA index.
     "ca125": 35.0, "he4": 140.0, "cea": 5.0,
+    "cotinine": 3.0, "crp": 3.0, "prostate_volume": 30.0, "psa_density": 0.15,
+    "pi_rads": 2.0,
 }
 
 # Markers with an established clinical decision threshold. Crossing one is
@@ -130,6 +135,10 @@ CLINICAL_THRESHOLDS = {
     "he4": ("HE4", 140.0, ["ovarian"]),
     "cea": ("CEA", 5.0, ["ovarian"]),
     "ggt": ("GGT", 50.0, ["liver", "ovarian"]),
+    "cotinine": ("Serum cotinine", 3.0, ["lung"]),
+    "crp": ("CRP", 3.0, ["lung"]),
+    "psa_density": ("PSA density", 0.15, ["prostate"]),
+    "pi_rads": ("PI-RADS", 2.0, ["prostate"]),
 }
 
 # History answers worth surfacing when they are positive.
@@ -177,6 +186,8 @@ UNITS = {
     "first_intercourse_age": "years", "smoking_years": "years",
     "smoking_packyears": "pack-years", "hormonal_contraceptives_years": "years",
     "iud_years": "years",
+    "cotinine": "ng/mL", "crp": "mg/L", "prostate_volume": "mL",
+    "psa_density": "ng/mL/mL", "pi_rads": "of 5", "smoking_packyears": "pack-years",
 }
 
 DISPLAY_NAMES = {
@@ -200,6 +211,9 @@ DISPLAY_NAMES = {
     "iud": "IUD", "iud_years": "Years with an IUD",
     "stds": "STI history", "stds_number": "Number of STIs",
     "stds_hpv": "HPV", "stds_diagnoses": "STI diagnoses",
+    "cotinine": "Serum cotinine", "crp": "CRP",
+    "prostate_volume": "Prostate volume", "psa_density": "PSA density",
+    "pi_rads": "PI-RADS score",
 }
 
 
@@ -443,6 +457,11 @@ class PatientData(BaseModel):
     alpha_fetoprotein_level: Optional[float] = None
     psa: Optional[float] = None
     plasma_ca19_9: Optional[float] = None
+    cotinine: Optional[float] = None
+    crp: Optional[float] = None
+    prostate_volume: Optional[float] = None
+    psa_density: Optional[float] = None
+    pi_rads: Optional[float] = None
     ca125: Optional[float] = None
     he4: Optional[float] = None
     cea: Optional[float] = None
@@ -808,6 +827,11 @@ BIOMARKER_SYNONYMS = {
     "plasma_ca19_9": [r"ca[ \-_]?19[\-_]?9", r"carbohydrate antigen 19"],
     # Longest-match-wins keeps these away from calcium's bare "ca".
     "ca125": [r"cancer antigen 125", r"ca[ \-_]?125"],
+    "cotinine": [r"cotinine, serum", r"serum cotinine", r"cotinine"],
+    "crp": [r"c[- ]?reactive protein", r"hs[- ]?crp", r"crp"],
+    "prostate_volume": [r"prostate volume", r"prostatic volume"],
+    "psa_density": [r"psa density", r"psad"],
+    "pi_rads": [r"pi[- ]?rads score", r"pi[- ]?rads", r"pirads"],
     "he4": [r"human epididymis protein 4", r"human epididymis protein", r"he[ \-_]?4"],
     "cea": [r"carcinoembryonic antigen", r"cea"],
     # Word-bounded matching stops "mch" firing inside "mchc", which is a

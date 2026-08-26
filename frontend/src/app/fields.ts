@@ -79,6 +79,23 @@ export const LAB_GROUPS: LabGroup[] = [
     ],
   },
   {
+    group: "Tobacco exposure and inflammation",
+    blurb: "Two values that measure what a questionnaire only asks about. The lung panel reads these.",
+    items: [
+      { key: "cotinine", label: "Cotinine, serum", unit: "ng/mL", normal: "under 3 if you do not smoke", meaning: "The breakdown product of nicotine, and the objective measure of tobacco exposure. In this project it beat self reported pack years: cotinine added 0.016 to the lung panel where pack years added 0.001." },
+      { key: "crp", label: "CRP, C reactive protein", unit: "mg/L", normal: "under 3", meaning: "A general marker of inflammation in the body. It is not specific to cancer, but sustained inflammation accompanies both chronic lung disease and tumour biology." },
+    ],
+  },
+  {
+    group: "Prostate work up",
+    blurb: "Only relevant if a prostate MRI and ultrasound have already been done. The prostate panel needs all three.",
+    items: [
+      { key: "prostate_volume", label: "Prostate volume", unit: "mL", normal: "25 to 30", meaning: "Measured on ultrasound. A large prostate raises PSA on its own, which is why PSA is read against volume rather than alone." },
+      { key: "psa_density", label: "PSA density", unit: "ng/mL/mL", normal: "under 0.15", meaning: "PSA divided by prostate volume. It separates a raised PSA caused by a big benign prostate from one caused by a tumour." },
+      { key: "pi_rads", label: "PI-RADS score", unit: "1 to 5", normal: "1 or 2", meaning: "The radiologist's score from a prostate MRI, where 1 is very unlikely to be cancer and 5 is very likely. This is the value that makes the prostate panel work: without it the panel only ties reading the PSA number." },
+    ],
+  },
+  {
     group: "Breast mass morphology",
     blurb: "Measurements taken from a digitised image of a breast biopsy. You will only have these if a lump has been sampled and imaged.",
     items: [
@@ -168,6 +185,11 @@ export const HISTORY_FIELDS: HistoryField[] = [
   //
   // Leaving them blank is fine. Anything missing is filled with the training
   // median, and the cervical panel reports reduced coverage when that happens.
+  {
+    key: "smoking_packyears", label: "Pack-years", type: "number", group: "General",
+    meaning: "Packs a day multiplied by years smoked. The standard measure of tobacco dose, read by the lung panel. If you have a cotinine result, that measures the same thing better.",
+    min: 0, max: 200, step: 0.5, suffix: "pack-yrs",
+  },
   {
     key: "menopause", label: "Menopausal status", type: "select",
     group: "Reproductive history",

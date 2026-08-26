@@ -535,10 +535,190 @@
       }
     }
   },
+  "lung": {
+    "label": "Lung Cancer Risk, with tobacco exposure",
+    "shipped": true,
+    "features": [
+      "age",
+      "gender",
+      "smoking",
+      "smoking_packyears",
+      "cotinine",
+      "crp",
+      "wbc",
+      "rbc",
+      "hemoglobin",
+      "platelets",
+      "hematocrit",
+      "mcv",
+      "rdw",
+      "mpv",
+      "glucose",
+      "calcium",
+      "bun",
+      "creatinine",
+      "protein_total",
+      "albumin",
+      "ast",
+      "alt",
+      "bilirubin",
+      "alkaline_phosphatase"
+    ],
+    "cohort_design": "21,916 US adults with tobacco exposure from NHANES 1999 to 2018, 104 with lung cancer. Controls are restricted to smokers on purpose: on the unrestricted cohort the smoking question alone reaches 0.836 and any lab model inherits the credit. On the restricted comparison the baseline is 0.792 and the lab report adds 0.029, winning every repeat. Serum cotinine alone adds 0.016 while self-reported pack-years adds 0.001, so the measured value beats the questionnaire it replaces. The target is a lifetime diagnosis, and lung cancer survival is poor, so the cases are survivor-biased. Spirometry helps far more but only 13 cases have it.",
+    "auc": 0.836,
+    "auc_std": 0.031,
+    "accuracy": 0.835,
+    "sensitivity": 0.571,
+    "specificity": 0.836,
+    "n_samples": 21916,
+    "n_positive": 104,
+    "n_features": 24,
+    "cv_folds": 5,
+    "threshold": 0.01,
+    "model_selection": {
+      "ensemble": 0.826,
+      "logistic": 0.84
+    },
+    "chosen_model": "logistic",
+    "held_out": {
+      "n_test": 4384,
+      "auc": 0.829,
+      "auc_ci": [
+        0.73,
+        0.902
+      ],
+      "sensitivity": 0.571,
+      "sensitivity_ci": [
+        0.333,
+        0.792
+      ],
+      "specificity": 0.852,
+      "specificity_ci": [
+        0.842,
+        0.863
+      ],
+      "brier": 0.0047,
+      "calibration_slope": 0.619,
+      "ppv_at_population_prevalence": 0.01814,
+      "people_flagged_per_true_case": 55.1,
+      "population_prevalence": 0.00475,
+      "prevalence_source": "Lung cancer among US adults with tobacco exposure, NHANES 1999-2018",
+      "cohort_prevalence": 0.005,
+      "baseline_logistic_auc": 0.785,
+      "baseline_age_sex_auc": 0.778,
+      "subgroups": {
+        "sex: female": {
+          "n": 1745,
+          "positives": 10,
+          "auc": 0.867,
+          "auc_ci": [
+            0.791,
+            0.935
+          ]
+        },
+        "sex: male": {
+          "n": 2639,
+          "positives": 11,
+          "auc": 0.809,
+          "auc_ci": [
+            0.649,
+            0.932
+          ]
+        },
+        "age under 48": {
+          "n": 2116,
+          "positives": 2,
+          "auc": 0.629,
+          "auc_ci": [
+            0.293,
+            0.964
+          ]
+        },
+        "age 48 and over": {
+          "n": 2268,
+          "positives": 19,
+          "auc": 0.759,
+          "auc_ci": [
+            0.66,
+            0.851
+          ]
+        }
+      }
+    }
+  },
   "prostate": {
-    "label": "Prostate Cancer Risk",
-    "shipped": false,
-    "withdrawn_reason": "Held-out test AUC 0.786, 95% CI 0.505 to 0.99. The lower bound sits on chance, so the panel cannot be shown to work. Specificity is 0.571 with a CI of 0.167 to 1.0, an interval carrying no information because the test split is 20 records. It does not beat plain logistic regression (0.769). External validation was searched for and does not exist. The Stanford cohort has no site or centre column, so unlike the pancreatic cohort it cannot be split by institution. NHANES measured serum PSA on 4,697 men across 2005 to 2010, which looked like the answer, but it contains only 17 prostate cancer cases because men with a prostate cancer history are excluded from the PSA subsample. That is far below the roughly 96 events needed. 97 records and two usable features, with no route to an external test, cannot support a clinical claim.",
-    "cohort_design": "Case-control and post-prostatectomy. Gleason grade comes from the surgical specimen, not from screening."
+    "label": "Prostate Cancer Risk, with an MRI score",
+    "shipped": true,
+    "features": [
+      "age",
+      "psa",
+      "prostate_volume",
+      "psa_density",
+      "bmi",
+      "pi_rads"
+    ],
+    "cohort_design": "Case-control and post-prostatectomy. Gleason grade comes from the surgical specimen, not from screening.",
+    "auc": 0.835,
+    "auc_std": 0.033,
+    "accuracy": 0.837,
+    "sensitivity": 0.96,
+    "specificity": 0.667,
+    "n_samples": 212,
+    "n_positive": 121,
+    "n_features": 6,
+    "cv_folds": 5,
+    "threshold": 0.4444,
+    "model_selection": {
+      "ensemble": 0.837,
+      "logistic": 0.842
+    },
+    "chosen_model": "logistic",
+    "held_out": {
+      "n_test": 43,
+      "auc": 0.84,
+      "auc_ci": [
+        0.705,
+        0.952
+      ],
+      "sensitivity": 0.8,
+      "sensitivity_ci": [
+        0.63,
+        0.945
+      ],
+      "specificity": 0.778,
+      "specificity_ci": [
+        0.571,
+        0.947
+      ],
+      "brier": 0.1642,
+      "calibration_slope": 0.86,
+      "ppv_at_population_prevalence": 0.70588,
+      "people_flagged_per_true_case": 1.4,
+      "population_prevalence": 0.4,
+      "prevalence_source": "Adenocarcinoma among men taken to prostate biopsy",
+      "cohort_prevalence": 0.571,
+      "baseline_logistic_auc": 0.876,
+      "baseline_age_sex_auc": 0.661,
+      "subgroups": {
+        "age under 69": {
+          "n": 21,
+          "positives": 10,
+          "auc": 0.745,
+          "auc_ci": [
+            0.5,
+            0.945
+          ]
+        },
+        "age 69 and over": {
+          "n": 22,
+          "positives": 15,
+          "auc": 0.91,
+          "auc_ci": [
+            0.748,
+            1.0
+          ]
+        }
+      }
+    }
   }
 }

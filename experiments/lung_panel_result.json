@@ -1,0 +1,71 @@
+{
+  "full_cohort": {
+    "n": 45396,
+    "cases": 117,
+    "baseline_auc": 0.836,
+    "arms": {
+      "B plus pack-years": {
+        "mean_auc": 0.841,
+        "gain": 0.005,
+        "range": [
+          -0.0,
+          0.011
+        ],
+        "wins": 9,
+        "repeats": 10,
+        "helps": false
+      },
+      "C plus cotinine": {
+        "mean_auc": 0.846,
+        "gain": 0.01,
+        "range": [
+          0.004,
+          0.023
+        ],
+        "wins": 10,
+        "repeats": 10,
+        "helps": false
+      },
+      "D plus whole lab report": {
+        "mean_auc": 0.858,
+        "gain": 0.021,
+        "range": [
+          0.015,
+          0.033
+        ],
+        "wins": 10,
+        "repeats": 10,
+        "helps": true
+      }
+    }
+  },
+  "spirometry_subset": {
+    "n": 11903,
+    "cases": 13,
+    "baseline_auc": 0.807,
+    "arms": {
+      "D whole lab report": {
+        "mean_auc": 0.819,
+        "gain": 0.012,
+        "range": [
+          -0.035,
+          0.086
+        ],
+        "wins": 6,
+        "repeats": 10,
+        "helps": false
+      },
+      "E plus spirometry": {
+        "mean_auc": 0.914,
+        "gain": 0.108,
+        "range": [
+          0.049,
+          0.156
+        ],
+        "wins": 10,
+        "repeats": 10,
+        "helps": true
+      }
+    }
+  }
+}
