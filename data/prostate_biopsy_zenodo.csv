@@ -1,0 +1,213 @@
+Group,Patient_ID,Age,PI_RADS,PSA,Biopsy_Cores,Pathology,Gleason,Prostate_Volume,BMI,PSAD
+A,1,62,5,64,15,Adenocarcinoma,10,12,19,5.33
+A,2,60,4,20,14,Benign Prostatic Hyperplasia,,26,25,0.77
+A,3,68,5,60.7,13,Adenocarcinoma,9,11,19,5.52
+A,4,76,3,12,15,Benign Prostatic Hyperplasia,,35,17,0.34
+A,5,73,5,84,14,Adenocarcinoma,8,36,18,2.33
+A,6,70,5,32,14,Adenocarcinoma,9,36,26,0.89
+A,7,81,5,38,13,Adenocarcinoma,7,27,23,1.41
+A,8,80,3,38.2,13,Benign Prostatic Hyperplasia,,27,16,1.41
+A,9,79,5,72,13,Adenocarcinoma,8,17,17,4.24
+A,10,81,5,72.2,14,Adenocarcinoma,8,34,20,2.12
+A,11,81,5,99,15,Adenocarcinoma,9,33,17,3.00
+A,12,62,4,3.3,13,Benign Prostatic Hyperplasia,,25,19,0.13
+A,13,57,3,42,13,Benign Prostatic Hyperplasia,,24,18,1.75
+A,14,70,5,36,13,Adenocarcinoma,10,33,20,1.09
+A,15,77,5,25.4,14,Adenocarcinoma,8,24,21,1.06
+A,16,66,4,30,15,Benign Prostatic Hyperplasia,,33,26,0.91
+A,17,88,5,75,13,Adenocarcinoma,8,43,26,1.74
+A,18,59,5,26,13,Adenocarcinoma,9,36,22,0.72
+A,19,70,5,13.6,13,Adenocarcinoma,6,44,17,0.31
+A,20,74,5,20,14,Adenocarcinoma,9,31,25,0.65
+A,21,76,5,44,14,Adenocarcinoma,8,34,22,1.29
+A,22,67,5,16.8,15,Adenocarcinoma,7,16,24,1.05
+A,23,71,5,20,13,Adenocarcinoma,7,27,28,0.74
+A,24,79,5,50,13,Adenocarcinoma,8,17,24,2.94
+A,25,80,5,72,14,Adenocarcinoma,9,26,14,2.77
+A,26,69,5,4.2,14,Adenocarcinoma,10,27,15,0.16
+A,27,59,5,7.7,13,Adenocarcinoma,7,39,26,0.20
+A,28,79,5,83,13,Adenocarcinoma,9,34,19,2.44
+A,29,64,5,92,14,Adenocarcinoma,8,25,22,3.68
+A,30,73,4,0.75,14,Benign Prostatic Hyperplasia,,29,26,0.03
+A,31,70,5,9,13,Adenocarcinoma,8,17,25,0.53
+A,32,80,5,84,13,Adenocarcinoma,7,46,18,1.83
+A,33,68,5,32,13,Adenocarcinoma,8,34,18,0.94
+A,34,56,5,7.6,14,Adenocarcinoma,8,27,17,0.28
+A,35,75,4,11.1,14,Benign Prostatic Hyperplasia,,27,33,0.41
+A,36,79,3,3.5,13,Benign Prostatic Hyperplasia,,32,16,0.11
+A,37,73,5,73,14,Adenocarcinoma,9,14,29,5.21
+A,38,67,3,28,13,Benign Prostatic Hyperplasia,,46,23,0.61
+A,39,62,3,5.6,13,Benign Prostatic Hyperplasia,,25,19,0.22
+A,40,65,4,13.7,14,Benign Prostatic Hyperplasia,,48,19,0.29
+A,41,71,5,58,13,Adenocarcinoma,7,58,17,1.00
+A,42,61,5,15.5,15,Adenocarcinoma,7,25,30,0.62
+A,43,60,3,7.4,13,Benign Prostatic Hyperplasia,,22,18,0.34
+A,44,74,3,6.9,13,Benign Prostatic Hyperplasia,6,27,22,0.26
+A,45,83,5,8.9,15,Adenocarcinoma,7,14,24,0.64
+A,46,78,5,23,15,Adenocarcinoma,7,13,19,1.77
+A,47,56,3,20,14,Adenocarcinoma,6,38,17,0.53
+A,48,74,5,23,15,Adenocarcinoma,9,15,18,1.53
+A,49,36,5,1.06,15,Adenocarcinoma,8,23,26,0.05
+A,50,73,5,70,15,Adenocarcinoma,9,36,21,1.94
+A,51,66,5,96,14,Adenocarcinoma,9,24,16,4.00
+A,52,81,5,5.8,14,Adenocarcinoma,9,22,19,0.26
+A,53,72,4,12.7,13,Adenocarcinoma,9,49,23,0.26
+A,54,72,4,9,13,Adenocarcinoma,9,12,20,0.75
+A,55,83,5,73,14,Adenocarcinoma,9,33,22,2.21
+A,56,70,5,28,15,Adenocarcinoma,8,21,20,1.33
+A,57,58,5,100,14,Adenocarcinoma,9,25,34,4.00
+A,58,76,4,6.2,14,Adenocarcinoma,7,20,23,0.31
+A,59,68,3,34,14,Adenocarcinoma,6,25,17,1.36
+A,60,81,5,41,15,Adenocarcinoma,9,22,26,1.86
+A,61,69,4,81,13,Adenocarcinoma,7,37,28,2.19
+A,62,68,3,20,14,Basal cell loss,,17,15,1.18
+A,63,68,4,15.2,13,Adenocarcinoma,7,48,23,0.32
+A,64,66,5,11.5,15,Adenocarcinoma,7,26,24,0.44
+A,65,70,4,11.8,14,Adenocarcinoma,7,33,19,0.36
+A,66,58,3,26,13,Benign Prostatic Hyperplasia,,27,23,0.96
+A,67,71,4,9.8,13,Adenocarcinoma,6,25,30,0.39
+A,68,79,5,75,14,Adenocarcinoma,9,15,28,5.00
+A,69,58,3,14,13,Proliferation of prostatic tissue with chronic stromal inflammation,,36,25,0.39
+A,70,74,3,7,13,High-grade intraepithelial neoplasia,,28,20,0.25
+A,71,35,3,1.1,15,Benign Prostatic Hyperplasia,,25,24,0.04
+A,72,59,4,13.7,13,Adenocarcinoma,9,39,29,0.35
+A,73,63,3,5.3,13,Adenocarcinoma,7,27,17,0.20
+A,74,72,3,2.9,13,Benign Prostatic Hyperplasia,,28,25,0.10
+A,75,63,4,21,15,Adenocarcinoma,7,23,26,0.91
+A,76,51,3,12,14,Benign Prostatic Hyperplasia,,57,26,0.21
+A,77,69,3,20,13,Benign Prostatic Hyperplasia,,11,24,1.82
+A,78,82,4,15.4,14,Adenocarcinoma,8,43,33,0.36
+A,79,71,3,14,13,Benign Prostatic Hyperplasia,,33,27,0.42
+A,80,81,5,92,13,Adenocarcinoma,9,56,18,1.64
+A,81,67,3,6.7,13,Benign Prostatic Hyperplasia,,30,25,0.22
+A,82,61,3,49,13,Benign Prostatic Hyperplasia,,20,22,2.45
+A,83,81,4,20,14,Stromal hyperplasia,,34,27,0.59
+B,1,72,5,58,12,Adenocarcinoma,8,41,22,1.41
+B,2,65,5,75,12,Adenocarcinoma,8,55,25,1.36
+B,3,93,5,41,12,Adenocarcinoma,9,25,17,1.64
+B,4,61,3,22,12,Benign Prostatic Hyperplasia,,17,23,1.29
+B,5,75,5,22,12,Adenocarcinoma,7,19,23,1.16
+B,6,77,4,11.7,12,Adenocarcinoma,9,27,20,0.43
+B,7,59,3,7.9,12,Proliferation of prostatic tissue with chronic stromal inflammation,,27,18,0.29
+B,8,62,3,13.1,12,Benign Prostatic Hyperplasia,,29,27,0.45
+B,9,59,4,5.6,12,Benign Prostatic Hyperplasia,,32,21,0.18
+B,10,61,5,5.1,12,Benign Prostatic Hyperplasia,,22,30,0.23
+B,11,74,5,68,12,Adenocarcinoma,10,19,23,3.58
+B,12,63,4,6,12,Benign Prostatic Hyperplasia,,29,24,0.21
+B,13,57,5,56,12,Adenocarcinoma,9,38,28,1.47
+B,14,79,5,17.2,12,Focal acinar epithelial hyperplasia,,16,27,1.08
+B,15,67,5,17.2,12,Benign Prostatic Hyperplasia,,17,24,1.01
+B,16,63,4,6.2,12,Proliferation of prostatic tissue with chronic stromal inflammation,,22,26,0.28
+B,17,74,4,6.6,12,Adenocarcinoma,8,28,23,0.24
+B,18,56,4,7.6,12,Benign Prostatic Hyperplasia,,33,15,0.23
+B,19,58,4,5,12,Atypical small acinar proliferation,,32,31,0.16
+B,20,59,3,8.7,12,Proliferation of prostatic tissue with chronic stromal inflammation,,17,28,0.51
+B,21,72,4,21,12,Adenocarcinoma,8,34,30,0.62
+B,22,81,4,36,12,Benign Prostatic Hyperplasia,,22,25,1.64
+B,23,55,5,12.7,12,Adenocarcinoma,6,43,27,0.30
+B,24,80,5,100,12,Adenocarcinoma,8,24,16,4.17
+B,25,78,5,10.4,10,Adenocarcinoma,8,40,15,0.26
+B,26,73,4,14,12,Adenocarcinoma,7,26,19,0.54
+B,27,70,5,58,12,Benign Prostatic Hyperplasia,,50,25,1.16
+B,28,65,5,67,12,Benign Prostatic Hyperplasia,,26,20,2.58
+B,29,71,3,5.2,12,Benign Prostatic Hyperplasia,,22,27,0.24
+B,30,78,3,6.4,12,Benign Prostatic Hyperplasia,,26,27,0.25
+B,31,78,3,12.2,12,Benign Prostatic Hyperplasia,,34,24,0.36
+B,32,74,5,16,12,Benign Prostatic Hyperplasia,,22,28,0.73
+B,33,57,3,8.4,12,Benign Prostatic Hyperplasia,,15,22,0.56
+B,34,79,3,10,12,Benign Prostatic Hyperplasia,,47,19,0.21
+B,35,71,4,8.7,12,Adenocarcinoma,5,49,25,0.18
+B,36,55,4,20,12,Proliferation of prostatic tissue with chronic stromal inflammation,,24,19,0.83
+B,37,73,5,27,12,Adenocarcinoma,9,44,30,0.61
+B,38,85,5,20,12,Adenocarcinoma,8,23,21,0.87
+B,39,59,3,8.3,12,Chronic stromal inflammation,,11,22,0.75
+B,40,69,4,11.9,12,Adenocarcinoma,6,27,22,0.44
+B,41,79,3,90,12,Adenocarcinoma,7,47,22,1.91
+B,42,70,4,17.5,12,Adenocarcinoma,8,11,23,1.59
+B,43,39,3,65,12,Proliferation of prostatic tissue with chronic stromal inflammation,,30,23,2.17
+B,44,74,3,45,12,Adenocarcinoma,7,16,16,2.81
+B,45,74,4,18.8,12,Adenocarcinoma,9,15,22,1.25
+B,46,74,5,14.5,12,Adenocarcinoma,8,15,27,0.97
+B,47,72,4,7.63,12,Benign Prostatic Hyperplasia,,34,19,0.22
+B,48,64,5,15.3,12,Benign Prostatic Hyperplasia,,16,22,0.96
+B,49,69,5,8.05,12,Adenocarcinoma,9,18,25,0.45
+B,50,72,3,6.4,12,Benign Prostatic Hyperplasia,,43,27,0.15
+B,51,54,3,10.7,12,Benign Prostatic Hyperplasia,,42,26,0.25
+B,52,68,5,17,12,Adenocarcinoma,6,19,22,0.89
+B,53,71,5,11.1,12,Adenocarcinoma,9,29,26,0.38
+B,54,61,5,98,12,Adenocarcinoma,9,21,19,4.67
+B,55,82,5,40,12,Adenocarcinoma,9,18,15,2.22
+B,56,52,4,31,12,Adenocarcinoma,7,20,17,1.55
+B,57,75,5,66,12,Adenocarcinoma,8,29,27,2.28
+B,58,83,4,7.2,12,Proliferation of prostatic tissue with chronic stromal inflammation,,18,19,0.40
+B,59,67,5,58,12,Adenocarcinoma,9,22,24,2.64
+B,60,71,4,50,12,Proliferation of prostatic tissue with chronic stromal inflammation,,14,19,3.57
+B,61,54,4,6.1,12,Benign Prostatic Hyperplasia,,28,24,0.22
+B,62,68,5,78,12,Adenocarcinoma,9,28,27,2.79
+B,63,77,5,38,12,Adenocarcinoma,7,45,23,0.84
+B,64,71,3,15.9,12,Adenocarcinoma,7,15,26,1.06
+B,65,68,5,10.8,12,Adenocarcinoma,8,39,23,0.28
+B,66,78,5,6.4,12,Adenocarcinoma,9,16,25,0.40
+B,67,59,4,23,12,Proliferation of prostatic tissue with chronic stromal inflammation,,18,26,1.28
+B,68,77,5,95,12,Adenocarcinoma,7,35,16,2.71
+B,69,60,4,5.8,12,Benign Prostatic Hyperplasia,,28,23,0.21
+B,70,81,3,7.4,12,Benign Prostatic Hyperplasia,,16,19,0.46
+B,71,53,3,18.8,12,Benign Prostatic Hyperplasia,,12,24,1.57
+B,72,68,4,26,12,Adenocarcinoma,8,24,31,1.08
+B,73,65,3,14.8,12,Adenocarcinoma,6,19,23,0.78
+B,74,75,4,49,12,Benign Prostatic Hyperplasia,,13,20,3.77
+B,75,72,5,51,12,Adenocarcinoma,8,17,17,3.00
+B,76,76,4,19.2,12,Benign Prostatic Hyperplasia,,19,15,1.01
+B,77,69,5,14.3,12,Benign Prostatic Hyperplasia,,22,17,0.65
+B,78,78,5,98,12,Adenocarcinoma,8,28,19,3.50
+B,79,64,5,39,12,Adenocarcinoma,7,33,27,1.18
+B,80,76,4,37,12,Benign Prostatic Hyperplasia,,25,22,1.48
+B,81,54,4,1,12,Benign Prostatic Hyperplasia,,37,22,0.03
+B,82,66,3,21.4,12,Adenocarcinoma,6,18,20,1.19
+B,83,76,5,94,12,Adenocarcinoma,7,42,24,2.24
+B,84,70,5,46,12,Adenocarcinoma,9,35,36,1.31
+B,85,75,4,15.3,12,Adenocarcinoma,10,16,24,0.96
+B,86,73,3,22,12,Benign Prostatic Hyperplasia,,15,21,1.47
+B,87,72,4,1.86,12,Benign Prostatic Hyperplasia,,34,23,0.05
+B,88,50,4,9.9,12,Benign Prostatic Hyperplasia,,48,17,0.21
+B,89,83,3,21,12,Proliferation of prostatic tissue with chronic stromal inflammation,,24,24,0.88
+B,90,69,4,38,12,Adenocarcinoma,7,23,22,1.65
+B,91,72,3,16,12,Benign Prostatic Hyperplasia,,21,20,0.76
+B,92,75,5,58,12,Adenocarcinoma,8,15,21,3.87
+B,93,79,4,11,12,Adenocarcinoma,6,31,24,0.35
+B,94,73,4,13.7,6,Benign Prostatic Hyperplasia,7,28,26,0.49
+B,95,64,5,85,12,Adenocarcinoma,8,32,27,2.66
+B,96,70,5,17.4,12,Adenocarcinoma,9,18,25,0.97
+B,97,73,5,51,12,Adenocarcinoma,9,20,17,2.55
+B,98,73,4,7.7,12,Benign Prostatic Hyperplasia,,29,16,0.27
+B,99,60,4,7.5,12,Adenocarcinoma,8,44,17,0.17
+B,100,74,4,4.2,12,Atypical small acinar proliferation,,25,22,0.17
+B,101,72,5,39,12,Adenocarcinoma,10,19,23,2.05
+B,102,68,4,26,12,Atypical small acinar proliferation,,22,33,1.18
+B,103,73,3,6.5,12,Benign Prostatic Hyperplasia,,33,22,0.20
+B,104,74,5,44,12,Adenocarcinoma,9,17,37,2.59
+B,105,60,3,7.6,12,Benign Prostatic Hyperplasia,,47,17,0.16
+B,106,67,5,45,12,Benign Prostatic Hyperplasia,,37,22,1.22
+B,107,79,5,73,12,Adenocarcinoma,8,45,23,1.62
+B,108,73,5,29,12,Adenocarcinoma,9,29,24,1.00
+B,109,60,5,97,12,Atypical small acinar proliferation,,22,19,4.41
+B,110,83,3,16,12,Benign Prostatic Hyperplasia,,17,26,0.94
+B,111,72,4,21,12,Benign Prostatic Hyperplasia,,26,27,0.81
+B,112,62,5,25,12,Adenocarcinoma,7,21,34,1.19
+B,113,72,3,51,12,Benign Prostatic Hyperplasia,,15,17,3.40
+B,114,69,3,25,12,Adenocarcinoma,8,17,31,1.47
+B,115,66,5,5.5,12,Atypical small acinar proliferation,,21,25,0.26
+B,116,69,4,29,12,High-grade intraepithelial neoplasia,,47,27,0.62
+B,117,61,4,13.1,12,Benign Prostatic Hyperplasia,,29,24,0.45
+B,118,76,4,9.3,12,Adenocarcinoma,7,47,23,0.20
+B,119,55,5,35,12,Adenocarcinoma,8,21,18,1.67
+B,120,67,3,9.6,12,Proliferation of prostatic tissue with chronic stromal inflammation,,53,17,0.18
+B,121,81,4,21,12,Adenocarcinoma,8,27,24,0.78
+B,122,77,5,47,12,Adenocarcinoma,7,12,15,3.92
+B,123,70,5,26,12,Adenocarcinoma,9,32,25,0.81
+B,124,82,3,4.3,12,Benign Prostatic Hyperplasia,,24,35,0.18
+B,125,60,4,30,12,Adenocarcinoma,7,28,17,1.07
+B,126,93,4,81,12,Focal acinar epithelial hyperplasia,,54,28,1.50
+B,127,64,4,3.4,12,Focal acinar epithelial hyperplasia,,28,24,0.12
+B,128,67,3,15,12,Benign Prostatic Hyperplasia,,15,22,1.00
+B,129,69,3,10.7,12,Benign Prostatic Hyperplasia,,17,34,0.63

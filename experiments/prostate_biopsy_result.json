@@ -1,0 +1,32 @@
+{
+  "n": 212,
+  "cases": 121,
+  "cohort_prevalence": 0.571,
+  "biopsy_prevalence_used": 0.4,
+  "age_alone": 0.568,
+  "psa_alone": 0.67,
+  "arms": {
+    "C blood and ultrasound": {
+      "mean_auc": 0.668,
+      "gain_over_psa": -0.003,
+      "range": [
+        -0.039,
+        0.045
+      ],
+      "wins": 10,
+      "repeats": 20,
+      "beats_psa": false
+    },
+    "D plus PI-RADS (MRI)": {
+      "mean_auc": 0.826,
+      "gain_over_psa": 0.156,
+      "range": [
+        0.13,
+        0.187
+      ],
+      "wins": 20,
+      "repeats": 20,
+      "beats_psa": true
+    }
+  }
+}
