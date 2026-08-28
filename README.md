@@ -78,6 +78,44 @@ allowed to decide it.
 
 The general panel is the weak one, and the interface says so rather than hiding it.
 
+### Does each panel beat just reading one line of the lab report?
+
+The prostate panel was held to this bar: it had to beat PSA on its own, because
+every man in that cohort already had a PSA drawn and a model that only matches it
+is worth nothing. That was a fair test applied to exactly one panel, which is not
+a standard. So it was applied to all of them, on identical folds, ten repeats.
+
+| Panel | Full panel | Best single marker | Gain | Wins |
+|---|---|---|---|---|
+| Pancreatic | 0.966 | CA 19-9 alone 0.936 | +0.030 | 10/10 |
+| Breast | 0.956 | Nuclear area alone 0.923 | +0.032 | 10/10 |
+| Ovarian | 0.931 | CA 125 alone 0.808 | +0.124 | 10/10 |
+| Ovarian | 0.931 | CA 125 + HE4, the ROMA pair 0.889 | +0.043 | 10/10 |
+| Prostate | 0.828 | PSA alone 0.670 | +0.158 | 10/10 |
+| Prostate | 0.828 | PI-RADS alone 0.809 | +0.019 | 10/10 |
+| Lung | 0.821 | Serum cotinine alone 0.625 | +0.196 | 10/10 |
+| Lung | 0.821 | Age, sex and smoking 0.792 | +0.029 | 10/10 |
+| Bowel | 0.810 | Haemoglobin alone 0.518 | +0.291 | 10/10 |
+| Liver | 0.741 | ALT + AST alone 0.653 | +0.088 | 10/10 |
+
+Every panel beats its own strongest single input, and every one wins all ten
+repeats. Two of these are worth pulling out.
+
+The pancreatic panel is **not** CA 19-9 wearing a hat, which was the specific
+worry that prompted the check: it adds 0.030 over reading that number alone.
+
+The ovarian panel beats **the ROMA pair**, CA 125 with HE4, by 0.043. That is the
+combination used clinically to triage an adnexal mass, so this is the one place
+in the project where a panel measurably improves on the standard-of-care index
+rather than merely reproducing it.
+
+The narrowest margins are prostate over PI-RADS (+0.019) and lung over the
+smoking question (+0.029). Both are consistent across every repeat, but both are
+small, and neither panel would be worth much without the input it is only
+modestly improving on.
+
+Reproduce with `python experiments/single_marker_check.py`.
+
 ### The seven open problems, worked through
 
 Each of these was carried in the documentation as an open defect. Three turned

@@ -1,0 +1,107 @@
+{
+  "breast": {
+    "full_auc": 0.956,
+    "comparisons": {
+      "nuclear area alone": {
+        "marker_auc": 0.923,
+        "panel_gain": 0.032,
+        "wins": 10,
+        "repeats": 10,
+        "panel_beats_marker": true
+      }
+    }
+  },
+  "liver": {
+    "full_auc": 0.741,
+    "comparisons": {
+      "ALT + AST alone": {
+        "marker_auc": 0.653,
+        "panel_gain": 0.088,
+        "wins": 10,
+        "repeats": 10,
+        "panel_beats_marker": true
+      }
+    }
+  },
+  "pancreatic": {
+    "full_auc": 0.966,
+    "comparisons": {
+      "CA 19-9 alone": {
+        "marker_auc": 0.936,
+        "panel_gain": 0.03,
+        "wins": 10,
+        "repeats": 10,
+        "panel_beats_marker": true
+      }
+    }
+  },
+  "colorectal": {
+    "full_auc": 0.81,
+    "comparisons": {
+      "haemoglobin alone": {
+        "marker_auc": 0.518,
+        "panel_gain": 0.291,
+        "wins": 10,
+        "repeats": 10,
+        "panel_beats_marker": true
+      }
+    }
+  },
+  "ovarian": {
+    "full_auc": 0.931,
+    "comparisons": {
+      "CA 125 alone": {
+        "marker_auc": 0.808,
+        "panel_gain": 0.124,
+        "wins": 10,
+        "repeats": 10,
+        "panel_beats_marker": true
+      },
+      "CA 125 + HE4 (ROMA pair)": {
+        "marker_auc": 0.889,
+        "panel_gain": 0.043,
+        "wins": 10,
+        "repeats": 10,
+        "panel_beats_marker": true
+      }
+    }
+  },
+  "lung": {
+    "full_auc": 0.821,
+    "comparisons": {
+      "serum cotinine alone": {
+        "marker_auc": 0.625,
+        "panel_gain": 0.196,
+        "wins": 10,
+        "repeats": 10,
+        "panel_beats_marker": true
+      },
+      "age, sex, smoking": {
+        "marker_auc": 0.792,
+        "panel_gain": 0.029,
+        "wins": 10,
+        "repeats": 10,
+        "panel_beats_marker": true
+      }
+    }
+  },
+  "prostate": {
+    "full_auc": 0.828,
+    "comparisons": {
+      "PSA alone": {
+        "marker_auc": 0.67,
+        "panel_gain": 0.158,
+        "wins": 10,
+        "repeats": 10,
+        "panel_beats_marker": true
+      },
+      "PI-RADS alone": {
+        "marker_auc": 0.809,
+        "panel_gain": 0.019,
+        "wins": 10,
+        "repeats": 10,
+        "panel_beats_marker": true
+      }
+    }
+  }
+}
