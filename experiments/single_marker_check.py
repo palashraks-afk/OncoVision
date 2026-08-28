@@ -53,6 +53,9 @@ MARKERS = {
     "liver":      [("ALT + AST alone", ["alt", "ast"])],
     "breast":     [("nuclear area alone", ["area_mean"])],
     "colorectal": [("haemoglobin alone", ["hemoglobin"])],
+    "prostate":   [("PSA alone", ["psa"]), ("PI-RADS alone", ["pi_rads"])],
+    "lung":       [("serum cotinine alone", ["cotinine"]),
+                   ("age, sex, smoking", ["age", "gender", "smoking"])],
 }
 
 

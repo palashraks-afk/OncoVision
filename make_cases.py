@@ -47,7 +47,7 @@ NORMAL = {
     "iud": 0, "iud_years": 0, "stds": 0, "stds_number": 0, "stds_hpv": 0,
     "stds_diagnoses": 0,
     # Tobacco exposure, inflammation, prostate work-up.
-    "cotinine": 0.05, "crp": 1.2, "smoking_packyears": 0,
+    "cotinine": 0.05, "crp": 1.2,
     "prostate_volume": 28, "psa_density": 0.1, "pi_rads": 2,
 }
 

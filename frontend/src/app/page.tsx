@@ -321,6 +321,9 @@ export default function OncovisionDashboard() {
         setResults(data.predictions);
         setIgnored(data.ignored || {});
         setSkipped(data.skipped || {});
+        // The API answers rather than erroring when only age and sex were
+        // given, and hands back an explanation to show instead of a score.
+        if (data.message) setNotice(data.message);
       }
     } catch {
       setNotice("Analysis failed. The server may still be starting up, so try again in a moment.");
@@ -749,6 +752,17 @@ export default function OncovisionDashboard() {
                                 {d.meaning}
                               </p>
                             )}
+                            {/*
+                              Every panel answers with whatever it was given, so
+                              the honest part is saying how much of the answer
+                              came from the patient and how much from a training
+                              median. Shown next to the number, not buried.
+                            */}
+                            {d.coverage_caveat && (
+                              <p className="text-[11px] leading-relaxed mb-3 pl-3 border-l-2 border-[var(--warn)] text-[var(--ink-3)]">
+                                Partial data. {d.coverage_caveat}
+                              </p>
+                            )}
                             {!isBenign && (
                               <div className="flex flex-wrap gap-x-4 gap-y-1 text-[10px] text-[var(--ink-3)] font-bold uppercase tracking-wider">
                                 <span title="How well this panel separated people who had the disease from people who did not, on data it had never seen. 0.5 is a coin flip, 1.0 is perfect.">
@@ -911,10 +925,10 @@ export default function OncovisionDashboard() {
                       })}
 
                       {/*
-                        Panels that did not run. Shown on purpose. A card that
-                        quietly disappears looks like the app broke, and the
-                        real answer is more useful: either it needs more of
-                        your values, or it does not apply to you.
+                        Panels that did not run, and why. Shown rather than
+                        dropped: a card that silently disappears reads as a
+                        crash, whereas "not enough data, enter at least N
+                        values" tells the user what to do next.
                       */}
                       {Object.keys(skipped).length > 0 && (
                         <div className="mt-2 p-4 border border-[var(--rule)] bg-[var(--paper-2)]">
@@ -971,7 +985,7 @@ export default function OncovisionDashboard() {
                   A full panel gives you twenty or thirty numbers, and most look fine on their own. What is hard
                   for a person to do, and straightforward for a trained model, is to read all of them together
                   alongside your history and ask whether that combination resembles patients who turned out to
-                  have cancer. Oncovision runs that comparison against six models trained on anonymised patient
+                  have cancer. Oncovision runs that comparison against eight models trained on anonymised patient
                   records and returns a probability for each cancer type alongside a healthy baseline. It is a
                   second read on data you already own. It is not a diagnosis and it does not replace your doctor.
                 </p>

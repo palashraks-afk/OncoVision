@@ -17,17 +17,23 @@ Built as a mentored research project under the guidance of a clinical oncologist
 
 Two inputs, read together:
 
-1. **Your lab reports.** 33 values across body metrics, complete blood count and red cell
-   indices, metabolic panel, liver panel, tumour markers, and breast mass morphology. Uploaded
-   as PDFs and parsed automatically, or typed in. The parser reads all 33 at 100 percent across
-   five different report layouts; see `test_parser.py`.
-2. **Information about you.** 22 items no lab report contains. Sex, smoking, alcohol, exercise,
-   hepatitis B and C and diabetes, plus the reproductive and sexual history the cervical panel
-   is built on. Inherited risk, prior diagnosis, family history and cirrhosis were removed once
-   no shipped panel read them, because asking for what nothing uses is only friction.
+1. **Your lab reports.** 38 values across body metrics, complete blood count and red cell
+   indices, metabolic panel, liver panel, tumour markers, tobacco exposure and inflammation,
+   the prostate work-up, and breast mass morphology. Uploaded as PDFs and parsed automatically,
+   or typed in. The parser is tested on 28 of them at 100 percent across five different report
+   layouts; see `test_parser.py`.
+2. **Information about you.** 9 items no lab report contains: sex, smoking, pack-years, alcohol,
+   exercise, hepatitis B and C, diabetes and menopausal status. The 14 sexual-history questions
+   went out with the cervical panel, because no shipped model reads them and asking for what
+   nothing uses is only friction.
 
-Six calibrated models score the combination, and the interface reports what drove each score,
+Eight calibrated models score the combination, and the interface reports what drove each score,
 how accurate that model is, and what the score is worth at real prevalence.
+
+Every panel answers with whatever it is given. A blank field is filled with that feature's
+training median, and the panel says how many of its inputs were actually yours, so a score
+built on three values out of twenty-seven is labelled low confidence rather than refused or
+presented as if it were complete.
 
 ---
 

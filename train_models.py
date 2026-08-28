@@ -134,8 +134,6 @@ COHORT_DESIGN = {
                 "but it is the least certain panel here. Precision is projected onto the 6.4 "
                 "percent prevalence among referred women, because at population incidence it "
                 "would flag about 7,383 women per true case and would not be shippable.",
-    "prostate": "Case-control and post-prostatectomy. Gleason grade comes from the "
-                "surgical specimen, not from screening.",
 }
 
 # ---------------------------------------------------------------------------

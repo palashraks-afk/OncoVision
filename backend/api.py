@@ -57,10 +57,16 @@ SEX_SPECIFIC = {
 }
 
 # The share of a panel's inputs that has to be real, rather than filled in from
-# a training median, before the panel is allowed to report a number. Set here
-# rather than per panel because the argument is the same for all of them: a
-# score assembled mostly out of medians describes the median patient, not the
-# person reading it.
+# a training median, before it will report a number.
+#
+# Two failures sit either side of this line. Demanding a complete panel makes
+# the application useless, because a partial lab report is the normal case.
+# Scoring off almost nothing produces a number that looks exactly as confident
+# as a complete one, which is how the cervical panel came to report "Raised"
+# from a single input out of fifteen.
+#
+# So the bar is half, and below it the panel says "Not enough data" and names
+# how many values it needs, rather than either refusing silently or bluffing.
 MIN_COVERAGE = 0.5
 
 # Ranges outside which a value cannot belong to a living patient. Anything
@@ -187,7 +193,7 @@ UNITS = {
     "smoking_packyears": "pack-years", "hormonal_contraceptives_years": "years",
     "iud_years": "years",
     "cotinine": "ng/mL", "crp": "mg/L", "prostate_volume": "mL",
-    "psa_density": "ng/mL/mL", "pi_rads": "of 5", "smoking_packyears": "pack-years",
+    "psa_density": "ng/mL/mL", "pi_rads": "of 5",
 }
 
 DISPLAY_NAMES = {
@@ -561,7 +567,7 @@ async def predict_risk(data: PatientData):
         values[key] = val
 
     if not values:
-        return {"status": "error", "message": "No usable values were provided."}
+        return {"status": "error", "message": "No data entered."}
 
     results = {}
     skipped = {}
@@ -594,26 +600,51 @@ async def predict_risk(data: PatientData):
         if not supplied:
             continue
 
-        # Coverage gate. Anything the patient did not provide is filled with a
-        # training median, which is the right default for one or two blanks and
-        # completely wrong as the basis for a score. The cervical panel was
-        # reporting "Raised" from a single input out of fifteen: it knew the
-        # patient's age and invented the other fourteen.
+        # Coverage. Every panel scores with whatever it was given, because
+        # refusing to answer is useless to someone holding a partial lab report,
+        # and the whole point of storing a training median per feature is to
+        # cope with blanks.
         #
-        # A panel has to know enough to be worth showing. That means a real
-        # share of its inputs, and at least one input that is not simply age or
-        # sex, since a score built only on demographics is not reading the lab
-        # report at all.
+        # What coverage changes is how loudly the answer is qualified, not
+        # whether there is one. The failure this replaces was a cervical panel
+        # reporting "Raised" off a single input out of fifteen with no hint that
+        # it had invented the other fourteen. The number was not the problem.
+        # The silence about where it came from was.
+        #
+        # The one thing still refused is a score with nothing but age and sex
+        # behind it, because that is not reading a lab report at all, it is
+        # reciting the population average for someone's demographic.
         informative = [f for f in supplied if f not in ("age", "gender")]
         coverage = len(supplied) / len(features)
-        if coverage < MIN_COVERAGE or not informative:
-            need = max(1, int(np.ceil(MIN_COVERAGE * len(features))))
+        need = max(1, int(np.ceil(MIN_COVERAGE * len(features))))
+
+        # Not enough to answer accurately. Say that plainly instead of printing
+        # a number built mostly out of training medians, which is what the
+        # cervical panel used to do: it reported "Raised" off one input in
+        # fifteen and looked exactly as confident as a complete panel.
+        #
+        # The bar is deliberately half, not everything. A partial lab report is
+        # the normal case and still gets a real answer.
+        if not informative:
             skipped[bundle.get("label", name)] = (
-                f"Not enough information. This panel reads {len(features)} values and "
-                f"you have supplied {len(supplied)}. It needs at least {need}, "
-                f"including something beyond age and sex, before a score means anything."
+                f"Not enough data. Only age and sex were entered, and this panel reads "
+                f"{len(features)} values. Enter at least {need} of them."
             )
             continue
+        if coverage < MIN_COVERAGE:
+            skipped[bundle.get("label", name)] = (
+                f"Not enough data. You entered {len(supplied)} of the {len(features)} "
+                f"values this panel reads, and it needs at least {need} to be accurate."
+            )
+            continue
+
+        if coverage >= 0.75:
+            confidence, caveat = "high", ""
+        else:
+            confidence, caveat = "moderate", (
+                f"Based on {len(supplied)} of {len(features)} values. The rest were filled "
+                f"with typical readings, which pulls this score toward an average patient."
+            )
 
         try:
             frame = pd.DataFrame([row], columns=features)
@@ -713,6 +744,8 @@ async def predict_risk(data: PatientData):
             "risk": round(proba, 1),
             "band": band,
             "meaning": meaning,
+            "confidence": confidence,
+            "coverage_caveat": caveat,
             "threshold": round(threshold_pct, 1),
             "above_threshold": bool(proba >= threshold_pct),
             "contributors": contributors[:6],
@@ -745,7 +778,22 @@ async def predict_risk(data: PatientData):
         }
 
     if not results:
-        return {"status": "error", "message": "No model could score the values provided."}
+        # Nothing scored, which in practice means age and sex were the only
+        # things supplied. That is not an error the user caused, so it is
+        # answered with the reason and the way forward rather than a bare
+        # failure message.
+        return {
+            "status": "success",
+            "predictions": {},
+            "skipped": skipped,
+            "ignored": ignored,
+            "values_used": len(values),
+            "message": (
+                "Not enough data. Nothing was entered that any panel can read, so there is "
+                "nothing to score. Enter whatever lab values you have and the relevant "
+                "panels will use them."
+            ),
+        }
 
     top = max(r["risk"] for r in results.values())
     all_flags = sum(len(r["flags"]) for r in results.values())
