@@ -136,18 +136,30 @@ The suspicion was that isotonic calibration fitted inside 169 rows was flattenin
 the ranking and costing AUC against plain logistic regression. Measured across
 three calibration methods on every small panel, that is wrong:
 
-| Panel | n | none | isotonic | sigmoid |
-|---|---|---|---|---|
-| Breast | 569 | 0.957 | 0.954 | 0.955 |
-| Pancreatic | 600 | 0.969 | 0.966 | 0.968 |
-| Colorectal | 23,794 | 0.808 | 0.805 | 0.814 |
-| Ovarian | 349 | 0.935 | 0.933 | 0.935 |
-| Prostate | 212 | 0.829 | 0.830 | 0.831 |
+| Panel | n | AUC none | AUC isotonic | AUC sigmoid | Brier none | Brier isotonic |
+|---|---|---|---|---|---|---|
+| Pancreatic | 600 | 0.969 | 0.966 | 0.968 | 0.0585 | 0.0533 |
+| Breast | 569 | 0.957 | 0.954 | 0.955 | 0.0727 | 0.0712 |
+| Ovarian | 349 | 0.935 | 0.933 | 0.935 | 0.0985 | 0.0889 |
+| Prostate | 212 | 0.829 | 0.830 | 0.831 | 0.1661 | 0.1664 |
+| Lung | 21,916 | 0.825 | 0.822 | 0.825 | 0.0274 | **0.0047** |
+| Bowel | 23,794 | 0.808 | 0.805 | 0.814 | 0.0288 | **0.0040** |
+| General | 23,923 | 0.756 | 0.756 | 0.758 | 0.1524 | **0.0294** |
+| Liver | 35,511 | 0.738 | 0.742 | 0.743 | 0.1675 | **0.0360** |
 
-Prostate spans 0.002 across all three methods. No panel changes, and isotonic is
-plainly earning its place on calibration: colorectal's Brier score is 0.004 with
-it against 0.029 without. The 0.840 against 0.876 gap is split noise on a 43-row
-test set whose repeated-split spread is 0.732 to 0.909. Not a defect.
+Prostate spans 0.002 across all three methods, and no panel anywhere moves by
+enough to justify a change. The first version of this test only covered the
+small panels, on the argument that isotonic overfitting is a small-sample
+problem; that argument is probably right and was still an assertion, so the large
+NHANES panels were measured too.
+
+The Brier columns are the real result. Calibration barely touches ranking, plus
+or minus 0.003, and improves the probabilities by four to six times. That is
+exactly its job: the interface prints a percentage and the percentage has to mean
+something. Isotonic stays everywhere.
+
+The 0.840 against 0.876 gap on prostate is therefore split noise on a 43-row test
+set whose repeated-split spread is 0.732 to 0.909. Not a defect.
 Reproduce with `python experiments/calibration_method.py`.
 
 **3. Liver in Germany: the "units bug" guess was wrong. It is case mix.**

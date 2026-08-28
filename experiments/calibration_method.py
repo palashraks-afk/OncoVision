@@ -44,7 +44,7 @@ import train_models as tm
 
 warnings.filterwarnings("ignore")
 
-REPEATS = 5
+REPEATS = int(os.environ.get('CAL_REPEATS', 5))
 OUT = "experiments/calibration_method_result.json"
 
 
@@ -60,14 +60,16 @@ def score(X, y, method, seed):
 
 
 def main():
-    # Only the small panels. Isotonic regression needs data to fit its step
-    # function, so the risk of it overfitting is a small-sample risk. The NHANES
-    # panels carry 20,000 rows and more and are not in question here.
-    SMALL = {"prostate", "ovarian", "breast", "pancreatic", "colorectal"}
+    # Every shipped panel. The first version of this file only tested the small
+    # ones, on the argument that isotonic overfitting is a small-sample problem
+    # and the 20,000-row NHANES panels are safe. That argument is probably
+    # right and it was still an assertion, which is the exact habit the rest of
+    # this project keeps catching. So it is measured.
+    only = set(sys.argv[1:]) if len(sys.argv) > 1 else None
     results = {}
     for cfg in tm.DATASETS:
         name = cfg["name"]
-        if name in tm.WITHDRAWN or name not in SMALL:
+        if name in tm.WITHDRAWN or (only and name not in only):
             continue
         X, y, _ = tm.prepare(cfg)
         X = X.apply(pd.to_numeric, errors="coerce").reset_index(drop=True)
