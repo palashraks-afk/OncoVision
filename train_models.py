@@ -663,6 +663,41 @@ def prepare(config: dict):
     return X, y, medians
 
 
+def load_split_stability() -> dict:
+    """
+    Repeated-split results from experiments/split_stability.py, keyed by domain.
+
+    A single held-out split is one draw from a distribution, and on a small
+    cohort that distribution is wide. Two panels have already been caught by
+    this: cervical published a 0.725 that sat at the 97th percentile of its own
+    splits and was withdrawn, and colorectal drew a split where it scores 0.793
+    against an 0.817 age-and-sex baseline while over twenty repeats it beats
+    that baseline by 0.038.
+
+    So every panel now also carries the mean across repeated splits and the
+    spread, and the interface shows both. Where the shipped split is
+    unrepresentative, the user can see that rather than taking one draw as the
+    answer.
+    """
+    path = "experiments/split_stability_result.json"
+    if not os.path.isfile(path):
+        print("NOTE: split_stability_result.json not found, "
+              "run experiments/split_stability.py for the stable estimate.")
+        return {}
+    with open(path) as f:
+        raw = json.load(f).get("panels", {})
+    return {
+        name: {
+            "stable_auc": r["mean_auc"],
+            "split_spread": [r["min_auc"], r["max_auc"]],
+            "split_sd": r["std_auc"],
+            "shipped_split_percentile": r["shipped_split_percentile"],
+            "n_splits": r["n_splits"],
+        }
+        for name, r in raw.items()
+    }
+
+
 def load_held_out() -> dict:
     """
     Held-out test results from evaluate.py, keyed by domain.
@@ -702,11 +737,13 @@ def load_held_out() -> dict:
 
 
 HELD_OUT = {}
+STABILITY = {}
 
 
 def main():
-    global HELD_OUT
+    global HELD_OUT, STABILITY
     HELD_OUT = load_held_out()
+    STABILITY = load_split_stability()
 
     for d in MODEL_DIRS:
         os.makedirs(d, exist_ok=True)
@@ -788,6 +825,7 @@ def main():
 
         # Held-out evidence from evaluate.py, attached so the API can report it.
         held_out = HELD_OUT.get(name, {})
+        stability = STABILITY.get(name, {})
 
         bundle = {
             "model": model,
@@ -799,6 +837,7 @@ def main():
             "metrics": metrics,
             "threshold": metrics.get("threshold", 0.5),
             "held_out": held_out,
+            "stability": stability,
             "cohort_design": COHORT_DESIGN[name],
             "algorithm": algorithm,
         }
@@ -814,6 +853,7 @@ def main():
             "cohort_design": COHORT_DESIGN[name],
             **metrics,
             "held_out": held_out,
+            "stability": stability,
         }
 
     with open(os.path.join("backend", "model_metrics.json"), "w") as f:

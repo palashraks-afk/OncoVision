@@ -1,0 +1,50 @@
+{
+  "measured_transfer_auc": 0.442,
+  "cause": "Case mix, not a bug. ALT and alkaline phosphatase point in opposite directions in the two cohorts because NHANES captures mild self-reported liver disease where ALT is raised, and the German cohort captures advanced histology-confirmed disease where ALT falls as hepatocyte mass is lost.",
+  "ruled_out": [
+    "ucimlrepo column misalignment (values match the original CSV exactly)",
+    "unit mismatch (albumin, protein and bilirubin are converted; the rest are U/L in both)"
+  ],
+  "inverted_markers": [
+    "alkaline_phosphatase",
+    "alt"
+  ],
+  "per_marker": {
+    "age": {
+      "nhanes_auc": 0.606,
+      "germany_auc": 0.546,
+      "same_direction": true
+    },
+    "bilirubin": {
+      "nhanes_auc": 0.516,
+      "germany_auc": 0.836,
+      "same_direction": true
+    },
+    "alkaline_phosphatase": {
+      "nhanes_auc": 0.591,
+      "germany_auc": 0.306,
+      "same_direction": false
+    },
+    "alt": {
+      "nhanes_auc": 0.654,
+      "germany_auc": 0.218,
+      "same_direction": false
+    },
+    "ast": {
+      "nhanes_auc": 0.657,
+      "germany_auc": 0.938,
+      "same_direction": true
+    },
+    "protein_total": {
+      "nhanes_auc": 0.53,
+      "germany_auc": 0.514,
+      "same_direction": true
+    },
+    "albumin": {
+      "nhanes_auc": 0.449,
+      "germany_auc": 0.358,
+      "same_direction": true
+    }
+  },
+  "not_reported_as_validation": "Dropping ALT and ALP raises the German transfer to 0.764, but those features were selected by looking at the test result, so that number is fitting the test set and is not quoted as validation."
+}

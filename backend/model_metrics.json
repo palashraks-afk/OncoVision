@@ -89,6 +89,16 @@
           ]
         }
       }
+    },
+    "stability": {
+      "stable_auc": 0.743,
+      "split_spread": [
+        0.692,
+        0.772
+      ],
+      "split_sd": 0.028,
+      "shipped_split_percentile": 20.0,
+      "n_splits": 5
     }
   },
   "breast": {
@@ -143,6 +153,16 @@
       "baseline_logistic_auc": 0.964,
       "baseline_age_sex_auc": null,
       "subgroups": {}
+    },
+    "stability": {
+      "stable_auc": 0.959,
+      "split_spread": [
+        0.901,
+        0.991
+      ],
+      "split_sd": 0.02,
+      "shipped_split_percentile": 73.3,
+      "n_splits": 30
     }
   },
   "liver": {
@@ -241,6 +261,16 @@
           ]
         }
       }
+    },
+    "stability": {
+      "stable_auc": 0.75,
+      "split_spread": [
+        0.744,
+        0.756
+      ],
+      "split_sd": 0.005,
+      "shipped_split_percentile": 60.0,
+      "n_splits": 5
     }
   },
   "pancreatic": {
@@ -334,6 +364,16 @@
           ]
         }
       }
+    },
+    "stability": {
+      "stable_auc": 0.969,
+      "split_spread": [
+        0.939,
+        0.995
+      ],
+      "split_sd": 0.013,
+      "shipped_split_percentile": 50.0,
+      "n_splits": 30
     }
   },
   "colorectal": {
@@ -437,6 +477,16 @@
           ]
         }
       }
+    },
+    "stability": {
+      "stable_auc": 0.799,
+      "split_spread": [
+        0.785,
+        0.817
+      ],
+      "split_sd": 0.012,
+      "shipped_split_percentile": 40.0,
+      "n_splits": 5
     }
   },
   "ovarian": {
@@ -533,6 +583,16 @@
           ]
         }
       }
+    },
+    "stability": {
+      "stable_auc": 0.928,
+      "split_spread": [
+        0.852,
+        0.969
+      ],
+      "split_sd": 0.026,
+      "shipped_split_percentile": 70.0,
+      "n_splits": 30
     }
   },
   "lung": {
@@ -644,6 +704,16 @@
           ]
         }
       }
+    },
+    "stability": {
+      "stable_auc": 0.839,
+      "split_spread": [
+        0.822,
+        0.86
+      ],
+      "split_sd": 0.015,
+      "shipped_split_percentile": 40.0,
+      "n_splits": 5
     }
   },
   "prostate": {
@@ -657,7 +727,7 @@
       "bmi",
       "pi_rads"
     ],
-    "cohort_design": "Case-control and post-prostatectomy. Gleason grade comes from the surgical specimen, not from screening.",
+    "cohort_design": "212 men with suspected prostate cancer, all biopsied transperineally at one centre in 2022 to 2023, 121 with adenocarcinoma. Controls are men whose biopsy came back benign, mostly BPH. This is an INTERPRETATION panel: it needs a PI-RADS score from an MRI, because blood and ultrasound alone tie PSA rather than beat it (0.668 against 0.670), while adding PI-RADS reaches 0.826 and wins every repeat. Single centre, no external cohort. Precision is projected onto the roughly 40 percent malignancy rate among men taken to biopsy, not onto SEER, because this runs after referral.",
     "auc": 0.835,
     "auc_std": 0.033,
     "accuracy": 0.837,
@@ -719,6 +789,16 @@
           ]
         }
       }
+    },
+    "stability": {
+      "stable_auc": 0.822,
+      "split_spread": [
+        0.732,
+        0.909
+      ],
+      "split_sd": 0.044,
+      "shipped_split_percentile": 70.0,
+      "n_splits": 30
     }
   }
 }

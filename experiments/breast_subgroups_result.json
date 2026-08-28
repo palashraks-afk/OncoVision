@@ -1,0 +1,64 @@
+{
+  "overall_auc": 0.954,
+  "n": 569,
+  "cases": 212,
+  "subgroups": {
+    "lesion size (nuclear area): smallest third": {
+      "n": 190,
+      "cases": 6,
+      "auc": 0.739,
+      "auc_ci": [
+        0.624,
+        0.854
+      ]
+    },
+    "lesion size (nuclear area): middle third": {
+      "n": 189,
+      "cases": 39,
+      "auc": 0.806,
+      "auc_ci": [
+        0.72,
+        0.878
+      ]
+    },
+    "lesion size (nuclear area): largest third": {
+      "n": 190,
+      "cases": 167,
+      "auc": 0.923,
+      "auc_ci": [
+        0.853,
+        0.973
+      ]
+    },
+    "nuclear texture: smallest third": {
+      "n": 190,
+      "cases": 21,
+      "auc": 0.9,
+      "auc_ci": [
+        0.825,
+        0.963
+      ]
+    },
+    "nuclear texture: middle third": {
+      "n": 190,
+      "cases": 71,
+      "auc": 0.943,
+      "auc_ci": [
+        0.902,
+        0.977
+      ]
+    },
+    "nuclear texture: largest third": {
+      "n": 189,
+      "cases": 120,
+      "auc": 0.955,
+      "auc_ci": [
+        0.926,
+        0.979
+      ]
+    }
+  },
+  "worst_subgroup_auc": 0.739,
+  "subgroup_spread": 0.216,
+  "cannot_measure": "Race, age and sex. The Wisconsin cohort does not record them, so accuracy across those groups is unmeasured rather than acceptable, and no analysis of this cohort can change that."
+}

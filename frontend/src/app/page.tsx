@@ -766,9 +766,23 @@ export default function OncovisionDashboard() {
                             {!isBenign && (
                               <div className="flex flex-wrap gap-x-4 gap-y-1 text-[10px] text-[var(--ink-3)] font-bold uppercase tracking-wider">
                                 <span title="How well this panel separated people who had the disease from people who did not, on data it had never seen. 0.5 is a coin flip, 1.0 is perfect.">
-                                  Accuracy {d.auc}
+                                  Accuracy {d.stable_auc ?? d.auc}
                                   {d.auc_ci && <span className="text-[var(--ink-4)] normal-case"> (likely between {d.auc_ci[0]} and {d.auc_ci[1]})</span>}
                                 </span>
+                                {/*
+                                  Accuracy above is the mean across repeated
+                                  80/20 splits, not one draw. Where the single
+                                  split this project historically quoted differs
+                                  from that mean by more than a rounding error,
+                                  both are shown, because one lucky draw is how
+                                  the cervical panel got published at 0.725 when
+                                  its real mean was 0.594.
+                                */}
+                                {d.stable_auc && d.auc && Math.abs(d.stable_auc - d.auc) >= 0.01 && (
+                                  <span className="text-[var(--ink-4)] normal-case" title="A single held-out split, shown because it differs from the repeated-split mean.">
+                                    one split gave {d.auc}
+                                  </span>
+                                )}
                                 <span title="Of people who did have the disease, the share this panel correctly flagged.">
                                   Catches {Math.round((d.sensitivity ?? 0) * 100)}%
                                 </span>

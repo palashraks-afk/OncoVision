@@ -739,6 +739,7 @@ async def predict_risk(data: PatientData):
 
         metrics = bundle.get("metrics", {})
         held = bundle.get("held_out", {})
+        stab = bundle.get("stability", {})
         results[bundle.get("label", name)] = {
             "key": name,
             "risk": round(proba, 1),
@@ -759,6 +760,15 @@ async def predict_risk(data: PatientData):
             # Held-out test evidence. These are the numbers that belong in front
             # of a person: measured on a split cut before anything was fitted.
             "auc": held.get("auc", metrics.get("auc")),
+            # The mean across repeated 80/20 splits, and where the one split
+            # quoted above lands inside that distribution. A single split is one
+            # draw, and on a small cohort the draw moves a lot: colorectal drew
+            # a split where it scores below its own age-and-sex baseline while
+            # over twenty repeats it beats that baseline by 0.038. Both numbers
+            # are shown so neither can quietly stand in for the other.
+            "stable_auc": stab.get("stable_auc"),
+            "split_spread": stab.get("split_spread"),
+            "split_percentile": stab.get("shipped_split_percentile"),
             "auc_ci": held.get("auc_ci"),
             "sensitivity": held.get("sensitivity", metrics.get("sensitivity")),
             "sensitivity_ci": held.get("sensitivity_ci"),

@@ -78,6 +78,110 @@ allowed to decide it.
 
 The general panel is the weak one, and the interface says so rather than hiding it.
 
+### The seven open problems, worked through
+
+Each of these was carried in the documentation as an open defect. Three turned
+out to be real and fixable, two were misdiagnosed by me and the real cause was
+different, one is genuinely unfixable from the available data, and one cannot be
+fixed by writing code at all.
+
+**1. Colorectal quoted an unrepresentative split. Fixed.**
+Its held-out split gives 0.793 against an 0.817 age-and-sex baseline, so on that
+one draw the panel loses to its own baseline, while over twenty paired repeats it
+beats it by 0.038. Every panel now carries the mean across repeated splits
+alongside the single split, and the interface shows the stable number first.
+A single split is one draw; that is how the cervical panel came to publish 0.725
+when its real mean was 0.594.
+
+**2. Prostate: isotonic calibration was NOT the problem.**
+The suspicion was that isotonic calibration fitted inside 169 rows was flattening
+the ranking and costing AUC against plain logistic regression. Measured across
+three calibration methods on every small panel, that is wrong:
+
+| Panel | n | none | isotonic | sigmoid |
+|---|---|---|---|---|
+| Breast | 569 | 0.957 | 0.954 | 0.955 |
+| Pancreatic | 600 | 0.969 | 0.966 | 0.968 |
+| Colorectal | 23,794 | 0.808 | 0.805 | 0.814 |
+| Ovarian | 349 | 0.935 | 0.933 | 0.935 |
+| Prostate | 212 | 0.829 | 0.830 | 0.831 |
+
+Prostate spans 0.002 across all three methods. No panel changes, and isotonic is
+plainly earning its place on calibration: colorectal's Brier score is 0.004 with
+it against 0.029 without. The 0.840 against 0.876 gap is split noise on a 43-row
+test set whose repeated-split spread is 0.732 to 0.909. Not a defect.
+Reproduce with `python experiments/calibration_method.py`.
+
+**3. Liver in Germany: the "units bug" guess was wrong. It is case mix.**
+This was carried for a long time as "0.442, below chance, probably a units or
+encoding mismatch, unresolved". Both halves were wrong.
+
+The raw CSV was downloaded from archive.ics.uci.edu and compared value by value
+against what `ucimlrepo` returns. They match exactly, so there is no column
+misalignment. The unit conversions were checked and are correct.
+
+The real cause is that two of the eight shared markers point in **opposite
+directions** in the two cohorts:
+
+| Marker | NHANES | Germany | |
+|---|---|---|---|
+| AST | 0.657 | 0.938 | agree |
+| Bilirubin | 0.516 | 0.836 | agree |
+| Alkaline phosphatase | 0.591 | **0.306** | inverted |
+| ALT | 0.654 | **0.218** | inverted |
+
+The model learned from NHANES that raised ALT means liver disease, which is
+correct there. In the German cohort raised ALT means the patient is healthy,
+because NHANES captures mild self-reported liver disease where ALT rises, while
+the German cohort is blood donors against biopsy-confirmed hepatitis, fibrosis
+and cirrhosis, and in advanced cirrhosis ALT falls as hepatocyte mass is lost.
+German median ALT is 23.1 in donors, 15.2 in hepatitis and 5.6 in cirrhosis.
+
+Dropping ALT and alkaline phosphatase lifts the transfer to 0.764. That number
+is **not** reported as validation anywhere, because those two features were
+chosen by looking at the test result, which is fitting the test set. The 0.442
+stands, now with a mechanism attached, and it bounds the claim: this panel
+describes mild liver disease in a US population and should not be expected to
+rank advanced cirrhosis. Reproduce with `python experiments/liver_germany.py`.
+
+**4. Ovarian and prostate still have no external cohort.**
+Searched again across every host this environment can actually download from:
+Mendeley, figshare, Harvard Dataverse, OpenML, and DataCite across all
+repositories. Nothing exists pairing an ovarian mass or a prostate biopsy with
+the required markers. This stays an open limitation, now with the search on
+record rather than as an assumption.
+
+**5. Lung's target is a lifetime diagnosis.** Unchanged and unfixable from
+NHANES: age at diagnosis exists only in five of the ten cycles, and restricting
+to it leaves 34 to 54 events against a floor of roughly 96. Pooling all ten
+cycles is what made the panel possible at all, and the survivor bias is the
+price. Stated on the panel.
+
+**6. Breast had no subgroup measurement. Now it has one, and it found something.**
+The Wisconsin cohort records no age, sex or race, so the demographic breakdown
+every other panel carries is impossible. But lesion size is available, and it is
+the axis that matters clinically, because small lesions are the ones where an
+earlier answer changes anything.
+
+| Subgroup | n | Malignant | AUC |
+|---|---|---|---|
+| Smallest third by nuclear area | 190 | 6 | **0.739** |
+| Middle third | 189 | 39 | 0.806 |
+| Largest third | 190 | 167 | 0.923 |
+
+The panel scores 0.954 overall and 0.739 on the smallest lesions, a spread of
+0.216. It is materially weaker exactly where it would be most useful, and that
+now appears on the panel instead of being invisible. Race and age remain
+unmeasurable from this cohort and that limitation stands unchanged.
+Reproduce with `python experiments/breast_subgroups.py`.
+
+**7. No prospective validation and no IRB.** Not fixable by writing code. An
+ethics approval is granted by an institution to a named investigator for a
+specific protocol, and no amount of analysis substitutes for it. The executable
+protocol and the analysis harness exist in `PROTOCOL.md` and
+`prospective_analysis.py` so that a real study could be run, but until one is,
+this remains a research prototype and the interface says so.
+
 ### One split is not an estimate, and cervical proved it
 
 Every panel here published an AUC from a single 80/20 split with seed 42. That
