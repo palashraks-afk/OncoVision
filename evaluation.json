@@ -260,11 +260,11 @@
           "observed": 1.0
         }
       ],
-      "ppv_at_population_prevalence": 0.02585,
-      "npv_at_population_prevalence": 0.99977,
-      "people_flagged_per_true_case": 38.7,
-      "population_prevalence": 0.001325,
-      "prevalence_source": "Female breast, per 100,000 women per year"
+      "ppv_at_population_prevalence": 0.86957,
+      "npv_at_population_prevalence": 0.94521,
+      "people_flagged_per_true_case": 1.1,
+      "population_prevalence": 0.25,
+      "prevalence_source": "Malignancy among breast lesions taken to biopsy"
     },
     "calibrated": {
       "variant": "isotonic calibrated",
@@ -320,11 +320,11 @@
           "observed": 1.0
         }
       ],
-      "ppv_at_population_prevalence": 0.01897,
-      "npv_at_population_prevalence": 0.99973,
-      "people_flagged_per_true_case": 52.7,
-      "population_prevalence": 0.001325,
-      "prevalence_source": "Female breast, per 100,000 women per year"
+      "ppv_at_population_prevalence": 0.82927,
+      "npv_at_population_prevalence": 0.93701,
+      "people_flagged_per_true_case": 1.2,
+      "population_prevalence": 0.25,
+      "prevalence_source": "Malignancy among breast lesions taken to biopsy"
     },
     "baselines": {
       "prevalence_only": {
@@ -557,23 +557,23 @@
     "cv_auc_train_only": 0.972,
     "uncalibrated": {
       "variant": "uncalibrated",
-      "threshold": 0.3265,
+      "threshold": 0.8326,
       "auc": 0.968,
       "auc_ci": [
         0.936,
         0.99
       ],
-      "sensitivity": 0.885,
+      "sensitivity": 0.731,
       "sensitivity_ci": [
-        0.742,
+        0.552,
+        0.9
+      ],
+      "specificity": 0.979,
+      "specificity_ci": [
+        0.945,
         1.0
       ],
-      "specificity": 0.894,
-      "specificity_ci": [
-        0.828,
-        0.954
-      ],
-      "ppv_in_cohort": 0.697,
+      "ppv_in_cohort": 0.905,
       "brier": 0.0694,
       "calibration_slope": 1.199,
       "calibration_intercept": 0.023,
@@ -609,31 +609,31 @@
           "observed": 0.864
         }
       ],
-      "ppv_at_population_prevalence": 0.00115,
-      "npv_at_population_prevalence": 0.99998,
-      "people_flagged_per_true_case": 866.1,
+      "ppv_at_population_prevalence": 0.00475,
+      "npv_at_population_prevalence": 0.99996,
+      "people_flagged_per_true_case": 210.4,
       "population_prevalence": 0.000139,
       "prevalence_source": "Pancreas, per 100,000 men and women per year"
     },
     "calibrated": {
       "variant": "isotonic calibrated",
-      "threshold": 0.1655,
+      "threshold": 0.7295,
       "auc": 0.969,
       "auc_ci": [
         0.938,
         0.991
       ],
-      "sensitivity": 1.0,
+      "sensitivity": 0.731,
       "sensitivity_ci": [
-        1.0,
+        0.545,
+        0.889
+      ],
+      "specificity": 0.979,
+      "specificity_ci": [
+        0.946,
         1.0
       ],
-      "specificity": 0.883,
-      "specificity_ci": [
-        0.814,
-        0.947
-      ],
-      "ppv_in_cohort": 0.703,
+      "ppv_in_cohort": 0.905,
       "brier": 0.0617,
       "calibration_slope": 0.46,
       "calibration_intercept": 3.531,
@@ -669,9 +669,9 @@
           "observed": 0.905
         }
       ],
-      "ppv_at_population_prevalence": 0.00119,
-      "npv_at_population_prevalence": 1.0,
-      "people_flagged_per_true_case": 842.8,
+      "ppv_at_population_prevalence": 0.00475,
+      "npv_at_population_prevalence": 0.99996,
+      "people_flagged_per_true_case": 210.4,
       "population_prevalence": 0.000139,
       "prevalence_source": "Pancreas, per 100,000 men and women per year"
     },
@@ -766,21 +766,21 @@
     "cv_auc_train_only": 0.824,
     "uncalibrated": {
       "variant": "uncalibrated",
-      "threshold": 0.1637,
+      "threshold": 0.171,
       "auc": 0.801,
       "auc_ci": [
         0.727,
         0.871
       ],
-      "sensitivity": 0.632,
+      "sensitivity": 0.579,
       "sensitivity_ci": [
-        0.4,
-        0.846
+        0.348,
+        0.8
       ],
-      "specificity": 0.749,
+      "specificity": 0.765,
       "specificity_ci": [
-        0.737,
-        0.761
+        0.753,
+        0.777
       ],
       "ppv_in_cohort": 0.01,
       "brier": 0.0274,
@@ -812,9 +812,9 @@
           "observed": 0.0
         }
       ],
-      "ppv_at_population_prevalence": 0.00092,
-      "npv_at_population_prevalence": 0.99982,
-      "people_flagged_per_true_case": 1088.7,
+      "ppv_at_population_prevalence": 0.0009,
+      "npv_at_population_prevalence": 0.9998,
+      "people_flagged_per_true_case": 1110.8,
       "population_prevalence": 0.000365,
       "prevalence_source": "Colon and rectum, per 100,000 men and women per year"
     },
@@ -1148,23 +1148,23 @@
     "cv_auc_train_only": 0.82,
     "uncalibrated": {
       "variant": "uncalibrated",
-      "threshold": 0.1424,
+      "threshold": 0.1794,
       "auc": 0.855,
       "auc_ci": [
         0.778,
         0.919
       ],
-      "sensitivity": 0.857,
+      "sensitivity": 0.714,
       "sensitivity_ci": [
-        0.696,
-        1.0
+        0.516,
+        0.9
       ],
-      "specificity": 0.701,
+      "specificity": 0.779,
       "specificity_ci": [
-        0.688,
-        0.715
+        0.767,
+        0.791
       ],
-      "ppv_in_cohort": 0.014,
+      "ppv_in_cohort": 0.015,
       "brier": 0.0256,
       "calibration_slope": 1.568,
       "calibration_intercept": -2.95,
@@ -1194,9 +1194,9 @@
           "observed": 0.0
         }
       ],
-      "ppv_at_population_prevalence": 0.01348,
-      "npv_at_population_prevalence": 0.99903,
-      "people_flagged_per_true_case": 74.2,
+      "ppv_at_population_prevalence": 0.01516,
+      "npv_at_population_prevalence": 0.99825,
+      "people_flagged_per_true_case": 65.9,
       "population_prevalence": 0.00475,
       "prevalence_source": "Lung cancer among US adults with tobacco exposure, NHANES 1999-2018"
     },

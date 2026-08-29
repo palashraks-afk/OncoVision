@@ -177,7 +177,7 @@
       "perimeter_mean",
       "area_mean"
     ],
-    "cohort_design": "Case-control and post-biopsy. This panel reads an aspirate that has already been taken, so it interprets a diagnostic test rather than screening for one. Rebuilding it on blood markers was tried and failed: see experiments/blood_breast_panel.py, external AUC 0.495 with a 95% CI of 0.377 to 0.607, which contains chance.",
+    "cohort_design": "Case-control and post-biopsy. Precision is projected onto the roughly 25 percent malignancy rate among breast lesions taken to biopsy, not onto SEER population incidence, because nobody gets an aspirate without a lesion being found first. This panel reads an aspirate that has already been taken, so it interprets a diagnostic test rather than screening for one. Rebuilding it on blood markers was tried and failed: see experiments/blood_breast_panel.py, external AUC 0.495 with a 95% CI of 0.377 to 0.607, which contains chance.",
     "auc": 0.954,
     "auc_std": 0.022,
     "accuracy": 0.877,
@@ -212,10 +212,10 @@
       ],
       "brier": 0.0668,
       "calibration_slope": 1.118,
-      "ppv_at_population_prevalence": 0.01897,
-      "people_flagged_per_true_case": 52.7,
-      "population_prevalence": 0.001325,
-      "prevalence_source": "Female breast, per 100,000 women per year",
+      "ppv_at_population_prevalence": 0.82927,
+      "people_flagged_per_true_case": 1.2,
+      "population_prevalence": 0.25,
+      "prevalence_source": "Malignancy among breast lesions taken to biopsy",
       "cohort_prevalence": 0.373,
       "baseline_logistic_auc": 0.964,
       "baseline_age_sex_auc": null,
@@ -431,14 +431,14 @@
     "cohort_design": "Case-control across three independent tissue banks. Cases are confirmed adenocarcinoma, controls include benign hepatobiliary disease. Validated by leave-one-site-out: mean AUC 0.962 with every site's interval excluding chance, and a drop of only 0.007 from the internal random split, so the panel transfers between institutions. It has still never met a screening population, where it would flag roughly 525 people per true case.",
     "auc": 0.971,
     "auc_std": 0.014,
-    "accuracy": 0.908,
-    "sensitivity": 0.885,
-    "specificity": 0.915,
+    "accuracy": 0.925,
+    "sensitivity": 0.769,
+    "specificity": 0.968,
     "n_samples": 600,
     "n_positive": 130,
     "n_features": 6,
     "cv_folds": 5,
-    "threshold": 0.2577,
+    "threshold": 0.7664,
     "model_selection": {
       "ensemble": 0.971,
       "logistic": 0.974
@@ -451,20 +451,20 @@
         0.938,
         0.991
       ],
-      "sensitivity": 1.0,
+      "sensitivity": 0.731,
       "sensitivity_ci": [
-        1.0,
-        1.0
+        0.545,
+        0.889
       ],
-      "specificity": 0.883,
+      "specificity": 0.979,
       "specificity_ci": [
-        0.814,
-        0.947
+        0.946,
+        1.0
       ],
       "brier": 0.0617,
       "calibration_slope": 0.46,
-      "ppv_at_population_prevalence": 0.00119,
-      "people_flagged_per_true_case": 842.8,
+      "ppv_at_population_prevalence": 0.00475,
+      "people_flagged_per_true_case": 210.4,
       "population_prevalence": 0.000139,
       "prevalence_source": "Pancreas, per 100,000 men and women per year",
       "cohort_prevalence": 0.217,

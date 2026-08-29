@@ -65,7 +65,16 @@ SEER_INCIDENCE = {
     # and would understate precision by more than an order of magnitude, so
     # both use the prevalence NHANES itself measures on the same question.
     "general":    (3140.0, "Cancer diagnosed within 4 years, US adults, NHANES 2005-2014"),
-    "breast":     (132.5, "Female breast, per 100,000 women per year"),
+    # The breast panel reads a fine needle aspirate that has ALREADY been taken
+    # because a lesion was found. Projecting it onto SEER population incidence
+    # asks what would happen if it were run on every woman in the country, which
+    # is not what it does and never could be: nobody gets an aspirate without a
+    # lesion first. That is the same error caught on the cervical panel, where
+    # the population projection produced 7,383 flagged per case.
+    #
+    # The prior that matters is the malignancy rate among breast lesions that go
+    # to biopsy, which runs around 25 percent in published series.
+    "breast":     (25000.0, "Malignancy among breast lesions taken to biopsy"),
     "prostate":   (40000.0, "Adenocarcinoma among men taken to prostate biopsy"),
     "pancreatic": (13.9,  "Pancreas, per 100,000 men and women per year"),
     "liver":      (4000.0, "Ever told had a liver condition, US adults, NHANES 2005-2018"),
@@ -220,6 +229,12 @@ def evaluate_domain(config):
     cal.fit(X_tr, y_tr)
     p_cal = cal.predict_proba(X_te)[:, 1]
 
+    # Prevalence hoisted here so the threshold chooser can see it; it used to
+    # be computed after the threshold, which is why the operating point ignored
+    # how rare the disease actually is.
+    prev_rate, prev_desc = SEER_INCIDENCE[name]
+    prev = prev_rate / 100_000.0
+
     def block(p, label, oof_scores):
         auc = roc_auc_score(y_te, p)
         # Operating point chosen on the TRAINING data by Youden's J, never on
@@ -227,13 +242,15 @@ def evaluate_domain(config):
         # p. A fixed 0.5 is wrong once prevalence is realistic: it drove measured
         # sensitivity to 0.008 on the 9 percent general cohort.
         fpr_t, tpr_t, cuts_t = roc_curve(y_tr, oof_scores)
-        thr = cuts_t[int(np.argmax(tpr_t - fpr_t))]
-        thr = float(np.clip(thr, 0.01, 0.99)) if np.isfinite(thr) else 0.5
+        # Use the SAME chooser train_models uses, prevalence included, or the
+        # evaluation reports an operating point the shipped bundle does not
+        # actually use. It previously recomputed a bare Youden cut here, so
+        # tightening the thresholds for precision changed the bundles and left
+        # this table stating the old numbers.
+        thr = tm.choose_threshold(y_tr, oof_scores, prev)
         sens = sens_at(thr)(y_te.values, p)
         spec = spec_at(thr)(y_te.values, p)
         slope, intercept = calibration_slope_intercept(y_te.values, p)
-        prev_rate, prev_desc = SEER_INCIDENCE[name]
-        prev = prev_rate / 100_000.0
         ppv_pop, npv_pop, nnt = projected_ppv_npv(sens, spec, prev)
         pred = (p >= thr).astype(int)
         tp = int(((pred == 1) & (y_te.values == 1)).sum())

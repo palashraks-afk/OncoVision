@@ -82,7 +82,10 @@ COHORT_DESIGN = {
                "lifetime one. It adds 0.019 over knowing age and sex alone, which is small "
                "and is stated rather than hidden. Adding routine bloodwork was measured and "
                "made it worse, so this panel reads risk factors, not the lab report.",
-    "breast": "Case-control and post-biopsy. This panel reads an aspirate that has already "
+    "breast": "Case-control and post-biopsy. Precision is projected onto the roughly 25 percent "
+              "malignancy rate among breast lesions taken to biopsy, not onto SEER population "
+              "incidence, because nobody gets an aspirate without a lesion being found first. "
+              "This panel reads an aspirate that has already "
               "been taken, so it interprets a diagnostic test rather than screening for one. "
               "Rebuilding it on blood markers was tried and failed: see "
               "experiments/blood_breast_panel.py, external AUC 0.495 with a 95% CI of 0.377 "
@@ -563,7 +566,17 @@ def build_ensemble(n_samples: int, pos_rate: float) -> VotingClassifier:
 
 
 
-def choose_threshold(y_true, p) -> float:
+# A panel flagging more than this many people per true case is not a screening
+# instrument, it is an anxiety generator, and the threshold should be tightened
+# if tightening helps.
+PRECISION_TROUBLE = 50.0
+# How much sensitivity a panel is allowed to give up chasing precision. Below
+# this it starts missing most of the cancers it exists to find, which is a worse
+# failure than a false alarm.
+SENSITIVITY_FLOOR = 0.70
+
+
+def choose_threshold(y_true, p, prevalence: float | None = None) -> float:
     """
     Pick the operating point, instead of assuming 0.5.
 
@@ -574,22 +587,78 @@ def choose_threshold(y_true, p) -> float:
     correctly reporting that almost nobody is more likely than not to have the
     disease.
 
-    Youden's J, sensitivity plus specificity minus one, picks the point that
-    best separates the two groups. It is computed on cross validated
-    predictions inside the training data only, so the held-out split never
-    influences it, and the chosen value is stored in the bundle so the API,
-    the evaluation and the prospective analysis all use the same number.
+    Youden's J, sensitivity plus specificity minus one, is the default. It picks
+    the point that best separates the two groups.
+
+    BUT Youden weights a false positive and a false negative equally, and takes
+    no account of how rare the disease is. On a cancer with a prevalence of
+    0.13 percent that is the wrong objective: it chose a breast threshold that
+    flags 65 people for every true case, where tightening to 99 percent
+    specificity flags 13 and costs 16 points of sensitivity. Five times the
+    precision for that is a trade worth making, and Youden cannot see it because
+    prevalence is not in its formula.
+
+    So when a prevalence is supplied and Youden lands somewhere with poor
+    precision, the threshold is re-chosen to maximise precision subject to
+    keeping sensitivity at or above SENSITIVITY_FLOOR. If no such point improves
+    matters, Youden stands.
+
+    Everything is computed on cross validated predictions inside the training
+    data only, so the held-out split never influences it, and the chosen value
+    is stored in the bundle so the API, the evaluation and the prospective
+    analysis all use the same number.
     """
+    y_true = np.asarray(y_true)
+    p = np.asarray(p)
+
     fpr, tpr, cuts = roc_curve(y_true, p)
     j = tpr - fpr
     best = cuts[int(np.argmax(j))]
     # roc_curve can return an infinite first cut point.
     if not np.isfinite(best):
         best = 0.5
-    return float(np.clip(best, 0.01, 0.99))
+    best = float(np.clip(best, 0.01, 0.99))
+
+    if prevalence is None or not (0 < prevalence < 1):
+        return best
+
+    def flagged_per_case(thr):
+        pred = (p >= thr).astype(int)
+        tp = float(((pred == 1) & (y_true == 1)).sum())
+        fn = float(((pred == 0) & (y_true == 1)).sum())
+        tn = float(((pred == 0) & (y_true == 0)).sum())
+        fp = float(((pred == 1) & (y_true == 0)).sum())
+        if (tp + fn) == 0 or (tn + fp) == 0:
+            return float("inf"), 0.0
+        sens = tp / (tp + fn)
+        spec = tn / (tn + fp)
+        num = sens * prevalence
+        den = num + (1 - spec) * (1 - prevalence)
+        if den <= 0 or num <= 0:
+            return float("inf"), sens
+        return 1.0 / (num / den), sens
+
+    per_case_at_youden, _ = flagged_per_case(best)
+    if not np.isfinite(per_case_at_youden) or per_case_at_youden <= PRECISION_TROUBLE:
+        return best
+
+    # Sweep upward from Youden and keep the most precise point that still
+    # retains enough sensitivity to be worth running.
+    candidates = np.unique(np.quantile(p, np.linspace(0.50, 0.999, 300)))
+    chosen, chosen_per_case = best, per_case_at_youden
+    for thr in candidates:
+        if thr <= best:
+            continue
+        per_case, sens = flagged_per_case(float(thr))
+        if sens < SENSITIVITY_FLOOR:
+            break          # sweep is monotone in sensitivity, so stop here
+        if per_case < chosen_per_case:
+            chosen, chosen_per_case = float(thr), per_case
+    return float(np.clip(chosen, 0.01, 0.99))
 
 
-def evaluate(clf_factory, X: pd.DataFrame, y: pd.Series) -> dict:
+def evaluate(clf_factory, X: pd.DataFrame, y: pd.Series,
+             prevalence: float | None = None) -> dict:
     """
     Cross validated AUC, a held-out confusion matrix, and the operating point.
 
@@ -610,7 +679,7 @@ def evaluate(clf_factory, X: pd.DataFrame, y: pd.Series) -> dict:
     # reported CV AUC and the threshold, and neither sees the held-out split.
     oof = cross_val_predict(calibrated(), X, y, cv=cv, method="predict_proba", n_jobs=1)[:, 1]
     cv_auc = roc_auc_score(y, oof)
-    threshold = choose_threshold(y, oof)
+    threshold = choose_threshold(y, oof, prevalence)
 
     fold_aucs = []
     for tr, te in cv.split(X, y):
@@ -841,7 +910,16 @@ def main():
             if chosen == "ensemble"
             else "Logistic regression, isotonic calibrated, selected over the ensemble on CV AUC"
         )
-        metrics = evaluate(factory, X, y)
+        # The prevalence this panel will actually meet, so the operating point
+        # can weigh a false alarm against a miss the way the real world does.
+        prev = None
+        try:
+            from evaluate import SEER_INCIDENCE
+            if name in SEER_INCIDENCE:
+                prev = SEER_INCIDENCE[name][0] / 100_000.0
+        except Exception:
+            prev = None
+        metrics = evaluate(factory, X, y, prev)
         metrics["model_selection"] = candidates
         metrics["chosen_model"] = chosen
         print(f"  AUC {metrics['auc']} +/- {metrics['auc_std']}   "

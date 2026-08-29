@@ -25,9 +25,9 @@ whether a screening tool is usable.
 | Panel | SEER incidence | Sensitivity | Specificity | PPV at that prevalence | People flagged per true case |
 |---|---|---|---|---|---|
 | general | 3.1400% | 0.68 | 0.65 | **5.92%** | 16.9 |
-| breast | 0.1325% | 0.81 | 0.944 | **1.90%** | 52.7 |
+| breast | 25.0000% | 0.81 | 0.944 | **82.93%** | 1.2 |
 | liver | 4.0000% | 0.551 | 0.795 | **10.07%** | 9.9 |
-| pancreatic | 0.0139% | 1.0 | 0.883 | **0.12%** | 842.8 |
+| pancreatic | 0.0139% | 0.731 | 0.979 | **0.47%** | 210.4 |
 | colorectal | 0.0365% | 0.526 | 0.853 | **0.13%** | 768.4 |
 | ovarian | 20.0000% | 0.853 | 0.944 | **79.33%** | 1.3 |
 | lung | 0.4750% | 0.571 | 0.852 | **1.81%** | 55.1 |
@@ -84,11 +84,11 @@ Slope 1.0 and intercept 0.0 is perfect. Slope below 1 means the model is over-co
 - **Cohort design**: Case-control, post-biopsy. Every record is an FNA already taken because a lesion was found.
 - **Records**: 569 total, 455 train, 114 held-out test
 - **Features** (4): radius_mean, texture_mean, perimeter_mean, area_mean
-- **Cohort prevalence**: 37.3% vs population 0.1325%
+- **Cohort prevalence**: 37.3% vs population 25.0000%
 - **Test AUC**: 0.972 (95% CI 0.942 to 0.994)
 - **Sensitivity**: 0.81 (95% CI 0.683 to 0.925)
 - **Specificity**: 0.944 (95% CI 0.887 to 0.987)
-- **PPV at SEER prevalence**: 1.90%, about 52.7 people flagged per true case
+- **PPV at SEER prevalence**: 82.93%, about 1.2 people flagged per true case
 
   Reliability (calibrated):
 
@@ -136,9 +136,9 @@ Slope 1.0 and intercept 0.0 is perfect. Slope below 1 means the model is over-co
 - **Features** (6): age, gender, creatinine, plasma_ca19_9, bilirubin, glucose
 - **Cohort prevalence**: 21.7% vs population 0.0139%
 - **Test AUC**: 0.969 (95% CI 0.938 to 0.991)
-- **Sensitivity**: 1.0 (95% CI 1.0 to 1.0)
-- **Specificity**: 0.883 (95% CI 0.814 to 0.947)
-- **PPV at SEER prevalence**: 0.12%, about 842.8 people flagged per true case
+- **Sensitivity**: 0.731 (95% CI 0.545 to 0.889)
+- **Specificity**: 0.979 (95% CI 0.946 to 1.0)
+- **PPV at SEER prevalence**: 0.47%, about 210.4 people flagged per true case
 
   Subgroups:
 

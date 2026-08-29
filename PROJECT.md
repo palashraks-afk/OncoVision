@@ -236,8 +236,8 @@ Reproduce with `python evaluate.py`.
 
 | Panel | Trained on | Test AUC | 95% CI | Threshold | Sens | Spec | Flagged per true case |
 |---|---|---|---|---|---|---|---|
-| Breast malignancy | 569 Wisconsin biopsies | 0.972 | 0.942 to 0.994 | 38.8% | 0.81 | 0.94 | 52.7 |
-| Pancreatic cancer | 600 samples, 3 tissue banks | 0.969 | 0.938 to 0.991 | 16.6% | 1.00 | 0.88 | 842.8 |
+| Breast malignancy | 569 Wisconsin biopsies | 0.972 | 0.942 to 0.994 | 38.8% | 0.81 | 0.94 | 1.2 |
+| Pancreatic cancer | 600 samples, 3 tissue banks | 0.969 | 0.938 to 0.991 | 73.0% | 0.73 | 0.98 | 210.4 |
 | Ovarian malignancy | 349 operated ovarian masses | 0.949 | 0.886 to 0.994 | 58.1% | 0.85 | 0.94 | 1.3 |
 | Prostate cancer | 212 biopsied men | 0.840 | 0.705 to 0.952 | 66.9% | 0.80 | 0.78 | 1.4 |
 | Lung cancer | 21,916 adults with tobacco exposure | 0.829 | 0.730 to 0.902 | 1.0% | 0.57 | 0.85 | 55.1 |
@@ -288,6 +288,64 @@ biopsies means the held-out split was a favourable one and the honest estimate s
 than 0.725. It still excludes chance and still beats age alone by 0.267, which is why it ships,
 but it is the least certain thing in this project and both numbers are published rather than only
 the flattering one.
+
+### The precision problem, attacked properly
+
+The worst number in this project was never an AUC. It was that the pancreatic
+panel flagged roughly 843 people for every true case and the bowel panel 768.
+Two causes were tangled together, and separating them fixed one of them.
+
+**Cause one: the threshold ignored prevalence.** Every panel picked its
+operating point by Youden's J, which maximises sensitivity plus specificity.
+That weights a false positive and a false negative equally and never looks at
+how rare the disease is, so on a cancer at 0.01 percent prevalence it happily
+chooses a cut that drowns the true cases. The chooser now takes the prevalence
+the panel will actually meet, and when Youden lands somewhere with poor
+precision it re-picks to maximise precision subject to keeping sensitivity at or
+above 70 percent. Pancreatic went from 843 flagged per case to **210**, giving
+up sensitivity from 1.00 to 0.73.
+
+**Cause two: two panels were being projected onto the wrong population.** The
+breast panel reads a fine needle aspirate that has already been taken because a
+lesion was found. Projecting it onto SEER population incidence asks what would
+happen if it were run on every woman in the country, which is not what it does
+and never could be. That is the identical error caught earlier on cervical.
+Corrected to the roughly 25 percent malignancy rate among breast lesions taken
+to biopsy, breast goes from 52.7 flagged per case to **1.2**, with sensitivity
+unchanged at 0.81. Nothing about the model changed; the denominator was wrong.
+
+| Panel | Before | After | What changed |
+|---|---|---|---|
+| Breast | 52.7 | **1.2** | wrong prior, corrected to post-biopsy |
+| Pancreatic | 842.8 | **210.4** | precision-aware threshold |
+| Bowel | 768.4 | 768.4 | nothing helps, see below |
+| Lung | 55.1 | 55.1 | nothing helps, see below |
+| Ovarian | 1.3 | 1.3 | already fine |
+| Prostate | 1.4 | 1.4 | already fine |
+| Liver | 9.9 | 9.9 | already fine |
+| General | 16.9 | 16.9 | already fine |
+
+### Three panels have no usable operating point, at any threshold
+
+This is the part that does not get fixed, and it is worth stating as a finding
+rather than a disclaimer. Sweeping the entire threshold range and asking whether
+any point reaches 20 flagged per true case while keeping useful sensitivity:
+
+| Panel | Youden | At 99% specificity | Reaches 20 per case? |
+|---|---|---|---|
+| Pancreatic | 826 per case | 130 per case, sens 0.59 | **no** |
+| Bowel | 696 per case | 658 per case, sens 0.04 | **no** |
+| Lung | 52 per case | 31 per case, sens 0.08 | **no** |
+
+Bowel is the starkest: tightening all the way to 99 percent specificity moves it
+from 696 to 658 while sensitivity collapses to 4 percent. There is no setting of
+this dial that makes a population bowel screen out of a complete blood count.
+That is a property of a cancer at 0.037 percent prevalence, not of the model,
+and no better model changes it.
+
+So those three panels are honest risk indicators and are not population
+screening instruments, whatever their AUCs say. Reproduce with
+`python experiments/operating_point.py`.
 
 ### Fairness: I was wrong that this could not be measured
 

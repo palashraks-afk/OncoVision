@@ -1,0 +1,208 @@
+{
+  "general": {
+    "prevalence_used": 0.0314,
+    "auc": 0.757,
+    "points": {
+      "youden (shipped)": {
+        "threshold": 0.03197,
+        "sensitivity": 0.711,
+        "specificity": 0.673,
+        "ppv_at_prevalence": 0.06583,
+        "flagged_per_true_case": 15.2
+      },
+      "99% specificity": {
+        "threshold": 0.16247,
+        "sensitivity": 0.056,
+        "specificity": 0.99,
+        "ppv_at_prevalence": 0.1535,
+        "flagged_per_true_case": 6.5
+      },
+      "<= 20 flagged per case": {
+        "threshold": 0.0197,
+        "sensitivity": 0.847,
+        "specificity": 0.511,
+        "ppv_at_prevalence": 0.05313,
+        "flagged_per_true_case": 18.8
+      }
+    },
+    "verdict": "usable: 18.8 flagged per case at 85% sensitivity"
+  },
+  "breast": {
+    "prevalence_used": 0.001325,
+    "auc": 0.954,
+    "points": {
+      "youden (shipped)": {
+        "threshold": 0.42564,
+        "sensitivity": 0.863,
+        "specificity": 0.927,
+        "ppv_at_prevalence": 0.01548,
+        "flagged_per_true_case": 64.6
+      },
+      "99% specificity": {
+        "threshold": 0.81316,
+        "sensitivity": 0.703,
+        "specificity": 0.989,
+        "ppv_at_prevalence": 0.07683,
+        "flagged_per_true_case": 13.0
+      },
+      "<= 20 flagged per case": {
+        "threshold": 0.65899,
+        "sensitivity": 0.778,
+        "specificity": 0.98,
+        "ppv_at_prevalence": 0.05003,
+        "flagged_per_true_case": 20.0
+      }
+    },
+    "verdict": "usable: 20.0 flagged per case at 78% sensitivity"
+  },
+  "liver": {
+    "prevalence_used": 0.04,
+    "auc": 0.743,
+    "points": {
+      "youden (shipped)": {
+        "threshold": 0.04078,
+        "sensitivity": 0.61,
+        "specificity": 0.742,
+        "ppv_at_prevalence": 0.08972,
+        "flagged_per_true_case": 11.1
+      },
+      "99% specificity": {
+        "threshold": 0.22638,
+        "sensitivity": 0.149,
+        "specificity": 0.99,
+        "ppv_at_prevalence": 0.3829,
+        "flagged_per_true_case": 2.6
+      },
+      "<= 20 flagged per case": {
+        "threshold": 0.02975,
+        "sensitivity": 0.786,
+        "specificity": 0.512,
+        "ppv_at_prevalence": 0.06289,
+        "flagged_per_true_case": 15.9
+      }
+    },
+    "verdict": "usable: 15.9 flagged per case at 79% sensitivity"
+  },
+  "pancreatic": {
+    "prevalence_used": 0.000139,
+    "auc": 0.966,
+    "points": {
+      "youden (shipped)": {
+        "threshold": 0.18052,
+        "sensitivity": 0.946,
+        "specificity": 0.891,
+        "ppv_at_prevalence": 0.00121,
+        "flagged_per_true_case": 826.0
+      },
+      "99% specificity": {
+        "threshold": 0.84856,
+        "sensitivity": 0.592,
+        "specificity": 0.989,
+        "ppv_at_prevalence": 0.00768,
+        "flagged_per_true_case": 130.2
+      },
+      "<= 20 flagged per case": null
+    },
+    "verdict": "NO usable operating point exists"
+  },
+  "colorectal": {
+    "prevalence_used": 0.000365,
+    "auc": 0.804,
+    "points": {
+      "youden (shipped)": {
+        "threshold": 0.01,
+        "sensitivity": 0.521,
+        "specificity": 0.868,
+        "ppv_at_prevalence": 0.00144,
+        "flagged_per_true_case": 695.7
+      },
+      "99% specificity": {
+        "threshold": 0.02997,
+        "sensitivity": 0.042,
+        "specificity": 0.99,
+        "ppv_at_prevalence": 0.00152,
+        "flagged_per_true_case": 658.3
+      },
+      "<= 20 flagged per case": null
+    },
+    "verdict": "NO usable operating point exists"
+  },
+  "ovarian": {
+    "prevalence_used": 0.2,
+    "auc": 0.942,
+    "points": {
+      "youden (shipped)": {
+        "threshold": 0.56092,
+        "sensitivity": 0.848,
+        "specificity": 0.972,
+        "ppv_at_prevalence": 0.883,
+        "flagged_per_true_case": 1.1
+      },
+      "99% specificity": {
+        "threshold": 0.88375,
+        "sensitivity": 0.749,
+        "specificity": 0.989,
+        "ppv_at_prevalence": 0.94336,
+        "flagged_per_true_case": 1.1
+      },
+      "<= 20 flagged per case": {
+        "threshold": 0.29386,
+        "sensitivity": 0.883,
+        "specificity": 0.865,
+        "ppv_at_prevalence": 0.62083,
+        "flagged_per_true_case": 1.6
+      }
+    },
+    "verdict": "usable: 1.6 flagged per case at 88% sensitivity"
+  },
+  "lung": {
+    "prevalence_used": 0.00475,
+    "auc": 0.823,
+    "points": {
+      "youden (shipped)": {
+        "threshold": 0.01,
+        "sensitivity": 0.596,
+        "specificity": 0.855,
+        "ppv_at_prevalence": 0.01921,
+        "flagged_per_true_case": 52.1
+      },
+      "99% specificity": {
+        "threshold": 0.03203,
+        "sensitivity": 0.077,
+        "specificity": 0.989,
+        "ppv_at_prevalence": 0.03255,
+        "flagged_per_true_case": 30.7
+      },
+      "<= 20 flagged per case": null
+    },
+    "verdict": "NO usable operating point exists"
+  },
+  "prostate": {
+    "prevalence_used": 0.4,
+    "auc": 0.827,
+    "points": {
+      "youden (shipped)": {
+        "threshold": 0.7227,
+        "sensitivity": 0.636,
+        "specificity": 0.89,
+        "ppv_at_prevalence": 0.79426,
+        "flagged_per_true_case": 1.3
+      },
+      "99% specificity": {
+        "threshold": 0.94354,
+        "sensitivity": 0.231,
+        "specificity": 0.989,
+        "ppv_at_prevalence": 0.9335,
+        "flagged_per_true_case": 1.1
+      },
+      "<= 20 flagged per case": {
+        "threshold": 0.55182,
+        "sensitivity": 0.711,
+        "specificity": 0.78,
+        "ppv_at_prevalence": 0.68314,
+        "flagged_per_true_case": 1.5
+      }
+    },
+    "verdict": "usable: 1.5 flagged per case at 71% sensitivity"
+  }
+}
