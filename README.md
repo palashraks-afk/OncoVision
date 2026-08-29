@@ -78,6 +78,51 @@ allowed to decide it.
 
 The general panel is the weak one, and the interface says so rather than hiding it.
 
+### Fairness: I was wrong that this could not be measured
+
+The documentation said, in several places and for a long time, "no race or
+ethnicity in any cohort, so accuracy across those groups is unmeasured rather
+than acceptable". The second half was the right instinct. The first half was
+false, and false in the direction that let the project off the hook.
+
+NHANES records race and ethnicity for every participant, and four of the eight
+shipped panels are built on NHANES. Half the product was measurable the whole
+time and simply had not been measured.
+
+Race is carried as a **stratifier and never as a feature**. Using it as a
+predictor bakes population averages in as though they were biology, which is
+what medicine has spent recent years removing from estimates like eGFR. But not
+recording it means fairness cannot be checked, which is worse. So it rides in
+the data, is excluded from every feature list, and exists to answer this
+question.
+
+| Panel | Overall | Weakest measurable group | | Gap |
+|---|---|---|---|---|
+| Lung | 0.823 | Non-Hispanic Black | 0.756 | **-0.066** |
+| Bowel | 0.804 | Non-Hispanic Black | 0.752 | **-0.052** |
+| General | 0.757 | Other Hispanic | 0.672 | **-0.085** |
+| Liver | 0.743 | Other Hispanic | 0.713 | -0.030 |
+
+Three panels have a gap wide enough to matter, and the direction is the bad one.
+Black Americans have higher mortality from both colorectal and lung cancer, so a
+panel that ranks them less well is not a neutral gap, it compounds a disparity
+that already exists. That now appears on the panel itself rather than in a
+footnote, next to the score, phrased as a reason to weigh the result less.
+
+The liver panel is the one clean result: Non-Hispanic Black is its **best**
+group at 0.798 against 0.743 overall.
+
+Several groups cannot be scored at all because the cancers are rare enough that
+a subgroup carries under ten events. Those are reported as unmeasurable rather
+than given a number, because a subgroup AUC on two cases is noise and printing
+it would be worse than admitting the gap.
+
+**Still genuinely unmeasurable:** breast, ovarian, pancreatic and prostate. The
+Wisconsin, Soochow, tissue-bank and transperineal-biopsy cohorts do not record
+race, and no analysis of them can change that.
+
+Reproduce with `python experiments/fairness.py`.
+
 ### Does each panel beat just reading one line of the lab report?
 
 The prostate panel was held to this bar: it had to beat PSA on its own, because

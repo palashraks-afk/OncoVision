@@ -740,6 +740,7 @@ async def predict_risk(data: PatientData):
         metrics = bundle.get("metrics", {})
         held = bundle.get("held_out", {})
         stab = bundle.get("stability", {})
+        fair = bundle.get("fairness", {})
         results[bundle.get("label", name)] = {
             "key": name,
             "risk": round(proba, 1),
@@ -769,6 +770,15 @@ async def predict_risk(data: PatientData):
             "stable_auc": stab.get("stable_auc"),
             "split_spread": stab.get("split_spread"),
             "split_percentile": stab.get("shipped_split_percentile"),
+            # Per-group accuracy, where the cohort records race and ethnicity.
+            # Shown because a panel that works measurably worse for one group
+            # and stays quiet about it is claiming more than it earned. On bowel
+            # and lung the weakest group is the one with the higher mortality
+            # from that cancer, which is the opposite of a harmless gap.
+            "fairness_groups": fair.get("groups"),
+            "fairness_worst_group": fair.get("worst_group"),
+            "fairness_worst_auc": fair.get("worst_auc"),
+            "fairness_flagged": fair.get("materially_worse_groups"),
             "auc_ci": held.get("auc_ci"),
             "sensitivity": held.get("sensitivity", metrics.get("sensitivity")),
             "sensitivity_ci": held.get("sensitivity_ci"),

@@ -86,6 +86,22 @@ LABS = {
     "LBXSATSI": "alt", "LBXSTB": "bilirubin", "LBXSAPSI": "alkaline_phosphatase",
 }
 
+# Race and ethnicity, carried as a STRATIFIER and never as a model feature.
+#
+# The distinction is deliberate. Using race as a predictor in a clinical risk
+# model encodes population averages as if they were biology, which is the
+# practice medicine has spent the last few years removing from things like eGFR.
+# But not recording it at all means fairness cannot be measured, which is worse:
+# "accuracy across those groups is unmeasured" is not the same as "acceptable".
+#
+# So it rides along in the data file, is excluded from every feature list, and
+# exists so experiments/fairness.py can report AUC per group.
+RACE = {
+    1: "Mexican American", 2: "Other Hispanic", 3: "Non-Hispanic White",
+    4: "Non-Hispanic Black", 5: "Other or multiracial",
+    6: "Non-Hispanic Asian", 7: "Other or multiracial",
+}
+
 _ctx = ssl.create_default_context()
 _ctx.check_hostname = False
 _ctx.verify_mode = ssl.CERT_NONE
@@ -125,7 +141,7 @@ def fetch_nhanes_lung():
             print(f"  {label}: required file missing, skipped")
             continue
 
-        d = demo[["SEQN", "RIDAGEYR", "RIAGENDR"]].copy()
+        d = demo[[c for c in ["SEQN", "RIDAGEYR", "RIAGENDR", "RIDRETH3", "RIDRETH1"] if c in demo.columns]].copy()
         for extra in (mcq, cbc, chem, cot, crp, spx, smq):
             if extra is None:
                 continue
@@ -136,6 +152,10 @@ def fetch_nhanes_lung():
         out = pd.DataFrame(index=d.index)
         out["age"] = _num(d, "RIDAGEYR")
         out["gender"] = (_num(d, "RIAGENDR") == 1).astype(float)
+        eth = _num(d, "RIDRETH3")
+        if eth.isna().all():
+            eth = _num(d, "RIDRETH1")
+        out["race_ethnicity"] = eth.map(RACE)
         for src, key in LABS.items():
             out[key] = _num(d, src)
 

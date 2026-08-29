@@ -663,6 +663,39 @@ def prepare(config: dict):
     return X, y, medians
 
 
+def load_fairness() -> dict:
+    """
+    Per-group AUC from experiments/fairness.py, keyed by domain.
+
+    Carried on the bundle so the interface can show it next to the headline
+    number. A panel that works measurably worse for one group and does not say
+    so is making a claim it has not earned, and for bowel and lung the group
+    that comes out worst is the one with the higher mortality from that cancer,
+    which is the opposite of a harmless gap.
+    """
+    path = "experiments/fairness_result.json"
+    if not os.path.isfile(path):
+        print("NOTE: fairness_result.json not found, run experiments/fairness.py.")
+        return {}
+    with open(path) as f:
+        raw = json.load(f)
+    out = {}
+    for name, r in raw.items():
+        if name.startswith("_") or not isinstance(r, dict):
+            continue
+        worse = [g for g, v in r.get("groups", {}).items() if v.get("materially_worse")]
+        out[name] = {
+            "overall_auc": r.get("overall_auc"),
+            "groups": r.get("groups", {}),
+            "unmeasurable_groups": r.get("unmeasurable_groups", []),
+            "worst_group": r.get("worst_group"),
+            "worst_auc": r.get("worst_auc"),
+            "spread": r.get("spread"),
+            "materially_worse_groups": worse,
+        }
+    return out
+
+
 def load_split_stability() -> dict:
     """
     Repeated-split results from experiments/split_stability.py, keyed by domain.
@@ -738,12 +771,14 @@ def load_held_out() -> dict:
 
 HELD_OUT = {}
 STABILITY = {}
+FAIRNESS = {}
 
 
 def main():
-    global HELD_OUT, STABILITY
+    global HELD_OUT, STABILITY, FAIRNESS
     HELD_OUT = load_held_out()
     STABILITY = load_split_stability()
+    FAIRNESS = load_fairness()
 
     for d in MODEL_DIRS:
         os.makedirs(d, exist_ok=True)
@@ -826,6 +861,7 @@ def main():
         # Held-out evidence from evaluate.py, attached so the API can report it.
         held_out = HELD_OUT.get(name, {})
         stability = STABILITY.get(name, {})
+        fairness = FAIRNESS.get(name, {})
 
         bundle = {
             "model": model,
@@ -838,6 +874,7 @@ def main():
             "threshold": metrics.get("threshold", 0.5),
             "held_out": held_out,
             "stability": stability,
+            "fairness": fairness,
             "cohort_design": COHORT_DESIGN[name],
             "algorithm": algorithm,
         }
@@ -854,6 +891,7 @@ def main():
             **metrics,
             "held_out": held_out,
             "stability": stability,
+            "fairness": fairness,
         }
 
     with open(os.path.join("backend", "model_metrics.json"), "w") as f:

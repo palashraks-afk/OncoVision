@@ -491,8 +491,8 @@ export const CASE_POOL: DemoCase[] = [
     expect: "No cancer detected",
     positive: false,
     source: "Soochow ovarian mass cohort, negative record",
-    note: "27 year old pre-menopausal woman with an ovarian mass already found on imaging. CA 125 at 49.14 U/mL, HE4 at 34.57 pmol/L, CEA 1.2, platelets 241, albumin 4.58.",
-    delta: { age: 27, rbc: 4.84, hemoglobin: 14.9, platelets: 241, glucose: 96.48, calcium: 10.3807, bun: 7.392, creatinine: 0.4977, protein_total: 7.08, albumin: 4.58, ast: 21, alt: 16, bilirubin: 0.6374, alkaline_phosphatase: 50, alpha_fetoprotein_level: 0.86, plasma_ca19_9: 35.71, hematocrit: 43.8, mcv: 90.5, mch: 30.8, rdw: 12.4, mpv: 9.4, neutrophil_pct: 66.75, ggt: 12, ca125: 49.14, he4: 34.57, cea: 1.2 },
+    note: "26 year old pre-menopausal woman with an ovarian mass already found on imaging. CA 125 at 9.94 U/mL, HE4 at 35.29 pmol/L, CEA 1.07, platelets 232, albumin 4.7.",
+    delta: { age: 26, rbc: 4.48, hemoglobin: 13, platelets: 232, glucose: 84.42, calcium: 11.0621, bun: 7.728, creatinine: 0.724, protein_total: 7.04, albumin: 4.7, ast: 17, alt: 15, bilirubin: 0.9825, alkaline_phosphatase: 72, alpha_fetoprotein_level: 1.29, plasma_ca19_9: 13.4, hematocrit: 38.9, mcv: 86.8, mch: 29, rdw: 12.1, mpv: 9.3, neutrophil_pct: 66.75, ggt: 15, ca125: 9.94, he4: 35.29, cea: 1.07 },
   },
   {
     id: "ovarian-neg-45",
@@ -500,8 +500,8 @@ export const CASE_POOL: DemoCase[] = [
     expect: "No cancer detected",
     positive: false,
     source: "Soochow ovarian mass cohort, negative record",
-    note: "33 year old pre-menopausal woman with an ovarian mass already found on imaging. CA 125 at 32.02 U/mL, HE4 at 51.86 pmol/L, CEA 0.49, platelets 260, albumin 4.48.",
-    delta: { age: 33, rbc: 4.97, hemoglobin: 14.9, platelets: 260, glucose: 93.42, calcium: 10.9018, bun: 13.608, creatinine: 0.7127, protein_total: 7.31, albumin: 4.48, ast: 11, alt: 13, bilirubin: 0.3392, alkaline_phosphatase: 55, alpha_fetoprotein_level: 1.39, plasma_ca19_9: 8.81, hematocrit: 43.5, mcv: 87.5, rdw: 12.4, mpv: 10.1, neutrophil_pct: 66.75, ggt: 16, ca125: 32.02, he4: 51.86, cea: 0.49 },
+    note: "26 year old pre-menopausal woman with an ovarian mass already found on imaging. CA 125 at 8.65 U/mL, HE4 at 38.88 pmol/L, CEA 1.33, platelets 191, albumin 4.8.",
+    delta: { age: 26, rbc: 5.06, hemoglobin: 15.5, platelets: 191, glucose: 85.32, calcium: 10.7014, bun: 8.484, creatinine: 0.6335, protein_total: 7.32, albumin: 4.8, ast: 20, alt: 13, bilirubin: 0.8304, alkaline_phosphatase: 80, alpha_fetoprotein_level: 1.55, plasma_ca19_9: 13.85, hematocrit: 45.9, mcv: 90.7, mch: 30.6, rdw: 11.9, mpv: 11.2, neutrophil_pct: 66.75, ggt: 11, ca125: 8.65, he4: 38.88, cea: 1.33 },
   },
   {
     id: "lung-neg-46",

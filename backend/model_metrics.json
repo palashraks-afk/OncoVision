@@ -99,6 +99,73 @@
       "split_sd": 0.028,
       "shipped_split_percentile": 20.0,
       "n_splits": 5
+    },
+    "fairness": {
+      "overall_auc": 0.757,
+      "groups": {
+        "Mexican American": {
+          "n": 3994,
+          "events": 53,
+          "auc": 0.751,
+          "auc_ci": [
+            0.692,
+            0.802
+          ],
+          "gap_vs_overall": -0.006,
+          "materially_worse": false
+        },
+        "Non-Hispanic Black": {
+          "n": 5036,
+          "events": 122,
+          "auc": 0.718,
+          "auc_ci": [
+            0.677,
+            0.756
+          ],
+          "gap_vs_overall": -0.04,
+          "materially_worse": false
+        },
+        "Non-Hispanic White": {
+          "n": 10474,
+          "events": 516,
+          "auc": 0.752,
+          "auc_ci": [
+            0.732,
+            0.772
+          ],
+          "gap_vs_overall": -0.005,
+          "materially_worse": false
+        },
+        "Other Hispanic": {
+          "n": 2199,
+          "events": 39,
+          "auc": 0.672,
+          "auc_ci": [
+            0.585,
+            0.759
+          ],
+          "gap_vs_overall": -0.085,
+          "materially_worse": true
+        }
+      },
+      "unmeasurable_groups": [
+        {
+          "group": "Non-Hispanic Asian",
+          "n": 1254,
+          "events": 8
+        },
+        {
+          "group": "Other or multiracial",
+          "n": 286,
+          "events": 4
+        }
+      ],
+      "worst_group": "Other Hispanic",
+      "worst_auc": 0.672,
+      "spread": 0.08,
+      "materially_worse_groups": [
+        "Other Hispanic"
+      ]
     }
   },
   "breast": {
@@ -163,7 +230,8 @@
       "split_sd": 0.02,
       "shipped_split_percentile": 73.3,
       "n_splits": 30
-    }
+    },
+    "fairness": {}
   },
   "liver": {
     "label": "Liver Disease Risk",
@@ -271,6 +339,82 @@
       "split_sd": 0.005,
       "shipped_split_percentile": 60.0,
       "n_splits": 5
+    },
+    "fairness": {
+      "overall_auc": 0.743,
+      "groups": {
+        "Mexican American": {
+          "n": 5660,
+          "events": 267,
+          "auc": 0.722,
+          "auc_ci": [
+            0.689,
+            0.755
+          ],
+          "gap_vs_overall": -0.021,
+          "materially_worse": false
+        },
+        "Non-Hispanic Asian": {
+          "n": 2568,
+          "events": 120,
+          "auc": 0.754,
+          "auc_ci": [
+            0.711,
+            0.794
+          ],
+          "gap_vs_overall": 0.012,
+          "materially_worse": false
+        },
+        "Non-Hispanic Black": {
+          "n": 7393,
+          "events": 182,
+          "auc": 0.798,
+          "auc_ci": [
+            0.762,
+            0.834
+          ],
+          "gap_vs_overall": 0.055,
+          "materially_worse": false
+        },
+        "Non-Hispanic White": {
+          "n": 15033,
+          "events": 586,
+          "auc": 0.737,
+          "auc_ci": [
+            0.715,
+            0.759
+          ],
+          "gap_vs_overall": -0.006,
+          "materially_worse": false
+        },
+        "Other Hispanic": {
+          "n": 3421,
+          "events": 218,
+          "auc": 0.713,
+          "auc_ci": [
+            0.678,
+            0.747
+          ],
+          "gap_vs_overall": -0.03,
+          "materially_worse": false
+        },
+        "Other or multiracial": {
+          "n": 731,
+          "events": 31,
+          "auc": 0.769,
+          "auc_ci": [
+            0.677,
+            0.852
+          ],
+          "gap_vs_overall": 0.027,
+          "materially_worse": false
+        }
+      },
+      "unmeasurable_groups": [],
+      "worst_group": "Other Hispanic",
+      "worst_auc": 0.713,
+      "spread": 0.085,
+      "materially_worse_groups": []
     }
   },
   "pancreatic": {
@@ -374,7 +518,8 @@
       "split_sd": 0.013,
       "shipped_split_percentile": 50.0,
       "n_splits": 30
-    }
+    },
+    "fairness": {}
   },
   "colorectal": {
     "label": "Bowel Cancer Risk",
@@ -487,6 +632,61 @@
       "split_sd": 0.012,
       "shipped_split_percentile": 40.0,
       "n_splits": 5
+    },
+    "fairness": {
+      "overall_auc": 0.804,
+      "groups": {
+        "Non-Hispanic Black": {
+          "n": 5097,
+          "events": 18,
+          "auc": 0.752,
+          "auc_ci": [
+            0.657,
+            0.839
+          ],
+          "gap_vs_overall": -0.052,
+          "materially_worse": true
+        },
+        "Non-Hispanic White": {
+          "n": 10242,
+          "events": 67,
+          "auc": 0.796,
+          "auc_ci": [
+            0.747,
+            0.838
+          ],
+          "gap_vs_overall": -0.008,
+          "materially_worse": false
+        }
+      },
+      "unmeasurable_groups": [
+        {
+          "group": "Mexican American",
+          "n": 3991,
+          "events": 5
+        },
+        {
+          "group": "Non-Hispanic Asian",
+          "n": 1277,
+          "events": 2
+        },
+        {
+          "group": "Other Hispanic",
+          "n": 2212,
+          "events": 4
+        },
+        {
+          "group": "Other or multiracial",
+          "n": 975,
+          "events": 0
+        }
+      ],
+      "worst_group": "Non-Hispanic Black",
+      "worst_auc": 0.752,
+      "spread": 0.044,
+      "materially_worse_groups": [
+        "Non-Hispanic Black"
+      ]
     }
   },
   "ovarian": {
@@ -593,7 +793,8 @@
       "split_sd": 0.026,
       "shipped_split_percentile": 70.0,
       "n_splits": 30
-    }
+    },
+    "fairness": {}
   },
   "lung": {
     "label": "Lung Cancer Risk, with tobacco exposure",
@@ -714,6 +915,61 @@
       "split_sd": 0.015,
       "shipped_split_percentile": 40.0,
       "n_splits": 5
+    },
+    "fairness": {
+      "overall_auc": 0.823,
+      "groups": {
+        "Non-Hispanic Black": {
+          "n": 4862,
+          "events": 23,
+          "auc": 0.756,
+          "auc_ci": [
+            0.679,
+            0.83
+          ],
+          "gap_vs_overall": -0.066,
+          "materially_worse": true
+        },
+        "Non-Hispanic White": {
+          "n": 10483,
+          "events": 69,
+          "auc": 0.826,
+          "auc_ci": [
+            0.78,
+            0.868
+          ],
+          "gap_vs_overall": 0.003,
+          "materially_worse": false
+        }
+      },
+      "unmeasurable_groups": [
+        {
+          "group": "Mexican American",
+          "n": 3467,
+          "events": 1
+        },
+        {
+          "group": "Non-Hispanic Asian",
+          "n": 666,
+          "events": 2
+        },
+        {
+          "group": "Other Hispanic",
+          "n": 1593,
+          "events": 4
+        },
+        {
+          "group": "Other or multiracial",
+          "n": 845,
+          "events": 5
+        }
+      ],
+      "worst_group": "Non-Hispanic Black",
+      "worst_auc": 0.756,
+      "spread": 0.07,
+      "materially_worse_groups": [
+        "Non-Hispanic Black"
+      ]
     }
   },
   "prostate": {
@@ -799,6 +1055,7 @@
       "split_sd": 0.044,
       "shipped_split_percentile": 70.0,
       "n_splits": 30
-    }
+    },
+    "fairness": {}
   }
 }

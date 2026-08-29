@@ -758,6 +758,23 @@ export default function OncovisionDashboard() {
                               came from the patient and how much from a training
                               median. Shown next to the number, not buried.
                             */}
+                            {/*
+                              Fairness, where the cohort records race and
+                              ethnicity. Shown on the card rather than in the
+                              methodology tab, because a panel that works
+                              measurably worse for one group and is quiet about
+                              it is claiming more than it earned. On bowel and
+                              lung the weakest group is the one with the higher
+                              mortality from that cancer.
+                            */}
+                            {d.fairness_flagged?.length > 0 && (
+                              <p className="text-[11px] leading-relaxed mb-3 pl-3 border-l-2 border-[var(--flag)] text-[var(--ink-3)]">
+                                <span className="font-bold text-[var(--flag)]">Works less well for some groups. </span>
+                                This panel scores {d.fairness_worst_auc} for {d.fairness_worst_group}
+                                {" "}against {d.stable_auc ?? d.auc} overall. That gap is measured, not assumed,
+                                and it is a reason to weigh this result less heavily rather than more.
+                              </p>
+                            )}
                             {d.coverage_caveat && (
                               <p className="text-[11px] leading-relaxed mb-3 pl-3 border-l-2 border-[var(--warn)] text-[var(--ink-3)]">
                                 Partial data. {d.coverage_caveat}
