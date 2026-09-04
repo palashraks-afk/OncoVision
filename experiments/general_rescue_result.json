@@ -1,0 +1,65 @@
+{
+  "full_cohort": {
+    "B shipped today": {
+      "auc": 0.756,
+      "gain_over_age_sex": 0.006,
+      "wins": 5,
+      "repeats": 5,
+      "meaningful": false
+    },
+    "C + serum cotinine": {
+      "auc": 0.756,
+      "gain_over_age_sex": 0.006,
+      "wins": 5,
+      "repeats": 5,
+      "meaningful": false
+    },
+    "D + cotinine and CRP": {
+      "auc": 0.758,
+      "gain_over_age_sex": 0.008,
+      "wins": 5,
+      "repeats": 5,
+      "meaningful": false
+    },
+    "E + whole lab report": {
+      "auc": 0.759,
+      "gain_over_age_sex": 0.009,
+      "wins": 5,
+      "repeats": 5,
+      "meaningful": false
+    }
+  },
+  "crp_complete_subset": {
+    "B shipped today": {
+      "auc": 0.756,
+      "gain_over_age_sex": 0.022,
+      "wins": 5,
+      "repeats": 5,
+      "meaningful": true
+    },
+    "C + serum cotinine": {
+      "auc": 0.755,
+      "gain_over_age_sex": 0.021,
+      "wins": 5,
+      "repeats": 5,
+      "meaningful": true
+    },
+    "D + cotinine and CRP": {
+      "auc": 0.756,
+      "gain_over_age_sex": 0.022,
+      "wins": 5,
+      "repeats": 5,
+      "meaningful": true
+    },
+    "E + whole lab report": {
+      "auc": 0.756,
+      "gain_over_age_sex": 0.022,
+      "wins": 5,
+      "repeats": 5,
+      "meaningful": true
+    }
+  },
+  "shipped_gain": 0.006,
+  "best_arm": "E + whole lab report",
+  "improvement_available": 0.003
+}

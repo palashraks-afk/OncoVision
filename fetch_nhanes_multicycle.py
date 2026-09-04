@@ -90,7 +90,15 @@ def cols(df, wanted):
 def liver_cycle(year, suffix, label):
     demo = cols(grab(year, suffix, "DEMO"), ["SEQN", "RIAGENDR", "RIDAGEYR", "RIDRETH1", "RIDRETH3"])
     bio = cols(grab(year, suffix, "BIOPRO"),
-               ["SEQN", "LBXSTB", "LBXSAPSI", "LBXSATSI", "LBXSASSI", "LBXSTP", "LBXSAL"])
+               ["SEQN", "LBXSTB", "LBXSAPSI", "LBXSATSI", "LBXSASSI", "LBXSTP", "LBXSAL",
+                # Four more analytes that sit on the same comprehensive metabolic
+                # panel and were simply never pulled. GGT is the one a hepatologist
+                # would ask for first: it confirms a raised alkaline phosphatase
+                # came from the liver rather than from bone. Globulin, LDH and uric
+                # acid come off the identical requisition at no extra cost to the
+                # patient. Whether they actually help is measured in
+                # experiments/liver_extra_analytes.py rather than assumed.
+                "LBXSGTSI", "LBXSGB", "LBXSLDSI", "LBXSUA"])
     mcq = cols(grab(year, suffix, "MCQ"), ["SEQN", "MCQ160L"])
     if demo is None or bio is None or mcq is None:
         return None
@@ -122,6 +130,15 @@ def liver_cycle(year, suffix, label):
         "ast": pd.to_numeric(df["LBXSASSI"], errors="coerce"),
         "protein_total": pd.to_numeric(df["LBXSTP"], errors="coerce"),
         "albumin": pd.to_numeric(df["LBXSAL"], errors="coerce"),
+        # Same requisition, never previously pulled.
+        "ggt": (pd.to_numeric(df["LBXSGTSI"], errors="coerce")
+                if "LBXSGTSI" in df.columns else np.nan),
+        "globulin": (pd.to_numeric(df["LBXSGB"], errors="coerce")
+                     if "LBXSGB" in df.columns else np.nan),
+        "ldh": (pd.to_numeric(df["LBXSLDSI"], errors="coerce")
+                if "LBXSLDSI" in df.columns else np.nan),
+        "uric_acid": (pd.to_numeric(df["LBXSUA"], errors="coerce")
+                      if "LBXSUA" in df.columns else np.nan),
         # DIQ010: 1 yes, 2 no, 3 borderline. Borderline counts as not diabetic.
         "diabetes": (df["DIQ010"].map({1: 1, 2: 0, 3: 0})
                      if "DIQ010" in df.columns else np.nan),

@@ -1,0 +1,116 @@
+{
+  "general": {
+    "n_repeats": 5,
+    "panel_auc": 0.756,
+    "age_sex_auc": 0.75,
+    "gain": 0.006,
+    "gain_range": [
+      0.002,
+      0.009
+    ],
+    "wins": 5,
+    "baseline_features": [
+      "age",
+      "gender"
+    ],
+    "barely_beats_demographics": true
+  },
+  "breast": {
+    "gain": null,
+    "reason": "cohort records neither age nor sex"
+  },
+  "liver": {
+    "n_repeats": 5,
+    "panel_auc": 0.741,
+    "age_sex_auc": 0.643,
+    "gain": 0.098,
+    "gain_range": [
+      0.097,
+      0.1
+    ],
+    "wins": 5,
+    "baseline_features": [
+      "age",
+      "gender"
+    ],
+    "barely_beats_demographics": false
+  },
+  "pancreatic": {
+    "n_repeats": 20,
+    "panel_auc": 0.966,
+    "age_sex_auc": 0.468,
+    "gain": 0.498,
+    "gain_range": [
+      0.467,
+      0.524
+    ],
+    "wins": 20,
+    "baseline_features": [
+      "age",
+      "gender"
+    ],
+    "barely_beats_demographics": false
+  },
+  "colorectal": {
+    "n_repeats": 5,
+    "panel_auc": 0.805,
+    "age_sex_auc": 0.766,
+    "gain": 0.039,
+    "gain_range": [
+      0.009,
+      0.069
+    ],
+    "wins": 5,
+    "baseline_features": [
+      "age",
+      "gender"
+    ],
+    "barely_beats_demographics": false
+  },
+  "ovarian": {
+    "n_repeats": 20,
+    "panel_auc": 0.932,
+    "age_sex_auc": 0.758,
+    "gain": 0.174,
+    "gain_range": [
+      0.161,
+      0.196
+    ],
+    "wins": 20,
+    "baseline_features": [
+      "age"
+    ],
+    "barely_beats_demographics": false
+  },
+  "lung": {
+    "n_repeats": 5,
+    "panel_auc": 0.819,
+    "age_sex_auc": 0.775,
+    "gain": 0.044,
+    "gain_range": [
+      0.037,
+      0.054
+    ],
+    "wins": 5,
+    "baseline_features": [
+      "age",
+      "gender"
+    ],
+    "barely_beats_demographics": false
+  },
+  "prostate": {
+    "n_repeats": 20,
+    "panel_auc": 0.826,
+    "age_sex_auc": 0.568,
+    "gain": 0.258,
+    "gain_range": [
+      0.224,
+      0.286
+    ],
+    "wins": 20,
+    "baseline_features": [
+      "age"
+    ],
+    "barely_beats_demographics": false
+  }
+}

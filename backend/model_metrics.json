@@ -170,6 +170,8 @@
     "panel_kind": "screening",
     "panel_kind_note": "Reads routine bloodwork and your history. Anyone can run it.",
     "screening_viable": true,
+    "gain_over_age_sex": 0.006,
+    "barely_beats_demographics": true,
     "flagged_per_true_case": 16.9
   },
   "breast": {
@@ -179,49 +181,75 @@
       "radius_mean",
       "texture_mean",
       "perimeter_mean",
-      "area_mean"
+      "area_mean",
+      "smoothness_mean",
+      "compactness_mean",
+      "concavity_mean",
+      "concave_points_mean",
+      "symmetry_mean",
+      "fractal_dimension_mean",
+      "radius_se",
+      "texture_se",
+      "perimeter_se",
+      "area_se",
+      "smoothness_se",
+      "compactness_se",
+      "concavity_se",
+      "concave_points_se",
+      "symmetry_se",
+      "fractal_dimension_se",
+      "radius_worst",
+      "texture_worst",
+      "perimeter_worst",
+      "area_worst",
+      "smoothness_worst",
+      "compactness_worst",
+      "concavity_worst",
+      "concave_points_worst",
+      "symmetry_worst",
+      "fractal_dimension_worst"
     ],
     "cohort_design": "Case-control and post-biopsy. Precision is projected onto the roughly 25 percent malignancy rate among breast lesions taken to biopsy, not onto SEER population incidence, because nobody gets an aspirate without a lesion being found first. This panel reads an aspirate that has already been taken, so it interprets a diagnostic test rather than screening for one. Rebuilding it on blood markers was tried and failed: see experiments/blood_breast_panel.py, external AUC 0.495 with a 95% CI of 0.377 to 0.607, which contains chance.",
-    "auc": 0.954,
-    "auc_std": 0.022,
-    "accuracy": 0.877,
-    "sensitivity": 0.833,
-    "specificity": 0.903,
+    "auc": 0.99,
+    "auc_std": 0.01,
+    "accuracy": 0.982,
+    "sensitivity": 0.976,
+    "specificity": 0.986,
     "n_samples": 569,
     "n_positive": 212,
-    "n_features": 4,
+    "n_features": 30,
     "cv_folds": 5,
-    "threshold": 0.4048,
+    "threshold": 0.2945,
     "model_selection": {
-      "ensemble": 0.958,
-      "logistic": 0.955
+      "ensemble": 0.993,
+      "logistic": 0.994
     },
-    "chosen_model": "ensemble",
+    "chosen_model": "logistic",
     "held_out": {
       "n_test": 114,
-      "auc": 0.972,
+      "auc": 0.997,
       "auc_ci": [
-        0.942,
-        0.994
+        0.99,
+        1.0
       ],
-      "sensitivity": 0.81,
+      "sensitivity": 0.976,
       "sensitivity_ci": [
-        0.683,
-        0.925
+        0.919,
+        1.0
       ],
-      "specificity": 0.944,
+      "specificity": 0.986,
       "specificity_ci": [
-        0.887,
-        0.987
+        0.955,
+        1.0
       ],
-      "brier": 0.0668,
-      "calibration_slope": 1.118,
-      "ppv_at_population_prevalence": 0.82927,
-      "people_flagged_per_true_case": 1.2,
+      "brier": 0.0167,
+      "calibration_slope": 1.616,
+      "ppv_at_population_prevalence": 0.95906,
+      "people_flagged_per_true_case": 1.0,
       "population_prevalence": 0.25,
       "prevalence_source": "Malignancy among breast lesions taken to biopsy",
       "cohort_prevalence": 0.373,
-      "baseline_logistic_auc": 0.964,
+      "baseline_logistic_auc": 0.995,
       "baseline_age_sex_auc": null,
       "subgroups": {}
     },
@@ -239,7 +267,9 @@
     "panel_kind": "interpretation",
     "panel_kind_note": "Needs nuclear measurements from a breast biopsy that has already been taken and imaged. It interprets that biopsy; it does not screen for one.",
     "screening_viable": true,
-    "flagged_per_true_case": 1.2
+    "gain_over_age_sex": null,
+    "barely_beats_demographics": false,
+    "flagged_per_true_case": 1.0
   },
   "liver": {
     "label": "Liver Disease Risk",
@@ -427,6 +457,8 @@
     "panel_kind": "screening",
     "panel_kind_note": "Reads routine bloodwork and your history. Anyone can run it.",
     "screening_viable": true,
+    "gain_over_age_sex": 0.098,
+    "barely_beats_demographics": false,
     "flagged_per_true_case": 9.9
   },
   "pancreatic": {
@@ -535,6 +567,8 @@
     "panel_kind": "screening",
     "panel_kind_note": "",
     "screening_viable": false,
+    "gain_over_age_sex": 0.498,
+    "barely_beats_demographics": false,
     "flagged_per_true_case": 210.4
   },
   "colorectal": {
@@ -707,6 +741,8 @@
     "panel_kind": "screening",
     "panel_kind_note": "Reads a routine blood count. Anyone can run it.",
     "screening_viable": false,
+    "gain_over_age_sex": 0.039,
+    "barely_beats_demographics": false,
     "flagged_per_true_case": 768.4
   },
   "ovarian": {
@@ -818,6 +854,8 @@
     "panel_kind": "triage",
     "panel_kind_note": "For a woman who ALREADY has an ovarian mass found on imaging. It asks whether that mass is malignant, not whether one exists.",
     "screening_viable": true,
+    "gain_over_age_sex": 0.174,
+    "barely_beats_demographics": false,
     "flagged_per_true_case": 1.3
   },
   "lung": {
@@ -998,6 +1036,8 @@
     "panel_kind": "screening",
     "panel_kind_note": "Reads routine bloodwork. Offered to people with tobacco exposure, which is who lung screening is for.",
     "screening_viable": false,
+    "gain_over_age_sex": 0.044,
+    "barely_beats_demographics": false,
     "flagged_per_true_case": 55.1
   },
   "prostate": {
@@ -1088,6 +1128,8 @@
     "panel_kind": "interpretation",
     "panel_kind_note": "Needs a PI-RADS score from a prostate MRI. Without it this panel only matches reading the PSA number, so it is not a lab-report test.",
     "screening_viable": true,
+    "gain_over_age_sex": 0.258,
+    "barely_beats_demographics": false,
     "flagged_per_true_case": 1.4
   }
 }

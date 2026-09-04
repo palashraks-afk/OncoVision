@@ -8,7 +8,7 @@ before any model was fitted and was not used for training, model selection, or c
 | Panel | Cohort AUC (test) | 95% CI | Logistic baseline | Age+sex baseline | Beats baseline? |
 |---|---|---|---|---|---|
 | general | 0.732 | 0.692 to 0.77 | 0.731 | 0.727 | marginal |
-| breast | 0.972 | 0.942 to 0.994 | 0.964 | n/a | marginal |
+| breast | 0.997 | 0.99 to 1.0 | 0.995 | n/a | marginal |
 | liver | 0.753 | 0.723 to 0.784 | 0.731 | 0.602 | yes |
 | pancreatic | 0.969 | 0.938 to 0.991 | 0.968 | 0.5 | marginal |
 | colorectal | 0.793 | 0.708 to 0.867 | 0.8 | 0.817 | marginal |
@@ -25,7 +25,7 @@ whether a screening tool is usable.
 | Panel | SEER incidence | Sensitivity | Specificity | PPV at that prevalence | People flagged per true case |
 |---|---|---|---|---|---|
 | general | 3.1400% | 0.68 | 0.65 | **5.92%** | 16.9 |
-| breast | 25.0000% | 0.81 | 0.944 | **82.93%** | 1.2 |
+| breast | 25.0000% | 0.976 | 0.986 | **95.91%** | 1.0 |
 | liver | 4.0000% | 0.551 | 0.795 | **10.07%** | 9.9 |
 | pancreatic | 0.0139% | 0.731 | 0.979 | **0.47%** | 210.4 |
 | colorectal | 0.0365% | 0.526 | 0.853 | **0.13%** | 768.4 |
@@ -40,7 +40,7 @@ Slope 1.0 and intercept 0.0 is perfect. Slope below 1 means the model is over-co
 | Panel | Brier (uncal) | Brier (calibrated) | Slope | Intercept |
 |---|---|---|---|---|
 | general | 0.1496 | 0.03 | 0.753 | 0.622 |
-| breast | 0.0678 | 0.0668 | 1.118 | 0.179 |
+| breast | 0.0211 | 0.0167 | 1.616 | 1.656 |
 | liver | 0.1684 | 0.0358 | 1.049 | 0.463 |
 | pancreatic | 0.0694 | 0.0617 | 0.46 | 3.531 |
 | colorectal | 0.0274 | 0.004 | 0.656 | 1.963 |
@@ -83,22 +83,22 @@ Slope 1.0 and intercept 0.0 is perfect. Slope below 1 means the model is over-co
 
 - **Cohort design**: Case-control, post-biopsy. Every record is an FNA already taken because a lesion was found.
 - **Records**: 569 total, 455 train, 114 held-out test
-- **Features** (4): radius_mean, texture_mean, perimeter_mean, area_mean
+- **Features** (30): radius_mean, texture_mean, perimeter_mean, area_mean, smoothness_mean, compactness_mean, concavity_mean, concave_points_mean, symmetry_mean, fractal_dimension_mean, radius_se, texture_se, perimeter_se, area_se, smoothness_se, compactness_se, concavity_se, concave_points_se, symmetry_se, fractal_dimension_se, radius_worst, texture_worst, perimeter_worst, area_worst, smoothness_worst, compactness_worst, concavity_worst, concave_points_worst, symmetry_worst, fractal_dimension_worst
 - **Cohort prevalence**: 37.3% vs population 25.0000%
-- **Test AUC**: 0.972 (95% CI 0.942 to 0.994)
-- **Sensitivity**: 0.81 (95% CI 0.683 to 0.925)
-- **Specificity**: 0.944 (95% CI 0.887 to 0.987)
-- **PPV at SEER prevalence**: 82.93%, about 1.2 people flagged per true case
+- **Test AUC**: 0.997 (95% CI 0.99 to 1.0)
+- **Sensitivity**: 0.976 (95% CI 0.919 to 1.0)
+- **Specificity**: 0.986 (95% CI 0.955 to 1.0)
+- **PPV at SEER prevalence**: 95.91%, about 1.0 people flagged per true case
 
   Reliability (calibrated):
 
   | Predicted bin | n | mean predicted | observed rate |
   |---|---|---|---|
-  | 0.0 to 0.2 | 65 | 0.039 | 0.031 |
-  | 0.2 to 0.4 | 11 | 0.291 | 0.545 |
-  | 0.4 to 0.6 | 3 | 0.501 | 0.667 |
-  | 0.6 to 0.8 | 7 | 0.716 | 0.571 |
-  | 0.8 to 1.0 | 28 | 0.982 | 1.0 |
+  | 0.0 to 0.2 | 72 | 0.012 | 0.014 |
+  | 0.2 to 0.4 | 1 | 0.301 | 0.0 |
+  | 0.4 to 0.6 | 2 | 0.429 | 1.0 |
+  | 0.6 to 0.8 | 2 | 0.705 | 1.0 |
+  | 0.8 to 1.0 | 37 | 0.992 | 1.0 |
 
 ### liver
 

@@ -104,6 +104,11 @@ PANEL_KIND = {
     "breast":     ("interpretation", "Needs nuclear measurements from a breast biopsy that has "
                                      "already been taken and imaged. It interprets that biopsy; "
                                      "it does not screen for one."),
+    "pancreatic": ("triage", "For someone ALREADY being investigated for pancreatic or biliary "
+                             "disease. It reads CA 19-9, which is a tumour marker ordered when "
+                             "cancer is suspected rather than part of routine bloodwork, and its "
+                             "controls were people with benign disease of the same organs. It "
+                             "asks which of those two a sick person has."),
 }
 
 # Above this many people flagged per true case, a panel is not a screening
@@ -112,6 +117,13 @@ PANEL_KIND = {
 # experiments/operating_point.py, which also shows that for bowel, lung and
 # pancreatic NO threshold fixes it.
 NOT_SCREENING_ABOVE = 50.0
+
+# A panel that beats knowing someone's age and sex by less than this is close to
+# a demographic lookup, and the card should say so rather than letting a good
+# looking AUC imply the lab values did the work. The general panel gains 0.006,
+# and adding serum cotinine, CRP and the full blood count moved it to 0.009,
+# so it is not for want of trying: see experiments/general_rescue.py.
+BARELY_BEATS_DEMOGRAPHICS = 0.02
 
 
 # Cohort design, stated on every panel because it bounds what the numbers mean.
@@ -200,7 +212,44 @@ LAB_FIELDS = [
     # tobacco exposure. It is a lab value, which is the point: it beats the
     # smoking question it replaces. CRP captures chronic inflammation.
     "cotinine", "crp",
-    "radius_mean", "texture_mean", "perimeter_mean", "area_mean",
+    # Breast aspirate morphology, all thirty Wisconsin measurements.
+    # This used to be four. The restriction came from a time when the
+    # application asked for four numbers, but breast is an INTERPRETATION
+    # panel: whoever runs it is holding a pathology report that carries all
+    # thirty. Measured, the four-feature version scores 0.680 on the smallest
+    # third of lesions and the full set scores 0.952, which is the difference
+    # between useless and useful exactly where an early answer matters.
+    # See experiments/breast_small_lesions.py.
+    "radius_mean",
+    "texture_mean",
+    "perimeter_mean",
+    "area_mean",
+    "smoothness_mean",
+    "compactness_mean",
+    "concavity_mean",
+    "concave_points_mean",
+    "symmetry_mean",
+    "fractal_dimension_mean",
+    "radius_se",
+    "texture_se",
+    "perimeter_se",
+    "area_se",
+    "smoothness_se",
+    "compactness_se",
+    "concavity_se",
+    "concave_points_se",
+    "symmetry_se",
+    "fractal_dimension_se",
+    "radius_worst",
+    "texture_worst",
+    "perimeter_worst",
+    "area_worst",
+    "smoothness_worst",
+    "compactness_worst",
+    "concavity_worst",
+    "concave_points_worst",
+    "symmetry_worst",
+    "fractal_dimension_worst",
 ]
 
 # Patient history, answered by the user rather than read off a lab report.
@@ -283,13 +332,40 @@ DATASETS = [
         "name": "breast",
         "file": "data.csv",
         "label": "Breast Malignancy, from biopsy imaging",
-        # Only the four nuclear morphology means the app collects. The other 26
-        # columns in the Wisconsin set are deliberately left out.
+        # All thirty nuclear morphology measurements. Restricting to four means
+        # cost 0.272 of AUC on the smallest third of lesions, which is the group
+        # where an earlier answer changes anything.
         "features": {
-            "radius_mean": lambda d: d["radius_mean"],
-            "texture_mean": lambda d: d["texture_mean"],
-            "perimeter_mean": lambda d: d["perimeter_mean"],
-            "area_mean": lambda d: d["area_mean"],
+            "radius_mean": lambda d, c="radius_mean": d[c],
+            "texture_mean": lambda d, c="texture_mean": d[c],
+            "perimeter_mean": lambda d, c="perimeter_mean": d[c],
+            "area_mean": lambda d, c="area_mean": d[c],
+            "smoothness_mean": lambda d, c="smoothness_mean": d[c],
+            "compactness_mean": lambda d, c="compactness_mean": d[c],
+            "concavity_mean": lambda d, c="concavity_mean": d[c],
+            "concave_points_mean": lambda d, c="concave points_mean": d[c],
+            "symmetry_mean": lambda d, c="symmetry_mean": d[c],
+            "fractal_dimension_mean": lambda d, c="fractal_dimension_mean": d[c],
+            "radius_se": lambda d, c="radius_se": d[c],
+            "texture_se": lambda d, c="texture_se": d[c],
+            "perimeter_se": lambda d, c="perimeter_se": d[c],
+            "area_se": lambda d, c="area_se": d[c],
+            "smoothness_se": lambda d, c="smoothness_se": d[c],
+            "compactness_se": lambda d, c="compactness_se": d[c],
+            "concavity_se": lambda d, c="concavity_se": d[c],
+            "concave_points_se": lambda d, c="concave points_se": d[c],
+            "symmetry_se": lambda d, c="symmetry_se": d[c],
+            "fractal_dimension_se": lambda d, c="fractal_dimension_se": d[c],
+            "radius_worst": lambda d, c="radius_worst": d[c],
+            "texture_worst": lambda d, c="texture_worst": d[c],
+            "perimeter_worst": lambda d, c="perimeter_worst": d[c],
+            "area_worst": lambda d, c="area_worst": d[c],
+            "smoothness_worst": lambda d, c="smoothness_worst": d[c],
+            "compactness_worst": lambda d, c="compactness_worst": d[c],
+            "concavity_worst": lambda d, c="concavity_worst": d[c],
+            "concave_points_worst": lambda d, c="concave points_worst": d[c],
+            "symmetry_worst": lambda d, c="symmetry_worst": d[c],
+            "fractal_dimension_worst": lambda d, c="fractal_dimension_worst": d[c],
         },
         "target": lambda d: (d["diagnosis"].astype(str).str.upper() == "M").astype(int),
         "positive_means": "a malignant fine needle aspirate",
@@ -313,6 +389,15 @@ DATASETS = [
             "gender": lambda d: d["gender"],
             "bilirubin": lambda d: d["bilirubin"],
             "alkaline_phosphatase": lambda d: d["alkaline_phosphatase"],
+            # GGT sits on the same comprehensive metabolic panel and was simply
+            # never pulled. It is what tells you a raised alkaline phosphatase
+            # came from the liver and not from bone, so the panel was reading
+            # ALP without the value that disambiguates it. Worth +0.009 AUC,
+            # winning 5 of 5 paired repeats with no overlap between the two
+            # ranges. Globulin, LDH and uric acid were tested alongside it and
+            # added nothing once GGT was in, so only GGT is taken:
+            # see experiments/liver_extra_analytes.py.
+            "ggt": lambda d: d["ggt"],
             "alt": lambda d: d["alt"],
             "ast": lambda d: d["ast"],
             "protein_total": lambda d: d["protein_total"],
@@ -772,6 +857,25 @@ def prepare(config: dict):
     return X, y, medians
 
 
+def load_demographic_gain() -> dict:
+    """
+    How much each panel adds over age and sex, measured across repeated folds.
+
+    Not from the held-out split. The bowel panel's held-out split says it LOSES
+    to age and sex by 0.024 while twenty paired repeats say it WINS by 0.039,
+    and that split has already been shown to be an unrepresentative draw.
+    Driving a user-facing "barely beats demographics" warning off it would
+    repeat the mistake that got the cervical panel withdrawn.
+    """
+    path = "experiments/demographic_gain_result.json"
+    if not os.path.isfile(path):
+        print("NOTE: demographic_gain_result.json not found, "
+              "run experiments/demographic_gain.py.")
+        return {}
+    with open(path) as f:
+        return json.load(f)
+
+
 def load_fairness() -> dict:
     """
     Per-group AUC from experiments/fairness.py, keyed by domain.
@@ -881,13 +985,15 @@ def load_held_out() -> dict:
 HELD_OUT = {}
 STABILITY = {}
 FAIRNESS = {}
+DEMO_GAIN = {}
 
 
 def main():
-    global HELD_OUT, STABILITY, FAIRNESS
+    global HELD_OUT, STABILITY, FAIRNESS, DEMO_GAIN
     HELD_OUT = load_held_out()
     STABILITY = load_split_stability()
     FAIRNESS = load_fairness()
+    DEMO_GAIN = load_demographic_gain()
 
     for d in MODEL_DIRS:
         os.makedirs(d, exist_ok=True)
@@ -980,12 +1086,27 @@ def main():
         held_out = HELD_OUT.get(name, {})
         stability = STABILITY.get(name, {})
         fairness = FAIRNESS.get(name, {})
-        kind, kind_note = PANEL_KIND.get(name, ("screening", ""))
+        # No default. A missing entry used to fall back to ("screening", ""),
+        # which meant a new panel silently claimed to be a screening test with no
+        # note explaining itself. That is the strongest claim a panel can make
+        # and the one most likely to be wrong, so it has to be written down
+        # deliberately. The pancreatic panel sat in that default for a while.
+        if name not in PANEL_KIND:
+            raise KeyError(
+                f"panel {name!r} has no PANEL_KIND entry. Decide whether it is a "
+                f"screening, triage or interpretation panel and say so in "
+                f"PANEL_KIND before it can ship."
+            )
+        kind, kind_note = PANEL_KIND[name]
         per_case = (held_out or {}).get("people_flagged_per_true_case")
         # A screening panel that flags hundreds per case is not one.
         screening_viable = not (
             kind == "screening" and per_case is not None and per_case > NOT_SCREENING_ABOVE
         )
+        # How much this panel adds over simply knowing age and sex.
+        dg = DEMO_GAIN.get(name, {})
+        demo_gain = dg.get("gain")
+        barely_beats_demographics = bool(dg.get("barely_beats_demographics", False))
 
         bundle = {
             "model": model,
@@ -1002,6 +1123,8 @@ def main():
             "panel_kind": kind,
             "panel_kind_note": kind_note,
             "screening_viable": screening_viable,
+            "gain_over_age_sex": demo_gain,
+            "barely_beats_demographics": barely_beats_demographics,
             "flagged_per_true_case": per_case,
             "cohort_design": COHORT_DESIGN[name],
             "algorithm": algorithm,
@@ -1023,6 +1146,8 @@ def main():
             "panel_kind": kind,
             "panel_kind_note": kind_note,
             "screening_viable": screening_viable,
+            "gain_over_age_sex": demo_gain,
+            "barely_beats_demographics": barely_beats_demographics,
             "flagged_per_true_case": per_case,
         }
 

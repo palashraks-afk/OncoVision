@@ -22,18 +22,18 @@
       "n_rows": 569,
       "n_positive": 212,
       "n_splits": 30,
-      "mean_auc": 0.959,
-      "median_auc": 0.964,
-      "std_auc": 0.02,
-      "min_auc": 0.901,
-      "max_auc": 0.991,
+      "mean_auc": 0.992,
+      "median_auc": 0.994,
+      "std_auc": 0.007,
+      "min_auc": 0.97,
+      "max_auc": 1.0,
       "split_range_2p5_97p5": [
-        0.915,
-        0.989
+        0.978,
+        1.0
       ],
-      "shipped_split_auc": 0.972,
-      "shipped_split_percentile": 73.3,
-      "shipped_minus_mean": 0.013
+      "shipped_split_auc": 0.997,
+      "shipped_split_percentile": 76.7,
+      "shipped_minus_mean": 0.005
     },
     "liver": {
       "n_rows": 35511,

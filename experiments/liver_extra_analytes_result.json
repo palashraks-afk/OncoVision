@@ -1,0 +1,28 @@
+{
+  "shipped_auc": 0.741,
+  "arms": {
+    "B + GGT": {
+      "auc": 0.75,
+      "gain": 0.009,
+      "wins": 5,
+      "repeats": 5,
+      "helps": true
+    },
+    "C + GGT, globulin": {
+      "auc": 0.749,
+      "gain": 0.008,
+      "wins": 5,
+      "repeats": 5,
+      "helps": true
+    },
+    "D + all four": {
+      "auc": 0.749,
+      "gain": 0.008,
+      "wins": 5,
+      "repeats": 5,
+      "helps": true
+    }
+  },
+  "best_arm": "B + GGT",
+  "adopt": true
+}

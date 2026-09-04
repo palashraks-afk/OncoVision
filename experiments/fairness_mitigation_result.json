@@ -1,0 +1,32 @@
+{
+  "general": {
+    "baseline_overall": 0.756,
+    "baseline_worst_group": 0.68,
+    "reweighted_overall": 0.756,
+    "reweighted_worst_group": 0.675,
+    "worst_group_gain": -0.005,
+    "overall_cost": 0.0,
+    "reweighting_helped_worst": 1,
+    "adopt": false
+  },
+  "colorectal": {
+    "baseline_overall": 0.805,
+    "baseline_worst_group": 0.779,
+    "reweighted_overall": 0.802,
+    "reweighted_worst_group": 0.768,
+    "worst_group_gain": -0.011,
+    "overall_cost": 0.003,
+    "reweighting_helped_worst": 1,
+    "adopt": false
+  },
+  "lung": {
+    "baseline_overall": 0.819,
+    "baseline_worst_group": 0.754,
+    "reweighted_overall": 0.818,
+    "reweighted_worst_group": 0.761,
+    "worst_group_gain": 0.007,
+    "overall_cost": 0.001,
+    "reweighting_helped_worst": 3,
+    "adopt": false
+  }
+}

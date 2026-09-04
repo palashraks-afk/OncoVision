@@ -103,9 +103,31 @@ def build_cycle(year, suffix, label):
     bio = take(grab(year, suffix, "BIOPRO"),
                ["SEQN", "LBXSGL", "LBXSCA", "LBXSBU", "LBXSCR", "LBXSTP",
                 "LBXSAL", "LBXSASSI", "LBXSATSI", "LBXSTB", "LBXSAPSI"])
-    bmx = take(grab(year, suffix, "BMX"), ["SEQN", "BMXBMI"])
+    # Waist circumference alongside BMI. BMI cannot tell a heavy-set person from
+    # a centrally obese one, and it is central adiposity that the obesity-cancer
+    # literature ties to risk. It costs nothing: NHANES measures it on the same
+    # visit, and a clinic can measure it with a tape.
+    bmx = take(grab(year, suffix, "BMX"), ["SEQN", "BMXBMI", "BMXWAIST"])
     smq = take(grab(year, suffix, "SMQ"), ["SEQN", "SMQ020", "SMQ040"])
     alq = take(grab(year, suffix, "ALQ"), ["SEQN", "ALQ101", "ALQ111", "ALQ130"])
+    # Serum cotinine and CRP. Neither was ever offered to this panel, which is
+    # why "bloodwork does not help the general panel" was only ever tested
+    # against a blood count and a metabolic panel. File names move per cycle.
+    # grab() appends the cycle suffix itself, so these are base names.
+    cot_base = {"D": "COT", "E": "COTNAL", "F": "COTNAL",
+                "G": "COTNAL", "H": "COT"}.get(suffix)
+    crp_base = {"D": "CRP", "E": "CRP", "F": "CRP"}.get(suffix)
+    cot = take(grab(year, suffix, cot_base) if cot_base else None, ["SEQN", "LBXCOT"])
+    crp = take(grab(year, suffix, crp_base) if crp_base else None, ["SEQN", "LBXCRP"])
+    # Physical activity. The application asks "hours of exercise per week" and
+    # then no panel read the answer, which is a question asked for nothing.
+    # From 2007 NHANES uses the Global Physical Activity Questionnaire, where
+    # recreational activity is days per week times minutes per day, asked
+    # separately for vigorous and moderate. That maps onto the app's question
+    # directly. The 2005-2006 cycle used a different instrument that does not
+    # convert cleanly, so it is left missing rather than forced.
+    paq = take(grab(year, suffix, "PAQ"),
+               ["SEQN", "PAQ650", "PAQ655", "PAD660", "PAQ665", "PAQ670", "PAD675"])
     mcq = grab(year, suffix, "MCQ")
     if demo is None or cbc is None or bio is None or mcq is None:
         return None
@@ -121,7 +143,7 @@ def build_cycle(year, suffix, label):
     mc = pd.DataFrame({"SEQN": mcq["SEQN"], "ever_cancer": ever, "age_dx": earliest_dx})
 
     df = demo.merge(cbc, on="SEQN").merge(bio, on="SEQN").merge(mc, on="SEQN")
-    for part in (bmx, smq, alq):
+    for part in (bmx, smq, alq, cot, crp, paq):
         if part is not None:
             df = df.merge(part, on="SEQN", how="left")
     df = df[df["RIDAGEYR"] >= 20]
@@ -147,6 +169,28 @@ def build_cycle(year, suffix, label):
         if gate in df.columns:
             alcohol[df[gate] == 2] = 0
 
+    # Recreational exercise, hours per week, on the same 0 to 10 scale the app
+    # asks for. Work activity is deliberately excluded: a warehouse shift and a
+    # run are not the same exposure, and the app's question says "exercise".
+    # A "no" to the gate question means zero, not missing.
+    def _bout(gate, days, minutes):
+        if not all(c in df.columns for c in (gate, days, minutes)):
+            return pd.Series(np.nan, index=df.index)
+        d = pd.to_numeric(df[days], errors="coerce").where(lambda s: s <= 7)
+        m = pd.to_numeric(df[minutes], errors="coerce").where(lambda s: s <= 720)
+        hours = d * m / 60.0
+        hours[df[gate] == 2] = 0.0
+        return hours
+
+    vigorous = _bout("PAQ650", "PAQ655", "PAD660")
+    moderate = _bout("PAQ665", "PAQ670", "PAD675")
+    if vigorous.notna().any() or moderate.notna().any():
+        exercise = vigorous.fillna(0) + moderate.fillna(0)
+        exercise[vigorous.isna() & moderate.isna()] = np.nan
+        exercise = exercise.clip(0, 10)
+    else:
+        exercise = pd.Series(np.nan, index=df.index)
+
     eth = df["RIDRETH3"] if "RIDRETH3" in df.columns else df.get("RIDRETH1")
 
     out = pd.DataFrame({
@@ -170,9 +214,19 @@ def build_cycle(year, suffix, label):
         "alt": pd.to_numeric(df["LBXSATSI"], errors="coerce"),
         "bilirubin": pd.to_numeric(df["LBXSTB"], errors="coerce"),
         "alkaline_phosphatase": pd.to_numeric(df["LBXSAPSI"], errors="coerce"),
+        # Tobacco exposure measured in blood, and inflammation. Added because
+        # the earlier finding that "bloodwork does not help the general panel"
+        # was only ever tested against a blood count and a metabolic panel, and
+        # never against these two.
+        "cotinine": (pd.to_numeric(df["LBXCOT"], errors="coerce")
+                     if "LBXCOT" in df.columns else np.nan),
+        "crp": (pd.to_numeric(df["LBXCRP"], errors="coerce") * 10.0
+                if "LBXCRP" in df.columns else np.nan),
+        "waist": pd.to_numeric(df.get("BMXWAIST"), errors="coerce"),
         # Lifestyle
         "smoking": smoking,
         "alcohol_intake": alcohol,
+        "physical_activity": exercise,
         "race_ethnicity": eth.map(RACE) if eth is not None else None,
         "cycle": label,
         "years_since_diagnosis": years_since,

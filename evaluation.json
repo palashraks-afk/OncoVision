@@ -197,132 +197,158 @@
     "n_total": 569,
     "n_train": 455,
     "n_test": 114,
-    "n_features": 4,
+    "n_features": 30,
     "features": [
       "radius_mean",
       "texture_mean",
       "perimeter_mean",
-      "area_mean"
+      "area_mean",
+      "smoothness_mean",
+      "compactness_mean",
+      "concavity_mean",
+      "concave_points_mean",
+      "symmetry_mean",
+      "fractal_dimension_mean",
+      "radius_se",
+      "texture_se",
+      "perimeter_se",
+      "area_se",
+      "smoothness_se",
+      "compactness_se",
+      "concavity_se",
+      "concave_points_se",
+      "symmetry_se",
+      "fractal_dimension_se",
+      "radius_worst",
+      "texture_worst",
+      "perimeter_worst",
+      "area_worst",
+      "smoothness_worst",
+      "compactness_worst",
+      "concavity_worst",
+      "concave_points_worst",
+      "symmetry_worst",
+      "fractal_dimension_worst"
     ],
     "cohort_prevalence": 0.373,
-    "cv_auc_train_only": 0.954,
+    "cv_auc_train_only": 0.993,
     "uncalibrated": {
       "variant": "uncalibrated",
-      "threshold": 0.4596,
-      "auc": 0.968,
+      "threshold": 0.3005,
+      "auc": 0.998,
       "auc_ci": [
-        0.933,
-        0.993
-      ],
-      "sensitivity": 0.833,
-      "sensitivity_ci": [
-        0.722,
-        0.938
-      ],
-      "specificity": 0.958,
-      "specificity_ci": [
-        0.903,
+        0.994,
         1.0
       ],
-      "ppv_in_cohort": 0.921,
-      "brier": 0.0678,
-      "calibration_slope": 1.432,
-      "calibration_intercept": 0.128,
+      "sensitivity": 0.976,
+      "sensitivity_ci": [
+        0.921,
+        1.0
+      ],
+      "specificity": 0.986,
+      "specificity_ci": [
+        0.955,
+        1.0
+      ],
+      "ppv_in_cohort": 0.976,
+      "brier": 0.0211,
+      "calibration_slope": 2.782,
+      "calibration_intercept": 0.483,
       "reliability": [
         {
           "bin": "0.0 to 0.2",
-          "n": 63,
-          "predicted": 0.081,
-          "observed": 0.032
+          "n": 70,
+          "predicted": 0.046,
+          "observed": 0.014
         },
         {
           "bin": "0.2 to 0.4",
-          "n": 10,
-          "predicted": 0.308,
-          "observed": 0.4
+          "n": 2,
+          "predicted": 0.213,
+          "observed": 0.0
         },
         {
           "bin": "0.4 to 0.6",
-          "n": 5,
-          "predicted": 0.441,
-          "observed": 0.6
+          "n": 3,
+          "predicted": 0.421,
+          "observed": 0.667
         },
         {
           "bin": "0.6 to 0.8",
-          "n": 8,
-          "predicted": 0.712,
-          "observed": 0.625
+          "n": 5,
+          "predicted": 0.724,
+          "observed": 1.0
         },
         {
           "bin": "0.8 to 1.0",
-          "n": 28,
-          "predicted": 0.951,
+          "n": 34,
+          "predicted": 0.963,
           "observed": 1.0
         }
       ],
-      "ppv_at_population_prevalence": 0.86957,
-      "npv_at_population_prevalence": 0.94521,
-      "people_flagged_per_true_case": 1.1,
+      "ppv_at_population_prevalence": 0.95906,
+      "npv_at_population_prevalence": 0.99202,
+      "people_flagged_per_true_case": 1.0,
       "population_prevalence": 0.25,
       "prevalence_source": "Malignancy among breast lesions taken to biopsy"
     },
     "calibrated": {
       "variant": "isotonic calibrated",
-      "threshold": 0.3884,
-      "auc": 0.972,
+      "threshold": 0.2985,
+      "auc": 0.997,
       "auc_ci": [
-        0.942,
-        0.994
+        0.99,
+        1.0
       ],
-      "sensitivity": 0.81,
+      "sensitivity": 0.976,
       "sensitivity_ci": [
-        0.683,
-        0.925
+        0.919,
+        1.0
       ],
-      "specificity": 0.944,
+      "specificity": 0.986,
       "specificity_ci": [
-        0.887,
-        0.987
+        0.955,
+        1.0
       ],
-      "ppv_in_cohort": 0.895,
-      "brier": 0.0668,
-      "calibration_slope": 1.118,
-      "calibration_intercept": 0.179,
+      "ppv_in_cohort": 0.976,
+      "brier": 0.0167,
+      "calibration_slope": 1.616,
+      "calibration_intercept": 1.656,
       "reliability": [
         {
           "bin": "0.0 to 0.2",
-          "n": 65,
-          "predicted": 0.039,
-          "observed": 0.031
+          "n": 72,
+          "predicted": 0.012,
+          "observed": 0.014
         },
         {
           "bin": "0.2 to 0.4",
-          "n": 11,
-          "predicted": 0.291,
-          "observed": 0.545
+          "n": 1,
+          "predicted": 0.301,
+          "observed": 0.0
         },
         {
           "bin": "0.4 to 0.6",
-          "n": 3,
-          "predicted": 0.501,
-          "observed": 0.667
+          "n": 2,
+          "predicted": 0.429,
+          "observed": 1.0
         },
         {
           "bin": "0.6 to 0.8",
-          "n": 7,
-          "predicted": 0.716,
-          "observed": 0.571
+          "n": 2,
+          "predicted": 0.705,
+          "observed": 1.0
         },
         {
           "bin": "0.8 to 1.0",
-          "n": 28,
-          "predicted": 0.982,
+          "n": 37,
+          "predicted": 0.992,
           "observed": 1.0
         }
       ],
-      "ppv_at_population_prevalence": 0.82927,
-      "npv_at_population_prevalence": 0.93701,
-      "people_flagged_per_true_case": 1.2,
+      "ppv_at_population_prevalence": 0.95906,
+      "npv_at_population_prevalence": 0.99202,
+      "people_flagged_per_true_case": 1.0,
       "population_prevalence": 0.25,
       "prevalence_source": "Malignancy among breast lesions taken to biopsy"
     },
@@ -331,10 +357,10 @@
         "auc": 0.5
       },
       "logistic_regression": {
-        "auc": 0.964,
+        "auc": 0.995,
         "auc_ci": [
-          0.93,
-          0.988
+          0.987,
+          1.0
         ]
       }
     },

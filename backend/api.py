@@ -101,6 +101,33 @@ BIOLOGICAL_BOUNDS = {
     # Tobacco exposure, inflammation, and the prostate work-up.
     "cotinine": (0.0, 2000.0), "crp": (0.0, 500.0),
     "prostate_volume": (1.0, 300.0), "psa_density": (0.0, 50.0), "pi_rads": (1, 5),
+    # The remaining Wisconsin aspirate measurements.
+    "smoothness_mean": (0.0, 300.0),
+    "compactness_mean": (0.0, 300.0),
+    "concavity_mean": (0.0, 300.0),
+    "concave_points_mean": (0.0, 300.0),
+    "symmetry_mean": (0.0, 300.0),
+    "fractal_dimension_mean": (0.0, 300.0),
+    "radius_se": (0.0, 300.0),
+    "texture_se": (0.0, 300.0),
+    "perimeter_se": (0.0, 300.0),
+    "area_se": (0.0, 3000.0),
+    "smoothness_se": (0.0, 300.0),
+    "compactness_se": (0.0, 300.0),
+    "concavity_se": (0.0, 300.0),
+    "concave_points_se": (0.0, 300.0),
+    "symmetry_se": (0.0, 300.0),
+    "fractal_dimension_se": (0.0, 300.0),
+    "radius_worst": (0.0, 300.0),
+    "texture_worst": (0.0, 300.0),
+    "perimeter_worst": (0.0, 300.0),
+    "area_worst": (0.0, 3000.0),
+    "smoothness_worst": (0.0, 300.0),
+    "compactness_worst": (0.0, 300.0),
+    "concavity_worst": (0.0, 300.0),
+    "concave_points_worst": (0.0, 300.0),
+    "symmetry_worst": (0.0, 300.0),
+    "fractal_dimension_worst": (0.0, 300.0),
 }
 
 # Upper limit of the normal reference range for each measurable marker.
@@ -220,6 +247,32 @@ DISPLAY_NAMES = {
     "cotinine": "Serum cotinine", "crp": "CRP",
     "prostate_volume": "Prostate volume", "psa_density": "PSA density",
     "pi_rads": "PI-RADS score",
+    "smoothness_mean": "Smoothness Mean",
+    "compactness_mean": "Compactness Mean",
+    "concavity_mean": "Concavity Mean",
+    "concave_points_mean": "Concave Points Mean",
+    "symmetry_mean": "Symmetry Mean",
+    "fractal_dimension_mean": "Fractal Dimension Mean",
+    "radius_se": "Radius Se",
+    "texture_se": "Texture Se",
+    "perimeter_se": "Perimeter Se",
+    "area_se": "Area Se",
+    "smoothness_se": "Smoothness Se",
+    "compactness_se": "Compactness Se",
+    "concavity_se": "Concavity Se",
+    "concave_points_se": "Concave Points Se",
+    "symmetry_se": "Symmetry Se",
+    "fractal_dimension_se": "Fractal Dimension Se",
+    "radius_worst": "Radius Worst",
+    "texture_worst": "Texture Worst",
+    "perimeter_worst": "Perimeter Worst",
+    "area_worst": "Area Worst",
+    "smoothness_worst": "Smoothness Worst",
+    "compactness_worst": "Compactness Worst",
+    "concavity_worst": "Concavity Worst",
+    "concave_points_worst": "Concave Points Worst",
+    "symmetry_worst": "Symmetry Worst",
+    "fractal_dimension_worst": "Fractal Dimension Worst",
 }
 
 
@@ -477,6 +530,32 @@ class PatientData(BaseModel):
     texture_mean: Optional[float] = None
     perimeter_mean: Optional[float] = None
     area_mean: Optional[float] = None
+    smoothness_mean: Optional[float] = None
+    compactness_mean: Optional[float] = None
+    concavity_mean: Optional[float] = None
+    concave_points_mean: Optional[float] = None
+    symmetry_mean: Optional[float] = None
+    fractal_dimension_mean: Optional[float] = None
+    radius_se: Optional[float] = None
+    texture_se: Optional[float] = None
+    perimeter_se: Optional[float] = None
+    area_se: Optional[float] = None
+    smoothness_se: Optional[float] = None
+    compactness_se: Optional[float] = None
+    concavity_se: Optional[float] = None
+    concave_points_se: Optional[float] = None
+    symmetry_se: Optional[float] = None
+    fractal_dimension_se: Optional[float] = None
+    radius_worst: Optional[float] = None
+    texture_worst: Optional[float] = None
+    perimeter_worst: Optional[float] = None
+    area_worst: Optional[float] = None
+    smoothness_worst: Optional[float] = None
+    compactness_worst: Optional[float] = None
+    concavity_worst: Optional[float] = None
+    concave_points_worst: Optional[float] = None
+    symmetry_worst: Optional[float] = None
+    fractal_dimension_worst: Optional[float] = None
 
     # Patient history
     gender: Optional[float] = None
@@ -788,6 +867,11 @@ async def predict_risk(data: PatientData):
             "panel_kind": bundle.get("panel_kind", "screening"),
             "panel_kind_note": bundle.get("panel_kind_note", ""),
             "screening_viable": bundle.get("screening_viable", True),
+            # How much this panel adds over knowing age and sex. Surfaced
+            # because a 0.75 AUC looks respectable right up until you learn
+            # that age and sex alone reach 0.75 too.
+            "gain_over_age_sex": bundle.get("gain_over_age_sex"),
+            "barely_beats_demographics": bundle.get("barely_beats_demographics", False),
             "auc_ci": held.get("auc_ci"),
             "sensitivity": held.get("sensitivity", metrics.get("sensitivity")),
             "sensitivity_ci": held.get("sensitivity_ci"),

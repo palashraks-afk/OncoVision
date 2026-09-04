@@ -1,0 +1,43 @@
+{
+  "arms": {
+    "A four shipped means": {
+      "features": 4,
+      "overall_auc": 0.956,
+      "small_lesion_auc": 0.68,
+      "small_lesion_ci": [
+        0.347,
+        0.794
+      ]
+    },
+    "B all ten means": {
+      "features": 10,
+      "overall_auc": 0.983,
+      "small_lesion_auc": 0.878,
+      "small_lesion_ci": [
+        0.607,
+        0.998
+      ]
+    },
+    "C means + worst": {
+      "features": 20,
+      "overall_auc": 0.989,
+      "small_lesion_auc": 0.876,
+      "small_lesion_ci": [
+        0.614,
+        1.0
+      ]
+    },
+    "D all thirty": {
+      "features": 30,
+      "overall_auc": 0.992,
+      "small_lesion_auc": 0.952,
+      "small_lesion_ci": [
+        0.902,
+        1.0
+      ]
+    }
+  },
+  "best_arm": "D all thirty",
+  "small_lesion_gain": 0.272,
+  "adopt": true
+}

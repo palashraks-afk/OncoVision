@@ -791,6 +791,21 @@ export default function OncovisionDashboard() {
                               </p>
                             )}
                             {/*
+                              A respectable-looking AUC can hide the fact that
+                              age and sex alone reach almost the same number.
+                              The general panel is that case: 0.757 against
+                              0.750, and adding cotinine, CRP and the whole
+                              blood count only moved it to 0.759.
+                            */}
+                            {!isBenign && d.barely_beats_demographics && (
+                              <p className="text-[11px] leading-relaxed mb-3 pl-3 border-l-2 border-[var(--warn)] text-[var(--ink-3)]">
+                                <span className="font-bold text-[var(--warn)]">Barely beats age and sex. </span>
+                                This panel scores only {d.gain_over_age_sex?.toFixed(3)} above what
+                                your age and sex predict on their own, so most of this number is
+                                demographics rather than anything read from your lab report.
+                              </p>
+                            )}
+                            {/*
                               Fairness, where the cohort records race and
                               ethnicity. Shown on the card rather than in the
                               methodology tab, because a panel that works
