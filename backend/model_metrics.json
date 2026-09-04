@@ -166,7 +166,11 @@
       "materially_worse_groups": [
         "Other Hispanic"
       ]
-    }
+    },
+    "panel_kind": "screening",
+    "panel_kind_note": "Reads routine bloodwork and your history. Anyone can run it.",
+    "screening_viable": true,
+    "flagged_per_true_case": 16.9
   },
   "breast": {
     "label": "Breast Malignancy, from biopsy imaging",
@@ -231,7 +235,11 @@
       "shipped_split_percentile": 73.3,
       "n_splits": 30
     },
-    "fairness": {}
+    "fairness": {},
+    "panel_kind": "interpretation",
+    "panel_kind_note": "Needs nuclear measurements from a breast biopsy that has already been taken and imaged. It interprets that biopsy; it does not screen for one.",
+    "screening_viable": true,
+    "flagged_per_true_case": 1.2
   },
   "liver": {
     "label": "Liver Disease Risk",
@@ -415,7 +423,11 @@
       "worst_auc": 0.713,
       "spread": 0.085,
       "materially_worse_groups": []
-    }
+    },
+    "panel_kind": "screening",
+    "panel_kind_note": "Reads routine bloodwork and your history. Anyone can run it.",
+    "screening_viable": true,
+    "flagged_per_true_case": 9.9
   },
   "pancreatic": {
     "label": "Pancreatic Cancer Risk",
@@ -519,7 +531,11 @@
       "shipped_split_percentile": 50.0,
       "n_splits": 30
     },
-    "fairness": {}
+    "fairness": {},
+    "panel_kind": "screening",
+    "panel_kind_note": "",
+    "screening_viable": false,
+    "flagged_per_true_case": 210.4
   },
   "colorectal": {
     "label": "Bowel Cancer Risk",
@@ -687,7 +703,11 @@
       "materially_worse_groups": [
         "Non-Hispanic Black"
       ]
-    }
+    },
+    "panel_kind": "screening",
+    "panel_kind_note": "Reads a routine blood count. Anyone can run it.",
+    "screening_viable": false,
+    "flagged_per_true_case": 768.4
   },
   "ovarian": {
     "label": "Ovarian Malignancy, in a known ovarian mass",
@@ -794,7 +814,11 @@
       "shipped_split_percentile": 70.0,
       "n_splits": 30
     },
-    "fairness": {}
+    "fairness": {},
+    "panel_kind": "triage",
+    "panel_kind_note": "For a woman who ALREADY has an ovarian mass found on imaging. It asks whether that mass is malignant, not whether one exists.",
+    "screening_viable": true,
+    "flagged_per_true_case": 1.3
   },
   "lung": {
     "label": "Lung Cancer Risk, with tobacco exposure",
@@ -970,7 +994,11 @@
       "materially_worse_groups": [
         "Non-Hispanic Black"
       ]
-    }
+    },
+    "panel_kind": "screening",
+    "panel_kind_note": "Reads routine bloodwork. Offered to people with tobacco exposure, which is who lung screening is for.",
+    "screening_viable": false,
+    "flagged_per_true_case": 55.1
   },
   "prostate": {
     "label": "Prostate Cancer Risk, with an MRI score",
@@ -1056,6 +1084,10 @@
       "shipped_split_percentile": 70.0,
       "n_splits": 30
     },
-    "fairness": {}
+    "fairness": {},
+    "panel_kind": "interpretation",
+    "panel_kind_note": "Needs a PI-RADS score from a prostate MRI. Without it this panel only matches reading the PSA number, so it is not a lab-report test.",
+    "screening_viable": true,
+    "flagged_per_true_case": 1.4
   }
 }

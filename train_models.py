@@ -74,6 +74,46 @@ WITHDRAWN = {
     ),
 }
 
+# What kind of question each panel answers, and what the user must already have.
+#
+# This distinction existed in the documentation and nowhere the user could see
+# it, which made the whole application read as "upload your lab report and get
+# eight cancer risks". Four of the eight are not that:
+#
+#   SCREENING       reads routine bloodwork. Anyone can run it.
+#   TRIAGE          runs AFTER something has been found, and its precision is
+#                   quoted against prevalence in the referred group, not the
+#                   street. Offering it to an unselected person is meaningless.
+#   INTERPRETATION  reads a diagnostic test that has already been performed:
+#                   a biopsy, or an MRI. It cannot be run from a lab report at
+#                   all, and the inputs simply will not exist for most people.
+#
+# Shown on every card, because a demo that implies all eight work the same way
+# is overselling four of them.
+PANEL_KIND = {
+    "general":    ("screening", "Reads routine bloodwork and your history. Anyone can run it."),
+    "liver":      ("screening", "Reads routine bloodwork and your history. Anyone can run it."),
+    "colorectal": ("screening", "Reads a routine blood count. Anyone can run it."),
+    "lung":       ("screening", "Reads routine bloodwork. Offered to people with tobacco exposure, "
+                                "which is who lung screening is for."),
+    "ovarian":    ("triage", "For a woman who ALREADY has an ovarian mass found on imaging. It "
+                             "asks whether that mass is malignant, not whether one exists."),
+    "prostate":   ("interpretation", "Needs a PI-RADS score from a prostate MRI. Without it this "
+                                     "panel only matches reading the PSA number, so it is not a "
+                                     "lab-report test."),
+    "breast":     ("interpretation", "Needs nuclear measurements from a breast biopsy that has "
+                                     "already been taken and imaged. It interprets that biopsy; "
+                                     "it does not screen for one."),
+}
+
+# Above this many people flagged per true case, a panel is not a screening
+# instrument whatever its AUC says, because acting on it would mean investigating
+# hundreds of healthy people to find one cancer. Measured in
+# experiments/operating_point.py, which also shows that for bowel, lung and
+# pancreatic NO threshold fixes it.
+NOT_SCREENING_ABOVE = 50.0
+
+
 # Cohort design, stated on every panel because it bounds what the numbers mean.
 COHORT_DESIGN = {
     "general": "23,923 US adults from NHANES 2005 to 2014, nationally representative. The "
@@ -940,6 +980,12 @@ def main():
         held_out = HELD_OUT.get(name, {})
         stability = STABILITY.get(name, {})
         fairness = FAIRNESS.get(name, {})
+        kind, kind_note = PANEL_KIND.get(name, ("screening", ""))
+        per_case = (held_out or {}).get("people_flagged_per_true_case")
+        # A screening panel that flags hundreds per case is not one.
+        screening_viable = not (
+            kind == "screening" and per_case is not None and per_case > NOT_SCREENING_ABOVE
+        )
 
         bundle = {
             "model": model,
@@ -953,6 +999,10 @@ def main():
             "held_out": held_out,
             "stability": stability,
             "fairness": fairness,
+            "panel_kind": kind,
+            "panel_kind_note": kind_note,
+            "screening_viable": screening_viable,
+            "flagged_per_true_case": per_case,
             "cohort_design": COHORT_DESIGN[name],
             "algorithm": algorithm,
         }
@@ -970,6 +1020,10 @@ def main():
             "held_out": held_out,
             "stability": stability,
             "fairness": fairness,
+            "panel_kind": kind,
+            "panel_kind_note": kind_note,
+            "screening_viable": screening_viable,
+            "flagged_per_true_case": per_case,
         }
 
     with open(os.path.join("backend", "model_metrics.json"), "w") as f:

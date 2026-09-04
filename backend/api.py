@@ -779,6 +779,15 @@ async def predict_risk(data: PatientData):
             "fairness_worst_group": fair.get("worst_group"),
             "fairness_worst_auc": fair.get("worst_auc"),
             "fairness_flagged": fair.get("materially_worse_groups"),
+            # What kind of question this panel answers, and whether it is a
+            # screening test at all. Four of the eight are not: two need a
+            # biopsy or an MRI first, one runs only after a mass is found, and
+            # three of the four true screening panels flag so many healthy
+            # people per case that acting on them population-wide is not
+            # defensible. Carried to the card so a demo cannot imply otherwise.
+            "panel_kind": bundle.get("panel_kind", "screening"),
+            "panel_kind_note": bundle.get("panel_kind_note", ""),
+            "screening_viable": bundle.get("screening_viable", True),
             "auc_ci": held.get("auc_ci"),
             "sensitivity": held.get("sensitivity", metrics.get("sensitivity")),
             "sensitivity_ci": held.get("sensitivity_ci"),

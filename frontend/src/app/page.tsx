@@ -759,6 +759,38 @@ export default function OncovisionDashboard() {
                               median. Shown next to the number, not buried.
                             */}
                             {/*
+                              What kind of test this is. Four of the eight
+                              panels are not screening: two need a biopsy or an
+                              MRI first, one runs only after a mass is found.
+                              That was true in the documentation and invisible
+                              here, which let the whole app read as "upload your
+                              labs, get eight cancer risks".
+                            */}
+                            {!isBenign && d.panel_kind && d.panel_kind !== "screening" && (
+                              <p className="text-[11px] leading-relaxed mb-3 pl-3 border-l-2 border-[var(--stamp)] text-[var(--ink-3)]">
+                                <span className="font-bold text-[var(--stamp)] uppercase tracking-wider">
+                                  {d.panel_kind === "triage" ? "Triage test. " : "Interpretation test. "}
+                                </span>
+                                {d.panel_kind_note}
+                              </p>
+                            )}
+                            {/*
+                              A screening panel that flags dozens or hundreds of
+                              healthy people per true case is not a screening
+                              instrument, whatever its AUC says. Sweeping the
+                              whole threshold range showed no setting fixes
+                              bowel, lung or pancreatic.
+                            */}
+                            {!isBenign && d.screening_viable === false && (
+                              <p className="text-[11px] leading-relaxed mb-3 pl-3 border-l-2 border-[var(--flag)] text-[var(--ink-3)]">
+                                <span className="font-bold text-[var(--flag)]">Not a screening test. </span>
+                                At the real rate of this cancer, this panel would flag about{" "}
+                                {Math.round(d.people_flagged_per_true_case ?? 0)} people for every one
+                                who has it, and no threshold setting fixes that. Treat it as one input
+                                to a conversation with a doctor, not as a result to act on.
+                              </p>
+                            )}
+                            {/*
                               Fairness, where the cohort records race and
                               ethnicity. Shown on the card rather than in the
                               methodology tab, because a panel that works

@@ -289,6 +289,55 @@ than 0.725. It still excludes chance and still beats age alone by 0.267, which i
 but it is the least certain thing in this project and both numbers are published rather than only
 the flattering one.
 
+### What each panel actually is, now visible to the user
+
+The single biggest gap between this project and its own documentation was that
+the documentation knew four of the eight panels are not screening tests and the
+interface did not. Someone opening the app saw eight cancer risks in one list
+and had no way to tell that two of them require a biopsy or an MRI they will
+never have, and that three of the remaining ones would flag dozens or hundreds
+of healthy people per cancer found.
+
+Every result card now carries its type.
+
+| Panel | Type | What you must already have |
+|---|---|---|
+| General | Screening | Nothing. Routine bloodwork and your history. |
+| Liver | Screening | Nothing. Routine bloodwork and your history. |
+| Bowel | Screening | Nothing. A routine blood count. |
+| Lung | Screening | Nothing, but it is offered to people with tobacco exposure. |
+| Ovarian | **Triage** | An ovarian mass already found on imaging. |
+| Prostate | **Interpretation** | A PI-RADS score from a prostate MRI. |
+| Breast | **Interpretation** | Nuclear measurements from a biopsy already taken. |
+
+A triage panel asks whether something already found is malignant. An
+interpretation panel reads a diagnostic test that has already been performed.
+Neither can be run from a lab report, and pretending otherwise is the main way
+this application could mislead someone.
+
+### Three panels are labelled "not a screening test" on their own card
+
+Separately from what a panel needs, there is the question of whether acting on
+it would be defensible. A panel flagging hundreds of healthy people per true
+case is not a screening instrument whatever its AUC says, and
+`experiments/operating_point.py` showed that for three of them no threshold
+setting fixes it.
+
+| Panel | Flagged per true case | Card says |
+|---|---|---|
+| Bowel | 768 | Not a screening test |
+| Pancreatic | 210 | Not a screening test |
+| Lung | 55 | Not a screening test |
+| General | 17 | (no warning) |
+| Liver | 10 | (no warning) |
+| Prostate | 1.4 | (no warning) |
+| Ovarian | 1.3 | (no warning) |
+| Breast | 1.2 | (no warning) |
+
+The threshold for that warning is 50 flagged per case, set in `train_models.py`
+as `NOT_SCREENING_ABOVE`, and it is applied automatically from the measured
+precision rather than hand-assigned, so a panel cannot quietly drift past it.
+
 ### The precision problem, attacked properly
 
 The worst number in this project was never an AUC. It was that the pancreatic

@@ -455,8 +455,8 @@ export const CASE_POOL: DemoCase[] = [
     expect: "Ovarian",
     positive: true,
     source: "Soochow ovarian mass cohort, positive record",
-    note: "53 year old pre-menopausal woman with an ovarian mass already found on imaging. CA 125 at 44.675 U/mL, HE4 at 53.27 pmol/L, CEA 1.33, platelets 148, albumin 4.2.",
-    delta: { age: 53, rbc: 4.64, hemoglobin: 13.8, platelets: 148, glucose: 127.8, calcium: 8.9779, bun: 7.28, creatinine: 0.4977, protein_total: 7.25, albumin: 4.2, ast: 17, alt: 15, bilirubin: 0.4912, alkaline_phosphatase: 71, alpha_fetoprotein_level: 2.28, plasma_ca19_9: 14.2, hematocrit: 42.1, mcv: 90.7, mch: 29.7, rdw: 12.1, mpv: 12.1, neutrophil_pct: 60.5, ggt: 16, ca125: 44.675, he4: 53.27, cea: 1.33 },
+    note: "50 year old pre-menopausal woman with an ovarian mass already found on imaging. CA 125 at 21.95 U/mL, HE4 at 55.76 pmol/L, CEA 0.71, platelets 199, albumin 3.42.",
+    delta: { age: 50, rbc: 4.42, hemoglobin: 13.1, platelets: 199, glucose: 86.4, calcium: 9.4188, bun: 12.012, creatinine: 0.5667, protein_total: 7.31, albumin: 3.42, ast: 18, alt: 15, bilirubin: 0.6023, alkaline_phosphatase: 63, alpha_fetoprotein_level: 2.6, plasma_ca19_9: 85.09, hematocrit: 39.5, mcv: 89.4, mch: 29.6, rdw: 14, mpv: 12.9, neutrophil_pct: 50.2, ggt: 17, ca125: 21.95, he4: 55.76, cea: 0.71 },
   },
   {
     id: "ovarian-41",
