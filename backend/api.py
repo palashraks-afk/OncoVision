@@ -102,11 +102,14 @@ def _rule_out_view(bundle, proba_pct: float) -> dict:
             "cases_missed_per_100": ro["cases_missed_per_100"],
             "meaning": (
                 "This panel would leave you out of further testing. At this "
-                f"setting it catches {ro['sensitivity'] * 100:.0f} of every 100 "
+                f"setting it caught {ro['sensitivity'] * 100:.0f} of every 100 "
                 f"cases and excludes {ro['share_ruled_out'] * 100:.0f} percent of "
                 "people, so it misses "
-                f"{ro['cases_missed_per_100']} in 100. It is a reason to feel "
-                "less worried, not a clearance."
+                f"{ro['cases_missed_per_100']} in 100. Those rates were measured "
+                "on the cohort the cut was tuned on; tested on a cohort from "
+                "another decade the bowel panel caught 93 of 100 rather than 96, "
+                "so treat them as approximate. It is a reason to feel less "
+                "worried, not a clearance."
                 if below else
                 "This panel would NOT leave you out of further testing. That is "
                 "not a prediction that you have cancer. It means there is not "

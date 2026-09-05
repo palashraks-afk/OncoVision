@@ -594,10 +594,14 @@ figure conventionally used in US health economics, it is contested, and the brea
 presented so a reader who prefers a different number can read off their own answer rather than
 accept ours.
 
-**The rule-out thresholds are chosen on the training cohorts.** They are computed from out-of-fold
-predictions rather than from the fitted model's own scores, so they are not fit to the data they
-are evaluated on, but they have not been validated on an external cohort. Given section 4.2, that
-caveat should be read seriously.
+**The rule-out thresholds are chosen on the training cohorts, and only one has been tested outside
+one.** They are computed from out-of-fold predictions rather than from the fitted model's own
+scores, so they are not fit to the data they are evaluated on. The colorectal cut was then applied
+unchanged to NHANES III: it promised to catch 95.8% of cases while excluding 40.4% of people, and
+delivered 92.9% and 46.8%, ruling out 4 of 56 cancers that it should not have. That is inside the
+5-point tolerance set beforehand and it is a real degradation, so the interface quotes the rate as
+approximate rather than exact. The lung, liver and general cuts have no such test, and given
+section 4.2 that should be read seriously.
 
 **Clipping to the observed range does not make a panel right about an extreme patient.** It stops
 it being confidently backwards. A patient whose ALT is 900 gets the score of a patient at the edge

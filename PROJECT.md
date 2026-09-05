@@ -928,6 +928,32 @@ Only a genuinely external cohort caught it. The panels here that have no externa
 read with that in mind, and that caution is now the honest headline of this section rather than a
 footnote. Reproduce with `python experiments/prospective_external.py`.
 
+### The rule-out promise was tested on another decade, and it held
+
+A threshold is a promise about a rate, and this project has already watched a rate estimated on one
+survey fail to transfer: the prospective mortality panel gained +0.013 inside NHANES, scored 0.837
+on leave-one-cycle-out, and lost 0.013 on a cohort from a different decade.
+
+The consequence of that happening to a rule-out cut is worse than an inflated AUC. A cut sold as
+catching 95 cases in 100 that actually catches 80 sends one case in five home.
+
+The bowel panel's cut was chosen on out-of-fold predictions inside NHANES 2005-2014 and applied,
+unchanged, to 14,499 NHANES III adults with 56 colorectal cancers. Model, threshold, imputation
+medians and clipping ranges all come from the training cohort; nothing from the test cohort touches
+any of them.
+
+| | Promised, on the training cohort | Actual, on NHANES III |
+|---|---|---|
+| Catches | 95.8% of cases | **92.9%** |
+| Excludes | 40.4% of people | 46.8% |
+
+**4 of 56 cancers were ruled out when they should not have been.** The cut is slightly more
+aggressive on the older cohort than advertised — it excludes more people and catches fewer cases —
+and it stays inside the 5-point tolerance set before the test was run, so the promise holds.
+
+It does degrade, though, and the interface says so rather than quoting the training figure as if it
+were universal. Reproduce with `python experiments/rule_out_external.py`.
+
 ### Does this actually save money? The first honest attempt
 
 This is the question the project exists to answer, and until now every number in it was an AUC or
