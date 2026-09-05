@@ -1,0 +1,245 @@
+{
+  "panels": {
+    "breast": {
+      "pattern: malignant morphology": {
+        "kind": "coherent pattern",
+        "risk_at_healthiest": 0.0,
+        "risk_at_worst": 100.0,
+        "peak_risk": 100.0,
+        "rise_pct_points": 100.0,
+        "reversal_pct_points": 0.0,
+        "reverses": false
+      },
+      "radius_worst": {
+        "direction_expected": "up",
+        "risk_at_worst": 3.1,
+        "peak_risk": 3.1,
+        "peak_at_value": 14.82,
+        "p99_of_training": 30.76,
+        "reversal_pct_points": 0.0,
+        "reversal_inside_training_range": false
+      },
+      "area_worst": {
+        "direction_expected": "up",
+        "risk_at_worst": 3.1,
+        "peak_risk": 3.1,
+        "peak_at_value": 685.53,
+        "p99_of_training": 2918.16,
+        "reversal_pct_points": 0.0,
+        "reversal_inside_training_range": false
+      },
+      "concave_points_worst": {
+        "direction_expected": "up",
+        "risk_at_worst": 3.1,
+        "peak_risk": 3.1,
+        "peak_at_value": 0.1,
+        "p99_of_training": 0.27,
+        "reversal_pct_points": 0.0,
+        "reversal_inside_training_range": false
+      }
+    },
+    "liver": {
+      "pattern: hepatocellular injury": {
+        "kind": "coherent pattern",
+        "risk_at_healthiest": 1.5,
+        "risk_at_worst": 14.3,
+        "peak_risk": 28.5,
+        "rise_pct_points": 12.8,
+        "reversal_pct_points": 14.2,
+        "reverses": true
+      },
+      "alt": {
+        "direction_expected": "up",
+        "risk_at_worst": 4.8,
+        "peak_risk": 7.4,
+        "peak_at_value": 148.17,
+        "p99_of_training": 97.0,
+        "reversal_pct_points": 2.7,
+        "reversal_inside_training_range": false
+      },
+      "ast": {
+        "direction_expected": "up",
+        "risk_at_worst": 2.8,
+        "peak_risk": 6.5,
+        "peak_at_value": 45.59,
+        "p99_of_training": 79.0,
+        "reversal_pct_points": 3.7,
+        "reversal_inside_training_range": true
+      },
+      "ggt": {
+        "direction_expected": "up",
+        "risk_at_worst": 7.2,
+        "peak_risk": 7.2,
+        "peak_at_value": 400.96,
+        "p99_of_training": 186.0,
+        "reversal_pct_points": 0.0,
+        "reversal_inside_training_range": false
+      },
+      "bilirubin": {
+        "direction_expected": "up",
+        "risk_at_worst": 4.0,
+        "peak_risk": 4.3,
+        "peak_at_value": 1.66,
+        "p99_of_training": 1.7,
+        "reversal_pct_points": 1.0,
+        "reversal_inside_training_range": false
+      },
+      "alkaline_phosphatase": {
+        "direction_expected": "up",
+        "risk_at_worst": 5.0,
+        "peak_risk": 5.0,
+        "peak_at_value": 244.49,
+        "p99_of_training": 148.0,
+        "reversal_pct_points": 0.0,
+        "reversal_inside_training_range": false
+      },
+      "albumin": {
+        "direction_expected": "down",
+        "risk_at_worst": 2.8,
+        "peak_risk": 3.2,
+        "peak_at_value": 5.08,
+        "p99_of_training": 5.0,
+        "reversal_pct_points": 0.4,
+        "reversal_inside_training_range": false
+      }
+    },
+    "pancreatic": {
+      "pattern: obstruction and marker rise": {
+        "kind": "coherent pattern",
+        "risk_at_healthiest": 0.0,
+        "risk_at_worst": 100.0,
+        "peak_risk": 100.0,
+        "rise_pct_points": 100.0,
+        "reversal_pct_points": 0.0,
+        "reverses": false
+      },
+      "plasma_ca19_9": {
+        "direction_expected": "up",
+        "risk_at_worst": 85.7,
+        "peak_risk": 85.7,
+        "peak_at_value": 596.54,
+        "p99_of_training": 608.84,
+        "reversal_pct_points": 0.0,
+        "reversal_inside_training_range": false
+      },
+      "bilirubin": {
+        "direction_expected": "up",
+        "risk_at_worst": 7.1,
+        "peak_risk": 7.1,
+        "peak_at_value": 3.46,
+        "p99_of_training": 3.61,
+        "reversal_pct_points": 0.0,
+        "reversal_inside_training_range": false
+      },
+      "glucose": {
+        "direction_expected": "up",
+        "risk_at_worst": 0.5,
+        "peak_risk": 2.7,
+        "peak_at_value": 69.24,
+        "p99_of_training": 142.2,
+        "reversal_pct_points": 2.2,
+        "reversal_inside_training_range": true
+      }
+    },
+    "colorectal": {
+      "pattern: iron deficiency": {
+        "kind": "coherent pattern",
+        "risk_at_healthiest": 0.2,
+        "risk_at_worst": 0.3,
+        "peak_risk": 0.6,
+        "rise_pct_points": 0.1,
+        "reversal_pct_points": 0.3,
+        "reverses": false
+      },
+      "hemoglobin": {
+        "direction_expected": "down",
+        "risk_at_worst": 0.3,
+        "peak_risk": 0.6,
+        "peak_at_value": 13.65,
+        "p99_of_training": 17.4,
+        "reversal_pct_points": 0.3,
+        "reversal_inside_training_range": false
+      }
+    },
+    "ovarian": {
+      "pattern: pelvic mass markers": {
+        "kind": "coherent pattern",
+        "risk_at_healthiest": 4.5,
+        "risk_at_worst": 97.3,
+        "peak_risk": 97.3,
+        "rise_pct_points": 92.9,
+        "reversal_pct_points": 0.0,
+        "reverses": false
+      },
+      "ca125": {
+        "direction_expected": "up",
+        "risk_at_worst": 31.0,
+        "peak_risk": 31.0,
+        "peak_at_value": 3848.16,
+        "p99_of_training": 4066.84,
+        "reversal_pct_points": 0.0,
+        "reversal_inside_training_range": false
+      },
+      "he4": {
+        "direction_expected": "up",
+        "risk_at_worst": 94.2,
+        "peak_risk": 94.2,
+        "peak_at_value": 1317.93,
+        "p99_of_training": 1757.09,
+        "reversal_pct_points": 0.0,
+        "reversal_inside_training_range": false
+      },
+      "cea": {
+        "direction_expected": "up",
+        "risk_at_worst": 30.6,
+        "peak_risk": 30.6,
+        "peak_at_value": 34.26,
+        "p99_of_training": 47.58,
+        "reversal_pct_points": 0.0,
+        "reversal_inside_training_range": false
+      }
+    },
+    "prostate": {
+      "pattern: suspicious MRI and rising PSA": {
+        "kind": "coherent pattern",
+        "risk_at_healthiest": 4.5,
+        "risk_at_worst": 100.0,
+        "peak_risk": 100.0,
+        "rise_pct_points": 95.5,
+        "reversal_pct_points": 0.0,
+        "reverses": false
+      },
+      "psa": {
+        "direction_expected": "up",
+        "risk_at_worst": 57.5,
+        "peak_risk": 71.7,
+        "peak_at_value": 11.62,
+        "p99_of_training": 98.89,
+        "reversal_pct_points": 21.2,
+        "reversal_inside_training_range": true
+      },
+      "psa_density": {
+        "direction_expected": "up",
+        "risk_at_worst": 67.7,
+        "peak_risk": 67.7,
+        "peak_at_value": 4.39,
+        "p99_of_training": 5.19,
+        "reversal_pct_points": 0.0,
+        "reversal_inside_training_range": false
+      },
+      "pi_rads": {
+        "direction_expected": "up",
+        "risk_at_worst": 90.0,
+        "peak_risk": 90.0,
+        "peak_at_value": 5.0,
+        "p99_of_training": 5.0,
+        "reversal_pct_points": 0.0,
+        "reversal_inside_training_range": false
+      }
+    }
+  },
+  "n_patterns": 6,
+  "n_patterns_reversing": 1,
+  "n_reversals": 4,
+  "n_reversals_inside_training_range": 3
+}

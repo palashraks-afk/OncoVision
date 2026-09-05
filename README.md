@@ -814,6 +814,77 @@ Only a genuinely external cohort caught it. The panels here that have no externa
 read with that in mind, and that caution is now the honest headline of this section rather than a
 footnote. Reproduce with `python experiments/prospective_external.py`.
 
+### The liver panel said fulminant hepatitis was safer than a mild abnormality
+
+The worst bug found in this project, and it was found by typing an escalating patient into the
+finished application rather than by reading code.
+
+Entering a coherent acute-hepatitis picture — the transaminases, bile duct enzymes and bilirubin
+all rising together, as they do in a real patient — produced this:
+
+| Picture | ALT | AST | GGT | Bilirubin | Liver risk |
+|---|---|---|---|---|---|
+| Normal | 19 | 21 | 20 | 0.6 | 3.3% |
+| Mild | 60 | 55 | 45 | 0.8 | 9.7% |
+| Moderate | 120 | 100 | 90 | 1.2 | 14.1% |
+| **Severe** | 300 | 260 | 200 | 2.5 | **3.0%** |
+| **Fulminant** | 900 | 800 | 600 | 12.0 | **3.2%** |
+
+A patient in liver failure scored **lower than a completely healthy one**.
+
+It was not a coding error, and that is the important part. Only **19 of 35,511** people in the
+training cohort have an ALT above 250, and among the **1,436 with liver disease the highest ALT is
+232**. Every high-ALT person in the data is a non-case, so the model learned that a very high ALT
+means no liver disease. That is *true of NHANES*, whose label is self-reported "were you ever told
+you had a liver condition", and *false of medicine*: someone in acute hepatitis at the time of the
+survey has not been told yet. A tree has no splits past the edge of its data, so beyond it the
+model returns whichever leaf it lands in, at full confidence, in whichever direction it happens to
+point.
+
+The model is right about its data and wrong about the world, and no amount of retraining on this
+cohort fixes that.
+
+What the service can do is refuse to extrapolate. Every panel now ships the 1st and 99th percentile
+of each feature as it was actually observed, values are clipped to that range before scoring, and
+anything outside it is declared to the user rather than silently absorbed:
+
+| Picture | Liver risk, after |
+|---|---|
+| Normal | 3.3% |
+| Mild | 9.7% |
+| Moderate | 15.6% |
+| Severe | 16.2% |
+| Fulminant | 16.2% |
+
+Monotone, and it plateaus at the edge of the evidence instead of turning around. The user is told
+why: *"one or more of your values is further from normal than anything this panel has data on ...
+this score is a floor rather than an estimate, and the value itself matters more than the
+percentage."*
+
+`experiments/monotonicity.py` measures this across every panel, and `tools/drive_app.py` keeps the
+hepatitis picture as a standing regression check.
+
+### Getting the measurement wrong first, and what that taught
+
+The first version of the monotonicity experiment swept one feature at a time with everything else
+at its median, and reported three reversals "inside the training range". Two of them were artefacts
+of the method, not faults in the models:
+
+- Raising **PSA while holding PSA density fixed** implies a physically larger prostate, which is
+  benign hyperplasia. The model reading that as *lower* risk is correct. Swept coherently — PSA,
+  density and PI-RADS rising together — the same panel goes from 4.5% to 100%.
+- Sweeping **radius_worst alone** moved the breast panel not at all, which looked broken. The
+  thirty Wisconsin measurements are geometrically collinear; moved together from the benign median
+  to the malignant median, the same model goes from 0% to 100%.
+
+A single-feature partial dependence plot answers "what does this model do to an impossible
+patient", which is rarely the question worth asking. The experiment now sweeps whole clinical
+patterns, and reports the single-feature version separately and labelled as the weaker evidence.
+
+Of the six coherent patterns, four rise as expected, the liver one reverses (the extrapolation
+problem above), and the bowel iron-deficiency picture barely responds at all — consistent with the
+separate finding that the red cell indices do not help that panel.
+
 ### The ovarian panel told a healthy woman she had a 94.9 percent malignancy risk
 
 Found by running the finished application against an ordinary patient rather than by reading the

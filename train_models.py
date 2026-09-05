@@ -1125,6 +1125,34 @@ def main():
             "model": model,
             "feature_names": list(X.columns),
             "feature_medians": {k: float(v) for k, v in medians.items()},
+            # The range each feature was actually observed over, so the service
+            # can refuse to extrapolate.
+            #
+            # This exists because of a genuinely dangerous failure. A tree model
+            # has no splits beyond its training data, so past that edge it
+            # returns whatever leaf it happens to land in, with full confidence.
+            # The liver panel scored a coherent acute-hepatitis pattern — ALT
+            # 300, AST 260, GGT 200, bilirubin 2.5 — at 3.0 percent, LOWER than
+            # a completely normal patient at 3.3 percent and far below a mild
+            # abnormality at 14.1 percent.
+            #
+            # It was not a bug in the model. Only 19 of 35,511 people in this
+            # cohort have an ALT above 250, and among the 1,436 WITH liver
+            # disease the highest ALT is 232. So every high-ALT person in the
+            # training data is a non-case, and the model learned that a very
+            # high ALT means no liver disease. That is true of NHANES, whose
+            # label is self-reported "were you ever told you had a liver
+            # condition", and false of medicine: someone in acute hepatitis at
+            # the time of the survey has not been told yet.
+            #
+            # The model is right about its data and wrong about the world, and
+            # no amount of retraining on this cohort fixes that. What the
+            # service can do is decline to rank values it has no evidence about,
+            # which is what these percentiles are for.
+            "feature_ranges": {
+                k: [float(X[k].quantile(0.01)), float(X[k].quantile(0.99))]
+                for k in X.columns if pd.api.types.is_numeric_dtype(X[k])
+            },
             "config_name": name,
             "label": config["label"],
             "positive_means": config["positive_means"],

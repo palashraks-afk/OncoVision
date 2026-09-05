@@ -15,6 +15,7 @@ thresholds are reported alongside it as separate flags and never overwrite it.
 from fastapi import FastAPI, UploadFile, File
 from fastapi.middleware.cors import CORSMiddleware
 from fastapi.responses import JSONResponse
+from fastapi.exceptions import RequestValidationError
 import time
 from pydantic import BaseModel, ConfigDict
 from typing import List, Optional
@@ -78,6 +79,28 @@ MAX_PDF_PAGES = int(os.getenv("MAX_PDF_PAGES", "40"))
 RATE_LIMIT = int(os.getenv("RATE_LIMIT", "60"))
 RATE_WINDOW_SECONDS = int(os.getenv("RATE_WINDOW_SECONDS", "60"))
 _hits: dict = {}
+
+
+@app.exception_handler(RequestValidationError)
+async def readable_validation_error(request, exc):
+    """
+    A malformed field returned FastAPI's raw validation dump, which names
+    pydantic internals and tells a patient nothing. Every field here is a
+    number, so the only way to fail validation is to send something that is not
+    one, and saying which field is both sufficient and readable.
+    """
+    fields = []
+    for err in exc.errors():
+        loc = [str(p) for p in err.get("loc", []) if p != "body"]
+        if loc:
+            fields.append(DISPLAY_NAMES.get(loc[-1], loc[-1]))
+    listed = ", ".join(dict.fromkeys(fields)) or "one of the fields"
+    return JSONResponse(
+        status_code=422,
+        content={"status": "error",
+                 "message": f"{listed} needs to be a number. Check that value and "
+                            f"try again."},
+    )
 
 
 @app.middleware("http")
@@ -721,10 +744,36 @@ async def predict_risk(data: PatientData):
             )
             continue
 
-        row, supplied = [], []
+        # Values are clipped to the range the panel was actually trained over.
+        #
+        # A tree model has no splits past the edge of its data, so beyond that
+        # edge it returns whichever leaf it lands in, with undiminished
+        # confidence. The liver panel scored a coherent acute-hepatitis pattern
+        # (ALT 300, AST 260, GGT 200, bilirubin 2.5) at 3.0 percent, which is
+        # LOWER than a completely normal patient and far below a mild
+        # abnormality at 14.1 percent. Only 19 of 35,511 people in that cohort
+        # have an ALT over 250 and none of the 1,436 cases exceeds 232, so the
+        # model learned that a very high ALT means no liver disease: true of
+        # NHANES, false of medicine.
+        #
+        # Clipping does not make the panel right about such a patient. It stops
+        # it being confidently backwards, and `extreme` below says plainly that
+        # the value was off the end of what the panel knows about.
+        ranges = bundle.get("feature_ranges") or {}
+        row, supplied, extreme = [], [], []
         for feat in features:
             if feat in values:
-                row.append(values[feat])
+                val = values[feat]
+                lo_hi = ranges.get(feat)
+                if lo_hi:
+                    lo, hi = lo_hi
+                    if val > hi:
+                        extreme.append((feat, val, hi, "above"))
+                        val = hi
+                    elif val < lo:
+                        extreme.append((feat, val, lo, "below"))
+                        val = lo
+                row.append(val)
                 supplied.append(feat)
             else:
                 row.append(medians.get(feat, 0.0))
@@ -891,6 +940,28 @@ async def predict_risk(data: PatientData):
             "meaning": meaning,
             "confidence": confidence,
             "coverage_caveat": caveat,
+            # Values that fell outside anything this panel was trained on. The
+            # score for such a patient is a floor, not an estimate, and saying
+            # so is the difference between a limitation and a wrong answer.
+            "beyond_training_range": [
+                {
+                    "field": f,
+                    "name": DISPLAY_NAMES.get(f, f),
+                    "entered": v,
+                    "furthest_seen": round(edge, 1),
+                    "direction": d,
+                }
+                for f, v, edge, d in extreme
+            ],
+            "extreme_value_caveat": (
+                "One or more of your values is further from normal than anything this "
+                "panel has data on: "
+                + ", ".join(f"{DISPLAY_NAMES.get(f, f)} {v:g}" for f, v, _, _ in extreme)
+                + ". The panel cannot rank a value it has never seen, so this score is "
+                  "a floor rather than an estimate, and the value itself matters more "
+                  "than the percentage. Show it to a doctor."
+                if extreme else ""
+            ),
             "threshold": round(threshold_pct, 1),
             "above_threshold": bool(proba >= threshold_pct),
             "contributors": contributors[:6],
