@@ -1,23 +1,65 @@
 {
+  "general": {
+    "n": 23923,
+    "events": 750,
+    "methods": {
+      "none": {
+        "auc": 0.756,
+        "brier": 0.1522
+      },
+      "isotonic": {
+        "auc": 0.756,
+        "brier": 0.0294
+      },
+      "sigmoid": {
+        "auc": 0.758,
+        "brier": 0.0293
+      }
+    },
+    "best_by_auc": "sigmoid",
+    "gain_over_isotonic": 0.002,
+    "switch": false
+  },
   "breast": {
     "n": 569,
     "events": 212,
     "methods": {
       "none": {
-        "auc": 0.957,
-        "brier": 0.0727
+        "auc": 0.993,
+        "brier": 0.0276
       },
       "isotonic": {
-        "auc": 0.954,
-        "brier": 0.0712
+        "auc": 0.992,
+        "brier": 0.0267
       },
       "sigmoid": {
-        "auc": 0.955,
-        "brier": 0.0722
+        "auc": 0.993,
+        "brier": 0.0261
       }
     },
     "best_by_auc": "none",
-    "gain_over_isotonic": 0.003,
+    "gain_over_isotonic": 0.001,
+    "switch": false
+  },
+  "liver": {
+    "n": 35511,
+    "events": 1436,
+    "methods": {
+      "none": {
+        "auc": 0.747,
+        "brier": 0.1641
+      },
+      "isotonic": {
+        "auc": 0.749,
+        "brier": 0.036
+      },
+      "sigmoid": {
+        "auc": 0.751,
+        "brier": 0.036
+      }
+    },
+    "best_by_auc": "sigmoid",
+    "gain_over_isotonic": 0.002,
     "switch": false
   },
   "pancreatic": {
@@ -35,69 +77,6 @@
       "sigmoid": {
         "auc": 0.968,
         "brier": 0.0532
-      }
-    },
-    "best_by_auc": "none",
-    "gain_over_isotonic": 0.003,
-    "switch": false
-  },
-  "ovarian": {
-    "n": 349,
-    "events": 171,
-    "methods": {
-      "none": {
-        "auc": 0.935,
-        "brier": 0.0985
-      },
-      "isotonic": {
-        "auc": 0.933,
-        "brier": 0.0889
-      },
-      "sigmoid": {
-        "auc": 0.935,
-        "brier": 0.0921
-      }
-    },
-    "best_by_auc": "none",
-    "gain_over_isotonic": 0.002,
-    "switch": false
-  },
-  "prostate": {
-    "n": 212,
-    "events": 121,
-    "methods": {
-      "none": {
-        "auc": 0.829,
-        "brier": 0.1661
-      },
-      "isotonic": {
-        "auc": 0.83,
-        "brier": 0.1664
-      },
-      "sigmoid": {
-        "auc": 0.831,
-        "brier": 0.1651
-      }
-    },
-    "best_by_auc": "sigmoid",
-    "gain_over_isotonic": 0.001,
-    "switch": false
-  },
-  "lung": {
-    "n": 21916,
-    "events": 104,
-    "methods": {
-      "none": {
-        "auc": 0.825,
-        "brier": 0.0274
-      },
-      "isotonic": {
-        "auc": 0.822,
-        "brier": 0.0047
-      },
-      "sigmoid": {
-        "auc": 0.825,
-        "brier": 0.0047
       }
     },
     "best_by_auc": "none",
@@ -125,47 +104,67 @@
     "gain_over_isotonic": 0.009,
     "switch": false
   },
-  "liver": {
-    "n": 35511,
-    "events": 1436,
+  "ovarian": {
+    "n": 349,
+    "events": 171,
     "methods": {
       "none": {
-        "auc": 0.738,
-        "brier": 0.1675
+        "auc": 0.935,
+        "brier": 0.0985
       },
       "isotonic": {
-        "auc": 0.742,
-        "brier": 0.036
+        "auc": 0.933,
+        "brier": 0.0889
       },
       "sigmoid": {
-        "auc": 0.743,
-        "brier": 0.0361
+        "auc": 0.935,
+        "brier": 0.0921
+      }
+    },
+    "best_by_auc": "none",
+    "gain_over_isotonic": 0.002,
+    "switch": false
+  },
+  "lung": {
+    "n": 21916,
+    "events": 104,
+    "methods": {
+      "none": {
+        "auc": 0.825,
+        "brier": 0.0273
+      },
+      "isotonic": {
+        "auc": 0.819,
+        "brier": 0.0047
+      },
+      "sigmoid": {
+        "auc": 0.823,
+        "brier": 0.0047
+      }
+    },
+    "best_by_auc": "none",
+    "gain_over_isotonic": 0.006,
+    "switch": false
+  },
+  "prostate": {
+    "n": 212,
+    "events": 121,
+    "methods": {
+      "none": {
+        "auc": 0.829,
+        "brier": 0.1661
+      },
+      "isotonic": {
+        "auc": 0.83,
+        "brier": 0.1664
+      },
+      "sigmoid": {
+        "auc": 0.831,
+        "brier": 0.1651
       }
     },
     "best_by_auc": "sigmoid",
     "gain_over_isotonic": 0.001,
     "switch": false
-  },
-  "general": {
-    "n": 23923,
-    "events": 750,
-    "methods": {
-      "none": {
-        "auc": 0.756,
-        "brier": 0.1524
-      },
-      "isotonic": {
-        "auc": 0.756,
-        "brier": 0.0294
-      },
-      "sigmoid": {
-        "auc": 0.758,
-        "brier": 0.0293
-      }
-    },
-    "best_by_auc": "sigmoid",
-    "gain_over_isotonic": 0.002,
-    "switch": false
-  },
-  "_note": "Combined across two invocations: the small panels and then the large NHANES ones. No panel changes calibration. Isotonic barely moves AUC anywhere, plus or minus 0.003, and improves Brier by four to six times, which is exactly what calibration is for: the interface prints a percentage and the percentage has to mean something."
+  }
 }

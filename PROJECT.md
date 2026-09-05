@@ -530,14 +530,14 @@ three calibration methods on every small panel, that is wrong:
 <!-- AUTOGEN:calibration -->
 | Panel | n | AUC none | AUC isotonic | AUC sigmoid | Brier none | Brier isotonic |
 |---|---|---|---|---|---|---|
+| Breast | 569 | 0.993 | 0.992 | 0.993 | 0.0276 | 0.0267 |
 | Pancreatic | 600 | 0.969 | 0.966 | 0.968 | 0.0585 | 0.0533 |
-| Breast | 569 | 0.957 | 0.954 | 0.955 | 0.0727 | 0.0712 |
 | Ovarian | 349 | 0.935 | 0.933 | 0.935 | 0.0985 | 0.0889 |
 | Prostate | 212 | 0.829 | 0.83 | 0.831 | 0.1661 | 0.1664 |
-| Lung | 21,916 | 0.825 | 0.822 | 0.825 | 0.0274 | 0.0047 |
+| Lung | 21,916 | 0.825 | 0.819 | 0.823 | 0.0273 | 0.0047 |
 | Bowel | 23,794 | 0.808 | 0.805 | 0.814 | 0.0288 | 0.004 |
-| General | 23,923 | 0.756 | 0.756 | 0.758 | 0.1524 | 0.0294 |
-| Liver | 35,511 | 0.738 | 0.742 | 0.743 | 0.1675 | 0.036 |
+| General | 23,923 | 0.756 | 0.756 | 0.758 | 0.1522 | 0.0294 |
+| Liver | 35,511 | 0.747 | 0.749 | 0.751 | 0.1641 | 0.036 |
 <!-- /AUTOGEN:calibration -->
 
 Prostate spans 0.002 across all three methods, and no panel anywhere moves by
