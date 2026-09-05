@@ -1,0 +1,76 @@
+# Runs the checks that would have caught the defects this project actually had.
+#
+# Deliberately does NOT retrain. Training reads thirty thousand rows across eight
+# cohorts and takes the better part of an hour, which is not a pull request
+# check. What it does is verify that the committed models, the API, the form
+# schema and the docs still agree with each other, which is where every real bug
+# has come from.
+
+name: checks
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+  workflow_dispatch:
+
+jobs:
+  backend:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+          cache: pip
+
+      - name: Install
+        run: |
+          python -m pip install --upgrade pip
+          pip install -r requirements.txt
+          pip install -r backend/requirements.txt
+          pip install pytest
+
+      - name: Structural audit
+        # Duplicate dict keys, panels training on features the form never asks
+        # for, model features with no range check, withdrawn panels still named
+        # as readers, inputs nothing reads, panels with no declared kind, and
+        # sample-case reference coverage. Exits non-zero on any of them.
+        run: python tools/audit.py
+
+      - name: API and gating tests
+        run: python -m pytest tests/ -q
+
+      - name: Fallback metrics match the served metrics
+        # The block compiled into the page must equal what the registry serves.
+        # It drifted for months while it was maintained by hand.
+        run: |
+          python tools/sync_fallback_metrics.py
+          git diff --exit-code frontend/src/app/page.tsx \
+            || (echo "::error::FALLBACK_METRICS is stale. Run tools/sync_fallback_metrics.py and commit." && exit 1)
+
+  frontend:
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: frontend
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: "20"
+          cache: npm
+          cache-dependency-path: frontend/package-lock.json
+
+      - name: Install
+        run: npm ci
+
+      - name: Typecheck
+        run: npx tsc --noEmit
+
+      - name: Build
+        run: npm run build
+        env:
+          NEXT_PUBLIC_API_URL: https://oncovision.onrender.com

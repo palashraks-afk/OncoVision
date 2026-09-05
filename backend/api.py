@@ -14,6 +14,8 @@ thresholds are reported alongside it as separate flags and never overwrite it.
 
 from fastapi import FastAPI, UploadFile, File
 from fastapi.middleware.cors import CORSMiddleware
+from fastapi.responses import JSONResponse
+import time
 from pydantic import BaseModel, ConfigDict
 from typing import List, Optional
 import joblib
@@ -36,13 +38,68 @@ ENABLE_SHAP = os.getenv("ENABLE_SHAP", "1").strip().lower() not in ("0", "false"
 
 app = FastAPI(title="Oncovision AI")
 
+# Who may call this service.
+#
+# This was allow_origins=["*"] with allow_credentials=True, which is both a
+# permissive setting and a contradictory one: browsers refuse to send credentials
+# to a wildcard origin, so the combination never did what it looked like it did.
+# The deployed frontend and local development are the only callers that exist.
+# ALLOWED_ORIGINS overrides without a redeploy, as a comma-separated list.
+DEFAULT_ORIGINS = [
+    "https://oncovision.vercel.app",
+    "http://localhost:3000",
+    "http://127.0.0.1:3000",
+]
+_origins_env = os.getenv("ALLOWED_ORIGINS", "").strip()
+ALLOWED_ORIGINS = ([o.strip() for o in _origins_env.split(",") if o.strip()]
+                   if _origins_env else DEFAULT_ORIGINS)
+
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=["*"],
-    allow_credentials=True,
-    allow_methods=["*"],
-    allow_headers=["*"],
+    allow_origins=ALLOWED_ORIGINS,
+    allow_credentials=False,
+    allow_methods=["GET", "POST", "OPTIONS"],
+    allow_headers=["Content-Type"],
 )
+
+# Upload limits. /parse-pdf hands whatever it is given to pdfplumber, which
+# parses the whole document in memory. Without a cap, one large or deliberately
+# malformed PDF exhausts a 512 MB instance, and the count limit that was here
+# (files[:5]) bounded the number of files but not their size.
+MAX_UPLOAD_BYTES = int(os.getenv("MAX_UPLOAD_BYTES", str(8 * 1024 * 1024)))
+MAX_UPLOAD_FILES = int(os.getenv("MAX_UPLOAD_FILES", "5"))
+MAX_PDF_PAGES = int(os.getenv("MAX_PDF_PAGES", "40"))
+
+# Request rate, per client address, as a fixed window. Deliberately simple: the
+# service runs as a single instance, so an in-process counter is accurate here
+# and a shared store would be pretending to a scale this does not have. If it
+# ever runs multi-instance this must move to Redis, and the comment should stop
+# being true rather than quietly becoming wrong.
+RATE_LIMIT = int(os.getenv("RATE_LIMIT", "60"))
+RATE_WINDOW_SECONDS = int(os.getenv("RATE_WINDOW_SECONDS", "60"))
+_hits: dict = {}
+
+
+@app.middleware("http")
+async def rate_limit(request, call_next):
+    if request.method == "OPTIONS" or request.url.path in ("/", "/health"):
+        return await call_next(request)
+    now = time.time()
+    who = request.client.host if request.client else "unknown"
+    window = int(now // RATE_WINDOW_SECONDS)
+    key = (who, window)
+    # Drop counters from windows that have passed, so this cannot grow without
+    # bound on a long-running instance.
+    for k in [k for k in _hits if k[1] < window]:
+        _hits.pop(k, None)
+    _hits[key] = _hits.get(key, 0) + 1
+    if _hits[key] > RATE_LIMIT:
+        return JSONResponse(
+            status_code=429,
+            content={"status": "error",
+                     "message": "Too many requests. Wait a minute and try again."},
+        )
+    return await call_next(request)
 
 MODEL_DIR = os.path.join(os.path.dirname(os.path.abspath(__file__)), "models")
 models = {}
@@ -1068,10 +1125,25 @@ def parse_report_text(text: str) -> dict:
 async def parse_pdf(files: List[UploadFile] = File(...)):
     try:
         extracted: dict = {}
-        for file in files[:5]:
+        budget = MAX_UPLOAD_BYTES
+        for file in files[:MAX_UPLOAD_FILES]:
             contents = await file.read()
+            # Size is checked after reading because Starlette streams the body to
+            # a spooled temporary file before this runs, so the read itself is
+            # bounded by the server's own limits rather than by us. What this
+            # prevents is handing an oversized document to pdfplumber, which is
+            # where the memory actually goes.
+            if len(contents) > budget:
+                return {
+                    "status": "error",
+                    "message": (f"That file is too large. The limit is "
+                                f"{MAX_UPLOAD_BYTES // (1024 * 1024)} MB across "
+                                f"all documents in one upload."),
+                }
+            budget -= len(contents)
             with pdfplumber.open(io.BytesIO(contents)) as pdf:
-                text = "\n".join(p.extract_text() or "" for p in pdf.pages)
+                pages = pdf.pages[:MAX_PDF_PAGES]
+                text = "\n".join(p.extract_text() or "" for p in pages)
             for key, val in parse_report_text(text).items():
                 extracted.setdefault(key, val)
 
