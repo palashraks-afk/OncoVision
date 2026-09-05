@@ -131,9 +131,15 @@ COHORT_DESIGN = {
     "general": "23,923 US adults from NHANES 2005 to 2014, nationally representative. The "
                "target is a cancer diagnosis within four years of the blood draw, with "
                "long-ago survivors excluded, so this is a screening question rather than a "
-               "lifetime one. It adds 0.019 over knowing age and sex alone, which is small "
-               "and is stated rather than hidden. Adding routine bloodwork was measured and "
-               "made it worse, so this panel reads risk factors, not the lab report.",
+               "lifetime one. It adds 0.006 over knowing age and sex alone, measured on "
+               "repeated paired folds rather than one split, which is small and is stated "
+               "rather than hidden. Adding routine bloodwork was measured and made it worse, "
+               "so this panel reads risk factors and not the lab report. Treat even that "
+               "0.006 with suspicion: the same question asked prospectively, on 33,834 people "
+               "with death-certificate outcomes, gained 0.013 from bloodwork inside its own "
+               "survey and LOST 0.013 when tested on a cohort from a different decade. No "
+               "external cohort has confirmed that routine bloodwork predicts undifferentiated "
+               "cancer risk, and one careful attempt to confirm it failed.",
     "breast": "Case-control and post-biopsy. Precision is projected onto the roughly 25 percent "
               "malignancy rate among breast lesions taken to biopsy, not onto SEER population "
               "incidence, because nobody gets an aspirate without a lesion being found first. "
