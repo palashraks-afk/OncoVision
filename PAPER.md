@@ -25,9 +25,24 @@ recorded it, and split stability across many random partitions. The central hypo
 tested on a design none of the training cohorts can support: 33,834 NHANES participants linked by
 NCHS to the National Death Index, where blood was drawn years before the outcome existed.
 
-**Results.** *(generated from the artifacts; see Results below)*
+**Results.** The premise holds strongly for some questions and barely at all for others, and the
+distinction is the main finding. Where the organ's own chemistry appears on the lab report, the
+combination of values adds a great deal over knowing age and sex: +0.106 AUC for liver disease and
++0.498 for pancreatic adenocarcinoma. Where the question is undifferentiated — will this person be
+diagnosed with any cancer — it adds +0.006. On the prospective cohort, with NDI-confirmed
+outcomes, the full blood panel adds roughly +0.015 over age and sex for cancer death within five
+years: real, consistent across repeats, and far too small to act on. Separately, discrimination and
+usability diverge sharply: three panels with AUCs between 0.79 and 0.97 flag between 55 and 768
+people per true case at real incidence, and a threshold sweep shows no operating point repairs
+any of them.
 
-**Conclusions.** *(see Discussion)*
+**Conclusions.** Routine blood work carries usable signal about organ-specific disease when the
+relevant analytes are on the panel, and very little about undifferentiated cancer risk. The
+ceiling on the latter is a property of the question rather than of the model: serum cotinine,
+C-reactive protein, the complete blood count, the full metabolic panel, waist circumference and
+physical activity were each tested and each rejected. For a tool of this kind, reporting the
+number of healthy people flagged per true case matters more than reporting AUC, and the two
+frequently disagree.
 
 ---
 
