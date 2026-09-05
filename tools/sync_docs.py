@@ -256,37 +256,89 @@ def table_paper_results(ev, extra):
                    "distinguished them.")
 
     cx = extra.get("colorectal_external") or {}
-    if not cx:
-        return "\n".join(out)
+    if cx:
 
-    out.append("")
-    out.append("### 3.6 The same test on an organ-specific panel\n")
-    out.append(f"The bowel panel is one of only two here that screen for a named cancer from a "
-               f"routine lab report alone, so it carries more of the application's claim than "
-               f"the case-control panels do. NHANES III recorded both the site of any reported "
-               f"cancer and the age at which it was first told, which reconstructs the same "
-               f"eight-year window the training cohort uses.\n")
-    out.append(f"Train: NHANES 2005-2014, {cx['train_n']:,} adults, {cx['train_events']} cases. "
-               f"Test: NHANES III, {cx['test_n']:,} adults, {cx['test_events']} cases. The two "
-               f"prevalences agree to within a hundredth of a percent, which is a check that the "
-               f"window was reconstructed the same way on both sides.\n")
-    rows = ["| Feature set | Features | External AUC | 95% CI |", "|---|---|---|---|"]
-    for name, a in cx["arms"].items():
-        ci = a.get("external_auc_ci") or ["", ""]
-        rows.append(f"| {name} | {a['n_features']} | {a['external_auc']:.3f} | "
-                    f"{ci[0]} to {ci[1]} |")
-    out.append("\n".join(rows))
-    out.append("")
-    g, gi = cx["external_gain_over_age_sex"], cx.get("internal_gain_for_reference")
-    out.append(f"Gain over age and sex, transferred: **{g:+.3f}**, against {gi:+.3f} measured "
-               f"inside the training survey.\n")
-    if cx.get("gain_survives_transfer"):
-        out.append("**This gain survives.** Roughly three quarters of it is still there on a "
-                   "cohort measured a decade and a half earlier, on different analysers. Set "
-                   "beside section 3.5, where the undifferentiated panel's gain reversed sign "
-                   "under the same test, this is the sharpest form of the paper's main result: "
-                   "the two questions do not merely differ in effect size, they differ in "
-                   "whether the effect is real at all.")
+        out.append("")
+        out.append("### 3.6 The same test on an organ-specific panel\n")
+        out.append(f"The bowel panel is one of only two here that screen for a named cancer from a "
+                   f"routine lab report alone, so it carries more of the application's claim than "
+                   f"the case-control panels do. NHANES III recorded both the site of any reported "
+                   f"cancer and the age at which it was first told, which reconstructs the same "
+                   f"eight-year window the training cohort uses.\n")
+        out.append(f"Train: NHANES 2005-2014, {cx['train_n']:,} adults, {cx['train_events']} cases. "
+                   f"Test: NHANES III, {cx['test_n']:,} adults, {cx['test_events']} cases. The two "
+                   f"prevalences agree to within a hundredth of a percent, which is a check that the "
+                   f"window was reconstructed the same way on both sides.\n")
+        rows = ["| Feature set | Features | External AUC | 95% CI |", "|---|---|---|---|"]
+        for name, a in cx["arms"].items():
+            ci = a.get("external_auc_ci") or ["", ""]
+            rows.append(f"| {name} | {a['n_features']} | {a['external_auc']:.3f} | "
+                        f"{ci[0]} to {ci[1]} |")
+        out.append("\n".join(rows))
+        out.append("")
+        g, gi = cx["external_gain_over_age_sex"], cx.get("internal_gain_for_reference")
+        out.append(f"Gain over age and sex, transferred: **{g:+.3f}**, against {gi:+.3f} measured "
+                   f"inside the training survey.\n")
+        if cx.get("gain_survives_transfer"):
+            out.append("**This gain survives.** Roughly three quarters of it is still there on a "
+                       "cohort measured a decade and a half earlier, on different analysers. Set "
+                       "beside section 3.5, where the undifferentiated panel's gain reversed sign "
+                       "under the same test, this is the sharpest form of the paper's main result: "
+                       "the two questions do not merely differ in effect size, they differ in "
+                       "whether the effect is real at all.")
+    cost = extra.get("cost") or {}
+    if cost:
+        out.append("")
+        out.append("### 3.7 Does triage on free bloodwork save money?\n")
+        out.append("Per 100,000 people at real incidence, sending everyone for the "
+                   "confirmatory procedure against sending only those the panel flags.\n")
+        rows = ["| Panel | Procedure | Sent everyone | Sent if flagged | Cancers missed | Apparent saving |",
+                "|---|---|---|---|---|---|"]
+        for k, v in cost.get("panels", {}).items():
+            b, cfg = v["base_case"], v["settings"]
+            total = b["cancers_found"] + b["cancers_missed"]
+            rows.append(
+                f"| {NAME.get(k, k)} | {cfg['procedure']} | {b['procedures_universal']:,} | "
+                f"{b['procedures_triaged']:,} | {b['cancers_missed']} of {total:.0f} | "
+                f"${b['saving']:,} |")
+        out.append("\n".join(rows))
+        out.append("")
+        out.append("That apparent saving counts only treatment dollars. Charging a missed "
+                   "cancer what a life is conventionally worth changes the answer:\n")
+        rows = ["| Panel | Break-even per missed cancer | 15 life-years at $150k/QALY | Verdict |",
+                "|---|---|---|---|"]
+        for k, v in cost.get("panels", {}).items():
+            be = v.get("break_even_per_missed_cancer")
+            soc = v.get("societal_cost_of_a_missed_cancer")
+            if be is None:
+                continue
+            rows.append(f"| {NAME.get(k, k)} | ${be:,} | ${soc:,} | "
+                        f"{'still saves' if be > soc else '**stops saving**'} |")
+        out.append("\n".join(rows))
+        out.append("")
+        out.append("**The operating point, not the model, decides this.** Choosing the point on "
+                   "each panel's real ROC curve that maximises net benefit after charging every "
+                   "missed cancer $2,250,000:\n")
+        rows = ["| Panel | Sensitivity | Specificity | Procedures avoided per 100,000 | Cancers missed | Net benefit |",
+                "|---|---|---|---|---|---|"]
+        for k, v in cost.get("panels", {}).items():
+            bo = v.get("best_operating_point")
+            if not bo:
+                continue
+            avoided = 100_000 - bo["procedures_per_100k"]
+            rows.append(f"| {NAME.get(k, k)} | {bo['sensitivity']} | {bo['specificity']} | "
+                        f"**{avoided:,}** | {bo['cancers_missed']} | "
+                        f"${bo['net_benefit']:,} |")
+        out.append("\n".join(rows))
+        out.append("")
+        out.append("An illustrative model, not a cost-effectiveness analysis: no discounting, no "
+                   "quality-adjusted life years beyond the single figure above, and no price on "
+                   "the harm of an unnecessary procedure. The treatment costs are first-year "
+                   "figures and understate the late-stage penalty, which biases the model "
+                   "*towards* triage.")
+
+
+
     return "\n".join(out)
 
 
@@ -350,6 +402,7 @@ def main():
         "external": load("experiments/prospective_external_result.json", {}),
         "calibration": load("experiments/calibration_method_result.json", {}),
         "colorectal_external": load("experiments/colorectal_external_result.json", {}),
+        "cost": load("experiments/cost_model_result.json", {}),
     }
 
     stale, written = [], []

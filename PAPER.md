@@ -1,7 +1,7 @@
 # What routine blood work can and cannot tell you about cancer risk
 
 **A feature-constrained multi-panel evaluation on eight public cohorts, with a prospective
-mortality analysis**
+mortality analysis and a cost model of triage before expensive diagnostics**
 
 Oncovision AI. Mentored research project, UCI CHOC.
 
@@ -42,11 +42,26 @@ diverge sharply: three panels with AUCs between 0.79 and
 0.97 flag between 55 and 768 people per true case at real incidence, and a threshold sweep shows
 no operating point repairs any of them.
 
+**Cost.** Discrimination is not the outcome that matters for a tool whose purpose is to reduce
+spending on diagnostics, so we modelled it directly: per 100,000 people, sending everyone for the
+confirmatory procedure against sending only those a panel flags, charging missed cancers the
+difference between early and late-stage treatment. At the balanced operating points these panels
+ship, triage appears to save $192M per 100,000 on colorectal — by missing 190 of 400 cancers.
+Break-even is $1.08M per missed cancer against roughly $2.25M for fifteen life-years at
+conventional willingness-to-pay, so the saving disappears once a life is priced. Choosing instead
+the point on each panel's ROC curve that maximises net benefit **after** charging a missed cancer
+$2.25M: colorectal avoids 36,052 colonoscopies per 100,000 while missing 8.3 of 400 cancers
+(+$68.2M), and lung avoids 21,561 CT scans while missing none (+$6.5M).
+
 **Conclusions.** Routine blood work carries usable signal about organ-specific disease when the
 relevant analytes are on the panel, and essentially none about undifferentiated cancer risk that
 generalises beyond the survey it was fitted on. The two questions differ not merely in effect size
 but in whether the effect exists at all: under an identical external test, one gain kept three
-quarters of its magnitude and the other reversed sign. The ceiling is a property of the question rather
+quarters of its magnitude and the other reversed sign. Separately, and independently of any model
+improvement, the operating point matters more than the model: Youden's J treats a false positive
+and a false negative as equally costly, and before an expensive diagnostic they are not. A panel
+too weak to screen with can still be strong enough to **rule out** with, and that is a different
+and more useful claim. The ceiling is a property of the question rather
 than of the model: serum cotinine, C-reactive protein, the complete blood count, the full metabolic
 panel, waist circumference and physical activity were each tested and each rejected. Two
 methodological cautions follow. Resampling within one survey — including leave-one-cycle-out, which
@@ -199,6 +214,52 @@ design the other cohorts cannot offer.
 
 ---
 
+### 2.8 Refusing to extrapolate
+
+A tree has no splits beyond the range of its training data, so past that edge it returns whichever
+leaf it lands in, at full confidence, in whichever direction it happens to point. On a clinical
+cohort this is not a theoretical concern.
+
+The liver panel scored a coherent acute-hepatitis picture — ALT 300, AST 260, GGT 200, bilirubin
+2.5, all rising together as they do in a real patient — at 3.0%, *below* a completely healthy
+patient at 3.3% and far below a mild abnormality at 14.1%. The cause was in the data rather than
+the code: only 19 of 35,511 people in that cohort have an ALT above 250, and among the 1,436 with
+liver disease the highest is 232. Every high-ALT person in the training data is a non-case, so the
+model learned that a very high ALT means no liver disease. That is true of NHANES, whose label is
+self-reported *"were you ever told you had a liver condition"*, and false of medicine: someone in
+acute hepatitis at survey time has not been told yet.
+
+The model is right about its data and wrong about the world, and no retraining on the same cohort
+repairs it. Each panel therefore ships the 1st and 99th percentile of every feature as observed;
+inputs are clipped to that range before scoring, and anything outside it is declared to the user as
+a value the panel cannot rank. The cost of this is measured rather than assumed: across all eight
+panels the largest AUC loss is 0.016, on liver, and that loss is the artefact being removed.
+
+### 2.9 Two operating points, because two questions
+
+AUC is a ranking statistic and a threshold is a decision. These panels originally shipped one
+threshold each, chosen by Youden's J, which weights a false positive and a false negative equally.
+
+For a tool used **before** an expensive diagnostic that weighting is wrong. A false positive costs a
+colonoscopy; a false negative costs a life. Each panel therefore carries a second, looser threshold
+— the least aggressive cut that still catches 95% of cases — and reports both: whether the person is
+flagged, and separately whether there is enough evidence to *exclude* them from further testing. The
+second is stored with what it buys, so a cut is never presented without its consequences.
+
+### 2.10 A cost model
+
+The marginal cost of running a panel is zero: the blood is drawn, the analyser has run, the report
+exists. So the relevant comparison is not test against no test, but
+
+    universal   send everyone eligible for the confirmatory procedure
+    triaged     send only those the panel flags
+
+per 100,000 people at real incidence, with missed cancers charged the difference between early and
+late-stage treatment. Procedure and treatment costs are taken from published US figures and listed
+in the source file so they can be argued with. Every input is swept, and the model is reported as
+illustrative rather than as a cost-effectiveness analysis: no discounting, no quality-adjusted life
+years beyond a single sensitivity figure, and no price on the harm of an unnecessary procedure.
+
 ## 3. Results
 
 <!-- AUTOGEN:paper_results -->
@@ -303,6 +364,31 @@ Train: NHANES 2005-2014, 23,794 adults, 96 cases. Test: NHANES III, 14,499 adult
 Gain over age and sex, transferred: **+0.029**, against +0.039 measured inside the training survey.
 
 **This gain survives.** Roughly three quarters of it is still there on a cohort measured a decade and a half earlier, on different analysers. Set beside section 3.5, where the undifferentiated panel's gain reversed sign under the same test, this is the sharpest form of the paper's main result: the two questions do not merely differ in effect size, they differ in whether the effect is real at all.
+
+### 3.7 Does triage on free bloodwork save money?
+
+Per 100,000 people at real incidence, sending everyone for the confirmatory procedure against sending only those the panel flags.
+
+| Panel | Procedure | Sent everyone | Sent if flagged | Cancers missed | Apparent saving |
+|---|---|---|---|---|---|
+| Bowel | colonoscopy | 100,000 | 14,852 | 189.6 of 400 | $192,674,741 |
+| Lung | low-dose chest CT | 100,000 | 14,999 | 201.6 of 470 | $13,402,557 |
+
+That apparent saving counts only treatment dollars. Charging a missed cancer what a life is conventionally worth changes the answer:
+
+| Panel | Break-even per missed cancer | 15 life-years at $150k/QALY | Verdict |
+|---|---|---|---|
+| Bowel | $1,083,217 | $2,250,000 | **stops saving** |
+| Lung | $126,481 | $2,250,000 | **stops saving** |
+
+**The operating point, not the model, decides this.** Choosing the point on each panel's real ROC curve that maximises net benefit after charging every missed cancer $2,250,000:
+
+| Panel | Sensitivity | Specificity | Procedures avoided per 100,000 | Cancers missed | Net benefit |
+|---|---|---|---|---|---|
+| Bowel | 0.979 | 0.362 | **36,052** | 8.3 | $68,208,115 |
+| Lung | 1.0 | 0.217 | **21,561** | 0.0 | $6,468,172 |
+
+An illustrative model, not a cost-effectiveness analysis: no discounting, no quality-adjusted life years beyond the single figure above, and no price on the harm of an unnecessary procedure. The treatment costs are first-year figures and understate the late-stage penalty, which biases the model *towards* triage.
 <!-- /AUTOGEN:paper_results -->
 
 ---
@@ -389,7 +475,55 @@ with achievable specificity produces a tolerable positive predictive value. Repo
 reporting this is the single most common way a paper of this kind overstates itself, which is why
 the flagged-per-case figure appears on every panel's own card rather than in an appendix.
 
-### 4.5 Methodological findings
+### 4.5 The operating point matters more than the model
+
+Sections 4.1 to 4.4 are about what these models know. This one is about what is done with it, and
+on the evidence here it is the larger lever.
+
+Every panel originally shipped a single threshold chosen by Youden's J. That statistic maximises
+sensitivity plus specificity, which is to say it treats a false positive and a false negative as
+equally costly. Before an expensive diagnostic they are not remotely equal: a false positive costs
+a colonoscopy, and a false negative costs a life.
+
+The consequence is measurable. At Youden, the colorectal panel flags 14,852 people per 100,000 and
+misses 190 of 400 cancers. It appears to save $192M, and the appearance survives only while a
+missed cancer is priced at the $67,000 difference between early and late-stage treatment. Priced at
+fifteen life-years, the break-even is $1.08M against roughly $2.25M and the saving evaporates.
+
+Move along the same ROC curve — the same model, the same features, the same data — to the point
+that maximises net benefit once a missed cancer costs $2.25M, and the panel avoids 36,052
+colonoscopies per 100,000 people while missing 8.3 of 400 cancers. The lung panel avoids 21,561 CT
+scans and misses none.
+
+Nothing about the model changed. What changed was the question asked of it. **A panel too weak to
+screen with can be strong enough to rule out with**, and those are different claims with different
+thresholds and different evidentiary burdens. A literature that reports AUC and a single balanced
+operating point is systematically failing to find this, and it is available for free in models that
+already exist.
+
+The corollary matters for how this application presents itself. "You are flagged" is a claim about
+a person. "There is not enough here to exclude you" is a claim about the evidence, it is the one
+these panels can actually support, and it is the one a patient deciding whether to push for a
+colonoscopy needs.
+
+### 4.6 A tool can be useful below the accuracy at which it is interesting
+
+The colorectal panel reaches 0.793. By the standards of a modelling paper that is unremarkable, and
+it is the number that would be reported. At a rule-out threshold the same panel excludes 40% of
+people from consideration for a $2,412 procedure while missing 4 cases in 100, and that is a useful
+thing to be able to do with a blood test somebody has already paid for.
+
+The two statements describe one model. The first is what gets published and the second is what
+would matter to a health system, and the gap between them is not a modelling problem. It is a
+reporting convention.
+
+This does not rescue the panels that fail on other grounds. The general panel's gain does not
+survive external validation, and no threshold repairs a signal that is not there. But for the
+panels that do transfer, the honest summary is not "moderately accurate". It is: this can safely
+take a substantial fraction of people out of an expensive queue, and here is exactly how many
+cancers that costs.
+
+### 4.7 Methodological findings
 
 Three results here are about method rather than about cancer, and generalise beyond this project.
 
@@ -446,6 +580,29 @@ for the case-control panels.
 race and ethnicity is reported for the NHANES panels. Reweighting was tested and did not close the
 gaps. The Wisconsin breast cohort records neither race nor age nor sex, so for that panel the
 question is unanswerable rather than answered acceptably.
+
+**The cost model is illustrative, not a cost-effectiveness analysis.** It has no discounting, no
+quality-adjusted life years beyond the single figure used to price a missed cancer, and no price on
+the harm, anxiety or complication risk of an unnecessary procedure — only its invoice. Treatment
+costs are first-year figures and understate the late-stage penalty, which biases it *towards*
+triage. It compares triage against universal screening, not against current practice, which is
+neither. The sign of the lung result flips if incidence is five times higher or the late-stage
+penalty three times worse, and both sweeps are reported.
+
+**Pricing a life at fifteen years and $150,000 per QALY is a convention, not a fact.** It is the
+figure conventionally used in US health economics, it is contested, and the break-even table is
+presented so a reader who prefers a different number can read off their own answer rather than
+accept ours.
+
+**The rule-out thresholds are chosen on the training cohorts.** They are computed from out-of-fold
+predictions rather than from the fitted model's own scores, so they are not fit to the data they
+are evaluated on, but they have not been validated on an external cohort. Given section 4.2, that
+caveat should be read seriously.
+
+**Clipping to the observed range does not make a panel right about an extreme patient.** It stops
+it being confidently backwards. A patient whose ALT is 900 gets the score of a patient at the edge
+of the data and a statement that the panel cannot rank them, which is honest and is not the same as
+useful. Only a cohort containing such patients would fix that.
 
 **The ensemble is often unnecessary.** On several panels a plain logistic regression matches or
 beats the ensemble, and where it does, it is what ships.
