@@ -1,0 +1,21 @@
+{
+  "shipped_auc": 0.81,
+  "arms": {
+    "B + MCV and RDW": {
+      "auc": 0.812,
+      "gain": 0.003,
+      "wins": 6,
+      "repeats": 10,
+      "helps": false
+    },
+    "C + all CBC indices": {
+      "auc": 0.807,
+      "gain": -0.003,
+      "wins": 3,
+      "repeats": 10,
+      "helps": false
+    }
+  },
+  "best_arm": "B + MCV and RDW",
+  "adopt": false
+}

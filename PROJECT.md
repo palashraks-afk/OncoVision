@@ -911,6 +911,37 @@ Only a genuinely external cohort caught it. The panels here that have no externa
 read with that in mind, and that caution is now the honest headline of this section rather than a
 footnote. Reproduce with `python experiments/prospective_external.py`.
 
+### A good mechanism is not evidence: the bowel panel and iron deficiency
+
+The classic way a right-sided colon cancer announces itself is iron-deficiency anaemia from slow
+occult bleeding. The bowel panel read haemoglobin and red cell count and nothing else from the
+blood count, so it could tell that someone was anaemic but not what kind — and "anaemic" on its own
+is nearly useless, because most anaemia is not cancer. What separates iron deficiency is the shape
+of the red cells: a low haemoglobin with a **low MCV** and a **high RDW**, where anaemia of chronic
+disease leaves both normal and B12 deficiency pushes MCV up.
+
+Those indices are printed on the same blood count, on the same sample, at no extra cost. It looked
+like an obvious omission with a textbook mechanism behind it.
+
+| Arm | Features | AUC |
+|---|---|---|
+| Shipped today | 16 | 0.810 |
+| + MCV and RDW | 18 | 0.812 |
+| + all six CBC indices | 22 | 0.807 |
+
+MCV and RDW gain 0.003 and win 6 of 10 paired repeats. All six indices together *lose* 0.003 and
+win 3 of 10. The bar was set at 0.005 with 8 of 10 wins before the experiment ran, and neither arm
+clears it. **Nothing was added to the panel.**
+
+One plausible reason, offered as a hypothesis rather than a conclusion: this cohort's target is a
+diagnosis within eight years of the blood draw, and a tumour bleeding enough to shift the red cell
+indices is usually not eight years away from being found. The signature may be real and simply
+absent at the moment these samples were taken.
+
+The reason this is written down at all is that the mechanism was persuasive, the omission was real,
+and the fix still did not work. A project that only records the experiments that succeeded cannot
+be checked. Reproduce with `python experiments/colorectal_iron.py`.
+
 ### The app asked for exercise and nothing read the answer
 
 `tools/audit.py` checks that every question the form asks is consumed by some live panel. It found
