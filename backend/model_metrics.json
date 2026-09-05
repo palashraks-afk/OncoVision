@@ -9,7 +9,7 @@
       "smoking",
       "alcohol_intake"
     ],
-    "cohort_design": "23,923 US adults from NHANES 2005 to 2014, nationally representative. The target is a cancer diagnosis within four years of the blood draw, with long-ago survivors excluded, so this is a screening question rather than a lifetime one. It adds 0.019 over knowing age and sex alone, which is small and is stated rather than hidden. Adding routine bloodwork was measured and made it worse, so this panel reads risk factors, not the lab report.",
+    "cohort_design": "23,923 US adults from NHANES 2005 to 2014, nationally representative. The target is a cancer diagnosis within four years of the blood draw, with long-ago survivors excluded, so this is a screening question rather than a lifetime one. It adds 0.006 over knowing age and sex alone, measured on repeated paired folds rather than one split, which is small and is stated rather than hidden. Adding routine bloodwork was measured and made it worse, so this panel reads risk factors and not the lab report. Treat even that 0.006 with suspicion: the same question asked prospectively, on 33,834 people with death-certificate outcomes, gained 0.013 from bloodwork inside its own survey and LOST 0.013 when tested on a cohort from a different decade. No external cohort has confirmed that routine bloodwork predicts undifferentiated cancer risk, and one careful attempt to confirm it failed.",
     "auc": 0.76,
     "auc_std": 0.015,
     "accuracy": 0.72,
@@ -370,13 +370,13 @@
       }
     },
     "stability": {
-      "stable_auc": 0.75,
+      "stable_auc": 0.754,
       "split_spread": [
-        0.744,
-        0.756
+        0.74,
+        0.764
       ],
-      "split_sd": 0.005,
-      "shipped_split_percentile": 60.0,
+      "split_sd": 0.008,
+      "shipped_split_percentile": 80.0,
       "n_splits": 5
     },
     "fairness": {
@@ -458,7 +458,7 @@
     "panel_kind": "screening",
     "panel_kind_note": "Reads routine bloodwork and your history. Anyone can run it.",
     "screening_viable": true,
-    "gain_over_age_sex": 0.098,
+    "gain_over_age_sex": 0.106,
     "barely_beats_demographics": false,
     "flagged_per_true_case": 10.0
   },

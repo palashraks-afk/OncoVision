@@ -257,10 +257,27 @@ def table_paper_results(ev, extra):
     return "\n".join(out)
 
 
+def table_calibration(_, extra):
+    # The result file carries a "_note" string alongside the panels, so filter to
+    # entries that are actually panels rather than assuming every key is one.
+    cal = {k: v for k, v in (extra.get("calibration") or {}).items()
+           if isinstance(v, dict) and "methods" in v}
+    rows = ["| Panel | n | AUC none | AUC isotonic | AUC sigmoid | Brier none | Brier isotonic |",
+            "|---|---|---|---|---|---|---|"]
+    for k, v in sorted(cal.items(), key=lambda kv: -kv[1]["methods"]["isotonic"]["auc"]):
+        m = v["methods"]
+        rows.append(
+            f"| {NAME.get(k, k)} | {v['n']:,} | {m['none']['auc']} | "
+            f"{m['isotonic']['auc']} | {m['sigmoid']['auc']} | "
+            f"{m['none']['brier']} | {m['isotonic']['brier']} |")
+    return "\n".join(rows)
+
+
 TABLES = {
     "shipped": table_shipped,
     "baselines": table_baselines,
     "stability": table_stability,
+    "calibration": table_calibration,
     "paper_cohorts": table_paper_cohorts,
     "paper_results": table_paper_results,
 }
@@ -277,6 +294,7 @@ def main():
         "stability": load("experiments/split_stability_result.json", {}),
         "prospective": load("experiments/prospective_mortality_result.json", {}),
         "external": load("experiments/prospective_external_result.json", {}),
+        "calibration": load("experiments/calibration_method_result.json", {}),
     }
 
     stale, written = [], []
