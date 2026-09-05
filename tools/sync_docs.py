@@ -35,7 +35,7 @@ import re
 import sys
 
 ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
-DOCS = ["README.md", "PROJECT.md"]
+DOCS = ["README.md", "PROJECT.md", "PAPER.md"]
 
 NAME = {
     "colorectal": "Bowel", "general": "General", "liver": "Liver",
@@ -123,10 +123,112 @@ def table_stability(_, extra):
     return "\n".join(rows)
 
 
+DESIGN = {
+    "general": ("Population", "NHANES 2005-2014, cancer diagnosed within 4 years"),
+    "liver": ("Population", "NHANES, 7 cycles, clinical liver disease"),
+    "colorectal": ("Population", "NHANES, colon or rectal cancer within 8 years"),
+    "lung": ("Population", "NHANES, adults with measurable tobacco exposure"),
+    "pancreatic": ("Case-control", "3 tissue banks, adenocarcinoma vs benign hepatobiliary"),
+    "ovarian": ("Case-control", "operated ovarian masses, malignant vs benign"),
+    "breast": ("Case-control", "Wisconsin fine needle aspirates, post-biopsy"),
+    "prostate": ("Case-control", "biopsied men, adenocarcinoma vs benign biopsy"),
+}
+
+
+def table_paper_cohorts(ev, _):
+    rows = ["| Panel | Design | n | Events | Prevalence | Cohort |",
+            "|---|---|---|---|---|---|"]
+    for k in _rank(ev):
+        v = ev[k]
+        design, desc = DESIGN.get(k, ("", ""))
+        prev = v.get("cohort_prevalence")
+        n = v["n_total"]
+        events = int(round(prev * n)) if isinstance(prev, (int, float)) else None
+        rows.append(
+            f"| {NAME.get(k, k)} | {design} | {n:,} | "
+            f"{events:,} | {prev:.2%} | {desc} |"
+            if events is not None else
+            f"| {NAME.get(k, k)} | {design} | {n:,} | — | — | {desc} |")
+    return "\n".join(rows)
+
+
+def table_paper_results(ev, extra):
+    """
+    The results section, assembled from the artifacts rather than typed.
+
+    Ordered by what the paper argues: discrimination first, then what that
+    discrimination is worth at real incidence, then whether it survives being
+    resampled, then the prospective test.
+    """
+    out = []
+
+    out.append("### 3.1 Discrimination, and what it adds over knowing age and sex\n")
+    out.append(table_baselines(ev, extra))
+    out.append("")
+    out.append("The gain column is measured by repeated paired cross-validation on identical "
+               "folds, not from the held-out split, because a single split proved unreliable.\n")
+
+    out.append("### 3.2 What a score is worth at real incidence\n")
+    rows = ["| Panel | Test AUC | PPV at population incidence | Flagged per true case | Usable as screening? |",
+            "|---|---|---|---|---|"]
+    for k in _rank(ev):
+        c = ev[k]["calibrated"]
+        per = c.get("people_flagged_per_true_case")
+        ppv = c.get("ppv_at_population_prevalence")
+        kind = DESIGN.get(k, ("", ""))[0]
+        verdict = ("not a screening panel" if k in ("breast", "prostate", "ovarian", "pancreatic")
+                   else ("no" if isinstance(per, (int, float)) and per > 50 else "yes, with caveats"))
+        rows.append(f"| {NAME.get(k, k)} | {c['auc']:.3f} | "
+                    f"{ppv * 100:.2f}% | {per} | {verdict} |"
+                    if isinstance(ppv, (int, float)) else
+                    f"| {NAME.get(k, k)} | {c['auc']:.3f} | — | {per} | {verdict} |")
+    out.append("\n".join(rows))
+    out.append("")
+    out.append("This is the table that decides whether a panel is a screening instrument. "
+               "Discrimination and usability are different properties, and three panels have "
+               "the first without the second.\n")
+
+    out.append("### 3.3 Stability across resampling\n")
+    out.append(table_stability(ev, extra))
+    out.append("")
+
+    pm = extra.get("prospective") or {}
+    out.append("### 3.4 The prospective test\n")
+    if not pm:
+        out.append("*(pending: experiments/prospective_mortality.py has not been run)*")
+        return "\n".join(out)
+
+    out.append(f"{pm['n']:,} adults, {pm['events']} deaths from malignant neoplasm within "
+               f"{pm['horizon_months']} months of the blood draw ({pm['prevalence']:.2%}).\n")
+    rows = ["| Feature set | Features | AUC | 95% CI | Gain over age and sex | Wins |",
+            "|---|---|---|---|---|---|"]
+    for name, a in pm["arms"].items():
+        ci = a.get("auc_ci") or ["", ""]
+        rows.append(f"| {name} | {a['n_features']} | {a['auc']:.3f} | {ci[0]} to {ci[1]} | "
+                    f"{a['gain_over_age_sex']:+.3f} | {a['wins']}/{a['repeats']} |")
+    out.append("\n".join(rows))
+    out.append("")
+    loco = pm.get("leave_one_cycle_out") or {}
+    if loco:
+        out.append("Leave-one-cycle-out, full feature set. Cycles differ in assay method, field "
+                   "staff and population, so this approximates external validation within one "
+                   "survey.\n")
+        rows = ["| Held-out cycle | AUC |", "|---|---|"]
+        for cyc, a in sorted(loco.items()):
+            rows.append(f"| {cyc} | {a:.3f} |")
+        rows.append(f"| **mean** | **{pm['mean_leave_one_cycle_out']:.3f}** |")
+        out.append("\n".join(rows))
+        out.append("")
+    out.append(f"**{pm['verdict'].capitalize()}.**")
+    return "\n".join(out)
+
+
 TABLES = {
     "shipped": table_shipped,
     "baselines": table_baselines,
     "stability": table_stability,
+    "paper_cohorts": table_paper_cohorts,
+    "paper_results": table_paper_results,
 }
 
 
@@ -139,6 +241,7 @@ def main():
     extra = {
         "demographic_gain": load("experiments/demographic_gain_result.json", {}),
         "stability": load("experiments/split_stability_result.json", {}),
+        "prospective": load("experiments/prospective_mortality_result.json", {}),
     }
 
     stale, written = [], []

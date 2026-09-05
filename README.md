@@ -819,16 +819,21 @@ cannot be chosen after seeing the data.
 
 ## Known limitations
 
-- **Every cohort is case-control, not a screening series.** See the precision table above.
+- **Four of the eight cohorts are case-control, not screening series.** Breast, pancreatic,
+  ovarian and prostate assemble cases and match controls to them, which is why their AUCs are the
+  highest here and the least transferable. The NHANES cohorts behind general, liver, bowel and lung
+  are population-based instead. See the precision table above.
 - **The breast panel is an interpretation panel, not a screening one.** Its inputs need a biopsy
   that already happened. Rebuilding it on blood was tried and failed at chance, so the rule was
   amended to name the two classes rather than pretend there is one.
 - **The liver panel detects liver disease, not liver cancer.** Liver disease is roughly 300 times
   more common and is the dominant precursor to hepatocellular carcinoma, so this is a useful thing
   to detect, but it is not a cancer claim.
-- **One panel was withdrawn.** Prostate is trained and measured but not served. Pancreatic was
-  withdrawn and then reinstated once leave-one-site-out validation was run. Both decisions and the
-  evidence behind them are above and on the methodology page.
+- **One panel is withdrawn: cervical.** Repeated-split testing put its shipped number at the
+  97th percentile of its own distribution, with a mean of 0.594 and a spread from 0.421 to 0.789.
+  It was a lucky split, not a working model. Prostate and pancreatic were each withdrawn at one
+  point and reinstated only after a cohort or a validation design was found that supported them.
+  Both decisions and the evidence behind them are above and on the methodology page.
 - **No prospective test and no IRB.** No real patient report has been followed to an outcome. A
   submittable study protocol with pre-specified statistics is drafted in [PROTOCOL.md](PROTOCOL.md).
   Its sample-size table shows the pancreatic panel would need roughly 690,000 participants to
