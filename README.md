@@ -765,6 +765,37 @@ determines whether a cancer is survivable. It is a different question, honestly 
 design the other cohorts cannot offer. Reproduce with
 `python experiments/prospective_mortality.py`.
 
+### The gain did not survive a different decade, and that changed the conclusion
+
+The prospective panel was then tested properly. NHANES III ran from 1988 to 1994 and is linked to
+the National Death Index by the same agency using the same method, so it gives a real external
+cohort: different decade, different analysers, different field staff, higher smoking prevalence.
+
+Identical features on both sides. The test cohort is imputed with the TRAINING medians, never its
+own, so its distribution cannot leak into the fit.
+
+| Feature set | Features | External AUC | 95% CI |
+|---|---|---|---|
+| Age and sex only | 2 | **0.852** | 0.831 to 0.873 |
+| Full blood work | 22 | 0.839 | 0.819 to 0.858 |
+
+**Transferred gain: -0.013. The internal gain was +0.013.** Adding twenty blood values makes the
+prediction *worse* on people measured in a different decade than using age and sex alone. Whatever
+those values contributed inside NHANES 1999-2014 belonged to that survey rather than to human
+physiology.
+
+The uncomfortable part is what this says about the leave-one-cycle-out result directly above it.
+Holding out a whole NHANES cycle and training on the other seven gave a mean of 0.837 with no fold
+below 0.808, which reads like solid evidence of generalisation. It was not. Cycles of one survey
+share a protocol, a laboratory contract, instrument calibration and an analytic pipeline;
+resampling across them varies the participants while holding the measurement process fixed.
+
+**Every internal validation strategy in this project, including the repeated paired
+cross-validation that is its arbiter everywhere else, would have reported this panel as working.**
+Only a genuinely external cohort caught it. The panels here that have no external cohort should be
+read with that in mind, and that caution is now the honest headline of this section rather than a
+footnote. Reproduce with `python experiments/prospective_external.py`.
+
 ### The app asked for exercise and nothing read the answer
 
 `tools/audit.py` checks that every question the form asks is consumed by some

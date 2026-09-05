@@ -1,0 +1,27 @@
+{
+  "train_n": 33834,
+  "train_events": 339,
+  "test_n": 14630,
+  "test_events": 254,
+  "arms": {
+    "age and sex only": {
+      "n_features": 2,
+      "external_auc": 0.852,
+      "external_auc_ci": [
+        0.831,
+        0.873
+      ]
+    },
+    "full blood work": {
+      "n_features": 22,
+      "external_auc": 0.839,
+      "external_auc_ci": [
+        0.819,
+        0.858
+      ]
+    }
+  },
+  "external_gain_over_age_sex": -0.013,
+  "internal_gain_for_reference": 0.013,
+  "gain_survives_transfer": false
+}

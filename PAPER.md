@@ -29,20 +29,24 @@ NCHS to the National Death Index, where blood was drawn years before the outcome
 distinction is the main finding. Where the organ's own chemistry appears on the lab report, the
 combination of values adds a great deal over knowing age and sex: +0.106 AUC for liver disease and
 +0.498 for pancreatic adenocarcinoma. Where the question is undifferentiated — will this person be
-diagnosed with any cancer — it adds +0.006. On the prospective cohort, with NDI-confirmed
-outcomes, the full blood panel adds roughly +0.015 over age and sex for cancer death within five
-years: real, consistent across repeats, and far too small to act on. Separately, discrimination and
-usability diverge sharply: three panels with AUCs between 0.79 and 0.97 flag between 55 and 768
-people per true case at real incidence, and a threshold sweep shows no operating point repairs
-any of them.
+diagnosed with any cancer — it adds +0.006. On the prospective cohort of 33,834 adults with
+NDI-confirmed outcomes, the full blood panel adds +0.013 over age and sex for cancer death within
+five years, winning 5 of 5 paired repeats. **That gain did not survive external validation.**
+Trained on NHANES 1999–2014 and tested on NHANES III (1988–1994, 14,630 adults, 254 events), age
+and sex alone reached 0.852 while the full blood panel reached 0.839: a transferred gain of −0.013.
+Separately, discrimination and usability diverge sharply: three panels with AUCs between 0.79 and
+0.97 flag between 55 and 768 people per true case at real incidence, and a threshold sweep shows
+no operating point repairs any of them.
 
 **Conclusions.** Routine blood work carries usable signal about organ-specific disease when the
-relevant analytes are on the panel, and very little about undifferentiated cancer risk. The
-ceiling on the latter is a property of the question rather than of the model: serum cotinine,
-C-reactive protein, the complete blood count, the full metabolic panel, waist circumference and
-physical activity were each tested and each rejected. For a tool of this kind, reporting the
-number of healthy people flagged per true case matters more than reporting AUC, and the two
-frequently disagree.
+relevant analytes are on the panel, and essentially none about undifferentiated cancer risk that
+generalises beyond the survey it was fitted on. The ceiling is a property of the question rather
+than of the model: serum cotinine, C-reactive protein, the complete blood count, the full metabolic
+panel, waist circumference and physical activity were each tested and each rejected. Two
+methodological cautions follow. Resampling within one survey — including leave-one-cycle-out, which
+gave an encouraging 0.837 here — measures stability and not generalisation, and only a genuinely
+external cohort distinguished the two. And for a tool of this kind, the number of healthy people
+flagged per true case matters more than AUC, with which it frequently disagrees.
 
 ---
 
@@ -263,6 +267,21 @@ Leave-one-cycle-out, full feature set. Cycles differ in assay method, field staf
 | **mean** | **0.837** |
 
 **Routine bloodwork adds little beyond age and sex on this endpoint.**
+
+### 3.5 Does that gain survive a different decade?
+
+Trained on NHANES 1999-2014 (33,834 adults, 339 deaths) and tested on NHANES III 1988-1994 (14,630 adults, 254 deaths). Identical features on both sides. Nothing from the test cohort touches fitting, calibration or imputation.
+
+| Feature set | Features | External AUC | 95% CI |
+|---|---|---|---|
+| age and sex only | 2 | 0.852 | 0.831 to 0.873 |
+| full blood work | 22 | 0.839 | 0.819 to 0.858 |
+
+Gain over age and sex, transferred: **-0.013**. The same gain measured inside the training survey: +0.013.
+
+**The gain does not survive the transfer.** Age and sex transfer well, at 0.852. Adding twenty blood values makes the prediction *worse* on a cohort measured in a different decade than using age and sex alone. Whatever the blood panel contributed inside NHANES 1999-2014 was specific to that survey rather than to human physiology.
+
+This is also a caution about the leave-one-cycle-out result above. Holding out one cycle of the same survey gave a mean of 0.837 and looked like evidence of transfer. It was not. Cycles of one survey share protocols, instruments and laboratory methods, and resampling within a survey measures stability rather than generalisation. Only the genuinely external cohort distinguished them.
 <!-- /AUTOGEN:paper_results -->
 
 ---
@@ -281,16 +300,42 @@ marginal effects. They are what happens when the disease being asked about chang
 analytes the lab report contains, and a model reads the pattern across them rather than one value
 at a time. The ovarian panel behaves the same way for the same reason.
 
-**Where the question is undifferentiated, the combination carries almost nothing.** Asked "will
-this person be diagnosed with any cancer", the general panel adds 0.006 over age and sex. Asked
-prospectively — will this person die of cancer within five years — the full blood work adds
-roughly 0.015 on a cohort of 33,834 people with NDI-confirmed outcomes. That is a real gain, it is
-consistent across repeats, and it is far too small to act on.
+**Where the question is undifferentiated, the combination carries almost nothing — and what little
+it carries does not generalise.** Asked "will this person be diagnosed with any cancer", the
+general panel adds 0.006 over age and sex. Asked prospectively — will this person die of cancer
+within five years — the full blood work adds 0.013 on 33,834 people with NDI-confirmed outcomes,
+winning every paired repeat.
+
+Then it was tested on a cohort measured in a different decade, and the gain reversed. On NHANES III
+age and sex alone reach 0.852; adding twenty blood values gives 0.839. The transferred gain is
+−0.013 against an internal +0.013. Whatever those twenty values contributed inside NHANES
+1999–2014 belonged to that survey, not to human physiology.
 
 This is not a failure of the method, and it was not for want of trying. Serum cotinine, C-reactive
 protein, the complete blood count, the full metabolic panel, waist circumference and physical
 activity were each measured against that panel and each rejected. The ceiling is a property of the
-question, not of the model.
+question, not of the model — and the external test shows the ceiling is lower still than the
+internal estimate suggested.
+
+### 4.1a Within-survey resampling is not external validation
+
+The leave-one-cycle-out result deserves separate attention, because it was wrong in an instructive
+way.
+
+Holding out an entire NHANES cycle and training on the other seven gave a mean AUC of 0.837 across
+eight folds, with no fold below 0.808. By any ordinary reading that is evidence the model
+generalises: different years, different participants, different field teams.
+
+It was not. Cycles of one survey share a protocol, a laboratory contract, instrument calibration
+procedures and an analytic pipeline. Resampling across them measures stability under participant
+variation while holding the *measurement process* fixed. The genuinely external cohort — a
+different decade, different analysers, different assay chemistry — reversed the sign of the effect
+entirely.
+
+The practical implication is uncomfortable and worth stating plainly: every internal validation
+strategy used in this project, including the repeated paired cross-validation that serves as its
+arbiter throughout, would have reported this panel as working. Only an external cohort caught it.
+The panels here that have no external cohort should be read with that in mind.
 
 ### 4.2 Why that distinction matters more than any AUC here
 

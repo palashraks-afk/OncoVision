@@ -220,6 +220,40 @@ def table_paper_results(ev, extra):
         out.append("\n".join(rows))
         out.append("")
     out.append(f"**{pm['verdict'].capitalize()}.**")
+
+    ex = extra.get("external") or {}
+    if not ex:
+        return "\n".join(out)
+
+    out.append("")
+    out.append("### 3.5 Does that gain survive a different decade?\n")
+    out.append(f"Trained on NHANES 1999-2014 ({ex['train_n']:,} adults, {ex['train_events']} "
+               f"deaths) and tested on NHANES III 1988-1994 ({ex['test_n']:,} adults, "
+               f"{ex['test_events']} deaths). Identical features on both sides. Nothing from "
+               f"the test cohort touches fitting, calibration or imputation.\n")
+    rows = ["| Feature set | Features | External AUC | 95% CI |", "|---|---|---|---|"]
+    for name, a in ex["arms"].items():
+        ci = a.get("external_auc_ci") or ["", ""]
+        rows.append(f"| {name} | {a['n_features']} | {a['external_auc']:.3f} | "
+                    f"{ci[0]} to {ci[1]} |")
+    out.append("\n".join(rows))
+    out.append("")
+    g_ext = ex["external_gain_over_age_sex"]
+    g_int = ex.get("internal_gain_for_reference")
+    out.append(f"Gain over age and sex, transferred: **{g_ext:+.3f}**. The same gain measured "
+               f"inside the training survey: {g_int:+.3f}.\n")
+    if not ex.get("gain_survives_transfer"):
+        out.append("**The gain does not survive the transfer.** Age and sex transfer well, at "
+                   "0.852. Adding twenty blood values makes the prediction *worse* on a cohort "
+                   "measured in a different decade than using age and sex alone. Whatever the "
+                   "blood panel contributed inside NHANES 1999-2014 was specific to that survey "
+                   "rather than to human physiology.\n")
+        out.append("This is also a caution about the leave-one-cycle-out result above. Holding "
+                   "out one cycle of the same survey gave a mean of 0.837 and looked like "
+                   "evidence of transfer. It was not. Cycles of one survey share protocols, "
+                   "instruments and laboratory methods, and resampling within a survey measures "
+                   "stability rather than generalisation. Only the genuinely external cohort "
+                   "distinguished them.")
     return "\n".join(out)
 
 
@@ -242,6 +276,7 @@ def main():
         "demographic_gain": load("experiments/demographic_gain_result.json", {}),
         "stability": load("experiments/split_stability_result.json", {}),
         "prospective": load("experiments/prospective_mortality_result.json", {}),
+        "external": load("experiments/prospective_external_result.json", {}),
     }
 
     stale, written = [], []
