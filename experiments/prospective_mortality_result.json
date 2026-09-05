@@ -1,0 +1,76 @@
+{
+  "n": 33834,
+  "events": 339,
+  "prevalence": 0.01,
+  "horizon_months": 60,
+  "arms": {
+    "A age and sex": {
+      "n_features": 2,
+      "auc": 0.816,
+      "auc_ci": [
+        0.796,
+        0.838
+      ],
+      "gain_over_age_sex": 0.0,
+      "wins": 0,
+      "repeats": 5
+    },
+    "B + lifestyle": {
+      "n_features": 5,
+      "auc": 0.827,
+      "auc_ci": [
+        0.812,
+        0.849
+      ],
+      "gain_over_age_sex": 0.011,
+      "wins": 5,
+      "repeats": 5
+    },
+    "C + blood count": {
+      "n_features": 15,
+      "auc": 0.832,
+      "auc_ci": [
+        0.813,
+        0.85
+      ],
+      "gain_over_age_sex": 0.016,
+      "wins": 5,
+      "repeats": 5
+    },
+    "D + chemistry": {
+      "n_features": 16,
+      "auc": 0.825,
+      "auc_ci": [
+        0.805,
+        0.841
+      ],
+      "gain_over_age_sex": 0.01,
+      "wins": 5,
+      "repeats": 5
+    },
+    "E everything": {
+      "n_features": 26,
+      "auc": 0.829,
+      "auc_ci": [
+        0.804,
+        0.84
+      ],
+      "gain_over_age_sex": 0.013,
+      "wins": 5,
+      "repeats": 5
+    }
+  },
+  "leave_one_cycle_out": {
+    "1999-2000": 0.849,
+    "2001-2002": 0.808,
+    "2003-2004": 0.834,
+    "2005-2006": 0.893,
+    "2007-2008": 0.822,
+    "2009-2010": 0.844,
+    "2011-2012": 0.836,
+    "2013-2014": 0.809
+  },
+  "mean_leave_one_cycle_out": 0.837,
+  "gain_over_age_sex": 0.013,
+  "verdict": "routine bloodwork adds little beyond age and sex on this endpoint"
+}

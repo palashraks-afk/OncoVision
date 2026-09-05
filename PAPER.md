@@ -238,7 +238,31 @@ This is the table that decides whether a panel is a screening instrument. Discri
 
 ### 3.4 The prospective test
 
-*(pending: experiments/prospective_mortality.py has not been run)*
+33,834 adults, 339 deaths from malignant neoplasm within 60 months of the blood draw (1.00%).
+
+| Feature set | Features | AUC | 95% CI | Gain over age and sex | Wins |
+|---|---|---|---|---|---|
+| A age and sex | 2 | 0.816 | 0.796 to 0.838 | +0.000 | 0/5 |
+| B + lifestyle | 5 | 0.827 | 0.812 to 0.849 | +0.011 | 5/5 |
+| C + blood count | 15 | 0.832 | 0.813 to 0.85 | +0.016 | 5/5 |
+| D + chemistry | 16 | 0.825 | 0.805 to 0.841 | +0.010 | 5/5 |
+| E everything | 26 | 0.829 | 0.804 to 0.84 | +0.013 | 5/5 |
+
+Leave-one-cycle-out, full feature set. Cycles differ in assay method, field staff and population, so this approximates external validation within one survey.
+
+| Held-out cycle | AUC |
+|---|---|
+| 1999-2000 | 0.849 |
+| 2001-2002 | 0.808 |
+| 2003-2004 | 0.834 |
+| 2005-2006 | 0.893 |
+| 2007-2008 | 0.822 |
+| 2009-2010 | 0.844 |
+| 2011-2012 | 0.836 |
+| 2013-2014 | 0.809 |
+| **mean** | **0.837** |
+
+**Routine bloodwork adds little beyond age and sex on this endpoint.**
 <!-- /AUTOGEN:paper_results -->
 
 ---
