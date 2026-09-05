@@ -39,18 +39,18 @@
       "n_rows": 35511,
       "n_positive": 1436,
       "n_splits": 5,
-      "mean_auc": 0.75,
-      "median_auc": 0.751,
-      "std_auc": 0.005,
-      "min_auc": 0.744,
-      "max_auc": 0.756,
+      "mean_auc": 0.754,
+      "median_auc": 0.754,
+      "std_auc": 0.008,
+      "min_auc": 0.74,
+      "max_auc": 0.764,
       "split_range_2p5_97p5": [
-        0.745,
-        0.756
+        0.741,
+        0.763
       ],
-      "shipped_split_auc": 0.753,
-      "shipped_split_percentile": 60.0,
-      "shipped_minus_mean": 0.002
+      "shipped_split_auc": 0.76,
+      "shipped_split_percentile": 80.0,
+      "shipped_minus_mean": 0.006
     },
     "pancreatic": {
       "n_rows": 600,

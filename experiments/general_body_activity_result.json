@@ -1,0 +1,50 @@
+{
+  "full_cohort": {
+    "A shipped today": {
+      "auc": 0.756,
+      "gain_over_age_sex": 0.006
+    },
+    "B + waist": {
+      "auc": 0.759,
+      "gain_over_age_sex": 0.009,
+      "improvement": 0.003
+    },
+    "C + exercise": {
+      "auc": 0.753,
+      "gain_over_age_sex": 0.003,
+      "improvement": -0.003
+    },
+    "D + waist and exercise": {
+      "auc": 0.757,
+      "gain_over_age_sex": 0.007,
+      "improvement": 0.001
+    }
+  },
+  "cycles_that_asked": {
+    "A shipped today": {
+      "auc": 0.753,
+      "gain_over_age_sex": 0.005
+    },
+    "B + waist": {
+      "auc": 0.756,
+      "gain_over_age_sex": 0.008,
+      "improvement": 0.003
+    },
+    "C + exercise": {
+      "auc": 0.751,
+      "gain_over_age_sex": 0.003,
+      "improvement": -0.002
+    },
+    "D + waist and exercise": {
+      "auc": 0.755,
+      "gain_over_age_sex": 0.007,
+      "improvement": 0.002
+    }
+  },
+  "verdict": {
+    "B + waist": false,
+    "C + exercise": false,
+    "D + waist and exercise": false
+  },
+  "adopt": []
+}

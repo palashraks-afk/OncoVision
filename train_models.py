@@ -256,15 +256,22 @@ LAB_FIELDS = [
 # gender             0 female, 1 male
 # smoking            0 never, 1 former, 2 current
 # alcohol_intake     0 none through 5 heavy
-# physical_activity  hours of exercise per week, 0 to 10
 # genetic_risk       0 low, 1 medium, 2 high
 # remaining flags    0 no, 1 yes
 # Only fields a shipped panel actually consumes. Inherited risk, prior cancer
 # diagnosis, family history and cirrhosis were dropped: no panel uses them now
 # that general and liver train on NHANES, and asking a patient for information
 # nothing reads is just friction.
+#
+# Exercise went the same way, and was given a fair hearing first. NHANES records
+# it from 2007 under the Global Physical Activity Questionnaire, so it was pulled
+# and offered to the general panel. It did not help: the panel's gain over age
+# and sex went from +0.005 to +0.003, a loss, and the same on the full pooled
+# cohort. A real cancer risk factor at the population level is not the same thing
+# as one that adds information once you already know a person's age, sex, BMI,
+# smoking and drinking. See experiments/general_body_activity.py.
 HISTORY_FIELDS = [
-    "gender", "smoking", "alcohol_intake", "physical_activity",
+    "gender", "smoking", "alcohol_intake",
     "hepatitis_b", "hepatitis_c", "diabetes",
     # Menopausal status, read by the ovarian panel. The rest of the
     # reproductive and sexual history went with the cervical panel when it was

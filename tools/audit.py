@@ -110,10 +110,49 @@ else:
     notes.append("could not locate the bounds table in api.py to check it")
 
 # --------------------------------------------------------------- withdrawn leakage
+# A withdrawn panel must not still be claimed as a reader of any input. This is
+# how the cervical panel's sexual-history questions stayed wired into the API
+# long after the panel itself was withdrawn: nothing scored them, but the
+# service still accepted them and still named cervical as their consumer.
 for w in tm.WITHDRAWN:
-    if re.search(rf'"{w}"\s*:', api_src) and f"SEX_SPECIFIC" not in api_src.split(f'"{w}"')[0][-60:]:
-        notes.append(f"withdrawn panel {w!r} still appears in api.py — confirm it "
-                     f"is only there to be refused, not to be scored")
+    for m in re.finditer(rf'\[([^\]]*)\]', api_src):
+        if f'"{w}"' in m.group(1):
+            line = api_src[:m.start()].count("\n") + 1
+            fail(f"backend/api.py:{line} names withdrawn panel {w!r} as a reader "
+                 f"of an input. Nothing scores it, so the field is accepted and "
+                 f"discarded — remove the field rather than the mention.")
+
+# --------------------------------------------------------------- inputs nothing reads
+# The service should not accept what it cannot use. Beyond dead weight, this is
+# a privacy point: an API that accepts a sexual history no model reads is
+# collecting sensitive data for nothing.
+req = re.search(r"class\s+PatientData\(BaseModel\):(.*?)(?=\nclass |\n\n\n)", api_src, re.S)
+if req:
+    accepted = set(re.findall(r"^\s{4}([a-z_0-9]+)\s*:\s*Optional", req.group(1), re.M))
+    unread = sorted(accepted - used - DEMOGRAPHIC - form_keys)
+    if unread:
+        fail(f"backend/api.py accepts {len(unread)} field(s) that no live panel "
+             f"reads and no form sends: {', '.join(unread)}")
+
+# --------------------------------------------------------------- sample-case coverage
+# make_cases.py needs a healthy reference reading for every feature a live panel
+# scores, and it raises KeyError on the first one it lacks. That is how the
+# breast expansion broke the sample-case pool: the panel grew from four features
+# to thirty and the reference table still had four.
+try:
+    import make_cases  # noqa: E402
+
+    no_reference = sorted({
+        f for cfg in tm.DATASETS if cfg["name"] not in tm.WITHDRAWN
+        for f in cfg["features"] if f not in make_cases.NORMAL
+    })
+    if no_reference:
+        fail(f"make_cases.py has no healthy reference reading for "
+             f"{len(no_reference)} scored feature(s): {', '.join(no_reference[:10])}"
+             f"{' ...' if len(no_reference) > 10 else ''} — the sample case pool "
+             f"will fail to build")
+except Exception as exc:  # pragma: no cover
+    notes.append(f"could not import make_cases to check its reference table: {exc}")
 
 # --------------------------------------------------------------- panel metadata
 for cfg in tm.DATASETS:

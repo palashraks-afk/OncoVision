@@ -254,13 +254,13 @@
       "subgroups": {}
     },
     "stability": {
-      "stable_auc": 0.959,
+      "stable_auc": 0.992,
       "split_spread": [
-        0.901,
-        0.991
+        0.97,
+        1.0
       ],
-      "split_sd": 0.02,
-      "shipped_split_percentile": 73.3,
+      "split_sd": 0.007,
+      "shipped_split_percentile": 76.7,
       "n_splits": 30
     },
     "fairness": {},
@@ -279,6 +279,7 @@
       "gender",
       "bilirubin",
       "alkaline_phosphatase",
+      "ggt",
       "alt",
       "ast",
       "protein_total",
@@ -288,82 +289,82 @@
       "hepatitis_c"
     ],
     "cohort_design": "35,511 US adults from NHANES 2005 to 2018, chemistry plus diabetes and hepatitis serology. Externally validated against 583 patients in India and 589 in Germany, and temporally against later cycles. Detects liver disease, not liver cancer.",
-    "auc": 0.742,
-    "auc_std": 0.015,
-    "accuracy": 0.655,
-    "sensitivity": 0.7,
-    "specificity": 0.653,
+    "auc": 0.752,
+    "auc_std": 0.014,
+    "accuracy": 0.84,
+    "sensitivity": 0.481,
+    "specificity": 0.855,
     "n_samples": 35511,
     "n_positive": 1436,
-    "n_features": 11,
+    "n_features": 12,
     "cv_folds": 5,
-    "threshold": 0.0364,
+    "threshold": 0.05,
     "model_selection": {
-      "ensemble": 0.742,
-      "logistic": 0.735
+      "ensemble": 0.749,
+      "logistic": 0.742
     },
     "chosen_model": "ensemble",
     "held_out": {
       "n_test": 7103,
-      "auc": 0.753,
+      "auc": 0.76,
       "auc_ci": [
-        0.723,
-        0.784
+        0.73,
+        0.789
       ],
-      "sensitivity": 0.551,
+      "sensitivity": 0.61,
       "sensitivity_ci": [
-        0.493,
-        0.61
+        0.553,
+        0.667
       ],
-      "specificity": 0.795,
+      "specificity": 0.77,
       "specificity_ci": [
-        0.786,
-        0.805
+        0.76,
+        0.78
       ],
-      "brier": 0.0358,
-      "calibration_slope": 1.049,
-      "ppv_at_population_prevalence": 0.10072,
-      "people_flagged_per_true_case": 9.9,
+      "brier": 0.0356,
+      "calibration_slope": 1.059,
+      "ppv_at_population_prevalence": 0.09951,
+      "people_flagged_per_true_case": 10.0,
       "population_prevalence": 0.04,
       "prevalence_source": "Ever told had a liver condition, US adults, NHANES 2005-2018",
       "cohort_prevalence": 0.04,
-      "baseline_logistic_auc": 0.731,
+      "baseline_logistic_auc": 0.74,
       "baseline_age_sex_auc": 0.602,
       "subgroups": {
         "sex: female": {
           "n": 3677,
           "positives": 141,
-          "auc": 0.765,
+          "auc": 0.778,
           "auc_ci": [
-            0.722,
-            0.805
+            0.737,
+            0.817
           ]
         },
         "sex: male": {
           "n": 3426,
           "positives": 146,
-          "auc": 0.739,
+          "auc": 0.742,
           "auc_ci": [
-            0.693,
-            0.781
+            0.695,
+            0.786
           ]
         },
         "age under 49": {
           "n": 3471,
           "positives": 85,
-          "auc": 0.762,
+          "auc": 0.761,
           "auc_ci": [
             0.71,
-            0.81
+            0.811
           ]
         },
         "age 49 and over": {
           "n": 3632,
           "positives": 202,
-          "auc": 0.713,
+          "auc": 0.73,
           "auc_ci": [
-            0.672,
-            0.752
+            0.691,
+            0.767
           ]
         }
       }
@@ -459,7 +460,7 @@
     "screening_viable": true,
     "gain_over_age_sex": 0.098,
     "barely_beats_demographics": false,
-    "flagged_per_true_case": 9.9
+    "flagged_per_true_case": 10.0
   },
   "pancreatic": {
     "label": "Pancreatic Cancer Risk",
@@ -564,9 +565,9 @@
       "n_splits": 30
     },
     "fairness": {},
-    "panel_kind": "screening",
-    "panel_kind_note": "",
-    "screening_viable": false,
+    "panel_kind": "triage",
+    "panel_kind_note": "For someone ALREADY being investigated for pancreatic or biliary disease. It reads CA 19-9, which is a tumour marker ordered when cancer is suspected rather than part of routine bloodwork, and its controls were people with benign disease of the same organs. It asks which of those two a sick person has.",
+    "screening_viable": true,
     "gain_over_age_sex": 0.498,
     "barely_beats_demographics": false,
     "flagged_per_true_case": 210.4

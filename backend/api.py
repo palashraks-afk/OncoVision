@@ -81,23 +81,17 @@ BIOLOGICAL_BOUNDS = {
     "plasma_ca19_9": (0.0, 50000.0), "radius_mean": (0.0, 40.0),
     "texture_mean": (0.0, 50.0), "perimeter_mean": (0.0, 250.0), "area_mean": (0.0, 2500.0),
     # History fields
-    "gender": (0, 1), "smoking": (0, 2), "alcohol_intake": (0, 5),
-    "physical_activity": (0, 10), "genetic_risk": (0, 2), "cancer_history": (0, 1),
-    "family_history_cancer": (0, 1), "hepatitis_b": (0, 1), "hepatitis_c": (0, 1),
-    "cirrhosis_history": (0, 1), "diabetes": (0, 1),
+    "gender": (0, 1), "smoking": (0, 2), "alcohol_intake": (0, 5), "hepatitis_b": (0, 1), "hepatitis_c": (0, 1), "diabetes": (0, 1),
     # Red cell and platelet indices, GGT, and the pelvic-mass tumour markers.
     "hematocrit": (0.0, 70.0), "mcv": (0.0, 150.0), "mch": (0.0, 60.0),
     "rdw": (0.0, 40.0), "mpv": (0.0, 20.0), "neutrophil_pct": (0.0, 100.0),
     "ggt": (0.0, 2000.0), "ca125": (0.0, 50000.0), "he4": (0.0, 50000.0),
     "cea": (0.0, 10000.0),
-    # Reproductive and sexual history, read by the cervical panel.
-    "menopause": (0, 1), "sexual_partners": (0, 50),
-    "first_intercourse_age": (8, 60), "pregnancies": (0, 20),
-    "smokes": (0, 1), "smoking_years": (0, 70), "smoking_packyears": (0, 200),
-    "hormonal_contraceptives": (0, 1), "hormonal_contraceptives_years": (0, 50),
-    "iud": (0, 1), "iud_years": (0, 50),
-    "stds": (0, 1), "stds_number": (0, 20), "stds_hpv": (0, 1),
-    "stds_diagnoses": (0, 20),
+    # Menopausal status for the ovarian panel, pack-years for lung. The rest of
+    # the reproductive and sexual history went when the cervical panel was
+    # withdrawn: the service should not accept a sexual history that nothing
+    # scores.
+    "menopause": (0, 1), "smoking_packyears": (0, 200),
     # Tobacco exposure, inflammation, and the prostate work-up.
     "cotinine": (0.0, 2000.0), "crp": (0.0, 500.0),
     "prostate_volume": (1.0, 300.0), "psa_density": (0.0, 50.0), "pi_rads": (1, 5),
@@ -178,12 +172,7 @@ CLINICAL_THRESHOLDS = {
 HISTORY_FLAGS = {
     "hepatitis_b": ("Hepatitis B", ["liver"]),
     "hepatitis_c": ("Hepatitis C", ["liver"]),
-    "cirrhosis_history": ("Cirrhosis", ["liver"]),
-    "cancer_history": ("Prior cancer diagnosis", ["general"]),
-    "family_history_cancer": ("Family history of cancer", ["liver", "general"]),
     "diabetes": ("Diabetes", ["liver", "pancreatic"]),
-    "stds_hpv": ("HPV", ["cervical"]),
-    "stds": ("Sexually transmitted infection history", ["cervical"]),
     "menopause": ("Post-menopausal", ["ovarian"]),
 }
 
@@ -191,19 +180,10 @@ HISTORY_FLAGS = {
 CODED_VALUES = {
     "gender": {0: "Female", 1: "Male"},
     "smoking": {0: "Never smoked", 1: "Former smoker", 2: "Current smoker"},
-    "genetic_risk": {0: "Low", 1: "Medium", 2: "High"},
-    "cancer_history": {0: "No", 1: "Yes"},
-    "family_history_cancer": {0: "No", 1: "Yes"},
     "hepatitis_b": {0: "Negative", 1: "Positive"},
     "hepatitis_c": {0: "Negative", 1: "Positive"},
-    "cirrhosis_history": {0: "No", 1: "Yes"},
     "diabetes": {0: "No", 1: "Yes"},
     "menopause": {0: "Pre-menopausal", 1: "Post-menopausal"},
-    "smokes": {0: "No", 1: "Yes"},
-    "hormonal_contraceptives": {0: "No", 1: "Yes"},
-    "iud": {0: "No", 1: "Yes"},
-    "stds": {0: "No", 1: "Yes"},
-    "stds_hpv": {0: "Negative", 1: "Positive"},
 }
 
 UNITS = {
@@ -212,13 +192,11 @@ UNITS = {
     "protein_total": "g/dL", "albumin": "g/dL", "ast": "U/L", "alt": "U/L",
     "bilirubin": "mg/dL", "alkaline_phosphatase": "U/L",
     "alpha_fetoprotein_level": "ng/mL", "psa": "ng/mL", "plasma_ca19_9": "U/mL",
-    "age": "years", "alcohol_intake": "of 5", "physical_activity": "hrs/week",
+    "age": "years", "alcohol_intake": "of 5",
     "hematocrit": "%", "mcv": "fL", "mch": "pg", "rdw": "%", "mpv": "fL",
     "neutrophil_pct": "%", "ggt": "U/L",
     "ca125": "U/mL", "he4": "pmol/L", "cea": "ng/mL",
-    "first_intercourse_age": "years", "smoking_years": "years",
-    "smoking_packyears": "pack-years", "hormonal_contraceptives_years": "years",
-    "iud_years": "years",
+    "smoking_packyears": "pack-years",
     "cotinine": "ng/mL", "crp": "mg/L", "prostate_volume": "mL",
     "psa_density": "ng/mL/mL", "pi_rads": "of 5",
 }
@@ -235,15 +213,7 @@ DISPLAY_NAMES = {
     "hematocrit": "Hematocrit", "mcv": "MCV", "mch": "MCH", "rdw": "RDW",
     "mpv": "MPV", "neutrophil_pct": "Neutrophils", "ggt": "GGT",
     "ca125": "CA 125", "he4": "HE4", "cea": "CEA",
-    "menopause": "Menopausal status", "sexual_partners": "Sexual partners",
-    "first_intercourse_age": "Age at first intercourse",
-    "pregnancies": "Pregnancies", "smokes": "Smokes",
-    "smoking_years": "Years smoking", "smoking_packyears": "Pack-years",
-    "hormonal_contraceptives": "Hormonal contraceptives",
-    "hormonal_contraceptives_years": "Years on hormonal contraceptives",
-    "iud": "IUD", "iud_years": "Years with an IUD",
-    "stds": "STI history", "stds_number": "Number of STIs",
-    "stds_hpv": "HPV", "stds_diagnoses": "STI diagnoses",
+    "menopause": "Menopausal status", "smoking_packyears": "Pack-years",
     "cotinine": "Serum cotinine", "crp": "CRP",
     "prostate_volume": "Prostate volume", "psa_density": "PSA density",
     "pi_rads": "PI-RADS score",
@@ -561,32 +531,13 @@ class PatientData(BaseModel):
     gender: Optional[float] = None
     smoking: Optional[float] = None
     alcohol_intake: Optional[float] = None
-    physical_activity: Optional[float] = None
-    genetic_risk: Optional[float] = None
-    cancer_history: Optional[float] = None
-    family_history_cancer: Optional[float] = None
     hepatitis_b: Optional[float] = None
     hepatitis_c: Optional[float] = None
-    cirrhosis_history: Optional[float] = None
     diabetes: Optional[float] = None
 
-    # Reproductive and sexual history. Read by the cervical panel, and
-    # menopausal status is also read by the ovarian panel.
+    # Menopausal status, read by the ovarian panel. Pack-years, read by lung.
     menopause: Optional[float] = None
-    sexual_partners: Optional[float] = None
-    first_intercourse_age: Optional[float] = None
-    pregnancies: Optional[float] = None
-    smokes: Optional[float] = None
-    smoking_years: Optional[float] = None
     smoking_packyears: Optional[float] = None
-    hormonal_contraceptives: Optional[float] = None
-    hormonal_contraceptives_years: Optional[float] = None
-    iud: Optional[float] = None
-    iud_years: Optional[float] = None
-    stds: Optional[float] = None
-    stds_number: Optional[float] = None
-    stds_hpv: Optional[float] = None
-    stds_diagnoses: Optional[float] = None
 
 
 @app.get("/")
@@ -676,7 +627,18 @@ async def predict_risk(data: PatientData):
             else:
                 row.append(medians.get(feat, 0.0))
 
+        # Nothing this panel reads was entered at all. It used to `continue`
+        # here with no message, so the panel simply vanished from the response:
+        # not scored, not skipped, not mentioned. A woman entering a routine
+        # blood panel got seven results and no indication that a breast panel
+        # existed, because breast reads only biopsy morphology and she had
+        # supplied none of it. Silence is the one thing this application is not
+        # allowed to do, so it says which values it would need.
         if not supplied:
+            skipped[bundle.get("label", name)] = (
+                f"No data for this panel. It reads {len(features)} values and none "
+                f"of them were entered."
+            )
             continue
 
         # Coverage. Every panel scores with whatever it was given, because

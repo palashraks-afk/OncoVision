@@ -12,7 +12,7 @@ import {
   Radar, RadarChart, PolarGrid, PolarAngleAxis, PolarRadiusAxis,
 } from "recharts";
 
-import { LAB_GROUPS, LAB_KEYS, HISTORY_FIELDS, HISTORY_GROUPS, ALL_KEYS } from "./fields";
+import { LAB_GROUPS, HISTORY_FIELDS, HISTORY_GROUPS, ALL_KEYS } from "./fields";
 import { CASE_POOL, OPENING_CASE, caseValues, randomCase, type DemoCase } from "./cases";
 
 // The Render service that deploys backend/ from this repo. The host is
@@ -40,19 +40,19 @@ const API_BASE = resolveApiBase();
 // Used until the live registry responds.
 const FALLBACK_METRICS: Record<string, any> = {
   breast: {
-    label: "Breast Malignancy, from biopsy imaging", auc: 0.972, auc_ci: [0.942, 0.994],
-    threshold: 38.8,
-    sensitivity: 0.81, specificity: 0.944,
-    brier: 0.0668, calibration_slope: 1.118,
-    ppv_at_population_prevalence: 0.82927,
-    people_flagged_per_true_case: 1.2,
+    label: "Breast Malignancy, from biopsy imaging", auc: 0.997, auc_ci: [0.99, 1],
+    threshold: 0.2945,
+    sensitivity: 0.976, specificity: 0.986,
+    brier: 0.0167, calibration_slope: 1.616,
+    ppv_at_population_prevalence: 0.95906,
+    people_flagged_per_true_case: 1,
     population_prevalence: 0.25, cohort_prevalence: 0.373,
-    baseline_logistic_auc: 0.964, baseline_age_sex_auc: null,
-    n_samples: 569, n_test: 114, n_features: 4,
+    baseline_logistic_auc: 0.995, baseline_age_sex_auc: null,
+    n_samples: 569, n_test: 114, n_features: 30,
   },
   pancreatic: {
     label: "Pancreatic Cancer Risk", auc: 0.969, auc_ci: [0.938, 0.991],
-    threshold: 73.0,
+    threshold: 0.7664,
     sensitivity: 0.731, specificity: 0.979,
     brier: 0.0617, calibration_slope: 0.46,
     ppv_at_population_prevalence: 0.00475,
@@ -63,7 +63,7 @@ const FALLBACK_METRICS: Record<string, any> = {
   },
   ovarian: {
     label: "Ovarian Malignancy, in a known ovarian mass", auc: 0.949, auc_ci: [0.886, 0.994],
-    threshold: 58.1,
+    threshold: 0.5286,
     sensitivity: 0.853, specificity: 0.944,
     brier: 0.0797, calibration_slope: 0.455,
     ppv_at_population_prevalence: 0.79331,
@@ -74,7 +74,7 @@ const FALLBACK_METRICS: Record<string, any> = {
   },
   prostate: {
     label: "Prostate Cancer Risk, with an MRI score", auc: 0.84, auc_ci: [0.705, 0.952],
-    threshold: 66.9,
+    threshold: 0.4444,
     sensitivity: 0.8, specificity: 0.778,
     brier: 0.1642, calibration_slope: 0.86,
     ppv_at_population_prevalence: 0.70588,
@@ -85,7 +85,7 @@ const FALLBACK_METRICS: Record<string, any> = {
   },
   lung: {
     label: "Lung Cancer Risk, with tobacco exposure", auc: 0.829, auc_ci: [0.73, 0.902],
-    threshold: 1.0,
+    threshold: 0.01,
     sensitivity: 0.571, specificity: 0.852,
     brier: 0.0047, calibration_slope: 0.619,
     ppv_at_population_prevalence: 0.01814,
@@ -96,7 +96,7 @@ const FALLBACK_METRICS: Record<string, any> = {
   },
   colorectal: {
     label: "Bowel Cancer Risk", auc: 0.793, auc_ci: [0.708, 0.867],
-    threshold: 1.0,
+    threshold: 0.01,
     sensitivity: 0.526, specificity: 0.853,
     brier: 0.004, calibration_slope: 0.656,
     ppv_at_population_prevalence: 0.0013,
@@ -106,19 +106,19 @@ const FALLBACK_METRICS: Record<string, any> = {
     n_samples: 23794, n_test: 4759, n_features: 16,
   },
   liver: {
-    label: "Liver Disease Risk", auc: 0.753, auc_ci: [0.723, 0.784],
-    threshold: 4.2,
-    sensitivity: 0.551, specificity: 0.795,
-    brier: 0.0358, calibration_slope: 1.049,
-    ppv_at_population_prevalence: 0.10072,
-    people_flagged_per_true_case: 9.9,
+    label: "Liver Disease Risk", auc: 0.76, auc_ci: [0.73, 0.789],
+    threshold: 0.05,
+    sensitivity: 0.61, specificity: 0.77,
+    brier: 0.0356, calibration_slope: 1.059,
+    ppv_at_population_prevalence: 0.09951,
+    people_flagged_per_true_case: 10,
     population_prevalence: 0.04, cohort_prevalence: 0.04,
-    baseline_logistic_auc: 0.731, baseline_age_sex_auc: 0.602,
-    n_samples: 35511, n_test: 7103, n_features: 11,
+    baseline_logistic_auc: 0.74, baseline_age_sex_auc: 0.602,
+    n_samples: 35511, n_test: 7103, n_features: 12,
   },
   general: {
     label: "General Cancer Risk", auc: 0.732, auc_ci: [0.692, 0.77],
-    threshold: 2.9,
+    threshold: 0.0362,
     sensitivity: 0.68, specificity: 0.65,
     brier: 0.03, calibration_slope: 0.753,
     ppv_at_population_prevalence: 0.05923,
@@ -218,6 +218,13 @@ export default function OncovisionDashboard() {
   const [skipped, setSkipped] = useState<Record<string, string>>({});
   const [ignored, setIgnored] = useState<Record<string, string>>({});
   const [expanded, setExpanded] = useState<string | null>(null);
+  // Which lab groups are folded shut. The breast morphology group holds thirty
+  // numbers that only exist if a biopsy has already been taken and digitised,
+  // so it starts closed: for almost everyone it is thirty boxes they cannot
+  // fill. Everything else starts open.
+  const [shutGroups, setShutGroups] = useState<Record<string, boolean>>({
+    "Breast mass morphology": true,
+  });
   const [uploadedFiles, setUploadedFiles] = useState<string[]>([]);
   const [notice, setNotice] = useState<string | null>(null);
   const [registry, setRegistry] = useState<Record<string, any> | null>(null);
@@ -353,8 +360,15 @@ export default function OncovisionDashboard() {
 
   const sortedResults = results ? Object.entries(results) : [];
   const filled = Object.values(formData).filter(v => v !== "").length;
+  // held_out last, so it wins. This used to spread only v.metrics, which holds
+  // the cross-validated training numbers and has no auc_ci, n_test, brier or
+  // PPV in it at all. The tables below render exactly those fields, so as soon
+  // as the backend answered, four columns fell back to "n/a" and the PPV column
+  // rendered NaN — and the AUC quietly changed from a held-out number to a
+  // training one. The fallback block was right and the live path was not.
   const metrics = registry
-    ? Object.fromEntries(Object.entries(registry).map(([k, v]: any) => [k, { label: v.label, ...v.metrics }]))
+    ? Object.fromEntries(Object.entries(registry).map(([k, v]: any) =>
+        [k, { label: v.label, ...v.metrics, ...v.held_out }]))
     : FALLBACK_METRICS;
   const metricRows = Object.entries(metrics).sort((a: any, b: any) => b[1].auc - a[1].auc);
 
@@ -521,22 +535,52 @@ export default function OncovisionDashboard() {
                       <span className="text-[10px] font-bold text-[var(--ink-3)]">{filled} of {ALL_KEYS.length} filled</span>
                     </div>
 
-                    <div className="grid grid-cols-2 gap-x-3 gap-y-2 overflow-y-auto max-h-[300px] pr-2 custom-scrollbar">
-                      {LAB_KEYS.map(key => (
-                        <div key={key} className={`p-2 rounded bg-[var(--paper-2)] border transition-colors focus-within:border-[var(--stamp)] ${formData[key] !== "" ? "border-[var(--stamp-line)]" : "border-[var(--rule)]"}`}>
-                          <label htmlFor={`f-${key}`} className="field-label block mb-1 truncate">
-                            {key.replace(/_/g, " ")}
-                          </label>
-                          <input
-                            id={`f-${key}`}
-                            type="number"
-                            value={formData[key]}
-                            onChange={e => setField(key, e.target.value)}
-                            className="data w-full bg-transparent text-[var(--ink)] outline-none text-sm placeholder-[var(--ink-4)]"
-                            placeholder="-"
-                          />
-                        </div>
-                      ))}
+                    {/* Grouped rather than one flat list of sixty-four boxes.
+                        The groups match how a lab report is actually laid out,
+                        so you can find the section you are copying from. */}
+                    <div className="overflow-y-auto max-h-[300px] pr-2 custom-scrollbar">
+                      {LAB_GROUPS.map(({ group, items }) => {
+                        const shut = !!shutGroups[group];
+                        const done = items.filter(i => formData[i.key] !== "").length;
+                        return (
+                          <div key={group} className="mb-3">
+                            <button
+                              type="button"
+                              aria-expanded={!shut}
+                              onClick={() => setShutGroups(s => ({ ...s, [group]: !s[group] }))}
+                              className="w-full flex items-center gap-2 text-left py-1.5 border-b border-[var(--rule)] mb-2 hover:text-[var(--stamp)] transition-colors"
+                            >
+                              <ChevronDown className={`w-3.5 h-3.5 text-[var(--ink-3)] shrink-0 transition-transform ${shut ? "-rotate-90" : ""}`} />
+                              <span className="text-[10px] uppercase font-bold tracking-widest text-[var(--ink-2)]">{group}</span>
+                              <span className="ml-auto text-[10px] font-bold text-[var(--ink-4)] shrink-0">
+                                {done} of {items.length}
+                              </span>
+                            </button>
+                            {!shut && (
+                              <div className="grid grid-cols-2 gap-x-3 gap-y-2">
+                                {items.map(({ key, label, unit }) => (
+                                  <div key={key} className={`p-2 rounded bg-[var(--paper-2)] border transition-colors focus-within:border-[var(--stamp)] ${formData[key] !== "" ? "border-[var(--stamp-line)]" : "border-[var(--rule)]"}`}>
+                                    {/* The unit lives in the placeholder, not the
+                                        label. In a column this narrow, appending
+                                        it truncated the name itself away. */}
+                                    <label htmlFor={`f-${key}`} className="field-label block mb-1 truncate" title={label}>
+                                      {label}
+                                    </label>
+                                    <input
+                                      id={`f-${key}`}
+                                      type="number"
+                                      value={formData[key]}
+                                      onChange={e => setField(key, e.target.value)}
+                                      className="data w-full bg-transparent text-[var(--ink)] outline-none text-sm placeholder-[var(--ink-4)]"
+                                      placeholder={unit || "-"}
+                                    />
+                                  </div>
+                                ))}
+                              </div>
+                            )}
+                          </div>
+                        );
+                      })}
                     </div>
                   </div>
 
@@ -1131,13 +1175,25 @@ export default function OncovisionDashboard() {
                 </p>
 
                 <div className="space-y-6">
+                  {/* Same fold as the input form. Thirty aspirate measurements
+                      written out in full is most of this page, and it buries the
+                      groups a reader is far more likely to want. */}
                   {LAB_GROUPS.map(({ group, blurb, items }) => (
                     <div key={group} className="bg-[var(--surface)] border border-[var(--rule)] rounded-none overflow-hidden">
-                      <div className="p-5 border-b border-[var(--rule)] bg-[var(--paper-2)]">
-                        <h4 className="font-bold text-[var(--ink)]">{group}</h4>
+                      <button
+                        type="button"
+                        aria-expanded={!shutGroups[group]}
+                        onClick={() => setShutGroups(s => ({ ...s, [group]: !s[group] }))}
+                        className="w-full text-left p-5 border-b border-[var(--rule)] bg-[var(--paper-2)] hover:bg-[var(--rule)] transition-colors"
+                      >
+                        <h4 className="font-bold text-[var(--ink)] flex items-center gap-2">
+                          <ChevronDown className={`w-4 h-4 text-[var(--ink-3)] shrink-0 transition-transform ${shutGroups[group] ? "-rotate-90" : ""}`} />
+                          {group}
+                          <span className="ml-auto text-[11px] font-normal text-[var(--ink-4)]">{items.length} values</span>
+                        </h4>
                         <p className="text-xs text-[var(--ink-3)] mt-1">{blurb}</p>
-                      </div>
-                      <div className="divide-y divide-[var(--rule)]">
+                      </button>
+                      <div className={`divide-y divide-[var(--rule)] ${shutGroups[group] ? "hidden" : ""}`}>
                         {items.map(({ key, label, unit, normal, meaning }) => (
                           <div key={key} className="p-5">
                             <div className="flex flex-wrap items-baseline gap-x-3 gap-y-1 mb-2">

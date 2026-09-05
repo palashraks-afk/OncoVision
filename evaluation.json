@@ -372,12 +372,13 @@
     "n_total": 35511,
     "n_train": 28408,
     "n_test": 7103,
-    "n_features": 11,
+    "n_features": 12,
     "features": [
       "age",
       "gender",
       "bilirubin",
       "alkaline_phosphatase",
+      "ggt",
       "alt",
       "ast",
       "protein_total",
@@ -387,118 +388,118 @@
       "hepatitis_c"
     ],
     "cohort_prevalence": 0.04,
-    "cv_auc_train_only": 0.734,
+    "cv_auc_train_only": 0.741,
     "uncalibrated": {
       "variant": "uncalibrated",
-      "threshold": 0.4847,
-      "auc": 0.749,
+      "threshold": 0.4585,
+      "auc": 0.762,
       "auc_ci": [
-        0.719,
-        0.777
+        0.734,
+        0.789
       ],
-      "sensitivity": 0.523,
+      "sensitivity": 0.613,
       "sensitivity_ci": [
-        0.464,
-        0.582
+        0.556,
+        0.666
       ],
-      "specificity": 0.799,
+      "specificity": 0.755,
       "specificity_ci": [
-        0.79,
-        0.808
+        0.745,
+        0.765
       ],
-      "ppv_in_cohort": 0.099,
-      "brier": 0.1684,
-      "calibration_slope": 1.345,
-      "calibration_intercept": -2.673,
+      "ppv_in_cohort": 0.095,
+      "brier": 0.1648,
+      "calibration_slope": 1.408,
+      "calibration_intercept": -2.65,
       "reliability": [
         {
           "bin": "0.0 to 0.2",
-          "n": 800,
-          "predicted": 0.164,
+          "n": 838,
+          "predicted": 0.161,
           "observed": 0.004
         },
         {
           "bin": "0.2 to 0.4",
-          "n": 3060,
+          "n": 3138,
           "predicted": 0.316,
-          "observed": 0.022
+          "observed": 0.02
         },
         {
           "bin": "0.4 to 0.6",
-          "n": 2687,
+          "n": 2592,
           "predicted": 0.472,
-          "observed": 0.047
+          "observed": 0.046
         },
         {
           "bin": "0.6 to 0.8",
-          "n": 469,
-          "predicted": 0.668,
-          "observed": 0.109
+          "n": 458,
+          "predicted": 0.673,
+          "observed": 0.142
         },
         {
           "bin": "0.8 to 1.0",
-          "n": 87,
+          "n": 77,
           "predicted": 0.871,
-          "observed": 0.471
+          "observed": 0.468
         }
       ],
-      "ppv_at_population_prevalence": 0.09788,
-      "npv_at_population_prevalence": 0.97572,
-      "people_flagged_per_true_case": 10.2,
+      "ppv_at_population_prevalence": 0.09459,
+      "npv_at_population_prevalence": 0.97911,
+      "people_flagged_per_true_case": 10.6,
       "population_prevalence": 0.04,
       "prevalence_source": "Ever told had a liver condition, US adults, NHANES 2005-2018"
     },
     "calibrated": {
       "variant": "isotonic calibrated",
-      "threshold": 0.0418,
-      "auc": 0.753,
+      "threshold": 0.0404,
+      "auc": 0.76,
       "auc_ci": [
-        0.723,
-        0.784
+        0.73,
+        0.789
       ],
-      "sensitivity": 0.551,
+      "sensitivity": 0.61,
       "sensitivity_ci": [
-        0.493,
-        0.61
+        0.553,
+        0.667
       ],
-      "specificity": 0.795,
+      "specificity": 0.77,
       "specificity_ci": [
-        0.786,
-        0.805
+        0.76,
+        0.78
       ],
-      "ppv_in_cohort": 0.102,
-      "brier": 0.0358,
-      "calibration_slope": 1.049,
-      "calibration_intercept": 0.463,
+      "ppv_in_cohort": 0.1,
+      "brier": 0.0356,
+      "calibration_slope": 1.059,
+      "calibration_intercept": 0.442,
       "reliability": [
         {
           "bin": "0.0 to 0.2",
-          "n": 6971,
-          "predicted": 0.035,
+          "n": 6969,
+          "predicted": 0.034,
           "observed": 0.034
         },
         {
           "bin": "0.2 to 0.4",
-          "n": 105,
-          "predicted": 0.284,
-          "observed": 0.343
+          "n": 108,
+          "predicted": 0.297,
+          "observed": 0.38
         },
         {
           "bin": "0.4 to 0.6",
-          "n": 24,
-          "predicted": 0.487,
-          "observed": 0.583
+          "n": 20,
+          "predicted": 0.462,
+          "observed": 0.55
         },
         {
           "bin": "0.6 to 0.8",
-          "n": 3,
-          "predicted": 0.634,
-          "observed": 0.0
+          "n": 6,
+          "predicted": 0.711,
+          "observed": 0.167
         }
       ],
-      "ppv_at_population_prevalence": 0.10072,
-      "npv_at_population_prevalence": 0.97699,
-      "people_flagged_per_true_case": 9.9,
+      "ppv_at_population_prevalence": 0.09951,
+      "npv_at_population_prevalence": 0.97932,
+      "people_flagged_per_true_case": 10.0,
       "population_prevalence": 0.04,
       "prevalence_source": "Ever told had a liver condition, US adults, NHANES 2005-2018"
     },
@@ -507,10 +508,10 @@
         "auc": 0.5
       },
       "logistic_regression": {
-        "auc": 0.731,
+        "auc": 0.74,
         "auc_ci": [
-          0.701,
-          0.76
+          0.71,
+          0.769
         ]
       },
       "age_sex_only": {
@@ -529,37 +530,37 @@
       "sex: female": {
         "n": 3677,
         "positives": 141,
-        "auc": 0.765,
+        "auc": 0.778,
         "auc_ci": [
-          0.722,
-          0.805
+          0.737,
+          0.817
         ]
       },
       "sex: male": {
         "n": 3426,
         "positives": 146,
-        "auc": 0.739,
+        "auc": 0.742,
         "auc_ci": [
-          0.693,
-          0.781
+          0.695,
+          0.786
         ]
       },
       "age under 49": {
         "n": 3471,
         "positives": 85,
-        "auc": 0.762,
+        "auc": 0.761,
         "auc_ci": [
           0.71,
-          0.81
+          0.811
         ]
       },
       "age 49 and over": {
         "n": 3632,
         "positives": 202,
-        "auc": 0.713,
+        "auc": 0.73,
         "auc_ci": [
-          0.672,
-          0.752
+          0.691,
+          0.767
         ]
       }
     }

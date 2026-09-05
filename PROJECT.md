@@ -136,8 +136,9 @@ the rest, and its reported accuracy describes a situation that never occurs in u
 
 So the rule is that a model may only train on features the application can actually collect. Every
 dataset column is either mapped onto the canonical input schema or dropped before fitting. The
-breast model uses four of the thirty available columns because those four are what a user can
-supply. The pancreatic model drops the urinary panel and drops `stage`, which is only known after
+breast model uses all thirty of the available columns, because the panel requires a biopsy that
+has already been taken and reported, and such a report carries all thirty; an earlier version asked
+for four and paid 0.272 of AUC on small lesions for the difference. The pancreatic model drops the urinary panel and drops `stage`, which is only known after
 diagnosis and would leak the answer. The prostate model drops tumour volume and capsular
 penetration because those are surgical findings, not screening inputs, and converts the dataset's
 log PSA back into the ng/mL a patient reads off a report.
@@ -306,6 +307,7 @@ Every result card now carries its type.
 | Liver | Screening | Nothing. Routine bloodwork and your history. |
 | Bowel | Screening | Nothing. A routine blood count. |
 | Lung | Screening | Nothing, but it is offered to people with tobacco exposure. |
+| Pancreatic | **Triage** | A CA 19-9 result, which is ordered when pancreatic or biliary cancer is already suspected. |
 | Ovarian | **Triage** | An ovarian mass already found on imaging. |
 | Prostate | **Interpretation** | A PI-RADS score from a prostate MRI. |
 | Breast | **Interpretation** | Nuclear measurements from a biopsy already taken. |
@@ -314,6 +316,16 @@ A triage panel asks whether something already found is malignant. An
 interpretation panel reads a diagnostic test that has already been performed.
 Neither can be run from a lab report, and pretending otherwise is the main way
 this application could mislead someone.
+
+The pancreatic row was missing from this table for a while, and the reason is
+worth recording. `PANEL_KIND` had no entry for it, and the lookup that reads
+that table defaulted to `("screening", "")`. So the panel silently claimed the
+strongest label available, with no note explaining itself, purely because nobody
+had written a line for it. It reads CA 19-9, a tumour marker ordered when cancer
+is already suspected, and its controls were people with benign disease of the
+same organs, so it was always triage. The default is now gone: a panel with no
+declared type raises at training time rather than assuming one, and
+`tools/audit.py` checks for the omission separately.
 
 ### Three panels are labelled "not a screening test" on their own card
 
@@ -578,15 +590,26 @@ earlier answer changes anything.
 
 | Subgroup | n | Malignant | AUC |
 |---|---|---|---|
-| Smallest third by nuclear area | 190 | 6 | **0.739** |
-| Middle third | 189 | 39 | 0.806 |
-| Largest third | 190 | 167 | 0.923 |
+| Smallest third by nuclear area | 190 | 6 | **0.974** |
+| Middle third | 189 | 39 | 0.976 |
+| Largest third | 190 | 167 | 0.991 |
 
-The panel scores 0.954 overall and 0.739 on the smallest lesions, a spread of
-0.216. It is materially weaker exactly where it would be most useful, and that
-now appears on the panel instead of being invisible. Race and age remain
-unmeasurable from this cohort and that limitation stands unchanged.
-Reproduce with `python experiments/breast_subgroups.py`.
+This weakness has since been fixed rather than only disclosed. The panel used to
+score 0.954 overall and 0.739 on the smallest lesions, a spread of 0.216, and it
+was weakest exactly where an earlier answer would change something.
+
+The cause was that it read four of the thirty Wisconsin measurements. That came
+from this project's rule that a model may only use what the application can
+collect, and at the time the form asked for four numbers. But breast is an
+INTERPRETATION panel: whoever runs it is holding a pathology report that already
+carries all thirty. Restricting to four was not a constraint of the setting, it
+was a stale assumption about the form.
+
+Measured on the small-lesion subgroup alone, four features score 0.680 and all
+thirty score 0.952. Shipped, the subgroup now reads 0.974 and the spread is
+0.019. Race and age remain unmeasurable from this cohort and that limitation
+stands unchanged. Reproduce with `python experiments/breast_small_lesions.py`
+and `python experiments/breast_subgroups.py`.
 
 **7. No prospective validation and no IRB.** Not fixable by writing code. An
 ethics approval is granted by an institution to a named investigator for a
@@ -607,15 +630,18 @@ distribution. Reproduce with `python experiments/split_stability.py`.
 
 | Panel | Rows | Events | Mean AUC | Spread across splits | Shipped split | Percentile |
 |---|---|---|---|---|---|---|
+| Breast | 569 | 212 | 0.992 | 0.970 to 1.000 | 0.997 | 77th |
 | Pancreatic | 600 | 130 | 0.969 | 0.939 to 0.995 | 0.969 | 50th |
-| Breast | 569 | 212 | 0.959 | 0.901 to 0.991 | 0.972 | 73rd |
 | Ovarian | 349 | 171 | 0.928 | 0.852 to 0.969 | 0.949 | 70th |
-| Liver | 35,511 | 1,436 | 0.750 | 0.744 to 0.756 | 0.753 | 60th |
+| Lung | 21,916 | 104 | 0.839 | 0.822 to 0.860 | 0.829 | 40th |
+| Prostate | 212 | 121 | 0.822 | 0.732 to 0.909 | 0.840 | 70th |
+| Bowel | 23,794 | 96 | 0.799 | 0.785 to 0.817 | 0.793 | 40th |
+| Liver | 35,511 | 1,436 | 0.754 | 0.740 to 0.764 | 0.760 | 80th |
 | General | 23,923 | 750 | 0.743 | 0.692 to 0.772 | 0.732 | 20th |
 | Cervical | 858 | 55 | **0.594** | **0.421 to 0.789** | 0.725 | **97th** |
 
-Five panels sit between the 20th and 73rd percentile of their own split
-distribution, which is what a representative number looks like. Cervical sat at
+All eight live panels sit between the 20th and 80th percentile of their own
+split distribution, which is what a representative number looks like. Cervical sat at
 the 97th. Its published 0.725 described one favourable shuffle, not the model.
 
 ### Cervical is withdrawn
@@ -811,6 +837,65 @@ people diagnosed **within four years of the blood draw**, and long-ago survivors
 rather than relabelled. That is a screening question. On a held-out cycle the gain over age and
 sex rose from 0.004 to 0.019.
 
+### The app asked for exercise and nothing read the answer
+
+`tools/audit.py` checks that every question the form asks is consumed by some live panel. It found
+one that was not: hours of exercise per week. The form asked, and no model had read it since the
+general and liver panels moved to NHANES.
+
+There were two honest responses: wire it up, or stop asking. Which one depended on whether it
+carried information, so it was measured rather than guessed. NHANES has recorded physical activity
+under the Global Physical Activity Questionnaire since 2007, so recreational exercise hours were
+pulled and offered to the general panel. Work activity was deliberately excluded, because a
+warehouse shift and a run are not the same exposure and the form's question says "exercise".
+
+Because the instrument only exists from 2007, the answer is missing by cycle rather than at random.
+Median imputation across that gap would hand 4,147 people a made-up value and let the model learn
+"no exercise recorded" as a cycle marker, so every arm was run twice: once pooled, once restricted
+to the four cycles that actually asked.
+
+It did not help either way. The general panel's gain over age and sex went from +0.005 to +0.003 on
+the cycles that asked, and the same on the pooled cohort: a small loss, consistently, not a small
+win. Physical inactivity is a real cancer risk factor at the population level, but that is not the
+same claim as adding information once you already know a person's age, sex, BMI, smoking and
+drinking. It is largely spoken for by those.
+
+So the question was removed from the form. Waist circumference was tested in the same run, on the
+reasoning that BMI cannot separate a heavy-set person from a centrally obese one and that it is
+central adiposity the literature ties to risk. It came out at +0.003, in the right direction and
+consistent across both cohorts, but under the 0.005 bar set before the experiment ran. It was not
+adopted, and the bar was not moved afterwards to let it in. The column is still collected, because
+it is free and a different cohort or target may make better use of it.
+
+Both results are in `experiments/general_body_activity.py`.
+
+### The liver panel was reading ALP without the value that disambiguates it
+
+Alkaline phosphatase rises in liver disease. It also rises in bone disease. The value that separates
+those two is GGT, and it is the first thing a hepatologist asks for after a raised ALP.
+
+The liver panel did not have it. Not because it was rejected, and not because a patient would have
+to pay for another test: GGT sits on the same comprehensive metabolic panel NHANES already draws,
+on the same blood sample, printed on the same page. It had simply never been pulled.
+
+Three other analytes on that same panel were in the same position, so all four were tested together
+against what shipped:
+
+| Arm | Features | AUC |
+|---|---|---|
+| Shipped | 11 | 0.741 |
+| **+ GGT** | 12 | **0.750** |
+| + GGT, globulin | 13 | 0.749 |
+| + GGT, globulin, LDH, uric acid | 15 | 0.749 |
+
+GGT is worth +0.009, winning 5 of 5 paired repeats on identical folds, and the two ranges do not
+overlap: 0.738 to 0.744 without it, 0.747 to 0.753 with it. Globulin, LDH and uric acid add nothing
+once GGT is in, and two of the three make it very slightly worse, so only GGT was taken. Adding all
+four because all four were free would have been the easy call and the wrong one.
+
+The German external cohort cannot check this, because it does not record any of the four. That is
+stated rather than worked around. Reproduce with `python experiments/liver_extra_analytes.py`.
+
 ### Choosing the operating point
 
 A fixed 0.5 threshold drove measured sensitivity to 0.008 once prevalence was realistic. Each
@@ -866,8 +951,8 @@ deploy.
 ```
 oncovision/
 ├── backend/
-│   ├── api.py              FastAPI service
-│   ├── models/             5 serialised ensemble bundles
+│   ├── api.py              FastAPI service, PDF parsing, scoring, gating
+│   ├── models/             calibrated ensemble bundles, one per live panel
 │   ├── model_metrics.json  measured performance
 │   └── requirements.txt
 ├── data/                   source training datasets
@@ -877,7 +962,11 @@ oncovision/
 │       ├── fields.ts       input schema and glossary
 │       ├── cases.ts        generated sample case pool
 │       └── layout.tsx
-├── train_models.py         training pipeline
+├── tools/audit.py          structural checks, exits non-zero to gate a commit
+├── experiments/            every question that was measured, negative ones included
+├── evaluate.py             held-out evaluation, CIs, calibration, PPV, baselines
+├── external_validation.py  trains on one country, tests on another
+├── train_models.py         training pipeline and panel config
 ├── make_cases.py           sample case generator
 └── PROJECT.md
 ```
@@ -887,6 +976,12 @@ oncovision/
 ```bash
 # train
 pip install -r requirements.txt
+
+# structural checks first: duplicate keys, panels training on features the form
+# never asks for, model features with no range check, panels with no declared
+# type. Exits non-zero, so it can gate a commit.
+python tools/audit.py
+
 python train_models.py
 
 # regenerate the sample cases
@@ -912,6 +1007,16 @@ The frontend reads `NEXT_PUBLIC_API_URL` and falls back to the deployed backend 
 Uploaded PDFs are read into memory, parsed, and discarded inside the request. Nothing is written to
 disk and no database is attached to the service. Lab values live in browser state for the length of
 a session and are gone when the tab closes.
+
+The service also does not accept what it cannot use. When the cervical panel was withdrawn, its
+questions were taken out of the form, but the API went on accepting them: number of sexual
+partners, age at first intercourse, pregnancies, contraceptive and IUD history, and STD and HPV
+status. Nothing scored any of it. That is worse than dead code, because an endpoint that accepts a
+sexual history is one that can receive and log one, and there was no reason for it to exist.
+
+`tools/audit.py` now fails if the API accepts any field that no live panel reads and no form sends,
+and separately if a withdrawn panel is still named as the consumer of an input. Seventeen fields
+were removed when that check was first run.
 
 ---
 

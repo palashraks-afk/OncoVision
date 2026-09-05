@@ -107,6 +107,13 @@ def build_cycle(year, suffix, label):
     # a centrally obese one, and it is central adiposity that the obesity-cancer
     # literature ties to risk. It costs nothing: NHANES measures it on the same
     # visit, and a clinic can measure it with a tape.
+    #
+    # Measured, it is worth +0.003 to the general panel's gain over age and sex,
+    # consistently and in the right direction, but under the 0.005 bar set before
+    # the experiment ran. So it is NOT in the panel. It is still collected here,
+    # because the column is free and a later cohort or a different target may
+    # make better use of it than this one does.
+    # See experiments/general_body_activity.py.
     bmx = take(grab(year, suffix, "BMX"), ["SEQN", "BMXBMI", "BMXWAIST"])
     smq = take(grab(year, suffix, "SMQ"), ["SEQN", "SMQ020", "SMQ040"])
     alq = take(grab(year, suffix, "ALQ"), ["SEQN", "ALQ101", "ALQ111", "ALQ130"])

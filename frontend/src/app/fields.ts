@@ -179,11 +179,6 @@ export const HISTORY_FIELDS: HistoryField[] = [
     min: 0, max: 5, step: 0.5, suffix: "of 5",
   },
   {
-    key: "physical_activity", label: "Exercise", type: "number", group: "General",
-    meaning: "Hours of activity in a normal week.",
-    min: 0, max: 10, step: 0.5, suffix: "hrs/week",
-  },
-  {
     key: "hepatitis_b", label: "Hepatitis B", type: "select", group: "General",
     meaning: "Chronic hepatitis B is one of the strongest liver cancer risk factors known.",
     options: [{ value: 0, label: "Negative" }, { value: 1, label: "Positive" }],

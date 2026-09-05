@@ -34,22 +34,46 @@ NORMAL = {
     "glucose": 88, "calcium": 9.4, "bun": 14, "creatinine": 0.9, "protein_total": 7,
     "albumin": 4.4, "ast": 22, "alt": 20, "bilirubin": 0.6, "alkaline_phosphatase": 78,
     "alpha_fetoprotein_level": 3.1, "psa": 0.9, "plasma_ca19_9": 12,
-    "radius_mean": 11.4, "texture_mean": 17.2, "perimeter_mean": 72.6, "area_mean": 400,
-    "gender": 0, "smoking": 0, "alcohol_intake": 0.5, "physical_activity": 6,
+    "gender": 0, "smoking": 0, "alcohol_intake": 0.5,
     "hepatitis_b": 0, "hepatitis_c": 0, "diabetes": 0,
     # Red cell and platelet indices, GGT, and the pelvic-mass tumour markers.
     "hematocrit": 42, "mcv": 89, "mch": 30, "rdw": 13.1, "mpv": 9.8,
     "neutrophil_pct": 58, "ggt": 22, "ca125": 12, "he4": 45, "cea": 1.5,
-    # Reproductive and sexual history, at an unremarkable reading.
-    "menopause": 0, "sexual_partners": 2, "first_intercourse_age": 19,
-    "pregnancies": 1, "smokes": 0, "smoking_years": 0, "smoking_packyears": 0,
-    "hormonal_contraceptives": 0, "hormonal_contraceptives_years": 0,
-    "iud": 0, "iud_years": 0, "stds": 0, "stds_number": 0, "stds_hpv": 0,
-    "stds_diagnoses": 0,
+    # Menopausal status for the ovarian panel, pack-years for lung. The rest of
+    # the reproductive and sexual history went when the cervical panel was
+    # withdrawn.
+    "menopause": 0, "smoking_packyears": 0,
     # Tobacco exposure, inflammation, prostate work-up.
     "cotinine": 0.05, "crp": 1.2,
     "prostate_volume": 28, "psa_density": 0.1, "pi_rads": 2,
 }
+
+
+def _benign_breast_reference() -> dict:
+    """
+    A benign reading for each of the thirty aspirate measurements.
+
+    These are not invented. There is no textbook "normal" for a nuclear fractal
+    dimension the way there is for haemoglobin, and guessing twenty-six numbers
+    would put fiction into the sample cases. So they are the median of the
+    benign aspirates in the Wisconsin cohort itself, which is what a benign
+    reading actually looks like.
+
+    Deriving them also means they cannot go stale. The four that used to be
+    hard-coded here drifted out of the file the moment the panel grew to thirty,
+    and make_cases.py crashed on the first missing key.
+    """
+    d = pd.read_csv(os.path.join("data", "data.csv"))
+    benign = d[d["diagnosis"].astype(str).str.upper() == "B"]
+    out = {}
+    for feat in tm.LAB_FIELDS:
+        col = "concave points" + feat[len("concave_points"):] if feat.startswith("concave_points") else feat
+        if col in benign.columns:
+            out[feat] = round(float(pd.to_numeric(benign[col], errors="coerce").median()), 4)
+    return out
+
+
+NORMAL.update(_benign_breast_reference())
 
 LABELS = {
     "general": "General", "breast": "Breast", "liver": "Liver",
@@ -149,7 +173,6 @@ def note_for(domain: str, v: dict) -> str:
     smoke = {0: "never smoked", 1: "former smoker", 2: "current smoker"}[int(v.get("smoking", 0))]
     drink = float(v.get("alcohol_intake", 0))
     return (f"{age} year old {who}, {smoke}. BMI {v['bmi']:g}, "
-            f"{v['physical_activity']:g} hours of exercise a week, "
             f"alcohol {drink:g} of 5.")
 
 

@@ -283,7 +283,12 @@ def fetch_nhanes_liver() -> pd.DataFrame:
 
     demo = grab("DEMO_J.XPT")[["SEQN", "RIAGENDR", "RIDAGEYR", "RIDRETH3"]]
     bio = grab("BIOPRO_J.XPT")[
-        ["SEQN", "LBXSTB", "LBXSAPSI", "LBXSATSI", "LBXSASSI", "LBXSTP", "LBXSAL"]
+        # LBXSGTSI is GGT. The shipped liver panel reads it, so this held-out
+        # cohort has to carry it too, otherwise every row here would be scored
+        # on an imputed median for a feature the model actually uses and the
+        # external number would quietly describe a different model.
+        ["SEQN", "LBXSTB", "LBXSAPSI", "LBXSATSI", "LBXSASSI", "LBXSTP",
+         "LBXSAL", "LBXSGTSI"]
     ]
     mcq = grab("MCQ_J.XPT")[["SEQN", "MCQ160L"]]
 
@@ -304,6 +309,7 @@ def fetch_nhanes_liver() -> pd.DataFrame:
         "ast": pd.to_numeric(df["LBXSASSI"], errors="coerce"),
         "protein_total": pd.to_numeric(df["LBXSTP"], errors="coerce"),
         "albumin": pd.to_numeric(df["LBXSAL"], errors="coerce"),
+        "ggt": pd.to_numeric(df["LBXSGTSI"], errors="coerce"),
         "race_ethnicity": race,
         # 1 = yes, 2 = no. 7 and 9 are refused and don't know, dropped.
         "liver_disease": df["MCQ160L"].map({1: 1, 2: 0}),
