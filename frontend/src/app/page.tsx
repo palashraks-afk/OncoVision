@@ -871,6 +871,40 @@ export default function OncovisionDashboard() {
                                 Partial data. {d.coverage_caveat}
                               </p>
                             )}
+                            {/*
+                              Values past the edge of what this panel was trained
+                              on. Given the most prominence of any caveat here,
+                              because it is the one where the percentage is least
+                              trustworthy and the raw value matters most.
+
+                              The liver panel used to score a fulminant hepatitis
+                              picture BELOW a healthy patient: only 19 of 35,511
+                              people in its cohort have an ALT over 250, and none
+                              of its 1,436 cases exceeds 232, so it had learned
+                              that a very high ALT means no liver disease. The
+                              service now clips to the observed range, and this is
+                              where it admits that it did.
+                            */}
+                            {d.extreme_value_caveat && (
+                              <div className="mb-3 p-3 border border-[var(--flag)] bg-[var(--flag)]/5">
+                                <p className="text-[11px] leading-relaxed text-[var(--ink-2)]">
+                                  <span className="font-bold text-[var(--flag)]">
+                                    Off the scale this panel knows.{" "}
+                                  </span>
+                                  {d.extreme_value_caveat}
+                                </p>
+                                {d.beyond_training_range?.length > 0 && (
+                                  <div className="mt-2 flex flex-wrap gap-2">
+                                    {d.beyond_training_range.map((e: any) => (
+                                      <span key={e.field}
+                                        className="text-[10px] font-mono px-2 py-1 border border-[var(--flag)] text-[var(--flag)]">
+                                        {e.name} {e.entered} — furthest this panel has seen is {e.furthest_seen}
+                                      </span>
+                                    ))}
+                                  </div>
+                                )}
+                              </div>
+                            )}
                             {!isBenign && (
                               <div className="flex flex-wrap gap-x-4 gap-y-1 text-[10px] text-[var(--ink-3)] font-bold uppercase tracking-wider">
                                 <span title="How well this panel separated people who had the disease from people who did not, on data it had never seen. 0.5 is a coin flip, 1.0 is perfect.">

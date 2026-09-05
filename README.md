@@ -864,6 +864,33 @@ percentage."*
 `experiments/monotonicity.py` measures this across every panel, and `tools/drive_app.py` keeps the
 hepatitis picture as a standing regression check.
 
+### What refusing to extrapolate cost
+
+Clipping is a real intervention on a shipped model, so the question is whether it broke anything.
+A safety fix that quietly costs sensitivity is not a fix.
+
+| Panel | AUC unclipped | AUC clipped | Delta | Rows touched |
+|---|---|---|---|---|
+| Ovarian | 1.000 | 1.000 | +0.000 | 32% |
+| Pancreatic | 0.980 | 0.980 | +0.000 | 8% |
+| Breast | 0.997 | 0.997 | -0.000 | 22% |
+| Prostate | 0.873 | 0.874 | +0.000 | 10% |
+| Lung | 0.878 | 0.875 | -0.003 | 24% |
+| Bowel | 0.861 | 0.859 | -0.002 | 19% |
+| General | 0.766 | 0.766 | -0.000 | 3% |
+| **Liver** | 0.870 | 0.854 | **-0.016** | 11% |
+
+These are in-sample figures and therefore optimistic; the delta is the result, because both sides
+are computed the same way on the same rows.
+
+Nothing loses more than 0.02, and the liver row is the one worth reading closely. **It is expected
+to lose, and losing it is the point.** Part of that panel's apparent discrimination came from the
+artefact above: separating non-cases by their very high ALT is genuinely predictive inside NHANES
+and genuinely wrong about medicine. Clipping removes it, and the AUC it takes with it was never
+signal about liver disease.
+
+Reproduce with `python experiments/clipping_cost.py`.
+
 ### Getting the measurement wrong first, and what that taught
 
 The first version of the monotonicity experiment swept one feature at a time with everything else

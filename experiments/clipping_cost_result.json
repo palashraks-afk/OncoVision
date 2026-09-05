@@ -1,0 +1,62 @@
+{
+  "tolerance": 0.02,
+  "panels": {
+    "general": {
+      "auc_unclipped": 0.766,
+      "auc_clipped": 0.766,
+      "delta": -0.0,
+      "share_of_rows_clipped": 0.029,
+      "within_tolerance": true
+    },
+    "breast": {
+      "auc_unclipped": 0.997,
+      "auc_clipped": 0.997,
+      "delta": -0.0,
+      "share_of_rows_clipped": 0.22,
+      "within_tolerance": true
+    },
+    "liver": {
+      "auc_unclipped": 0.87,
+      "auc_clipped": 0.854,
+      "delta": -0.016,
+      "share_of_rows_clipped": 0.109,
+      "within_tolerance": true
+    },
+    "pancreatic": {
+      "auc_unclipped": 0.98,
+      "auc_clipped": 0.98,
+      "delta": 0.0,
+      "share_of_rows_clipped": 0.077,
+      "within_tolerance": true
+    },
+    "colorectal": {
+      "auc_unclipped": 0.861,
+      "auc_clipped": 0.859,
+      "delta": -0.002,
+      "share_of_rows_clipped": 0.185,
+      "within_tolerance": true
+    },
+    "ovarian": {
+      "auc_unclipped": 1.0,
+      "auc_clipped": 1.0,
+      "delta": 0.0,
+      "share_of_rows_clipped": 0.318,
+      "within_tolerance": true
+    },
+    "lung": {
+      "auc_unclipped": 0.878,
+      "auc_clipped": 0.875,
+      "delta": -0.003,
+      "share_of_rows_clipped": 0.239,
+      "within_tolerance": true
+    },
+    "prostate": {
+      "auc_unclipped": 0.873,
+      "auc_clipped": 0.874,
+      "delta": 0.0,
+      "share_of_rows_clipped": 0.099,
+      "within_tolerance": true
+    }
+  },
+  "panels_over_tolerance": []
+}
