@@ -202,7 +202,7 @@ design the other cohorts cannot offer.
 | Prostate | 0.840 | 0.876 | 0.661 | +0.258 |
 | Lung | 0.829 | 0.785 | 0.778 | +0.044 |
 | Bowel | 0.793 | 0.8 | 0.817 | +0.039 |
-| Liver | 0.760 | 0.74 | 0.602 | +0.098 |
+| Liver | 0.760 | 0.74 | 0.602 | +0.106 |
 | General | 0.732 | 0.731 | 0.727 | **+0.006** |
 
 The gain column is measured by repeated paired cross-validation on identical folds, not from the held-out split, because a single split proved unreliable.

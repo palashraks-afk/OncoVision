@@ -21,12 +21,12 @@
   },
   "liver": {
     "n_repeats": 5,
-    "panel_auc": 0.741,
+    "panel_auc": 0.749,
     "age_sex_auc": 0.643,
-    "gain": 0.098,
+    "gain": 0.106,
     "gain_range": [
-      0.097,
-      0.1
+      0.104,
+      0.11
     ],
     "wins": 5,
     "baseline_features": [
@@ -57,7 +57,7 @@
     "age_sex_auc": 0.766,
     "gain": 0.039,
     "gain_range": [
-      0.009,
+      0.01,
       0.069
     ],
     "wins": 5,

@@ -260,7 +260,7 @@ Reproduce with `python evaluate.py`.
 | Prostate | 0.840 | 0.876 | 0.661 | +0.258 |
 | Lung | 0.829 | 0.785 | 0.778 | +0.044 |
 | Bowel | 0.793 | 0.8 | 0.817 | +0.039 |
-| Liver | 0.760 | 0.74 | 0.602 | +0.098 |
+| Liver | 0.760 | 0.74 | 0.602 | +0.106 |
 | General | 0.732 | 0.731 | 0.727 | **+0.006** |
 <!-- /AUTOGEN:baselines -->
 
@@ -843,6 +843,42 @@ NHANES 2005 to 2014 records age at diagnosis, so the cohort can be cut properly:
 people diagnosed **within four years of the blood draw**, and long-ago survivors are excluded
 rather than relabelled. That is a screening question. On a held-out cycle the gain over age and
 sex rose from 0.004 to 0.019.
+
+### The one design that can actually test the premise
+
+Every cohort above records the blood and the answer at the same visit, or assembles cases after
+the fact. That design cannot separate "the bloodwork predicts the cancer" from "the cancer has
+already changed the bloodwork", and no modelling choice repairs it.
+
+NCHS links every NHANES participant to the National Death Index and publishes the linkage, so the
+sample is drawn, years pass, and the death certificate arrives later from a different agency.
+
+    33,834 adults, NHANES 1999-2014, no cancer diagnosis at baseline
+    339 deaths from malignant neoplasm within 60 months of the blood draw
+    1.00% event rate, stable across all eight cycles
+
+| Feature set | Features | AUC | Gain over age and sex | Wins |
+|---|---|---|---|---|
+| Age and sex | 2 | 0.816 | — | |
+| + BMI, smoking, alcohol | 5 | 0.827 | +0.011 | 5/5 |
+| **+ complete blood count** | 15 | **0.832** | **+0.016** | 5/5 |
+| + metabolic and liver panel | 16 | 0.825 | +0.010 | 5/5 |
+| Everything | 26 | 0.829 | +0.013 | 5/5 |
+
+Leave-one-cycle-out, training on seven NHANES cycles and testing on the eighth, gives a mean of
+0.837, so the model transfers between survey waves rather than fitting one of them.
+
+**The gain is real and it is too small to act on.** Every arm beats age and sex on 5 of 5 paired
+repeats, and the largest gain is 0.016. Set against the liver panel's +0.106 and the pancreatic
+panel's +0.498, this is the clearest statement in the project of where routine bloodwork carries
+signal and where it does not: it carries a great deal about organ-specific disease when the
+organ's chemistry is on the panel, and very little about undifferentiated cancer risk.
+
+The outcome here is death from cancer, not detection of it. People who developed cancer and
+survived count as non-cases, because they did, and the endpoint is confounded by everything that
+determines whether a cancer is survivable. It is a different question, honestly labelled, on a
+design the other cohorts cannot offer. Reproduce with
+`python experiments/prospective_mortality.py`.
 
 ### The app asked for exercise and nothing read the answer
 
