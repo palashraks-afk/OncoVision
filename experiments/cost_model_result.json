@@ -1,0 +1,125 @@
+{
+  "cohort_size": 100000,
+  "panels": {
+    "colorectal": {
+      "settings": {
+        "procedure": "colonoscopy",
+        "procedure_cost": 2412.0,
+        "early_cost": 49000.0,
+        "late_cost": 116000.0,
+        "incidence": 0.004,
+        "note": "incidence is this cohort's 8-year rate, not annual SEER"
+      },
+      "sensitivity": 0.526,
+      "specificity": 0.853,
+      "base_case": {
+        "procedures_universal": 100000,
+        "procedures_triaged": 14852,
+        "cancers_found": 210.4,
+        "cancers_missed": 189.6,
+        "cost_universal": 241200000,
+        "cost_triaged": 48525259,
+        "saving": 192674741,
+        "saving_per_person": 1926.75,
+        "cost_per_cancer_missed": 1016217
+      },
+      "sweeps": {
+        "procedure cost": {
+          "x0.5": 89985770,
+          "x0.75": 141330256,
+          "x1.0": 192674741,
+          "x1.5": 295363711,
+          "x2.0": 398052682
+        },
+        "late-stage penalty": {
+          "x0.75": 195850541,
+          "x1.0": 192674741,
+          "x1.5": 186323141,
+          "x2.0": 179971541,
+          "x3.0": 167268341
+        },
+        "incidence": {
+          "x0.5": 199209170,
+          "x1.0": 192674741,
+          "x2.0": 179605882,
+          "x5.0": 140399304,
+          "x10.0": 75055008
+        }
+      },
+      "break_even_per_missed_cancer": 1083217,
+      "societal_cost_of_a_missed_cancer": 2250000,
+      "saves_money_once_a_life_is_priced": false,
+      "best_operating_point": {
+        "sensitivity": 0.979,
+        "specificity": 0.362,
+        "procedures_per_100k": 63948,
+        "cancers_missed": 8.3,
+        "net_benefit": 68208115,
+        "pays_once_a_life_is_priced": true,
+        "shipped_sensitivity": 0.526
+      }
+    },
+    "lung": {
+      "settings": {
+        "procedure": "low-dose chest CT",
+        "procedure_cost": 300.0,
+        "early_cost": 60000.0,
+        "late_cost": 120000.0,
+        "incidence": 0.0047,
+        "note": "eligible group is adults with measurable tobacco exposure"
+      },
+      "sensitivity": 0.571,
+      "specificity": 0.852,
+      "base_case": {
+        "procedures_universal": 100000,
+        "procedures_triaged": 14999,
+        "cancers_found": 268.4,
+        "cancers_missed": 201.6,
+        "cost_universal": 30000000,
+        "cost_triaged": 16597443,
+        "saving": 13402557,
+        "saving_per_person": 134.03,
+        "cost_per_cancer_missed": 66471
+      },
+      "sweeps": {
+        "procedure cost": {
+          "x0.5": 652378,
+          "x0.75": 7027468,
+          "x1.0": 13402557,
+          "x1.5": 26152736,
+          "x2.0": 38902914
+        },
+        "late-stage penalty": {
+          "x0.75": 16427007,
+          "x1.0": 13402557,
+          "x1.5": 7353657,
+          "x2.0": 1304757,
+          "x3.0": -10793043
+        },
+        "incidence": {
+          "x0.5": 19481278,
+          "x1.0": 13402557,
+          "x2.0": 1245114,
+          "x5.0": -35227215,
+          "x10.0": -96014430
+        }
+      },
+      "break_even_per_missed_cancer": 126481,
+      "societal_cost_of_a_missed_cancer": 2250000,
+      "saves_money_once_a_life_is_priced": false,
+      "best_operating_point": {
+        "sensitivity": 1.0,
+        "specificity": 0.217,
+        "procedures_per_100k": 78439,
+        "cancers_missed": 0.0,
+        "net_benefit": 6468172,
+        "pays_once_a_life_is_priced": true,
+        "shipped_sensitivity": 0.571
+      }
+    }
+  },
+  "panels_that_save": [
+    "colorectal",
+    "lung"
+  ]
+}

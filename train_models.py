@@ -37,7 +37,8 @@ import joblib
 
 from sklearn.calibration import CalibratedClassifierCV
 from sklearn.ensemble import ExtraTreesClassifier, VotingClassifier
-from sklearn.model_selection import StratifiedKFold, cross_val_predict, train_test_split
+from sklearn.model_selection import (StratifiedKFold, cross_val_predict,
+                                     cross_val_score, train_test_split)
 from sklearn.linear_model import LogisticRegression
 from sklearn.metrics import roc_auc_score, accuracy_score, confusion_matrix, roc_curve
 from sklearn.pipeline import make_pipeline
@@ -117,6 +118,34 @@ PANEL_KIND = {
 # experiments/operating_point.py, which also shows that for bowel, lung and
 # pancreatic NO threshold fixes it.
 NOT_SCREENING_ABOVE = 50.0
+
+# Panels that can still say something useful from a lab report alone, when the
+# test that defines their full version has not been done.
+#
+# The point of this application is to read the bloodwork somebody already has.
+# A panel that refuses until you have had an MRI is not serving that person, and
+# the honest response is not silence but a weaker answer clearly labelled as
+# weaker. Only listed where a reduced model was measured and found to beat
+# chance by a useful margin.
+REDUCED_INPUTS = {
+    # 0.676 against 0.825 with the MRI, on the same 212 biopsied men. Weak, and
+    # available to a man holding an ordinary lab report.
+    "prostate": ["age", "psa", "bmi"],
+}
+# {auc} is filled with the measured cross-validated AUC of the reduced model at
+# training time, so this note cannot drift away from the number it quotes.
+REDUCED_NOTE = {
+    "prostate": ("Scored from your PSA and age alone, without a prostate MRI. "
+                 "This is the weaker version of this panel: it reaches {auc} "
+                 "here against 0.825 when a PI-RADS score from an MRI is "
+                 "available. Treat it as a reason to ask about an MRI, not as a "
+                 "substitute for one."),
+}
+# What to call a panel when only its reduced tier could run. The full label
+# names a test the user has not had, which reads as a mistake on their card.
+REDUCED_LABEL = {
+    "prostate": "Prostate Cancer Risk, from PSA alone",
+}
 
 # A panel that beats knowing someone's age and sex by less than this is close to
 # a demographic lookup, and the card should say so rather than letting a good
@@ -1111,6 +1140,43 @@ def main():
                 f"PANEL_KIND before it can ship."
             )
         kind, kind_note = PANEL_KIND[name]
+
+        # A weaker model that runs on what a lab report actually contains.
+        #
+        # This exists because gating a panel behind a test most people have not
+        # had turns the application off for the person it was built for. The
+        # prostate panel needs a PI-RADS score from an MRI to reach 0.825. A man
+        # with a PSA on his annual bloodwork — the exact user this project is
+        # for — was getting nothing at all.
+        #
+        # Measured, age and PSA and BMI reach 0.676 on the same cohort. That is
+        # weak, and it is a great deal better than silence, and it is the
+        # difference between a tool that answers the question it was built to
+        # answer and one that refuses until you have already been to a
+        # radiologist. The reduced model ships INSIDE the same bundle, so it is
+        # one panel with two tiers rather than two panels competing for the same
+        # card, and the interface says which tier answered.
+        reduced = None
+        if name in REDUCED_INPUTS:
+            cols = [c for c in REDUCED_INPUTS[name] if c in X.columns]
+            Xr = X[cols]
+            r_factory = lambda: build_ensemble(len(y), float(y.mean()))  # noqa: E731
+            r_folds = max(2, min(5, int(y.value_counts().min())))
+            r_cv = StratifiedKFold(n_splits=r_folds, shuffle=True,
+                                   random_state=RANDOM_STATE)
+            r_model = CalibratedClassifierCV(r_factory(), method="isotonic", cv=r_cv)
+            r_auc = float(np.mean(cross_val_score(
+                CalibratedClassifierCV(r_factory(), method="isotonic", cv=r_cv),
+                Xr, y, cv=r_cv, scoring="roc_auc")))
+            r_model.fit(Xr, y)
+            reduced = {
+                "model": r_model,
+                "feature_names": cols,
+                "auc": round(r_auc, 3),
+                "note": REDUCED_NOTE.get(name, "").format(auc=f"{r_auc:.3f}"),
+                "label": REDUCED_LABEL.get(name, ""),
+            }
+            print(f"  reduced tier on {len(cols)} lab-report features: AUC {r_auc:.3f}")
         per_case = (held_out or {}).get("people_flagged_per_true_case")
         # A screening panel that flags hundreds per case is not one.
         screening_viable = not (
@@ -1124,6 +1190,9 @@ def main():
         bundle = {
             "model": model,
             "feature_names": list(X.columns),
+            # The lab-report-only tier, when this panel has one. See
+            # REDUCED_INPUTS for why a weaker answer beats a refusal here.
+            "reduced": reduced,
             "feature_medians": {k: float(v) for k, v in medians.items()},
             # The range each feature was actually observed over, so the service
             # can refuse to extrapolate.

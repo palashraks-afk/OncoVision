@@ -732,7 +732,22 @@ async def predict_risk(data: PatientData):
 
         # The defining-input gate, which runs before coverage because coverage
         # cannot see it. See DEFINING_INPUTS above for the failure this prevents.
+        # A panel that cannot run its full version may still have a weaker one
+        # that runs on a lab report. Refusing outright turns the application off
+        # for exactly the person it was built for: a man with a PSA on his
+        # annual bloodwork was getting nothing, because the full prostate panel
+        # wants a PI-RADS score from an MRI he has not had. The reduced tier
+        # reaches 0.676 against 0.825, which is weak and is not silence.
+        reduced = bundle.get("reduced")
         needed = DEFINING_INPUTS.get(name)
+        using_reduced = False
+        if (needed and not any(f in values for f in needed) and reduced
+                and any(f in values for f in reduced["feature_names"]
+                        if f not in ("age", "gender", "bmi"))):
+            using_reduced = True
+            features = reduced["feature_names"]
+            needed = None
+
         if needed and not any(f in values for f in needed):
             # Not named `pretty`: there is already a pretty() helper in this
             # scope, and shadowing it made every later call a NameError.
@@ -840,7 +855,8 @@ async def predict_risk(data: PatientData):
 
         try:
             frame = pd.DataFrame([row], columns=features)
-            proba = float(bundle["model"].predict_proba(frame)[0][1]) * 100.0
+            scorer = reduced["model"] if using_reduced else bundle["model"]
+            proba = float(scorer.predict_proba(frame)[0][1]) * 100.0
             # Isotonic calibration maps the top bin to exactly 1.0, so an
             # extreme record can come back as a flat 100 percent. No model here
             # has earned certainty: the best panel's confidence interval still
@@ -933,13 +949,24 @@ async def predict_risk(data: PatientData):
         held = bundle.get("held_out", {})
         stab = bundle.get("stability", {})
         fair = bundle.get("fairness", {})
-        results[bundle.get("label", name)] = {
+        # A reduced answer gets its own label. The full one names a test the
+        # user has not had, which reads as a mistake on their own result card.
+        card_label = bundle.get("label", name)
+        if using_reduced and (reduced or {}).get("label"):
+            card_label = reduced["label"]
+        results[card_label] = {
             "key": name,
             "risk": round(proba, 1),
             "band": band,
             "meaning": meaning,
             "confidence": confidence,
             "coverage_caveat": caveat,
+            # Which tier of this panel answered. A reduced answer is a real
+            # answer and a weaker one, and the difference belongs on the card
+            # rather than buried in a log.
+            "tier": "lab report only" if using_reduced else "full",
+            "reduced_note": (reduced or {}).get("note", "") if using_reduced else "",
+            "reduced_auc": (reduced or {}).get("auc") if using_reduced else None,
             # Values that fell outside anything this panel was trained on. The
             # score for such a patient is a floor, not an estimate, and saying
             # so is the difference between a limitation and a wrong answer.

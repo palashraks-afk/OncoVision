@@ -1,15 +1,54 @@
 # Oncovision
 
-A full stack platform that reads standard patient lab reports plus information about the patient
-and returns multi-cancer risk assessments in real time.
+**Multi-cancer triage from the blood test you have already paid for.**
+
+Most adults get bloodwork every year and learn almost nothing from it beyond a flag or two. A
+metabolic panel and a blood count together produce about thirty numbers, and the signal that
+matters in early detection is usually not one of them being wrong. It is several of them being
+slightly unusual *together* — a pattern a person reading a printout is poorly equipped to notice
+and a model is well equipped to find.
+
+Oncovision reads that report alongside what you already know about yourself, and answers a
+question your lab report does not: **is there a reason to push for the expensive test, or a reason
+not to?**
 
 Built as a mentored research project under the guidance of a clinical oncologist at UCI CHOC.
 
-**[Live app](https://oncovisionai.vercel.app)** · **[Methodology](PROJECT.md)** · **[Full evaluation](EVALUATION.md)** · **[Validation protocol](PROTOCOL.md)**
+**[Live app](https://oncovisionai.vercel.app)** · **[Methodology](PROJECT.md)** · **[Paper](PAPER.md)** · **[Full evaluation](EVALUATION.md)**
 
-> **This is a research prototype, not a medical device.** It has no regulatory clearance, no
-> prospective validation, and no IRB approval. Read [the honest numbers](#honest-numbers) before
-> reading anything else.
+---
+
+## What you get
+
+**Upload your lab report as a PDF and it reads it.** 64 biomarkers, parsed out of whatever layout
+your patient portal happens to use, at 100% accuracy across five different report formats. Or type
+them in. Blanks are fine and expected.
+
+**Eight panels score what you gave them**, each saying how confident it is, which of your values
+drove the answer, and what the number is worth at real-world incidence rather than in a study.
+
+**And it tells you what the answer is for.** The measured case, per 100,000 people:
+
+| | Send everyone | Triage on this panel | Difference |
+|---|---|---|---|
+| **Colonoscopies** | 100,000 | 63,948 | **36,052 avoided** |
+| Bowel cancers missed | 0 | 8.3 of 400 | |
+| **Lung CT scans** | 100,000 | 78,439 | **21,561 avoided** |
+| Lung cancers missed | 0 | **0** of 470 | |
+
+That is a net benefit of **$68 million per 100,000 people** on bowel, counted *after* pricing every
+missed cancer at fifteen life-years. The full model, its assumptions and everything that would
+overturn it are in [the cost analysis](#does-this-actually-save-money-the-first-honest-attempt) —
+including the finding that at the panels' *current* operating points, the answer is no.
+
+### What it is honest about
+
+This is a research prototype, not a medical device: no regulatory clearance, no IRB, and no patient
+has ever been followed through it to an outcome. Six named cancers are covered, of which two can be
+screened for from a lab report alone; the other four are triage and interpretation tools for
+someone already inside the diagnostic pathway, and every panel says on its own card which it is.
+One panel was withdrawn when the evidence stopped supporting it. Roughly half the experiments in
+this repository came back negative and are committed anyway.
 
 ---
 
@@ -813,6 +852,76 @@ cross-validation that is its arbiter everywhere else, would have reported this p
 Only a genuinely external cohort caught it. The panels here that have no external cohort should be
 read with that in mind, and that caution is now the honest headline of this section rather than a
 footnote. Reproduce with `python experiments/prospective_external.py`.
+
+### Does this actually save money? The first honest attempt
+
+This is the question the project exists to answer, and until now every number in it was an AUC or
+a count of people flagged per case. Neither one tells you whether reading bloodwork somebody has
+already paid for lets a health system spend less to find the same cancers.
+
+The marginal cost of running a panel is zero: the blood is drawn, the analyser has run, the report
+exists. So the comparison is not test-versus-no-test. It is **send everyone eligible for the
+confirmatory procedure** against **send only the people the panel flags**, per 100,000 people, at
+real incidence:
+
+    universal = 100,000 x procedure cost
+    triaged   = (flagged) x procedure cost  +  (missed cancers) x (late stage - early stage)
+
+That second term is the one a naive cost argument leaves out. Triage saves procedures and buys
+missed cancers, and a missed cancer is found later, at a worse stage, at a higher price.
+
+**At the operating points the panels currently ship, the answer is no.**
+
+| Panel | Break-even per missed cancer | A missed cancer at 15 life-years x $150k/QALY | Verdict |
+|---|---|---|---|
+| Bowel | $1,083,217 | $2,250,000 | **stops saving** |
+| Lung | $126,481 | $2,250,000 | **stops saving** |
+
+On treatment dollars alone, triage looks like it saves $192M per 100,000 people on bowel. It does
+that by missing 190 of 400 cancers. Price a missed cancer at what health economics conventionally
+prices a life-year and the saving disappears. **A cost argument that counts only treatment dollars
+and not the person is not an argument.**
+
+**At a different operating point, the answer is yes.** Reading each panel's real ROC curve and
+choosing the point that maximises net benefit *after* pricing every missed cancer at $2.25M:
+
+| Panel | Sensitivity | Specificity | Procedures avoided per 100,000 | Cancers missed | Net benefit |
+|---|---|---|---|---|---|
+| **Bowel** | 0.979 | 0.362 | **36,052 colonoscopies** | 8.3 of 400 | **+$68,208,115** |
+| **Lung** | 1.000 | 0.217 | **21,561 CT scans** | **0** of 470 | +$6,468,172 |
+
+That is the concept working, and it says something specific about how the tool should be operated.
+These panels ship at Youden's J, which balances sensitivity against specificity as if the two
+errors cost the same. For triage before an expensive diagnostic they do not: a false positive
+costs a colonoscopy and a false negative costs a life. **The right operating point for this
+application is a rule-out point, not a balanced one** — high sensitivity, modest specificity,
+excluding the third of people who most clearly do not need the procedure.
+
+Caveats, because this is an illustrative model and not a cost-effectiveness analysis: no
+discounting, no quality-adjusted life years beyond the single figure above, and no price on the
+harm and anxiety of an unnecessary procedure. The treatment figures are first-year costs and
+understate the true late-stage penalty, which biases the model *towards* triage. Sources are listed
+in the file. Every input is swept, and the sign of the lung result flips if incidence is five times
+higher or the late-stage penalty three times worse.
+
+An earlier version of this analysis inferred each ROC curve from the shipped operating point with a
+guessed shape. It returned sensitivity 1.0 at specificity 0.0 and was thrown away in favour of
+curves computed from out-of-fold predictions. Reproduce with `python experiments/cost_model.py`.
+
+### A man with a PSA and no MRI was getting nothing
+
+The prostate panel needs a PI-RADS score to reach 0.825, and it had been gated behind one. That
+gate was added for a good reason — a panel should not score without the test that defines it — and
+it turned the application off for exactly the person it exists for: someone holding an ordinary lab
+report with a PSA on it.
+
+Measured on the same 212 biopsied men, age and PSA and BMI reach **0.708**. Weak, and not silence.
+
+The panel now has two tiers in one bundle. If a PI-RADS score is present it runs the full model. If
+not, it runs the reduced one, relabels the card *"Prostate Cancer Risk, from PSA alone"*, and says
+plainly that this is the weaker version and a reason to ask about an MRI rather than a substitute
+for one. The note quotes the measured AUC, filled in at training time, so it cannot drift away from
+the number it cites.
 
 ### The liver panel said fulminant hepatitis was safer than a mild abnormality
 
