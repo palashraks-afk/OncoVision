@@ -317,7 +317,7 @@ activity were each measured against that panel and each rejected. The ceiling is
 question, not of the model — and the external test shows the ceiling is lower still than the
 internal estimate suggested.
 
-### 4.1a Within-survey resampling is not external validation
+### 4.2 Within-survey resampling is not external validation
 
 The leave-one-cycle-out result deserves separate attention, because it was wrong in an instructive
 way.
@@ -337,7 +337,7 @@ strategy used in this project, including the repeated paired cross-validation th
 arbiter throughout, would have reported this panel as working. Only an external cohort caught it.
 The panels here that have no external cohort should be read with that in mind.
 
-### 4.2 Why that distinction matters more than any AUC here
+### 4.3 Why that distinction matters more than any AUC here
 
 The headline numbers in this project run from 0.73 to 0.997, and the highest are the least
 informative. Breast at 0.997 and pancreatic at 0.969 are case-control designs: they separate known
@@ -349,7 +349,7 @@ require the patient to already be inside the diagnostic pathway, and one detects
 rather than liver cancer. That sentence is a more honest summary of the work than any table of
 discrimination statistics.
 
-### 4.3 Discrimination is not usability
+### 4.4 Discrimination is not usability
 
 Three panels have good discrimination and no usable operating point. Projected onto real
 incidence, the bowel panel flags roughly 768 people for every true case, pancreatic 210 and lung
@@ -361,7 +361,7 @@ with achievable specificity produces a tolerable positive predictive value. Repo
 reporting this is the single most common way a paper of this kind overstates itself, which is why
 the flagged-per-case figure appears on every panel's own card rather than in an appendix.
 
-### 4.4 Methodological findings
+### 4.5 Methodological findings
 
 Three results here are about method rather than about cancer, and generalise beyond this project.
 
