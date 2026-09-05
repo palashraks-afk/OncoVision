@@ -291,9 +291,14 @@ someone's age and sex, which is a real limitation rather than a rounding error.
 
 Five panels agree with themselves to within 0.03. Cervical does not. A 0.138 gap on 55 positive
 biopsies means the held-out split was a favourable one and the honest estimate sits nearer 0.6
-than 0.725. It still excludes chance and still beats age alone by 0.267, which is why it ships,
-but it is the least certain thing in this project and both numbers are published rather than only
-the flattering one.
+than 0.725.
+
+At the time this was written the panel still shipped, on the reasoning that it excluded chance and
+beat age alone by 0.267. That reasoning was wrong, and the 0.138 gap in this very table was the
+evidence against it: a gap that size is not optimism to average over, it is a sign that the
+held-out number is a lucky draw. Resampling the split thirty times put the shipped figure at the
+97th percentile of its own distribution, and **the cervical panel is now withdrawn.** Both numbers
+are kept here rather than only the flattering one, because the gap between them is the finding.
 
 ### What each panel actually is, now visible to the user
 
@@ -841,8 +846,12 @@ counted as positive, so the model was largely predicting age.
 
 NHANES 2005 to 2014 records age at diagnosis, so the cohort can be cut properly: positives are
 people diagnosed **within four years of the blood draw**, and long-ago survivors are excluded
-rather than relabelled. That is a screening question. On a held-out cycle the gain over age and
-sex rose from 0.004 to 0.019.
+rather than relabelled. That is a screening question, and it fixed the target.
+
+It did not make the panel strong. On a single held-out cycle the gain over age and sex rose from
+0.004 to 0.019, and that figure was quoted for some time. Measured properly, on repeated paired
+folds rather than one split, the gain is **0.006** — flattering by a factor of three on the panel
+with the least to spare, which is the same error the cervical panel was withdrawn for.
 
 ### The one design that can actually test the premise
 

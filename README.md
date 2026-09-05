@@ -626,15 +626,26 @@ Routine chemistry and a blood count, with no age and no tumour markers, reach 0.
 one panel where the lab report itself carries the signal, and it is worth contrasting with the
 general panel below, where it does not.
 
-### Cervical is the least certain panel here, and it says so
+### What the cervical panel looked like before it was withdrawn
 
-Cross-validated AUC is 0.587 while the held-out split gives 0.725. That gap means the held-out
-number is optimistic and the truth sits nearer 0.6. With 55 positive biopsies the interval runs
-0.547 to 0.881: it excludes chance, and it beats age alone by a very wide margin (0.458), which
-is why it ships, but it is the weakest evidence in the project and is labelled that way.
+This section is kept as a record of a mistake, not as a description of something that ships. The
+cervical panel is **withdrawn**; the reasoning is in "Cervical is withdrawn" above.
 
-Cutting its 15 input fields was tried and failed: eight fields scored 0.665 with an interval
-containing chance, and six scored 0.552. All fifteen are needed, so all fifteen are asked for.
+At the time it shipped, the argument for it went like this. Cross-validated AUC was 0.587 while
+the held-out split gave 0.725. With 55 positive biopsies the interval ran 0.547 to 0.881, which
+excludes chance, and it beat age alone by a wide margin. The gap between 0.587 and 0.725 was noted
+and read as ordinary optimism in a held-out number, so the panel shipped labelled as the weakest
+evidence in the project.
+
+That reading was wrong. The gap was not optimism to be discounted, it was the signal that the
+held-out number was a lucky draw, and running the split thirty times showed the shipped figure
+sitting at the 97th percentile of its own distribution. The lesson is that a large gap between
+cross-validation and a held-out split is not a number to average over. It is a reason to resample
+before believing either.
+
+Cutting its 15 input fields had also been tried and failed: eight fields scored 0.665 with an
+interval containing chance, and six scored 0.552. In hindsight that too was evidence the panel had
+nothing stable to find.
 
 ### The general panel now answers a screening question
 
@@ -644,8 +655,13 @@ gain of 0.004.
 
 NHANES 2005 to 2014 records **age at diagnosis**, so the cohort can be cut properly. Positives are
 people diagnosed **within four years of the blood draw**, and long-ago survivors are excluded rather
-than relabelled. That is a screening question. On a held-out cycle the gain over age and sex rises
-from 0.004 to **0.019**.
+than relabelled. That is a screening question, and it fixed the target.
+
+It did not make the panel strong. On a single held-out cycle the gain over age and sex rose from
+0.004 to 0.019, and that 0.019 was quoted here for some time. Measured properly, on repeated
+paired folds rather than one split, the gain is **0.006**. The single split was flattering by a
+factor of three on the panel with the least to spare, which is the same error the cervical panel
+was withdrawn for.
 
 ### Routine bloodwork does not detect general cancer
 
