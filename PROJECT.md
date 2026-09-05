@@ -928,6 +928,39 @@ Only a genuinely external cohort caught it. The panels here that have no externa
 read with that in mind, and that caution is now the honest headline of this section rather than a
 footnote. Reproduce with `python experiments/prospective_external.py`.
 
+### The ovarian panel told a healthy woman she had a 94.9 percent malignancy risk
+
+Found by running the finished application against an ordinary patient rather than by reading the
+code, which is the only reason it was found at all.
+
+The ovarian panel reads 27 values. Twenty-two of them are a routine blood count and metabolic
+panel; five are the tumour markers ordered when a pelvic mass is being worked up. The coverage
+gate, which refuses to score a panel from fewer than half its inputs, counts all 27 equally.
+
+So a woman entering ordinary bloodwork and her menopausal status — and not one tumour marker —
+reached **81 percent coverage**, was labelled **high confidence** with no caveat at all, and was
+told her ovarian malignancy risk was **94.9 percent**. The number came almost entirely from
+training medians standing in for the only features that discriminate, on a case-control cohort
+whose base rate is 49 percent.
+
+This is the cervical failure in a new place, and coverage could never have caught it: the missing
+features were a minority of the count and a majority of the information.
+
+Triage and interpretation panels are the ones exposed, because each is defined by a test that has
+already been performed. If that test is absent there is nothing to interpret, whatever else was
+entered. So each now declares the input without which it will not answer:
+
+| Panel | Type | Will not score without |
+|---|---|---|
+| Ovarian | Triage | CA 125 or HE4 |
+| Pancreatic | Triage | CA 19-9 |
+| Prostate | Interpretation | a PI-RADS score |
+
+Verified in both directions, because a gate that breaks the panel is not a fix. With routine
+bloodwork alone, ovarian and pancreatic are now skipped with a plain explanation, and liver, bowel
+and lung — the panels whose whole point is a lab report — still score. Supply a genuinely raised
+CA 125 and HE4 and the ovarian panel answers again.
+
 ### The bowel panel was tested the same way, and it passed
 
 The section above should not be read as "external validation always fails". It is a test, not a

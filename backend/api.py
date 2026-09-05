@@ -113,6 +113,37 @@ SEX_SPECIFIC = {
     "prostate": 1,
 }
 
+# The inputs without which a panel is not answering its own question. At least
+# one of each panel's list must be present, or the panel is skipped.
+#
+# This exists because the coverage gate below counts every feature equally, and
+# that is not how these panels work. The ovarian panel reads 27 values, of which
+# 22 are a routine blood count and metabolic panel and 5 are the tumour markers
+# ordered when a pelvic mass is being worked up. A woman entering ordinary
+# bloodwork and nothing else reached 81 percent coverage, was labelled HIGH
+# confidence with no caveat, and was told her ovarian malignancy risk was 94.9
+# percent. Not one tumour marker had been supplied. The score came almost
+# entirely from training medians standing in for the only features that
+# discriminate, on a case-control cohort whose base rate is 49 percent.
+#
+# That is the cervical failure in a new place: a number that looks exactly as
+# confident as a real one, built out of values the patient never gave. Coverage
+# alone cannot catch it, because the missing features were a minority of the
+# count and a majority of the information.
+#
+# Triage and interpretation panels are the ones at risk, because each is defined
+# by a test that has already been performed. If that test is absent the panel
+# has nothing to interpret, whatever else was entered.
+DEFINING_INPUTS = {
+    # A pelvic mass work-up. Without a tumour marker this is not that.
+    "ovarian": ["ca125", "he4"],
+    # CA 19-9 is the marker ordered when pancreatic cancer is suspected, and the
+    # cohort separates adenocarcinoma from benign hepatobiliary disease on it.
+    "pancreatic": ["plasma_ca19_9"],
+    # An interpretation panel over a prostate MRI. No PI-RADS, no MRI.
+    "prostate": ["pi_rads"],
+}
+
 # The share of a panel's inputs that has to be real, rather than filled in from
 # a training median, before it will report a number.
 #
@@ -675,6 +706,20 @@ async def predict_risk(data: PatientData):
                     + ("women." if required_sex == 0 else "men.")
                 )
                 continue
+
+        # The defining-input gate, which runs before coverage because coverage
+        # cannot see it. See DEFINING_INPUTS above for the failure this prevents.
+        needed = DEFINING_INPUTS.get(name)
+        if needed and not any(f in values for f in needed):
+            # Not named `pretty`: there is already a pretty() helper in this
+            # scope, and shadowing it made every later call a NameError.
+            needed_names = " or ".join(DISPLAY_NAMES.get(f, f) for f in needed)
+            skipped[bundle.get("label", name)] = (
+                f"Not applicable without {needed_names}. This panel reads a test that has "
+                f"already been done, and without it there is nothing for it to "
+                f"interpret. Routine bloodwork on its own cannot answer this one."
+            )
+            continue
 
         row, supplied = [], []
         for feat in features:

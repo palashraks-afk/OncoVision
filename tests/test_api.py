@@ -155,6 +155,48 @@ def test_probabilities_are_bounded(client):
         assert 0.0 <= risk <= 100.0, f"{name} returned a risk of {risk}"
 
 
+def test_triage_panels_refuse_without_their_defining_test(client):
+    """
+    Coverage counts every feature equally, and these panels are not built that
+    way. The ovarian panel reads 27 values, 22 of them a routine blood count and
+    metabolic panel and 5 of them the tumour markers a pelvic mass work-up
+    actually turns on.
+
+    A woman entering ordinary bloodwork and nothing else reached 81% coverage,
+    was labelled HIGH confidence with no caveat, and was told her ovarian
+    malignancy risk was 94.9% — with not one tumour marker supplied. The score
+    came from training medians standing in for the only features that
+    discriminate, on a case-control cohort with a 49% base rate.
+    """
+    payload = {"age": 58, "gender": 0, "menopause": 1, **FULL_BLOODS,
+               "hematocrit": 40, "mcv": 88, "mch": 29, "rdw": 13.4,
+               "mpv": 9.8, "neutrophil_pct": 60}
+    body = client.post("/predict", json=payload).json()
+    scored = " ".join(body["predictions"]).lower()
+    skipped = " ".join(body["skipped"]).lower()
+
+    assert "ovarian" not in scored, \
+        "an ovarian malignancy score was returned with no tumour marker at all"
+    assert "ovarian" in skipped
+    assert "pancreatic" not in scored, \
+        "a pancreatic score was returned with no CA 19-9"
+
+    # And it must still score once the defining test is actually present,
+    # otherwise the gate has simply broken the panel.
+    body = client.post("/predict", json={**payload, "ca125": 420, "he4": 310}).json()
+    assert any("ovarian" in k.lower() for k in body["predictions"]), \
+        "the ovarian panel refused even with CA 125 and HE4 supplied"
+
+
+def test_screening_panels_still_work_from_routine_bloodwork(client):
+    """The gate must not catch the panels whose whole point is a lab report."""
+    payload = {"age": 58, "gender": 0, **FULL_BLOODS}
+    body = client.post("/predict", json=payload).json()
+    scored = " ".join(body["predictions"]).lower()
+    for panel in ("liver", "bowel", "lung"):
+        assert panel in scored, f"the {panel} panel stopped scoring from routine bloodwork"
+
+
 # --------------------------------------------------------------- exposure
 def test_cors_is_not_open_to_everyone(client):
     """
