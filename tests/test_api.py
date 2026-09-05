@@ -155,6 +155,47 @@ def test_probabilities_are_bounded(client):
         assert 0.0 <= risk <= 100.0, f"{name} returned a risk of {risk}"
 
 
+# --------------------------------------------------------------- exposure
+def test_cors_is_not_open_to_everyone(client):
+    """
+    It was allow_origins=["*"] with allow_credentials=True, which is both
+    permissive and self-contradictory: browsers refuse to send credentials to a
+    wildcard origin, so the combination never did what it looked like it did.
+    """
+    assert "*" not in api.ALLOWED_ORIGINS
+    r = client.get("/models", headers={"Origin": "https://evil.example"})
+    assert "access-control-allow-origin" not in {k.lower() for k in r.headers}, \
+        "a disallowed origin was granted CORS access"
+
+
+def test_rate_limit_returns_429(client):
+    """
+    /parse-pdf hands whatever it is given to pdfplumber, so an unlimited request
+    rate on a 512 MB instance is a denial-of-service surface.
+
+    The counter is reset around this test rather than fired 60 times, so it
+    cannot exhaust the budget for the tests that run after it.
+    """
+    saved = dict(api._hits)
+    api._hits.clear()
+    try:
+        codes = [client.get("/models").status_code
+                 for _ in range(api.RATE_LIMIT + 5)]
+        assert 429 in codes, "the rate limit never triggered"
+        assert codes[0] == 200, "the very first request was rejected"
+    finally:
+        api._hits.clear()
+        api._hits.update(saved)
+
+
+def test_upload_is_size_capped():
+    """files[:5] bounded the number of documents and never their size."""
+    assert api.MAX_UPLOAD_BYTES > 0
+    assert api.MAX_UPLOAD_BYTES <= 32 * 1024 * 1024, \
+        "the upload cap is large enough not to be a cap"
+    assert api.MAX_PDF_PAGES > 0
+
+
 # --------------------------------------------------------------- schema hygiene
 def test_service_accepts_nothing_it_cannot_read():
     """
