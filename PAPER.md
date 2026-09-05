@@ -34,13 +34,19 @@ NDI-confirmed outcomes, the full blood panel adds +0.013 over age and sex for ca
 five years, winning 5 of 5 paired repeats. **That gain did not survive external validation.**
 Trained on NHANES 1999–2014 and tested on NHANES III (1988–1994, 14,630 adults, 254 events), age
 and sex alone reached 0.852 while the full blood panel reached 0.839: a transferred gain of −0.013.
-Separately, discrimination and usability diverge sharply: three panels with AUCs between 0.79 and
+The same external test applied to an organ-specific panel gave the opposite answer. The bowel panel,
+trained on NHANES 2005–2014 and tested on 14,499 NHANES III adults with 56 colorectal cancers,
+transferred a gain of **+0.029** against +0.039 internally — roughly three quarters of the effect
+survived a fifteen-year gap and a change of analysers. Separately, discrimination and usability
+diverge sharply: three panels with AUCs between 0.79 and
 0.97 flag between 55 and 768 people per true case at real incidence, and a threshold sweep shows
 no operating point repairs any of them.
 
 **Conclusions.** Routine blood work carries usable signal about organ-specific disease when the
 relevant analytes are on the panel, and essentially none about undifferentiated cancer risk that
-generalises beyond the survey it was fitted on. The ceiling is a property of the question rather
+generalises beyond the survey it was fitted on. The two questions differ not merely in effect size
+but in whether the effect exists at all: under an identical external test, one gain kept three
+quarters of its magnitude and the other reversed sign. The ceiling is a property of the question rather
 than of the model: serum cotinine, C-reactive protein, the complete blood count, the full metabolic
 panel, waist circumference and physical activity were each tested and each rejected. Two
 methodological cautions follow. Resampling within one survey — including leave-one-cycle-out, which
@@ -282,6 +288,21 @@ Gain over age and sex, transferred: **-0.013**. The same gain measured inside th
 **The gain does not survive the transfer.** Age and sex transfer well, at 0.852. Adding twenty blood values makes the prediction *worse* on a cohort measured in a different decade than using age and sex alone. Whatever the blood panel contributed inside NHANES 1999-2014 was specific to that survey rather than to human physiology.
 
 This is also a caution about the leave-one-cycle-out result above. Holding out one cycle of the same survey gave a mean of 0.837 and looked like evidence of transfer. It was not. Cycles of one survey share protocols, instruments and laboratory methods, and resampling within a survey measures stability rather than generalisation. Only the genuinely external cohort distinguished them.
+
+### 3.6 The same test on an organ-specific panel
+
+The bowel panel is one of only two here that screen for a named cancer from a routine lab report alone, so it carries more of the application's claim than the case-control panels do. NHANES III recorded both the site of any reported cancer and the age at which it was first told, which reconstructs the same eight-year window the training cohort uses.
+
+Train: NHANES 2005-2014, 23,794 adults, 96 cases. Test: NHANES III, 14,499 adults, 56 cases. The two prevalences agree to within a hundredth of a percent, which is a check that the window was reconstructed the same way on both sides.
+
+| Feature set | Features | External AUC | 95% CI |
+|---|---|---|---|
+| age and sex only | 2 | 0.761 | 0.699 to 0.814 |
+| full panel | 16 | 0.790 | 0.739 to 0.838 |
+
+Gain over age and sex, transferred: **+0.029**, against +0.039 measured inside the training survey.
+
+**This gain survives.** Roughly three quarters of it is still there on a cohort measured a decade and a half earlier, on different analysers. Set beside section 3.5, where the undifferentiated panel's gain reversed sign under the same test, this is the sharpest form of the paper's main result: the two questions do not merely differ in effect size, they differ in whether the effect is real at all.
 <!-- /AUTOGEN:paper_results -->
 
 ---
@@ -336,6 +357,13 @@ The practical implication is uncomfortable and worth stating plainly: every inte
 strategy used in this project, including the repeated paired cross-validation that serves as its
 arbiter throughout, would have reported this panel as working. Only an external cohort caught it.
 The panels here that have no external cohort should be read with that in mind.
+
+The corollary is that the external test is not simply a harsher grader that marks everything down.
+Applied to the bowel panel, the identical procedure — same survey, same decade gap, same imputation
+discipline — returned +0.029 against +0.039 internally. An organ-specific panel kept three quarters
+of its effect while the undifferentiated one reversed sign. That is what distinguishes a transfer
+test from a difficulty penalty, and it is why the contrast rather than either number alone is the
+finding.
 
 ### 4.3 Why that distinction matters more than any AUC here
 

@@ -922,6 +922,35 @@ Only a genuinely external cohort caught it. The panels here that have no externa
 read with that in mind, and that caution is now the honest headline of this section rather than a
 footnote. Reproduce with `python experiments/prospective_external.py`.
 
+### The bowel panel was tested the same way, and it passed
+
+The section above should not be read as "external validation always fails". It is a test, not a
+penalty, and the same test applied to an organ-specific panel gave the opposite answer.
+
+NHANES III recorded both the site of any reported cancer and the age at which the person was first
+told, which reconstructs exactly the eight-year window the bowel panel's training cohort uses.
+
+    train   NHANES 2005-2014   23,794 adults, 96 colorectal cancers (0.40%)
+    test    NHANES III         14,499 adults, 56 colorectal cancers (0.39%)
+
+The two prevalences agree to within a hundredth of a percent, which is a check that the window was
+reconstructed the same way on both sides rather than a coincidence.
+
+| Feature set | Features | External AUC | 95% CI |
+|---|---|---|---|
+| Age and sex only | 2 | 0.761 | 0.699 to 0.814 |
+| **Full panel** | 16 | **0.790** | 0.739 to 0.838 |
+
+**Transferred gain +0.029, against +0.039 measured inside the training survey.** Roughly three
+quarters of the effect is still there on people measured fifteen years earlier, on different
+analysers, by different field staff.
+
+Put beside the section above, this is the sharpest form of the whole project's result. Under an
+identical procedure, the undifferentiated panel's gain reversed sign and the organ-specific panel's
+gain largely survived. The two questions do not merely differ in effect size. They differ in
+whether the effect is real at all. Reproduce with
+`python experiments/colorectal_external.py`.
+
 ### A good mechanism is not evidence: the bowel panel and iron deficiency
 
 The classic way a right-sided colon cancer announces itself is iron-deficiency anaemia from slow

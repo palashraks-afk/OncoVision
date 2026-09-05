@@ -1,0 +1,27 @@
+{
+  "train_n": 23794,
+  "train_events": 96,
+  "test_n": 14499,
+  "test_events": 56,
+  "arms": {
+    "age and sex only": {
+      "n_features": 2,
+      "external_auc": 0.761,
+      "external_auc_ci": [
+        0.699,
+        0.814
+      ]
+    },
+    "full panel": {
+      "n_features": 16,
+      "external_auc": 0.79,
+      "external_auc_ci": [
+        0.739,
+        0.838
+      ]
+    }
+  },
+  "external_gain_over_age_sex": 0.029,
+  "internal_gain_for_reference": 0.039,
+  "gain_survives_transfer": true
+}
