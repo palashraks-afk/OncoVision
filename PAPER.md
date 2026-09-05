@@ -230,13 +230,113 @@ This is the table that decides whether a panel is a screening instrument. Discri
 
 ## 4. Discussion
 
-*(to be completed once the prospective analysis lands)*
+### 4.1 The answer is not the same for every question
+
+The premise was that early-detection signal lives in combinations of routine values. Stated that
+broadly, the results neither confirm nor refute it, because it turns out to be two different
+questions with two different answers.
+
+**Where the organ's own chemistry is on the panel, the combination carries a great deal.** The
+liver panel adds 0.106 of AUC over knowing age and sex, and pancreatic adds 0.498. These are not
+marginal effects. They are what happens when the disease being asked about changes the very
+analytes the lab report contains, and a model reads the pattern across them rather than one value
+at a time. The ovarian panel behaves the same way for the same reason.
+
+**Where the question is undifferentiated, the combination carries almost nothing.** Asked "will
+this person be diagnosed with any cancer", the general panel adds 0.006 over age and sex. Asked
+prospectively — will this person die of cancer within five years — the full blood work adds
+roughly 0.015 on a cohort of 33,834 people with NDI-confirmed outcomes. That is a real gain, it is
+consistent across repeats, and it is far too small to act on.
+
+This is not a failure of the method, and it was not for want of trying. Serum cotinine, C-reactive
+protein, the complete blood count, the full metabolic panel, waist circumference and physical
+activity were each measured against that panel and each rejected. The ceiling is a property of the
+question, not of the model.
+
+### 4.2 Why that distinction matters more than any AUC here
+
+The headline numbers in this project run from 0.73 to 0.997, and the highest are the least
+informative. Breast at 0.997 and pancreatic at 0.969 are case-control designs: they separate known
+cases from selected controls, on cohorts of 569 and 600. Read as screening performance they are
+badly misleading, and the taxonomy exists to stop them being read that way.
+
+The tool ships eight panels. Two of them screen for a named cancer from a lab report alone. Four
+require the patient to already be inside the diagnostic pathway, and one detects liver disease
+rather than liver cancer. That sentence is a more honest summary of the work than any table of
+discrimination statistics.
+
+### 4.3 Discrimination is not usability
+
+Three panels have good discrimination and no usable operating point. Projected onto real
+incidence, the bowel panel flags roughly 768 people for every true case, pancreatic 210 and lung
+55. A threshold sweep confirms that no operating point brings any of them to a defensible ratio:
+raising specificity far enough to fix precision destroys sensitivity first.
+
+This is arithmetic, not a modelling deficiency. At an incidence of 36.5 per 100,000, no classifier
+with achievable specificity produces a tolerable positive predictive value. Reporting AUC without
+reporting this is the single most common way a paper of this kind overstates itself, which is why
+the flagged-per-case figure appears on every panel's own card rather than in an appendix.
+
+### 4.4 Methodological findings
+
+Three results here are about method rather than about cancer, and generalise beyond this project.
+
+**A single train-test split is not an estimate.** The cervical panel reported 0.725 on its held-out
+split and had a mean of 0.594 across resamples of the same data, with its shipped number at the
+97th percentile of its own distribution. Nothing about that split was improper; it was simply one
+draw, reported as though it were a measurement. Any model selected or reported on one split of a
+small cohort is subject to the same error.
+
+**Constraining features to what is collectable cuts both ways.** The rule prevents leakage from
+post-diagnosis columns, which is its purpose. But it was also applied too aggressively to the
+breast panel, which read four of thirty available measurements because the form asked for four
+numbers. Since that panel requires a biopsy report that carries all thirty, the restriction
+described the form rather than the setting. Correcting it moved performance on the smallest third
+of lesions from 0.680 to 0.952 — the subgroup where an earlier answer is worth anything.
+
+**Negative results have to be kept to be worth anything.** Roughly half the experiments in this
+repository changed nothing: rebuilding breast on blood markers failed at chance, reweighting did
+not close fairness gaps, exercise made the general panel slightly worse, waist circumference fell
+below its pre-registered bar. Each is committed with its result. Without them, the positive
+findings are unfalsifiable.
 
 ---
 
 ## 5. Limitations
 
-*(to be completed)*
+**No prospective use, and no IRB.** The NDI analysis is prospective in *design* — exposure measured
+before outcome — but it is a secondary analysis of an existing survey. No patient has used this
+tool and had the result followed to an outcome. That requires ethics approval granted by an
+institution to a named investigator, and no amount of analysis substitutes for it.
+
+**The prospective endpoint is death, not detection.** People who developed cancer and survived it
+count as non-cases, because they did. Cancer death is also confounded by everything determining
+survivability — stage at presentation, treatment access, insurance, comorbidity — so a model
+trained on it partly learns who gets treated. Deaths from other causes inside the window are
+treated as non-cases, which is true as stated but is a competing risk that a cause-specific hazard
+model would handle more carefully than a binary classifier.
+
+**Four cohorts are case-control.** Breast, pancreatic, ovarian and prostate assemble cases and
+match controls to them. Their discrimination does not transfer to a screening population and is
+not claimed to.
+
+**Small test sets on the highest-scoring panels.** Prostate is measured on 43 held-out patients,
+ovarian on 70, breast on 114. Prostate's confidence interval runs from 0.705 to 0.952, which spans
+"barely useful" to "excellent". These are not settled numbers.
+
+**External validation is uneven.** The liver panel is tested across three countries and transfers
+badly to one of them — 0.442 on the German cohort, below chance, because ALT and alkaline
+phosphatase run in opposite directions between a mild-disease population and an advanced-disease
+one. Several panels have no external cohort at all, and no external cohort exists in public data
+for the case-control panels.
+
+**Fairness is measured where it can be and unmeasured where it cannot.** Subgroup performance by
+race and ethnicity is reported for the NHANES panels. Reweighting was tested and did not close the
+gaps. The Wisconsin breast cohort records neither race nor age nor sex, so for that panel the
+question is unanswerable rather than answered acceptably.
+
+**The ensemble is often unnecessary.** On several panels a plain logistic regression matches or
+beats the ensemble, and where it does, it is what ships.
 
 ---
 
