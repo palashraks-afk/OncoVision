@@ -42,6 +42,11 @@ jobs:
       - name: API and gating tests
         run: python -m pytest tests/ -q
 
+      - name: Documentation tables match the artifacts
+        # A stale table is a false claim, not merely an old one. The breast row
+        # read 0.972 for a while after the panel was retrained to 0.997.
+        run: python tools/sync_docs.py --check
+
       - name: Fallback metrics match the served metrics
         # The block compiled into the page must equal what the registry serves.
         # It drifted for months while it was maintained by hand.

@@ -68,6 +68,23 @@ LABS = {
     "LBXSBU": "bun", "LBXSCR": "creatinine", "LBXSTP": "protein_total",
     "LBXSAL": "albumin", "LBXSASSI": "ast", "LBXSATSI": "alt",
     "LBXSTB": "bilirubin", "LBXSAPSI": "alkaline_phosphatase",
+    # Red cell indices. These sit on the same blood count as the haemoglobin
+    # that was already being read, cost nothing extra, and were simply never
+    # pulled.
+    #
+    # They matter here more than anywhere else in the project. The classic way a
+    # right-sided colon cancer presents is iron-deficiency anaemia from slow
+    # occult bleeding, and the signature of that is not a low haemoglobin on its
+    # own: it is a low haemoglobin with a LOW MCV and a HIGH RDW. Anaemia of
+    # chronic disease looks different, and so does B12 deficiency, which runs
+    # high on MCV instead.
+    #
+    # Without MCV and RDW the panel could see that someone was anaemic and not
+    # what kind of anaemic, which is exactly the distinction that carries the
+    # colorectal signal. Whether it helps is measured in
+    # experiments/colorectal_iron.py rather than assumed.
+    "LBXHCT": "hematocrit", "LBXMCVSI": "mcv", "LBXMC": "mch",
+    "LBXRDW": "rdw", "LBXMPSI": "mpv", "LBXNEPCT": "neutrophil_pct",
 }
 
 # Race and ethnicity, carried as a STRATIFIER and never as a model feature.

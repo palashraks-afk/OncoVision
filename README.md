@@ -17,18 +17,38 @@ Built as a mentored research project under the guidance of a clinical oncologist
 
 Two inputs, read together:
 
-1. **Your lab reports.** 38 values across body metrics, complete blood count and red cell
+1. **Your lab reports.** 64 values across body metrics, complete blood count and red cell
    indices, metabolic panel, liver panel, tumour markers, tobacco exposure and inflammation,
    the prostate work-up, and breast mass morphology. Uploaded as PDFs and parsed automatically,
    or typed in. The parser is tested on 28 of them at 100 percent across five different report
    layouts; see `test_parser.py`.
-2. **Information about you.** 9 items no lab report contains: sex, smoking, pack-years, alcohol,
-   exercise, hepatitis B and C, diabetes and menopausal status. The 14 sexual-history questions
-   went out with the cervical panel, because no shipped model reads them and asking for what
-   nothing uses is only friction.
+2. **Information about you.** 8 items no lab report contains: sex, smoking, pack-years, alcohol,
+   hepatitis B and C, diabetes and menopausal status. The 14 sexual-history questions went out
+   with the cervical panel, and the exercise question went when it was measured and found to add
+   nothing, because asking for what nothing uses is only friction.
 
 Eight calibrated models score the combination, and the interface reports what drove each score,
 how accurate that model is, and what the score is worth at real prevalence.
+
+### What "multi-cancer" means here, precisely
+
+Eight panels is not eight cancers you can screen for, and the difference is the most important
+thing on this page. Each panel carries its type on its own card, and the types are not
+interchangeable:
+
+| | Panels | What you need before running it |
+|---|---|---|
+| **Screening** | Bowel, lung, plus a general panel | Nothing but a lab report |
+| **Triage** | Pancreatic, ovarian | A mass or a suspicion already found |
+| **Interpretation** | Breast, prostate | A biopsy or MRI already performed |
+| **Not a cancer panel** | Liver | It detects liver *disease*, not liver cancer |
+
+So: **six named cancers, of which two can be screened for from a lab report alone.** The other
+four are triage and interpretation tools for someone already inside the diagnostic pathway,
+which is a genuinely useful thing to be and a different thing from screening.
+
+Both screening panels then run into the precision problem below, which is measured rather than
+argued about. That is the honest headline, and everything underneath it is the evidence.
 
 Every panel answers with whatever it is given. A blank field is filled with that feature's
 training median, and the panel says how many of its inputs were actually yours, so a score
@@ -41,29 +61,34 @@ presented as if it were complete.
 
 Eight panels ship. One was withdrawn because the evidence did not support serving it.
 
+<!-- AUTOGEN:shipped -->
 | Panel | Trained on | Test AUC | 95% CI | Threshold | Sens | Spec | Flagged per true case |
 |---|---|---|---|---|---|---|---|
-| Breast malignancy | 569 Wisconsin biopsies | 0.972 | 0.942 to 0.994 | 38.8% | 0.81 | 0.94 | 1.2 |
-| Pancreatic cancer | 600 samples, 3 tissue banks | 0.969 | 0.938 to 0.991 | 73.0% | 0.73 | 0.98 | 210.4 |
-| Ovarian malignancy | 349 operated ovarian masses | 0.949 | 0.886 to 0.994 | 58.1% | 0.85 | 0.94 | 1.3 |
-| Prostate cancer | 212 biopsied men | 0.840 | 0.705 to 0.952 | 66.9% | 0.80 | 0.78 | 1.4 |
-| Lung cancer | 21,916 adults with tobacco exposure | 0.829 | 0.730 to 0.902 | 1.0% | 0.57 | 0.85 | 55.1 |
-| Bowel cancer | 23,794 NHANES adults | 0.793 | 0.708 to 0.867 | 1.0% | 0.53 | 0.85 | 768.4 |
-| Liver disease | 35,511 NHANES adults | 0.753 | 0.723 to 0.784 | 4.2% | 0.55 | 0.80 | 9.9 |
-| General cancer | 23,923 NHANES adults | 0.732 | 0.692 to 0.770 | 2.9% | 0.68 | 0.65 | 16.9 |
+| Breast malignancy | 569 Wisconsin biopsies | 0.997 | 0.99 to 1.0 | 29.8% | 0.976 | 0.986 | 1.0 |
+| Pancreatic cancer | 600 samples, 3 tissue banks | 0.969 | 0.938 to 0.991 | 73.0% | 0.731 | 0.979 | 210.4 |
+| Ovarian malignancy | 349 operated ovarian masses | 0.949 | 0.886 to 0.994 | 58.1% | 0.853 | 0.944 | 1.3 |
+| Prostate cancer | 212 biopsied men | 0.840 | 0.705 to 0.952 | 66.9% | 0.8 | 0.778 | 1.4 |
+| Lung cancer | 21,916 adults with tobacco exposure | 0.829 | 0.73 to 0.902 | 1.0% | 0.571 | 0.852 | 55.1 |
+| Bowel cancer | 23,794 NHANES adults | 0.793 | 0.708 to 0.867 | 1.0% | 0.526 | 0.853 | 768.4 |
+| Liver disease | 35,511 NHANES adults | 0.760 | 0.73 to 0.789 | 4.0% | 0.61 | 0.77 | 10.0 |
+| General cancer | 23,923 NHANES adults | 0.732 | 0.692 to 0.77 | 2.9% | 0.68 | 0.65 | 16.9 |
 | ~~Cervical~~ | 858 Caracas referrals | 0.725 | withdrawn, a lucky split | | | | |
+<!-- /AUTOGEN:shipped -->
 
 ### Does each panel beat the obvious baseline?
 
-| Panel | Model | Logistic | Age and sex alone | Gain |
+<!-- AUTOGEN:baselines -->
+| Panel | Model | Logistic | Age and sex alone | Gain over age and sex |
 |---|---|---|---|---|
-| Pancreatic | 0.969 | 0.968 | 0.500 | +0.469 |
-| Liver | 0.753 | 0.731 | 0.602 | +0.151 |
-| Prostate | 0.840 | 0.876 | 0.661 | +0.179 |
-| Ovarian | 0.949 | 0.911 | 0.813 | +0.136 |
-| Lung | 0.829 | 0.785 | 0.778 | +0.051 |
-| Bowel | 0.809 | 0.800 | 0.771 | +0.038 |
-| General | 0.732 | 0.731 | 0.727 | **+0.005** |
+| Breast | 0.997 | 0.995 | — | not measurable |
+| Pancreatic | 0.969 | 0.968 | 0.5 | +0.498 |
+| Ovarian | 0.949 | 0.911 | 0.813 | +0.174 |
+| Prostate | 0.840 | 0.876 | 0.661 | +0.258 |
+| Lung | 0.829 | 0.785 | 0.778 | +0.044 |
+| Bowel | 0.793 | 0.8 | 0.817 | +0.039 |
+| Liver | 0.760 | 0.74 | 0.602 | +0.098 |
+| General | 0.732 | 0.731 | 0.727 | **+0.006** |
+<!-- /AUTOGEN:baselines -->
 
 Bowel is quoted from 20 paired repeats rather than one split, because its single
 split disagreed with its cross-validation. Prostate is the one panel where plain
@@ -416,6 +441,7 @@ So the whole protocol was repeated with different seeds, refitting from
 scratch each time, and the shipped split was located inside its own
 distribution. Reproduce with `python experiments/split_stability.py`.
 
+<!-- AUTOGEN:stability -->
 | Panel | Rows | Events | Mean AUC | Spread across splits | Shipped split | Percentile |
 |---|---|---|---|---|---|---|
 | Breast | 569 | 212 | 0.992 | 0.970 to 1.000 | 0.997 | 77th |
@@ -427,6 +453,7 @@ distribution. Reproduce with `python experiments/split_stability.py`.
 | Liver | 35,511 | 1,436 | 0.754 | 0.740 to 0.764 | 0.760 | 80th |
 | General | 23,923 | 750 | 0.743 | 0.692 to 0.772 | 0.732 | 20th |
 | Cervical | 858 | 55 | **0.594** | **0.421 to 0.789** | 0.725 | **97th** |
+<!-- /AUTOGEN:stability -->
 
 All eight live panels sit between the 20th and 80th percentile of their own
 split distribution, which is what a representative number looks like. Cervical sat at
