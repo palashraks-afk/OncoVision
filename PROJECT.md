@@ -280,18 +280,24 @@ someone's age and sex, which is a real limitation rather than a rounding error.
 
 ### Cross-validated against held-out, which is where cervical shows its weakness
 
+<!-- AUTOGEN:cv_vs_heldout -->
 | Panel | CV AUC | Held-out AUC | Gap |
 |---|---|---|---|
+| Breast | 0.993 | 0.997 | +0.004 |
 | Pancreatic | 0.972 | 0.969 | -0.003 |
 | Ovarian | 0.942 | 0.949 | +0.007 |
-| Breast | 0.954 | 0.972 | +0.018 |
-| Liver | 0.734 | 0.753 | +0.019 |
+| Prostate | 0.813 | 0.840 | +0.027 |
+| Lung | 0.820 | 0.829 | +0.009 |
+| Bowel | 0.824 | 0.793 | -0.031 |
+| Liver | 0.741 | 0.760 | +0.019 |
 | General | 0.761 | 0.732 | -0.029 |
-| Cervical | 0.587 | 0.725 | **+0.138** |
+| ~~Cervical~~ | 0.587 | 0.725 | **+0.138** |
+<!-- /AUTOGEN:cv_vs_heldout -->
 
-Five panels agree with themselves to within 0.03. Cervical does not. A 0.138 gap on 55 positive
-biopsies means the held-out split was a favourable one and the honest estimate sits nearer 0.6
-than 0.725.
+Every live panel agrees with itself to within about 0.03, the widest being bowel at -0.031 and
+general at -0.029, both of which sit on cohorts with very few events. Cervical does not. A 0.138
+gap on 55 positive biopsies means the held-out split was a favourable one and the honest estimate
+sits nearer 0.6 than 0.725.
 
 At the time this was written the panel still shipped, on the reasoning that it excluded chance and
 beat age alone by 0.267. That reasoning was wrong, and the 0.138 gap in this very table was the

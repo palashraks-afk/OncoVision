@@ -306,7 +306,28 @@ def table_calibration(_, extra):
     return "\n".join(rows)
 
 
+def table_cv_vs_heldout(ev, extra):
+    """
+    Cross-validated against held-out, with the gap between them.
+
+    The gap is the point of the table. Cervical's was 0.138 and that was the
+    evidence it was a lucky split, read at the time as ordinary optimism. The
+    cervical row is kept from the run that withdrew it, because the panel no
+    longer trains and there is nothing current to regenerate it from.
+    """
+    rows = ["| Panel | CV AUC | Held-out AUC | Gap |", "|---|---|---|---|"]
+    for k in _rank(ev):
+        cv = ev[k].get("cv_auc_train_only")
+        ho = ev[k]["calibrated"]["auc"]
+        if not isinstance(cv, (int, float)):
+            continue
+        rows.append(f"| {NAME.get(k, k)} | {cv:.3f} | {ho:.3f} | {ho - cv:+.3f} |")
+    rows.append("| ~~Cervical~~ | 0.587 | 0.725 | **+0.138** |")
+    return "\n".join(rows)
+
+
 TABLES = {
+    "cv_vs_heldout": table_cv_vs_heldout,
     "shipped": table_shipped,
     "baselines": table_baselines,
     "stability": table_stability,
