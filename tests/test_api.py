@@ -188,6 +188,47 @@ def test_triage_panels_refuse_without_their_defining_test(client):
         "the ovarian panel refused even with CA 125 and HE4 supplied"
 
 
+def test_screening_panels_offer_a_rule_out_call(client):
+    """
+    The question this application is for is not "are you flagged", it is "is
+    there enough here to leave you out before an expensive test".
+
+    Those are different thresholds. experiments/cost_model.py finds that at the
+    balanced point the bowel panel misses 190 cancers in 400 and stops saving
+    money the moment a missed cancer is priced at a life rather than a treatment
+    bill; at the rule-out point it avoids 36,052 colonoscopies per 100,000 and
+    misses 8.
+    """
+    payload = {"age": 58, "gender": 0, **FULL_BLOODS}
+    body = client.post("/predict", json=payload).json()
+    checked = 0
+    for name, v in body["predictions"].items():
+        if not any(p in name.lower() for p in ("bowel", "lung", "liver")):
+            continue
+        ro = v.get("rule_out")
+        assert ro, f"{name} offers no rule-out call"
+        assert 0.0 <= ro["threshold_pct"] <= 100.0
+        assert ro["sensitivity"] >= 0.9, \
+            f"{name} rule-out only catches {ro['sensitivity']} of cases, which is not a rule-out"
+        assert isinstance(ro["below_cut"], bool)
+        assert ro["meaning"]
+        checked += 1
+    assert checked, "no screening panel was scored, so nothing was checked"
+
+
+def test_rule_out_is_a_looser_cut_than_the_flag(client):
+    """A rule-out threshold above the flagging one would be a coding error."""
+    payload = {"age": 58, "gender": 0, **FULL_BLOODS}
+    body = client.post("/predict", json=payload).json()
+    for name, v in body["predictions"].items():
+        ro, thr = v.get("rule_out"), v.get("threshold")
+        if not ro or thr is None:
+            continue
+        assert ro["threshold_pct"] <= thr + 1e-6, (
+            f"{name}: the rule-out cut ({ro['threshold_pct']}%) sits ABOVE the "
+            f"flagging threshold ({thr}%), which cannot be right")
+
+
 def test_screening_panels_still_work_from_routine_bloodwork(client):
     """The gate must not catch the panels whose whole point is a lab report."""
     payload = {"age": 58, "gender": 0, **FULL_BLOODS}

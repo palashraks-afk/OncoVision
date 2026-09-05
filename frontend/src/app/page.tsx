@@ -797,6 +797,48 @@ export default function OncovisionDashboard() {
                               </p>
                             )}
                             {/*
+                              The rule-out call, given its own block because it
+                              answers the question this application is actually
+                              for. "Are you flagged" balances a false positive
+                              against a false negative as though a colonoscopy
+                              and a missed cancer cost the same; before an
+                              expensive procedure they do not. Shown only for
+                              SCREENING panels: for breast and prostate the
+                              expensive test has already happened, so "should
+                              you have it" is not the question their card is
+                              answering. See
+                              experiments/cost_model.py, which finds that at the
+                              balanced point the bowel panel misses 190 cancers
+                              in 400 and stops paying the moment a missed cancer
+                              is priced at a life, while at the rule-out point it
+                              avoids 36,052 colonoscopies per 100,000 and misses
+                              8.
+                            */}
+                            {d.rule_out && d.panel_kind === "screening" && (
+                              <div className={`mb-3 p-3 border ${d.rule_out.below_cut
+                                ? "border-[var(--ok)] bg-[var(--ok)]/5"
+                                : "border-[var(--warn)] bg-[var(--warn)]/5"}`}>
+                                <p className="text-[10px] uppercase font-bold tracking-widest mb-1
+                                  text-[var(--ink-3)]">
+                                  Before an expensive test
+                                </p>
+                                <p className="text-[11px] leading-relaxed text-[var(--ink-2)]">
+                                  <span className={`font-bold ${d.rule_out.below_cut
+                                    ? "text-[var(--ok)]" : "text-[var(--warn)]"}`}>
+                                    {d.rule_out.below_cut
+                                      ? "Could be ruled out. "
+                                      : "Cannot be ruled out. "}
+                                  </span>
+                                  {d.rule_out.meaning}
+                                </p>
+                                <p className="text-[10px] text-[var(--ink-4)] mt-2 font-mono">
+                                  cut at {d.rule_out.threshold_pct}% · catches{" "}
+                                  {Math.round(d.rule_out.sensitivity * 100)} of 100 cases · excludes{" "}
+                                  {Math.round(d.rule_out.share_of_people_ruled_out * 100)}% of people
+                                </p>
+                              </div>
+                            )}
+                            {/*
                               Every panel answers with whatever it was given, so
                               the honest part is saying how much of the answer
                               came from the patient and how much from a training

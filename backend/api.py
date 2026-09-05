@@ -81,6 +81,42 @@ RATE_WINDOW_SECONDS = int(os.getenv("RATE_WINDOW_SECONDS", "60"))
 _hits: dict = {}
 
 
+def _rule_out_view(bundle, proba_pct: float) -> dict:
+    """
+    Whether this person falls below the panel's high-sensitivity cut.
+
+    Reported with what the cut costs and buys, because a threshold with no
+    consequences attached is not information. experiments/cost_model.py is the
+    argument for offering this at all.
+    """
+    ro = (bundle.get("metrics") or {}).get("rule_out")
+    if not ro:
+        return {"rule_out": None}
+    below = proba_pct < ro["threshold"] * 100.0
+    return {
+        "rule_out": {
+            "below_cut": bool(below),
+            "threshold_pct": round(ro["threshold"] * 100.0, 1),
+            "sensitivity": ro["sensitivity"],
+            "share_of_people_ruled_out": ro["share_ruled_out"],
+            "cases_missed_per_100": ro["cases_missed_per_100"],
+            "meaning": (
+                "This panel would leave you out of further testing. At this "
+                f"setting it catches {ro['sensitivity'] * 100:.0f} of every 100 "
+                f"cases and excludes {ro['share_ruled_out'] * 100:.0f} percent of "
+                "people, so it misses "
+                f"{ro['cases_missed_per_100']} in 100. It is a reason to feel "
+                "less worried, not a clearance."
+                if below else
+                "This panel would NOT leave you out of further testing. That is "
+                "not a prediction that you have cancer. It means there is not "
+                "enough here to safely exclude you, which is the question worth "
+                "asking before an expensive test."
+            ),
+        }
+    }
+
+
 @app.exception_handler(RequestValidationError)
 async def readable_validation_error(request, exc):
     """
@@ -863,6 +899,15 @@ async def predict_risk(data: PatientData):
             # runs to 0.993, and reporting 100 would claim a precision the
             # held-out test cannot support. Clipped at both ends for the same
             # reason.
+            # The rule-out comparison must use the UNCLIPPED probability.
+            #
+            # Clipping to [0.1, 99.9] is right for display: no panel here has
+            # earned a claim of certainty. But the bowel rule-out cut is 0.09
+            # percent, which sits BELOW the 0.1 floor, so comparing the clipped
+            # value made it unreachable and no patient could ever be ruled out.
+            # The feature was silently inert until a healthy test patient came
+            # back "cannot be ruled out" by every panel at once.
+            raw_proba = proba
             proba = min(max(proba, 0.1), 99.9)
         except Exception:
             continue
@@ -965,6 +1010,11 @@ async def predict_risk(data: PatientData):
             # answer and a weaker one, and the difference belongs on the card
             # rather than buried in a log.
             "tier": "lab report only" if using_reduced else "full",
+            # The rule-out call, which is the one that matters before an
+            # expensive procedure. "Are you flagged" balances a false positive
+            # against a false negative as though a colonoscopy and a missed
+            # cancer cost the same. "Can you be left out" does not.
+            **_rule_out_view(bundle, raw_proba),
             "reduced_note": (reduced or {}).get("note", "") if using_reduced else "",
             "reduced_auc": (reduced or {}).get("auc") if using_reduced else None,
             # Values that fell outside anything this panel was trained on. The

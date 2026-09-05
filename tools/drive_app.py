@@ -212,6 +212,36 @@ def scenario_extreme_values_are_declared():
     notes.append("liver not scored, extreme-value caveat not checked")
 
 
+# --------------------------------------------------------------- 3c. rule-out
+def scenario_rule_out():
+    """
+    A healthy person should be rule-out-able, and the cut should be looser than
+    the flagging one. If a panel cannot leave anybody out it is not useful
+    before an expensive test, whatever its AUC.
+    """
+    body = post(HEALTHY)
+    seen = 0
+    for name, v in (body.get("predictions") or {}).items():
+        ro = v.get("rule_out")
+        if not ro:
+            continue
+        seen += 1
+        thr = v.get("threshold")
+        if thr is not None and ro["threshold_pct"] > thr + 1e-6:
+            failures.append(f"{name}: rule-out cut {ro['threshold_pct']}% sits above "
+                            f"the flagging threshold {thr}%")
+        if ro["share_of_people_ruled_out"] < 0.05:
+            failures.append(f"{name}: the rule-out point excludes only "
+                            f"{ro['share_of_people_ruled_out']:.0%} of people, so it "
+                            f"cannot avoid any procedures")
+        if not ro["below_cut"]:
+            notes.append(f"{name}: a healthy patient was NOT ruled out "
+                         f"(cut {ro['threshold_pct']}%, risk {v.get('risk')}%)")
+    check(seen > 0,
+          "no panel offered a rule-out call at all" if seen == 0 else
+          f"{seen} panels offer a rule-out call, all looser than their flagging cut")
+
+
 # --------------------------------------------------------------- 4. stability
 def scenario_irrelevant_input():
     """Adding one unremarkable value should not swing a score."""
@@ -264,6 +294,7 @@ def main():
     print(f"driving {BASE} as a user\n")
     for fn in (scenario_healthy, scenario_defining_inputs, scenario_monotonic,
                scenario_coherent_patterns, scenario_extreme_values_are_declared,
+               scenario_rule_out,
                scenario_irrelevant_input, scenario_edges):
         fn()
 

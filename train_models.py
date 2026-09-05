@@ -743,6 +743,55 @@ PRECISION_TROUBLE = 50.0
 SENSITIVITY_FLOOR = 0.70
 
 
+# The sensitivity a rule-out point has to hit before it is worth offering.
+#
+# The shipped threshold is Youden's J, which balances a false positive against a
+# false negative as though the two cost the same. Before an expensive
+# diagnostic they do not: a false positive costs a colonoscopy and a false
+# negative costs a life. experiments/cost_model.py finds that at Youden the
+# bowel panel misses 190 cancers in 400 and stops saving money the moment a
+# missed cancer is priced at a life rather than at a treatment bill, while at
+# high sensitivity it avoids 36,052 colonoscopies per 100,000 people and misses
+# 8.
+#
+# So every panel also carries a rule-out point: the least aggressive threshold
+# that still catches this share of cases. It answers a different and more useful
+# question than "are you flagged", namely "is there enough here to leave you
+# out".
+RULE_OUT_SENSITIVITY = 0.95
+
+
+def rule_out_threshold(y_true, p):
+    """
+    The highest threshold that still keeps sensitivity at RULE_OUT_SENSITIVITY.
+
+    Returns the threshold and what it buys, so the interface can say how many
+    people it would exclude and how many cases it would miss doing so, rather
+    than presenting a cut with no consequences attached.
+    """
+    y_true = np.asarray(y_true).astype(int)
+    p = np.asarray(p, dtype=float)
+    if y_true.sum() == 0:
+        return None
+    order = np.unique(p)
+    best = None
+    for thr in order:
+        flagged = p >= thr
+        sens = float(flagged[y_true == 1].mean())
+        if sens < RULE_OUT_SENSITIVITY:
+            continue
+        spec = float((~flagged)[y_true == 0].mean())
+        best = {
+            "threshold": float(thr),
+            "sensitivity": round(sens, 3),
+            "specificity": round(spec, 3),
+            "share_ruled_out": round(float((~flagged).mean()), 3),
+            "cases_missed_per_100": round((1 - sens) * 100, 1),
+            "target_sensitivity": RULE_OUT_SENSITIVITY,
+        }
+    return best
+
+
 def choose_threshold(y_true, p, prevalence: float | None = None) -> float:
     """
     Pick the operating point, instead of assuming 0.5.
@@ -847,6 +896,7 @@ def evaluate(clf_factory, X: pd.DataFrame, y: pd.Series,
     oof = cross_val_predict(calibrated(), X, y, cv=cv, method="predict_proba", n_jobs=1)[:, 1]
     cv_auc = roc_auc_score(y, oof)
     threshold = choose_threshold(y, oof, prevalence)
+    rule_out = rule_out_threshold(y, oof)
 
     fold_aucs = []
     for tr, te in cv.split(X, y):
@@ -872,6 +922,10 @@ def evaluate(clf_factory, X: pd.DataFrame, y: pd.Series,
         "n_features": int(X.shape[1]),
         "cv_folds": int(cv.get_n_splits()),
         "threshold": round(float(threshold), 4),
+        # The rule-out point, alongside the balanced one. See
+        # RULE_OUT_SENSITIVITY for why a panel used before an expensive
+        # procedure needs both.
+        "rule_out": rule_out,
     }
 
 
