@@ -35,8 +35,8 @@ five years, winning 5 of 5 paired repeats. **That gain did not survive external 
 Trained on NHANES 1999–2014 and tested on NHANES III (1988–1994, 14,630 adults, 254 events), age
 and sex alone reached 0.852 while the full blood panel reached 0.839: a transferred gain of −0.013.
 The same external test applied to an organ-specific panel gave the opposite answer. The bowel panel,
-trained on NHANES 2005–2014 and tested on 14,499 NHANES III adults with 56 colorectal cancers,
-transferred a gain of **+0.029** against +0.039 internally — roughly three quarters of the effect
+trained on NHANES 2005–2016 and tested on 14,499 NHANES III adults with 56 colorectal cancers,
+transferred a gain of **+0.028** against +0.033 internally — around five sixths of the effect
 survived a fifteen-year gap and a change of analysers. Separately, discrimination and usability
 diverge sharply: three panels with AUCs between 0.79 and
 0.97 flag between 55 and 768 people per true case at real incidence, and a threshold sweep shows
@@ -135,9 +135,9 @@ means, so it is stated on every panel rather than kept in a methods section.
 | Ovarian | Case-control | 349 | 171 | 49.00% | operated ovarian masses, malignant vs benign |
 | Prostate | Case-control | 212 | 121 | 57.10% | biopsied men, adenocarcinoma vs benign biopsy |
 | Lung | Population | 21,916 | 110 | 0.50% | NHANES, adults with measurable tobacco exposure |
-| Bowel | Population | 23,794 | 95 | 0.40% | NHANES, colon or rectal cancer within 8 years |
+| Bowel | Population | 28,527 | 114 | 0.40% | NHANES 2005-2016, colon or rectal cancer within 8 years |
+| General | Population | 28,711 | 890 | 3.10% | NHANES 2005-2016, cancer diagnosed within 4 years |
 | Liver | Population | 35,511 | 1,420 | 4.00% | NHANES, 7 cycles, clinical liver disease |
-| General | Population | 23,923 | 742 | 3.10% | NHANES 2005-2014, cancer diagnosed within 4 years |
 <!-- /AUTOGEN:paper_cohorts -->
 
 Race and ethnicity are carried as a **stratifier and never as a model feature**, following the
@@ -283,9 +283,9 @@ years beyond a single sensitivity figure, and no price on the harm of an unneces
 | Ovarian | 0.949 | 0.911 | 0.813 | +0.174 |
 | Prostate | 0.840 | 0.876 | 0.661 | +0.258 |
 | Lung | 0.829 | 0.785 | 0.778 | +0.044 |
-| Bowel | 0.793 | 0.8 | 0.817 | +0.039 |
+| Bowel | 0.815 | 0.82 | 0.843 | +0.033 |
+| General | 0.794 | 0.78 | 0.779 | **+0.006** |
 | Liver | 0.760 | 0.74 | 0.602 | +0.106 |
-| General | 0.732 | 0.731 | 0.727 | **+0.006** |
 
 The gain column is measured by repeated paired cross-validation on identical folds, not from the held-out split, because a single split proved unreliable.
 
@@ -298,9 +298,9 @@ The gain column is measured by repeated paired cross-validation on identical fol
 | Ovarian | 0.949 | 79.33% | 1.3 | not a screening panel |
 | Prostate | 0.840 | 70.59% | 1.4 | not a screening panel |
 | Lung | 0.829 | 1.81% | 55.1 | no |
-| Bowel | 0.793 | 0.13% | 768.4 | no |
+| Bowel | 0.815 | 0.13% | 795.0 | no |
+| General | 0.794 | 7.79% | 12.8 | yes, with caveats |
 | Liver | 0.760 | 9.95% | 10.0 | yes, with caveats |
-| General | 0.732 | 5.92% | 16.9 | yes, with caveats |
 
 This is the table that decides whether a panel is a screening instrument. Discrimination and usability are different properties, and three panels have the first without the second.
 
@@ -312,10 +312,10 @@ This is the table that decides whether a panel is a screening instrument. Discri
 | Pancreatic | 600 | 130 | 0.969 | 0.939 to 0.995 | 0.969 | 50th |
 | Ovarian | 349 | 171 | 0.928 | 0.852 to 0.969 | 0.949 | 70th |
 | Lung | 21,916 | 104 | 0.839 | 0.822 to 0.860 | 0.829 | 40th |
+| Bowel | 28,527 | 113 | 0.823 | 0.788 to 0.859 | 0.815 | 40th |
 | Prostate | 212 | 121 | 0.822 | 0.732 to 0.909 | 0.840 | 70th |
-| Bowel | 23,794 | 96 | 0.799 | 0.785 to 0.817 | 0.793 | 40th |
+| General | 28,711 | 897 | 0.758 | 0.735 to 0.779 | 0.794 | 100th |
 | Liver | 35,511 | 1,436 | 0.754 | 0.740 to 0.764 | 0.760 | 80th |
-| General | 23,923 | 750 | 0.743 | 0.692 to 0.772 | 0.732 | 20th |
 | Cervical | 858 | 55 | **0.594** | **0.421 to 0.789** | 0.725 | **97th** |
 
 ### 3.4 The prospective test
@@ -365,14 +365,14 @@ This is also a caution about the leave-one-cycle-out result above. Holding out o
 
 The bowel panel is one of only two here that screen for a named cancer from a routine lab report alone, so it carries more of the application's claim than the case-control panels do. NHANES III recorded both the site of any reported cancer and the age at which it was first told, which reconstructs the same eight-year window the training cohort uses.
 
-Train: NHANES 2005-2014, 23,794 adults, 96 cases. Test: NHANES III, 14,499 adults, 56 cases. The two prevalences agree to within a hundredth of a percent, which is a check that the window was reconstructed the same way on both sides.
+Train: NHANES 2005-2014, 28,527 adults, 113 cases. Test: NHANES III, 14,499 adults, 56 cases. The two prevalences agree to within a hundredth of a percent, which is a check that the window was reconstructed the same way on both sides.
 
 | Feature set | Features | External AUC | 95% CI |
 |---|---|---|---|
-| age and sex only | 2 | 0.761 | 0.699 to 0.814 |
-| full panel | 16 | 0.790 | 0.739 to 0.838 |
+| age and sex only | 2 | 0.764 | 0.705 to 0.815 |
+| full panel | 16 | 0.792 | 0.74 to 0.841 |
 
-Gain over age and sex, transferred: **+0.029**, against +0.039 measured inside the training survey.
+Gain over age and sex, transferred: **+0.028**, against +0.033 measured inside the training survey.
 
 **This gain survives.** Roughly three quarters of it is still there on a cohort measured a decade and a half earlier, on different analysers. Set beside section 3.5, where the undifferentiated panel's gain reversed sign under the same test, this is the sharpest form of the paper's main result: the two questions do not merely differ in effect size, they differ in whether the effect is real at all.
 
@@ -382,7 +382,7 @@ Per 100,000 people at real incidence, sending everyone for the confirmatory proc
 
 | Panel | Procedure | Sent everyone | Sent if flagged | Cases missed | Apparent saving |
 |---|---|---|---|---|---|
-| Bowel | colonoscopy | 100,000 | 14,852 | 189.6 of 400 | $192,674,741 |
+| Bowel | colonoscopy | 100,000 | 14,036 | 208.8 of 400 | $193,356,533 |
 | Lung | low-dose chest CT | 100,000 | 14,999 | 201.6 of 470 | $13,402,557 |
 | Liver | FibroScan (transient elastography) | 100,000 | 24,535 | 1575.6 of 4040 | $13,513,852 |
 
@@ -390,7 +390,7 @@ That apparent saving counts only treatment dollars. Charging a missed case what 
 
 | Panel | Break-even per missed case | A case, valued | Verdict |
 |---|---|---|---|
-| Bowel | $1,083,217 | $2,250,000 | **stops saving** |
+| Bowel | $993,037 | $2,250,000 | **stops saving** |
 | Lung | $126,481 | $2,250,000 | **stops saving** |
 | Liver | $23,948 | $750,000 | **stops saving** |
 
@@ -398,7 +398,7 @@ That apparent saving counts only treatment dollars. Charging a missed case what 
 
 | Panel | Sensitivity | Specificity | Procedures avoided per 100,000 | Cases missed | Net benefit |
 |---|---|---|---|---|---|
-| Bowel | 0.979 | 0.362 | **36,052** | 8.3 | $68,208,115 |
+| Bowel | 0.947 | 0.467 | **46,551** | 21.2 | $64,492,872 |
 | Lung | 1.0 | 0.217 | **21,561** | 0.0 | $6,468,172 |
 | Liver | 1.0 | 0.0 | **0** | 0.0 | $0 |
 
@@ -624,8 +624,8 @@ accept ours.
 **The rule-out thresholds are chosen on the training cohorts, and only one has been tested outside
 one.** They are computed from out-of-fold predictions rather than from the fitted model's own
 scores, so they are not fit to the data they are evaluated on. The colorectal cut was then applied
-unchanged to NHANES III: it promised to catch 97.9% of cases while excluding 36.7% of people, and
-delivered 94.6% and 43.6%, ruling out 3 of 56 cancers that it should not have. That is inside the
+unchanged to NHANES III: it promised to catch 95.6% of cases while excluding 38.6% of people, and
+delivered 94.6% and 42.5%, ruling out 3 of 56 cancers that it should not have. That is inside the
 5-point tolerance set beforehand and it is a real degradation, so the interface quotes the rate as
 approximate rather than exact. The lung, liver and general cuts have no such test, and given
 section 4.2 that should be read seriously.

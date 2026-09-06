@@ -1,12 +1,12 @@
 {
   "general": {
     "n_repeats": 5,
-    "panel_auc": 0.756,
-    "age_sex_auc": 0.75,
+    "panel_auc": 0.765,
+    "age_sex_auc": 0.76,
     "gain": 0.006,
     "gain_range": [
-      0.002,
-      0.009
+      0.003,
+      0.008
     ],
     "wins": 5,
     "baseline_features": [
@@ -38,7 +38,7 @@
   "pancreatic": {
     "n_repeats": 20,
     "panel_auc": 0.966,
-    "age_sex_auc": 0.468,
+    "age_sex_auc": 0.469,
     "gain": 0.498,
     "gain_range": [
       0.467,
@@ -53,12 +53,12 @@
   },
   "colorectal": {
     "n_repeats": 5,
-    "panel_auc": 0.805,
-    "age_sex_auc": 0.766,
-    "gain": 0.039,
+    "panel_auc": 0.798,
+    "age_sex_auc": 0.765,
+    "gain": 0.033,
     "gain_range": [
-      0.01,
-      0.069
+      0.028,
+      0.038
     ],
     "wins": 5,
     "baseline_features": [

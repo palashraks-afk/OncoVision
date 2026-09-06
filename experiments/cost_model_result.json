@@ -11,53 +11,53 @@
         "life_years_lost": 15,
         "note": "incidence is this cohort's 8-year rate, not annual SEER"
       },
-      "sensitivity": 0.526,
-      "specificity": 0.853,
+      "sensitivity": 0.478,
+      "specificity": 0.861,
       "base_case": {
         "procedures_universal": 100000,
-        "procedures_triaged": 14852,
-        "cancers_found": 210.4,
-        "cancers_missed": 189.6,
+        "procedures_triaged": 14036,
+        "cancers_found": 191.2,
+        "cancers_missed": 208.8,
         "cost_universal": 241200000,
-        "cost_triaged": 48525259,
-        "saving": 192674741,
-        "saving_per_person": 1926.75,
-        "cost_per_cancer_missed": 1016217
+        "cost_triaged": 47843467,
+        "saving": 193356533,
+        "saving_per_person": 1933.57,
+        "cost_per_cancer_missed": 926037
       },
       "sweeps": {
         "procedure cost": {
-          "x0.5": 89985770,
-          "x0.75": 141330256,
-          "x1.0": 192674741,
-          "x1.5": 295363711,
-          "x2.0": 398052682
+          "x0.5": 89683466,
+          "x0.75": 141520000,
+          "x1.0": 193356533,
+          "x1.5": 297029599,
+          "x2.0": 400702666
         },
         "late-stage penalty": {
-          "x0.75": 195850541,
-          "x1.0": 192674741,
-          "x1.5": 186323141,
-          "x2.0": 179971541,
-          "x3.0": 167268341
+          "x0.75": 196853933,
+          "x1.0": 193356533,
+          "x1.5": 186361733,
+          "x2.0": 179366933,
+          "x3.0": 165377333
         },
         "incidence": {
-          "x0.5": 199209170,
-          "x1.0": 192674741,
-          "x2.0": 179605882,
-          "x5.0": 140399304,
-          "x10.0": 75055008
+          "x0.5": 200514866,
+          "x1.0": 193356533,
+          "x2.0": 179039866,
+          "x5.0": 136089864,
+          "x10.0": 64506528
         }
       },
-      "break_even_per_missed_cancer": 1083217,
+      "break_even_per_missed_cancer": 993037,
       "societal_cost_of_a_missed_cancer": 2250000,
       "saves_money_once_a_life_is_priced": false,
       "best_operating_point": {
-        "sensitivity": 0.979,
-        "specificity": 0.362,
-        "procedures_per_100k": 63948,
-        "cancers_missed": 8.3,
-        "net_benefit": 68208115,
+        "sensitivity": 0.947,
+        "specificity": 0.467,
+        "procedures_per_100k": 53449,
+        "cancers_missed": 21.2,
+        "net_benefit": 64492872,
         "pays_once_a_life_is_priced": true,
-        "shipped_sensitivity": 0.526
+        "shipped_sensitivity": 0.478
       }
     },
     "lung": {

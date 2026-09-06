@@ -1,11 +1,11 @@
 {
   "panels": {
     "colorectal": {
-      "cut": 0.000741,
-      "promised_catch_rate": 0.979,
+      "cut": 0.000804,
+      "promised_catch_rate": 0.956,
       "actual_catch_rate": 0.946,
-      "promised_share_excluded": 0.367,
-      "actual_share_excluded": 0.436,
+      "promised_share_excluded": 0.386,
+      "actual_share_excluded": 0.425,
       "cases_in_test_cohort": 56,
       "cases_ruled_out_wrongly": 3,
       "promise_kept": true,

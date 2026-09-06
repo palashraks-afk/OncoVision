@@ -2,9 +2,9 @@
   "general": {
     "domain": "general",
     "cohort_design": "23,923 US adults, NHANES 2005-2014. Recent diagnosis, survivors excluded.",
-    "n_total": 23923,
-    "n_train": 19138,
-    "n_test": 4785,
+    "n_total": 28711,
+    "n_train": 22968,
+    "n_test": 5743,
     "n_features": 5,
     "features": [
       "age",
@@ -14,118 +14,106 @@
       "alcohol_intake"
     ],
     "cohort_prevalence": 0.031,
-    "cv_auc_train_only": 0.761,
+    "cv_auc_train_only": 0.753,
     "uncalibrated": {
       "variant": "uncalibrated",
-      "threshold": 0.3946,
-      "auc": 0.724,
+      "threshold": 0.3844,
+      "auc": 0.794,
       "auc_ci": [
-        0.679,
-        0.765
+        0.764,
+        0.822
       ],
-      "sensitivity": 0.647,
+      "sensitivity": 0.81,
       "sensitivity_ci": [
-        0.569,
-        0.721
+        0.749,
+        0.866
       ],
-      "specificity": 0.68,
+      "specificity": 0.64,
       "specificity_ci": [
-        0.667,
-        0.694
+        0.628,
+        0.652
       ],
-      "ppv_in_cohort": 0.061,
-      "brier": 0.1496,
-      "calibration_slope": 0.669,
-      "calibration_intercept": -2.4,
+      "ppv_in_cohort": 0.068,
+      "brier": 0.1545,
+      "calibration_slope": 0.975,
+      "calibration_intercept": -2.546,
       "reliability": [
         {
           "bin": "0.0 to 0.2",
-          "n": 1931,
-          "predicted": 0.106,
-          "observed": 0.01
+          "n": 2088,
+          "predicted": 0.117,
+          "observed": 0.003
         },
         {
           "bin": "0.2 to 0.4",
-          "n": 1303,
-          "predicted": 0.293,
-          "observed": 0.027
+          "n": 1613,
+          "predicted": 0.294,
+          "observed": 0.018
         },
         {
           "bin": "0.4 to 0.6",
-          "n": 887,
-          "predicted": 0.5,
-          "observed": 0.041
+          "n": 1209,
+          "predicted": 0.491,
+          "observed": 0.051
         },
         {
           "bin": "0.6 to 0.8",
-          "n": 537,
-          "predicted": 0.693,
-          "observed": 0.088
+          "n": 680,
+          "predicted": 0.694,
+          "observed": 0.09
         },
         {
           "bin": "0.8 to 1.0",
-          "n": 127,
-          "predicted": 0.835,
-          "observed": 0.102
+          "n": 153,
+          "predicted": 0.84,
+          "observed": 0.131
         }
       ],
-      "ppv_at_population_prevalence": 0.06157,
-      "npv_at_population_prevalence": 0.98345,
-      "people_flagged_per_true_case": 16.2,
+      "ppv_at_population_prevalence": 0.06802,
+      "npv_at_population_prevalence": 0.99047,
+      "people_flagged_per_true_case": 14.7,
       "population_prevalence": 0.0314,
       "prevalence_source": "Cancer diagnosed within 4 years, US adults, NHANES 2005-2014"
     },
     "calibrated": {
       "variant": "isotonic calibrated",
-      "threshold": 0.0285,
-      "auc": 0.732,
+      "threshold": 0.0345,
+      "auc": 0.794,
       "auc_ci": [
-        0.692,
-        0.77
+        0.764,
+        0.822
       ],
-      "sensitivity": 0.68,
+      "sensitivity": 0.737,
       "sensitivity_ci": [
-        0.603,
-        0.754
+        0.674,
+        0.8
       ],
-      "specificity": 0.65,
+      "specificity": 0.717,
       "specificity_ci": [
-        0.636,
-        0.663
+        0.704,
+        0.729
       ],
-      "ppv_in_cohort": 0.059,
-      "brier": 0.03,
-      "calibration_slope": 0.753,
-      "calibration_intercept": 0.622,
+      "ppv_in_cohort": 0.077,
+      "brier": 0.0291,
+      "calibration_slope": 1.042,
+      "calibration_intercept": 0.485,
       "reliability": [
         {
           "bin": "0.0 to 0.2",
-          "n": 4763,
+          "n": 5693,
           "predicted": 0.03,
-          "observed": 0.031
+          "observed": 0.03
         },
         {
           "bin": "0.2 to 0.4",
-          "n": 19,
-          "predicted": 0.254,
-          "observed": 0.0
-        },
-        {
-          "bin": "0.4 to 0.6",
-          "n": 1,
-          "predicted": 0.513,
-          "observed": 0.0
-        },
-        {
-          "bin": "0.6 to 0.8",
-          "n": 2,
-          "predicted": 0.733,
-          "observed": 0.0
+          "n": 50,
+          "predicted": 0.248,
+          "observed": 0.2
         }
       ],
-      "ppv_at_population_prevalence": 0.05923,
-      "npv_at_population_prevalence": 0.98429,
-      "people_flagged_per_true_case": 16.9,
+      "ppv_at_population_prevalence": 0.07788,
+      "npv_at_population_prevalence": 0.98827,
+      "people_flagged_per_true_case": 12.8,
       "population_prevalence": 0.0314,
       "prevalence_source": "Cancer diagnosed within 4 years, US adults, NHANES 2005-2014"
     },
@@ -134,10 +122,10 @@
         "auc": 0.5
       },
       "logistic_regression": {
-        "auc": 0.731,
+        "auc": 0.78,
         "auc_ci": [
-          0.688,
-          0.771
+          0.749,
+          0.81
         ]
       },
       "age_sex_only": {
@@ -145,48 +133,48 @@
           "age",
           "gender"
         ],
-        "auc": 0.727,
+        "auc": 0.779,
         "auc_ci": [
-          0.685,
-          0.769
+          0.747,
+          0.81
         ]
       }
     },
     "subgroups": {
       "sex: female": {
-        "n": 2414,
-        "positives": 77,
-        "auc": 0.672,
+        "n": 2912,
+        "positives": 78,
+        "auc": 0.766,
         "auc_ci": [
-          0.607,
-          0.734
+          0.713,
+          0.816
         ]
       },
       "sex: male": {
-        "n": 2371,
-        "positives": 73,
-        "auc": 0.771,
+        "n": 2831,
+        "positives": 101,
+        "auc": 0.809,
         "auc_ci": [
-          0.72,
-          0.821
+          0.776,
+          0.842
         ]
       },
       "age under 47": {
-        "n": 2389,
-        "positives": 25,
-        "auc": 0.614,
+        "n": 2810,
+        "positives": 16,
+        "auc": 0.728,
         "auc_ci": [
-          0.495,
-          0.73
+          0.601,
+          0.848
         ]
       },
       "age 47 and over": {
-        "n": 2396,
-        "positives": 125,
-        "auc": 0.637,
+        "n": 2933,
+        "positives": 163,
+        "auc": 0.678,
         "auc_ci": [
-          0.583,
-          0.687
+          0.638,
+          0.717
         ]
       }
     }
@@ -242,7 +230,7 @@
       ],
       "sensitivity": 0.976,
       "sensitivity_ci": [
-        0.921,
+        0.917,
         1.0
       ],
       "specificity": 0.986,
@@ -297,17 +285,17 @@
       "threshold": 0.2985,
       "auc": 0.997,
       "auc_ci": [
-        0.99,
+        0.991,
         1.0
       ],
       "sensitivity": 0.976,
       "sensitivity_ci": [
-        0.919,
+        0.921,
         1.0
       ],
       "specificity": 0.986,
       "specificity_ci": [
-        0.955,
+        0.957,
         1.0
       ],
       "ppv_in_cohort": 0.976,
@@ -359,7 +347,7 @@
       "logistic_regression": {
         "auc": 0.995,
         "auc_ci": [
-          0.987,
+          0.986,
           1.0
         ]
       }
@@ -394,13 +382,13 @@
       "threshold": 0.4585,
       "auc": 0.762,
       "auc_ci": [
-        0.734,
-        0.789
+        0.732,
+        0.79
       ],
       "sensitivity": 0.613,
       "sensitivity_ci": [
-        0.556,
-        0.666
+        0.557,
+        0.67
       ],
       "specificity": 0.755,
       "specificity_ci": [
@@ -454,12 +442,12 @@
       "threshold": 0.0404,
       "auc": 0.76,
       "auc_ci": [
-        0.73,
+        0.729,
         0.789
       ],
       "sensitivity": 0.61,
       "sensitivity_ci": [
-        0.553,
+        0.552,
         0.667
       ],
       "specificity": 0.77,
@@ -510,8 +498,8 @@
       "logistic_regression": {
         "auc": 0.74,
         "auc_ci": [
-          0.71,
-          0.769
+          0.711,
+          0.77
         ]
       },
       "age_sex_only": {
@@ -521,8 +509,8 @@
         ],
         "auc": 0.602,
         "auc_ci": [
-          0.575,
-          0.628
+          0.576,
+          0.629
         ]
       }
     },
@@ -532,8 +520,8 @@
         "positives": 141,
         "auc": 0.778,
         "auc_ci": [
-          0.737,
-          0.817
+          0.738,
+          0.815
         ]
       },
       "sex: male": {
@@ -541,8 +529,8 @@
         "positives": 146,
         "auc": 0.742,
         "auc_ci": [
-          0.695,
-          0.786
+          0.696,
+          0.785
         ]
       },
       "age under 49": {
@@ -550,8 +538,8 @@
         "positives": 85,
         "auc": 0.761,
         "auc_ci": [
-          0.71,
-          0.811
+          0.709,
+          0.81
         ]
       },
       "age 49 and over": {
@@ -559,8 +547,8 @@
         "positives": 202,
         "auc": 0.73,
         "auc_ci": [
-          0.691,
-          0.767
+          0.69,
+          0.77
         ]
       }
     }
@@ -592,8 +580,8 @@
       ],
       "sensitivity": 0.731,
       "sensitivity_ci": [
-        0.552,
-        0.9
+        0.543,
+        0.889
       ],
       "specificity": 0.979,
       "specificity_ci": [
@@ -647,13 +635,13 @@
       "threshold": 0.7295,
       "auc": 0.969,
       "auc_ci": [
-        0.938,
+        0.937,
         0.991
       ],
       "sensitivity": 0.731,
       "sensitivity_ci": [
-        0.545,
-        0.889
+        0.538,
+        0.893
       ],
       "specificity": 0.979,
       "specificity_ci": [
@@ -709,7 +697,7 @@
       "logistic_regression": {
         "auc": 0.968,
         "auc_ci": [
-          0.936,
+          0.937,
           0.991
         ]
       },
@@ -720,8 +708,8 @@
         ],
         "auc": 0.5,
         "auc_ci": [
-          0.373,
-          0.629
+          0.382,
+          0.622
         ]
       }
     },
@@ -731,7 +719,7 @@
         "positives": 12,
         "auc": 0.959,
         "auc_ci": [
-          0.906,
+          0.904,
           0.998
         ]
       },
@@ -740,8 +728,8 @@
         "positives": 14,
         "auc": 0.978,
         "auc_ci": [
-          0.944,
-          0.998
+          0.942,
+          0.999
         ]
       },
       "age under 57": {
@@ -749,8 +737,8 @@
         "positives": 12,
         "auc": 0.957,
         "auc_ci": [
-          0.897,
-          0.997
+          0.902,
+          0.998
         ]
       },
       "age 57 and over": {
@@ -758,7 +746,7 @@
         "positives": 14,
         "auc": 0.983,
         "auc_ci": [
-          0.952,
+          0.949,
           1.0
         ]
       }
@@ -767,9 +755,9 @@
   "colorectal": {
     "domain": "colorectal",
     "cohort_design": "23,794 US adults, NHANES 2005-2014. Diagnosed within 8 years; longer-ago survivors excluded.",
-    "n_total": 23794,
-    "n_train": 19035,
-    "n_test": 4759,
+    "n_total": 28527,
+    "n_train": 22821,
+    "n_test": 5706,
     "n_features": 16,
     "features": [
       "age",
@@ -790,94 +778,100 @@
       "alkaline_phosphatase"
     ],
     "cohort_prevalence": 0.004,
-    "cv_auc_train_only": 0.824,
+    "cv_auc_train_only": 0.796,
     "uncalibrated": {
       "variant": "uncalibrated",
-      "threshold": 0.171,
-      "auc": 0.801,
+      "threshold": 0.1767,
+      "auc": 0.818,
       "auc_ci": [
-        0.727,
-        0.871
+        0.758,
+        0.872
       ],
-      "sensitivity": 0.579,
+      "sensitivity": 0.826,
       "sensitivity_ci": [
-        0.348,
-        0.8
+        0.647,
+        0.963
       ],
-      "specificity": 0.765,
+      "specificity": 0.711,
       "specificity_ci": [
-        0.753,
-        0.777
+        0.698,
+        0.722
       ],
-      "ppv_in_cohort": 0.01,
-      "brier": 0.0274,
-      "calibration_slope": 1.006,
-      "calibration_intercept": -3.131,
+      "ppv_in_cohort": 0.011,
+      "brier": 0.0356,
+      "calibration_slope": 1.002,
+      "calibration_intercept": -3.329,
       "reliability": [
         {
           "bin": "0.0 to 0.2",
-          "n": 3911,
-          "predicted": 0.079,
+          "n": 4350,
+          "predicted": 0.086,
           "observed": 0.002
         },
         {
           "bin": "0.2 to 0.4",
-          "n": 729,
-          "predicted": 0.265,
+          "n": 1126,
+          "predicted": 0.267,
           "observed": 0.012
         },
         {
           "bin": "0.4 to 0.6",
-          "n": 97,
-          "predicted": 0.477,
-          "observed": 0.021
+          "n": 182,
+          "predicted": 0.482,
+          "observed": 0.016
         },
         {
           "bin": "0.6 to 0.8",
-          "n": 22,
-          "predicted": 0.658,
+          "n": 46,
+          "predicted": 0.667,
+          "observed": 0.0
+        },
+        {
+          "bin": "0.8 to 1.0",
+          "n": 2,
+          "predicted": 0.823,
           "observed": 0.0
         }
       ],
-      "ppv_at_population_prevalence": 0.0009,
-      "npv_at_population_prevalence": 0.9998,
-      "people_flagged_per_true_case": 1110.8,
+      "ppv_at_population_prevalence": 0.00104,
+      "npv_at_population_prevalence": 0.99991,
+      "people_flagged_per_true_case": 960.6,
       "population_prevalence": 0.000365,
       "prevalence_source": "Colon and rectum, per 100,000 men and women per year"
     },
     "calibrated": {
       "variant": "isotonic calibrated",
       "threshold": 0.01,
-      "auc": 0.793,
+      "auc": 0.815,
       "auc_ci": [
-        0.708,
-        0.867
+        0.755,
+        0.868
       ],
-      "sensitivity": 0.526,
+      "sensitivity": 0.478,
       "sensitivity_ci": [
-        0.286,
-        0.75
+        0.267,
+        0.696
       ],
-      "specificity": 0.853,
+      "specificity": 0.861,
       "specificity_ci": [
-        0.843,
-        0.862
+        0.852,
+        0.87
       ],
       "ppv_in_cohort": 0.014,
       "brier": 0.004,
-      "calibration_slope": 0.656,
-      "calibration_intercept": 1.963,
+      "calibration_slope": 0.971,
+      "calibration_intercept": 1.977,
       "reliability": [
         {
           "bin": "0.0 to 0.2",
-          "n": 4759,
+          "n": 5706,
           "predicted": 0.004,
           "observed": 0.004
         }
       ],
-      "ppv_at_population_prevalence": 0.0013,
-      "npv_at_population_prevalence": 0.9998,
-      "people_flagged_per_true_case": 768.4,
+      "ppv_at_population_prevalence": 0.00126,
+      "npv_at_population_prevalence": 0.99978,
+      "people_flagged_per_true_case": 795.0,
       "population_prevalence": 0.000365,
       "prevalence_source": "Colon and rectum, per 100,000 men and women per year"
     },
@@ -886,10 +880,10 @@
         "auc": 0.5
       },
       "logistic_regression": {
-        "auc": 0.8,
+        "auc": 0.82,
         "auc_ci": [
-          0.72,
-          0.876
+          0.743,
+          0.889
         ]
       },
       "age_sex_only": {
@@ -897,48 +891,39 @@
           "age",
           "gender"
         ],
-        "auc": 0.817,
+        "auc": 0.843,
         "auc_ci": [
-          0.741,
-          0.885
+          0.778,
+          0.908
         ]
       }
     },
     "subgroups": {
       "sex: female": {
-        "n": 2525,
-        "positives": 13,
-        "auc": 0.809,
+        "n": 2983,
+        "positives": 12,
+        "auc": 0.807,
         "auc_ci": [
-          0.696,
-          0.903
+          0.738,
+          0.872
         ]
       },
       "sex: male": {
-        "n": 2234,
-        "positives": 6,
-        "auc": 0.743,
+        "n": 2723,
+        "positives": 11,
+        "auc": 0.823,
         "auc_ci": [
-          0.602,
-          0.876
-        ]
-      },
-      "age under 47": {
-        "n": 2333,
-        "positives": 1,
-        "auc": 0.69,
-        "auc_ci": [
-          0.674,
-          0.704
+          0.715,
+          0.907
         ]
       },
       "age 47 and over": {
-        "n": 2426,
-        "positives": 18,
-        "auc": 0.647,
+        "n": 2909,
+        "positives": 23,
+        "auc": 0.642,
         "auc_ci": [
-          0.521,
-          0.767
+          0.531,
+          0.741
         ]
       }
     }
@@ -986,17 +971,17 @@
       "threshold": 0.6246,
       "auc": 0.949,
       "auc_ci": [
-        0.889,
+        0.894,
         0.99
       ],
       "sensitivity": 0.824,
       "sensitivity_ci": [
-        0.679,
-        0.943
+        0.686,
+        0.938
       ],
       "specificity": 0.972,
       "specificity_ci": [
-        0.909,
+        0.903,
         1.0
       ],
       "ppv_in_cohort": 0.966,
@@ -1046,17 +1031,17 @@
       "threshold": 0.5806,
       "auc": 0.949,
       "auc_ci": [
-        0.886,
-        0.994
+        0.888,
+        0.992
       ],
       "sensitivity": 0.853,
       "sensitivity_ci": [
-        0.731,
-        0.968
+        0.722,
+        0.966
       ],
       "specificity": 0.944,
       "specificity_ci": [
-        0.857,
+        0.861,
         1.0
       ],
       "ppv_in_cohort": 0.935,
@@ -1102,8 +1087,8 @@
       "logistic_regression": {
         "auc": 0.911,
         "auc_ci": [
-          0.839,
-          0.97
+          0.832,
+          0.969
         ]
       },
       "age_sex_only": {
@@ -1113,7 +1098,7 @@
         "auc": 0.813,
         "auc_ci": [
           0.7,
-          0.911
+          0.915
         ]
       }
     },
@@ -1123,7 +1108,7 @@
         "positives": 6,
         "auc": 0.818,
         "auc_ci": [
-          0.539,
+          0.528,
           1.0
         ]
       },
@@ -1132,7 +1117,7 @@
         "positives": 28,
         "auc": 0.972,
         "auc_ci": [
-          0.909,
+          0.913,
           1.0
         ]
       }
@@ -1178,18 +1163,18 @@
       "threshold": 0.1794,
       "auc": 0.855,
       "auc_ci": [
-        0.778,
-        0.919
+        0.771,
+        0.92
       ],
       "sensitivity": 0.714,
       "sensitivity_ci": [
-        0.516,
-        0.9
+        0.5,
+        0.905
       ],
       "specificity": 0.779,
       "specificity_ci": [
-        0.767,
-        0.791
+        0.765,
+        0.79
       ],
       "ppv_in_cohort": 0.015,
       "brier": 0.0256,
@@ -1232,12 +1217,12 @@
       "threshold": 0.01,
       "auc": 0.829,
       "auc_ci": [
-        0.73,
+        0.732,
         0.902
       ],
       "sensitivity": 0.571,
       "sensitivity_ci": [
-        0.333,
+        0.35,
         0.792
       ],
       "specificity": 0.852,
@@ -1270,8 +1255,8 @@
       "logistic_regression": {
         "auc": 0.785,
         "auc_ci": [
-          0.666,
-          0.886
+          0.663,
+          0.884
         ]
       },
       "age_sex_only": {
@@ -1281,8 +1266,8 @@
         ],
         "auc": 0.778,
         "auc_ci": [
-          0.645,
-          0.878
+          0.663,
+          0.879
         ]
       }
     },
@@ -1292,8 +1277,8 @@
         "positives": 10,
         "auc": 0.867,
         "auc_ci": [
-          0.791,
-          0.935
+          0.795,
+          0.934
         ]
       },
       "sex: male": {
@@ -1302,7 +1287,7 @@
         "auc": 0.809,
         "auc_ci": [
           0.649,
-          0.932
+          0.935
         ]
       },
       "age under 48": {
@@ -1319,8 +1304,8 @@
         "positives": 19,
         "auc": 0.759,
         "auc_ci": [
-          0.66,
-          0.851
+          0.655,
+          0.855
         ]
       }
     }
@@ -1347,18 +1332,18 @@
       "threshold": 0.5975,
       "auc": 0.86,
       "auc_ci": [
-        0.738,
-        0.957
+        0.737,
+        0.954
       ],
       "sensitivity": 0.8,
       "sensitivity_ci": [
-        0.63,
-        0.952
+        0.636,
+        0.944
       ],
       "specificity": 0.778,
       "specificity_ci": [
-        0.571,
-        0.944
+        0.579,
+        0.947
       ],
       "ppv_in_cohort": 0.833,
       "brier": 0.1594,
@@ -1407,18 +1392,18 @@
       "threshold": 0.6687,
       "auc": 0.84,
       "auc_ci": [
-        0.705,
-        0.952
+        0.709,
+        0.948
       ],
       "sensitivity": 0.8,
       "sensitivity_ci": [
         0.63,
-        0.945
+        0.955
       ],
       "specificity": 0.778,
       "specificity_ci": [
-        0.571,
-        0.947
+        0.562,
+        0.955
       ],
       "ppv_in_cohort": 0.833,
       "brier": 0.1642,
@@ -1469,8 +1454,8 @@
       "logistic_regression": {
         "auc": 0.876,
         "auc_ci": [
-          0.739,
-          0.976
+          0.747,
+          0.974
         ]
       },
       "age_sex_only": {
@@ -1479,8 +1464,8 @@
         ],
         "auc": 0.661,
         "auc_ci": [
-          0.485,
-          0.813
+          0.488,
+          0.817
         ]
       }
     },
@@ -1491,7 +1476,7 @@
         "auc": 0.745,
         "auc_ci": [
           0.5,
-          0.945
+          0.946
         ]
       },
       "age 69 and over": {
@@ -1499,7 +1484,7 @@
         "positives": 15,
         "auc": 0.91,
         "auc_ci": [
-          0.748,
+          0.743,
           1.0
         ]
       }

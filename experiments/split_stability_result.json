@@ -2,21 +2,21 @@
   "shipped_seed": 42,
   "panels": {
     "general": {
-      "n_rows": 23923,
-      "n_positive": 750,
+      "n_rows": 28711,
+      "n_positive": 897,
       "n_splits": 5,
-      "mean_auc": 0.743,
-      "median_auc": 0.75,
-      "std_auc": 0.028,
-      "min_auc": 0.692,
-      "max_auc": 0.772,
+      "mean_auc": 0.758,
+      "median_auc": 0.758,
+      "std_auc": 0.018,
+      "min_auc": 0.735,
+      "max_auc": 0.779,
       "split_range_2p5_97p5": [
-        0.696,
-        0.771
+        0.736,
+        0.778
       ],
-      "shipped_split_auc": 0.732,
-      "shipped_split_percentile": 20.0,
-      "shipped_minus_mean": -0.011
+      "shipped_split_auc": 0.794,
+      "shipped_split_percentile": 100.0,
+      "shipped_minus_mean": 0.036
     },
     "breast": {
       "n_rows": 569,
@@ -70,21 +70,21 @@
       "shipped_minus_mean": 0.0
     },
     "colorectal": {
-      "n_rows": 23794,
-      "n_positive": 96,
+      "n_rows": 28527,
+      "n_positive": 113,
       "n_splits": 5,
-      "mean_auc": 0.799,
-      "median_auc": 0.796,
-      "std_auc": 0.012,
-      "min_auc": 0.785,
-      "max_auc": 0.817,
+      "mean_auc": 0.823,
+      "median_auc": 0.817,
+      "std_auc": 0.024,
+      "min_auc": 0.788,
+      "max_auc": 0.859,
       "split_range_2p5_97p5": [
-        0.786,
-        0.816
+        0.79,
+        0.857
       ],
-      "shipped_split_auc": 0.793,
+      "shipped_split_auc": 0.815,
       "shipped_split_percentile": 40.0,
-      "shipped_minus_mean": -0.006
+      "shipped_minus_mean": -0.008
     },
     "ovarian": {
       "n_rows": 349,

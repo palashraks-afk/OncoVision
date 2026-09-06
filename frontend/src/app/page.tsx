@@ -40,7 +40,7 @@ const API_BASE = resolveApiBase();
 // Used until the live registry responds.
 const FALLBACK_METRICS: Record<string, any> = {
   breast: {
-    label: "Breast Malignancy, from biopsy imaging", auc: 0.997, auc_ci: [0.99, 1],
+    label: "Breast Malignancy, from biopsy imaging", auc: 0.997, auc_ci: [0.991, 1],
     threshold: 0.2945,
     sensitivity: 0.976, specificity: 0.986,
     brier: 0.0167, calibration_slope: 1.616,
@@ -51,7 +51,7 @@ const FALLBACK_METRICS: Record<string, any> = {
     n_samples: 569, n_test: 114, n_features: 30,
   },
   pancreatic: {
-    label: "Pancreatic Cancer Risk", auc: 0.969, auc_ci: [0.938, 0.991],
+    label: "Pancreatic Cancer Risk", auc: 0.969, auc_ci: [0.937, 0.991],
     threshold: 0.7664,
     sensitivity: 0.731, specificity: 0.979,
     brier: 0.0617, calibration_slope: 0.46,
@@ -62,7 +62,7 @@ const FALLBACK_METRICS: Record<string, any> = {
     n_samples: 600, n_test: 120, n_features: 6,
   },
   ovarian: {
-    label: "Ovarian Malignancy, in a known ovarian mass", auc: 0.949, auc_ci: [0.886, 0.994],
+    label: "Ovarian Malignancy, in a known ovarian mass", auc: 0.949, auc_ci: [0.888, 0.992],
     threshold: 0.5286,
     sensitivity: 0.853, specificity: 0.944,
     brier: 0.0797, calibration_slope: 0.455,
@@ -73,7 +73,7 @@ const FALLBACK_METRICS: Record<string, any> = {
     n_samples: 349, n_test: 70, n_features: 27,
   },
   prostate: {
-    label: "Prostate Cancer Risk, with an MRI score", auc: 0.84, auc_ci: [0.705, 0.952],
+    label: "Prostate Cancer Risk, with an MRI score", auc: 0.84, auc_ci: [0.709, 0.948],
     threshold: 0.4444,
     sensitivity: 0.8, specificity: 0.778,
     brier: 0.1642, calibration_slope: 0.86,
@@ -84,7 +84,7 @@ const FALLBACK_METRICS: Record<string, any> = {
     n_samples: 212, n_test: 43, n_features: 6,
   },
   lung: {
-    label: "Lung Cancer Risk, with tobacco exposure", auc: 0.829, auc_ci: [0.73, 0.902],
+    label: "Lung Cancer Risk, with tobacco exposure", auc: 0.829, auc_ci: [0.732, 0.902],
     threshold: 0.01,
     sensitivity: 0.571, specificity: 0.852,
     brier: 0.0047, calibration_slope: 0.619,
@@ -95,18 +95,29 @@ const FALLBACK_METRICS: Record<string, any> = {
     n_samples: 21916, n_test: 4384, n_features: 24,
   },
   colorectal: {
-    label: "Bowel Cancer Risk", auc: 0.793, auc_ci: [0.708, 0.867],
+    label: "Bowel Cancer Risk", auc: 0.815, auc_ci: [0.755, 0.868],
     threshold: 0.01,
-    sensitivity: 0.526, specificity: 0.853,
-    brier: 0.004, calibration_slope: 0.656,
-    ppv_at_population_prevalence: 0.0013,
-    people_flagged_per_true_case: 768.4,
+    sensitivity: 0.478, specificity: 0.861,
+    brier: 0.004, calibration_slope: 0.971,
+    ppv_at_population_prevalence: 0.00126,
+    people_flagged_per_true_case: 795,
     population_prevalence: 0.000365, cohort_prevalence: 0.004,
-    baseline_logistic_auc: 0.8, baseline_age_sex_auc: 0.817,
-    n_samples: 23794, n_test: 4759, n_features: 16,
+    baseline_logistic_auc: 0.82, baseline_age_sex_auc: 0.843,
+    n_samples: 28527, n_test: 5706, n_features: 16,
+  },
+  general: {
+    label: "General Cancer Risk", auc: 0.794, auc_ci: [0.764, 0.822],
+    threshold: 0.0375,
+    sensitivity: 0.737, specificity: 0.717,
+    brier: 0.0291, calibration_slope: 1.042,
+    ppv_at_population_prevalence: 0.07788,
+    people_flagged_per_true_case: 12.8,
+    population_prevalence: 0.0314, cohort_prevalence: 0.031,
+    baseline_logistic_auc: 0.78, baseline_age_sex_auc: 0.779,
+    n_samples: 28711, n_test: 5743, n_features: 5,
   },
   liver: {
-    label: "Liver Disease Risk", auc: 0.76, auc_ci: [0.73, 0.789],
+    label: "Liver Disease Risk", auc: 0.76, auc_ci: [0.729, 0.789],
     threshold: 0.05,
     sensitivity: 0.61, specificity: 0.77,
     brier: 0.0356, calibration_slope: 1.059,
@@ -115,17 +126,6 @@ const FALLBACK_METRICS: Record<string, any> = {
     population_prevalence: 0.04, cohort_prevalence: 0.04,
     baseline_logistic_auc: 0.74, baseline_age_sex_auc: 0.602,
     n_samples: 35511, n_test: 7103, n_features: 12,
-  },
-  general: {
-    label: "General Cancer Risk", auc: 0.732, auc_ci: [0.692, 0.77],
-    threshold: 0.0362,
-    sensitivity: 0.68, specificity: 0.65,
-    brier: 0.03, calibration_slope: 0.753,
-    ppv_at_population_prevalence: 0.05923,
-    people_flagged_per_true_case: 16.9,
-    population_prevalence: 0.0314, cohort_prevalence: 0.031,
-    baseline_logistic_auc: 0.731, baseline_age_sex_auc: 0.727,
-    n_samples: 23923, n_test: 4785, n_features: 5,
   },
 };
 

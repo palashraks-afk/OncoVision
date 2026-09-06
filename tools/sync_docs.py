@@ -48,9 +48,9 @@ COHORT = {
     "ovarian": "349 operated ovarian masses",
     "prostate": "212 biopsied men",
     "lung": "21,916 adults with tobacco exposure",
-    "colorectal": "23,794 NHANES adults",
+    "colorectal": "28,527 NHANES adults",
     "liver": "35,511 NHANES adults",
-    "general": "23,923 NHANES adults",
+    "general": "28,711 NHANES adults",
 }
 LABEL = {
     "breast": "Breast malignancy", "pancreatic": "Pancreatic cancer",
@@ -72,7 +72,17 @@ def _rank(evaluation):
     return sorted(evaluation, key=lambda k: -evaluation[k]["calibrated"]["auc"])
 
 
-def table_shipped(ev, _):
+def table_shipped(ev, extra):
+    """
+    What ships, with the held-out split marked where it is not representative.
+
+    A held-out AUC is one draw. Where split_stability.py puts that draw at an
+    extreme percentile of its own distribution, quoting it unqualified is the
+    error that got the cervical panel withdrawn, and the general panel's split
+    landed at the 100th percentile the moment its cohort grew. The stable mean
+    is shown beside it so the flattering number never appears alone.
+    """
+    st = (extra.get("stability") or {}).get("panels") or {}
     rows = ["| Panel | Trained on | Test AUC | 95% CI | Threshold | Sens | Spec | Flagged per true case |",
             "|---|---|---|---|---|---|---|---|"]
     for k in _rank(ev):
@@ -81,8 +91,16 @@ def table_shipped(ev, _):
         thr = c.get("threshold")
         thr_s = f"{thr * 100:.1f}%" if isinstance(thr, (int, float)) and thr <= 1 else (
             f"{thr}%" if thr is not None else "")
+        # Mark a split that sits at an extreme of its own distribution, and
+        # give the stable mean next to it.
+        sv = st.get(k) or {}
+        pct = sv.get("shipped_split_percentile")
+        auc_cell = f"{c['auc']:.3f}"
+        if isinstance(pct, (int, float)) and (pct >= 90 or pct <= 10):
+            auc_cell = (f"{c['auc']:.3f} ⚠️<br>_a lucky draw, {pct:.0f}th pct;_<br>"
+                        f"_stable mean {sv['mean_auc']:.3f}_")
         rows.append(
-            f"| {LABEL.get(k, k)} | {COHORT.get(k, '')} | {c['auc']:.3f} | "
+            f"| {LABEL.get(k, k)} | {COHORT.get(k, '')} | {auc_cell} | "
             f"{ci[0]} to {ci[1]} | {thr_s} | {c.get('sensitivity')} | "
             f"{c.get('specificity')} | {c.get('people_flagged_per_true_case')} |")
     rows.append("| ~~Cervical~~ | 858 Caracas referrals | 0.725 | withdrawn, a lucky split | | | | |")
@@ -124,9 +142,9 @@ def table_stability(_, extra):
 
 
 DESIGN = {
-    "general": ("Population", "NHANES 2005-2014, cancer diagnosed within 4 years"),
+    "general": ("Population", "NHANES 2005-2016, cancer diagnosed within 4 years"),
     "liver": ("Population", "NHANES, 7 cycles, clinical liver disease"),
-    "colorectal": ("Population", "NHANES, colon or rectal cancer within 8 years"),
+    "colorectal": ("Population", "NHANES 2005-2016, colon or rectal cancer within 8 years"),
     "lung": ("Population", "NHANES, adults with measurable tobacco exposure"),
     "pancreatic": ("Case-control", "3 tissue banks, adenocarcinoma vs benign hepatobiliary"),
     "ovarian": ("Case-control", "operated ovarian masses, malignant vs benign"),

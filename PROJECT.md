@@ -238,14 +238,14 @@ Reproduce with `python evaluate.py`.
 <!-- AUTOGEN:shipped -->
 | Panel | Trained on | Test AUC | 95% CI | Threshold | Sens | Spec | Flagged per true case |
 |---|---|---|---|---|---|---|---|
-| Breast malignancy | 569 Wisconsin biopsies | 0.997 | 0.99 to 1.0 | 29.8% | 0.976 | 0.986 | 1.0 |
-| Pancreatic cancer | 600 samples, 3 tissue banks | 0.969 | 0.938 to 0.991 | 73.0% | 0.731 | 0.979 | 210.4 |
-| Ovarian malignancy | 349 operated ovarian masses | 0.949 | 0.886 to 0.994 | 58.1% | 0.853 | 0.944 | 1.3 |
-| Prostate cancer | 212 biopsied men | 0.840 | 0.705 to 0.952 | 66.9% | 0.8 | 0.778 | 1.4 |
-| Lung cancer | 21,916 adults with tobacco exposure | 0.829 | 0.73 to 0.902 | 1.0% | 0.571 | 0.852 | 55.1 |
-| Bowel cancer | 23,794 NHANES adults | 0.793 | 0.708 to 0.867 | 1.0% | 0.526 | 0.853 | 768.4 |
-| Liver disease | 35,511 NHANES adults | 0.760 | 0.73 to 0.789 | 4.0% | 0.61 | 0.77 | 10.0 |
-| General cancer | 23,923 NHANES adults | 0.732 | 0.692 to 0.77 | 2.9% | 0.68 | 0.65 | 16.9 |
+| Breast malignancy | 569 Wisconsin biopsies | 0.997 | 0.991 to 1.0 | 29.8% | 0.976 | 0.986 | 1.0 |
+| Pancreatic cancer | 600 samples, 3 tissue banks | 0.969 | 0.937 to 0.991 | 73.0% | 0.731 | 0.979 | 210.4 |
+| Ovarian malignancy | 349 operated ovarian masses | 0.949 | 0.888 to 0.992 | 58.1% | 0.853 | 0.944 | 1.3 |
+| Prostate cancer | 212 biopsied men | 0.840 | 0.709 to 0.948 | 66.9% | 0.8 | 0.778 | 1.4 |
+| Lung cancer | 21,916 adults with tobacco exposure | 0.829 | 0.732 to 0.902 | 1.0% | 0.571 | 0.852 | 55.1 |
+| Bowel cancer | 28,527 NHANES adults | 0.815 | 0.755 to 0.868 | 1.0% | 0.478 | 0.861 | 795.0 |
+| General cancer | 28,711 NHANES adults | 0.794 ⚠️<br>_a lucky draw, 100th pct;_<br>_stable mean 0.758_ | 0.764 to 0.822 | 3.5% | 0.737 | 0.717 | 12.8 |
+| Liver disease | 35,511 NHANES adults | 0.760 | 0.729 to 0.789 | 4.0% | 0.61 | 0.77 | 10.0 |
 | ~~Cervical~~ | 858 Caracas referrals | 0.725 | withdrawn, a lucky split | | | | |
 <!-- /AUTOGEN:shipped -->
 
@@ -259,9 +259,9 @@ Reproduce with `python evaluate.py`.
 | Ovarian | 0.949 | 0.911 | 0.813 | +0.174 |
 | Prostate | 0.840 | 0.876 | 0.661 | +0.258 |
 | Lung | 0.829 | 0.785 | 0.778 | +0.044 |
-| Bowel | 0.793 | 0.8 | 0.817 | +0.039 |
+| Bowel | 0.815 | 0.82 | 0.843 | +0.033 |
+| General | 0.794 | 0.78 | 0.779 | **+0.006** |
 | Liver | 0.760 | 0.74 | 0.602 | +0.106 |
-| General | 0.732 | 0.731 | 0.727 | **+0.006** |
 <!-- /AUTOGEN:baselines -->
 
 Bowel is quoted from 20 paired repeats rather than one split, because its single
@@ -288,9 +288,9 @@ someone's age and sex, which is a real limitation rather than a rounding error.
 | Ovarian | 0.942 | 0.949 | +0.007 |
 | Prostate | 0.813 | 0.840 | +0.027 |
 | Lung | 0.820 | 0.829 | +0.009 |
-| Bowel | 0.824 | 0.793 | -0.031 |
+| Bowel | 0.796 | 0.815 | +0.019 |
+| General | 0.753 | 0.794 | +0.041 |
 | Liver | 0.741 | 0.760 | +0.019 |
-| General | 0.761 | 0.732 | -0.029 |
 | ~~Cervical~~ | 0.587 | 0.725 | **+0.138** |
 <!-- /AUTOGEN:cv_vs_heldout -->
 
@@ -653,10 +653,10 @@ distribution. Reproduce with `python experiments/split_stability.py`.
 | Pancreatic | 600 | 130 | 0.969 | 0.939 to 0.995 | 0.969 | 50th |
 | Ovarian | 349 | 171 | 0.928 | 0.852 to 0.969 | 0.949 | 70th |
 | Lung | 21,916 | 104 | 0.839 | 0.822 to 0.860 | 0.829 | 40th |
+| Bowel | 28,527 | 113 | 0.823 | 0.788 to 0.859 | 0.815 | 40th |
 | Prostate | 212 | 121 | 0.822 | 0.732 to 0.909 | 0.840 | 70th |
-| Bowel | 23,794 | 96 | 0.799 | 0.785 to 0.817 | 0.793 | 40th |
+| General | 28,711 | 897 | 0.758 | 0.735 to 0.779 | 0.794 | 100th |
 | Liver | 35,511 | 1,436 | 0.754 | 0.740 to 0.764 | 0.760 | 80th |
-| General | 23,923 | 750 | 0.743 | 0.692 to 0.772 | 0.732 | 20th |
 | Cervical | 858 | 55 | **0.594** | **0.421 to 0.789** | 0.725 | **97th** |
 <!-- /AUTOGEN:stability -->
 
@@ -1024,7 +1024,7 @@ the answer is no at every threshold. Its optimal operating point is to test ever
 | Panel | Gain over age and sex | Best operating point | Procedures avoided per 100,000 | Net benefit |
 |---|---|---|---|---|
 | **Liver** | **+0.106** | send everyone | **0** | $0 |
-| Bowel | +0.039 | sens 0.979 | **36,052 colonoscopies** | +$68.2M |
+| Bowel | +0.033 | sens 0.947 | **46,551 colonoscopies** | +$64.5M |
 | Lung | +0.044 | sens 1.000 | **21,561 CT scans** | +$6.5M |
 
 Liver disease is common in this cohort at 4% and a FibroScan costs $500, so the scans a threshold
@@ -1063,8 +1063,8 @@ any of them.
 
 | | Promised, on the training cohort | Actual, on NHANES III |
 |---|---|---|
-| Catches | 97.9% of cases | **94.6%** |
-| Excludes | 36.7% of people | 43.6% |
+| Catches | 95.6% of cases | **94.6%** |
+| Excludes | 38.6% of people | 42.5% |
 
 **3 of 56 cancers were ruled out when they should not have been.** The cut is slightly more
 aggressive on the older cohort than advertised — it excludes more people and catches fewer cases —
@@ -1282,7 +1282,7 @@ penalty, and the same test applied to an organ-specific panel gave the opposite 
 NHANES III recorded both the site of any reported cancer and the age at which the person was first
 told, which reconstructs exactly the eight-year window the bowel panel's training cohort uses.
 
-    train   NHANES 2005-2014   23,794 adults, 96 colorectal cancers (0.40%)
+    train   NHANES 2005-2016   28,527 adults, 113 colorectal cancers (0.40%)
     test    NHANES III         14,499 adults, 56 colorectal cancers (0.39%)
 
 The two prevalences agree to within a hundredth of a percent, which is a check that the window was
@@ -1290,11 +1290,11 @@ reconstructed the same way on both sides rather than a coincidence.
 
 | Feature set | Features | External AUC | 95% CI |
 |---|---|---|---|
-| Age and sex only | 2 | 0.761 | 0.699 to 0.814 |
-| **Full panel** | 16 | **0.790** | 0.739 to 0.838 |
+| Age and sex only | 2 | 0.764 | 0.705 to 0.815 |
+| **Full panel** | 16 | **0.792** | 0.740 to 0.841 |
 
-**Transferred gain +0.029, against +0.039 measured inside the training survey.** Roughly three
-quarters of the effect is still there on people measured fifteen years earlier, on different
+**Transferred gain +0.028, against +0.033 measured inside the training survey.** Around
+five sixths of the effect is still there on people measured fifteen years earlier, on different
 analysers, by different field staff.
 
 Put beside the section above, this is the sharpest form of the whole project's result. Under an

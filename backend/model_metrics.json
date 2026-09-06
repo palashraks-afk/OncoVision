@@ -10,103 +10,103 @@
       "alcohol_intake"
     ],
     "cohort_design": "23,923 US adults from NHANES 2005 to 2014, nationally representative. The target is a cancer diagnosis within four years of the blood draw, with long-ago survivors excluded, so this is a screening question rather than a lifetime one. It adds 0.006 over knowing age and sex alone, measured on repeated paired folds rather than one split, which is small and is stated rather than hidden. Adding routine bloodwork was measured and made it worse, so this panel reads risk factors and not the lab report. Treat even that 0.006 with suspicion: the same question asked prospectively, on 33,834 people with death-certificate outcomes, gained 0.013 from bloodwork inside its own survey and LOST 0.013 when tested on a cohort from a different decade. No external cohort has confirmed that routine bloodwork predicts undifferentiated cancer risk, and one careful attempt to confirm it failed.",
-    "auc": 0.76,
-    "auc_std": 0.015,
-    "accuracy": 0.72,
-    "sensitivity": 0.64,
-    "specificity": 0.723,
-    "n_samples": 23923,
-    "n_positive": 750,
+    "auc": 0.767,
+    "auc_std": 0.016,
+    "accuracy": 0.747,
+    "sensitivity": 0.615,
+    "specificity": 0.751,
+    "n_samples": 28711,
+    "n_positive": 897,
     "n_features": 5,
     "cv_folds": 5,
-    "threshold": 0.0362,
+    "threshold": 0.0375,
     "rule_out": {
-      "threshold": 0.00846926838926944,
+      "threshold": 0.007674951106746,
       "sensitivity": 0.951,
-      "specificity": 0.24,
-      "share_ruled_out": 0.234,
+      "specificity": 0.228,
+      "share_ruled_out": 0.222,
       "cases_missed_per_100": 4.9,
       "target_sensitivity": 0.95
     },
     "no_rule_out_reason": "",
     "model_selection": {
-      "ensemble": 0.758,
-      "logistic": 0.762
+      "ensemble": 0.766,
+      "logistic": 0.769
     },
     "chosen_model": "logistic",
     "held_out": {
-      "n_test": 4785,
-      "auc": 0.732,
+      "n_test": 5743,
+      "auc": 0.794,
       "auc_ci": [
-        0.692,
-        0.77
+        0.764,
+        0.822
       ],
-      "sensitivity": 0.68,
+      "sensitivity": 0.737,
       "sensitivity_ci": [
-        0.603,
-        0.754
+        0.674,
+        0.8
       ],
-      "specificity": 0.65,
+      "specificity": 0.717,
       "specificity_ci": [
-        0.636,
-        0.663
+        0.704,
+        0.729
       ],
-      "brier": 0.03,
-      "calibration_slope": 0.753,
-      "ppv_at_population_prevalence": 0.05923,
-      "people_flagged_per_true_case": 16.9,
+      "brier": 0.0291,
+      "calibration_slope": 1.042,
+      "ppv_at_population_prevalence": 0.07788,
+      "people_flagged_per_true_case": 12.8,
       "population_prevalence": 0.0314,
       "prevalence_source": "Cancer diagnosed within 4 years, US adults, NHANES 2005-2014",
       "cohort_prevalence": 0.031,
-      "baseline_logistic_auc": 0.731,
-      "baseline_age_sex_auc": 0.727,
+      "baseline_logistic_auc": 0.78,
+      "baseline_age_sex_auc": 0.779,
       "subgroups": {
         "sex: female": {
-          "n": 2414,
-          "positives": 77,
-          "auc": 0.672,
+          "n": 2912,
+          "positives": 78,
+          "auc": 0.766,
           "auc_ci": [
-            0.607,
-            0.734
+            0.713,
+            0.816
           ]
         },
         "sex: male": {
-          "n": 2371,
-          "positives": 73,
-          "auc": 0.771,
+          "n": 2831,
+          "positives": 101,
+          "auc": 0.809,
           "auc_ci": [
-            0.72,
-            0.821
+            0.776,
+            0.842
           ]
         },
         "age under 47": {
-          "n": 2389,
-          "positives": 25,
-          "auc": 0.614,
+          "n": 2810,
+          "positives": 16,
+          "auc": 0.728,
           "auc_ci": [
-            0.495,
-            0.73
+            0.601,
+            0.848
           ]
         },
         "age 47 and over": {
-          "n": 2396,
-          "positives": 125,
-          "auc": 0.637,
+          "n": 2933,
+          "positives": 163,
+          "auc": 0.678,
           "auc_ci": [
-            0.583,
-            0.687
+            0.638,
+            0.717
           ]
         }
       }
     },
     "stability": {
-      "stable_auc": 0.743,
+      "stable_auc": 0.758,
       "split_spread": [
-        0.692,
-        0.772
+        0.735,
+        0.779
       ],
-      "split_sd": 0.028,
-      "shipped_split_percentile": 20.0,
+      "split_sd": 0.018,
+      "shipped_split_percentile": 100.0,
       "n_splits": 5
     },
     "fairness": {
@@ -182,7 +182,7 @@
     "screening_viable": true,
     "gain_over_age_sex": 0.006,
     "barely_beats_demographics": true,
-    "flagged_per_true_case": 16.9
+    "flagged_per_true_case": 12.8
   },
   "breast": {
     "label": "Breast Malignancy, from biopsy imaging",
@@ -248,17 +248,17 @@
       "n_test": 114,
       "auc": 0.997,
       "auc_ci": [
-        0.99,
+        0.991,
         1.0
       ],
       "sensitivity": 0.976,
       "sensitivity_ci": [
-        0.919,
+        0.921,
         1.0
       ],
       "specificity": 0.986,
       "specificity_ci": [
-        0.955,
+        0.957,
         1.0
       ],
       "brier": 0.0167,
@@ -330,12 +330,12 @@
       "n_test": 7103,
       "auc": 0.76,
       "auc_ci": [
-        0.73,
+        0.729,
         0.789
       ],
       "sensitivity": 0.61,
       "sensitivity_ci": [
-        0.553,
+        0.552,
         0.667
       ],
       "specificity": 0.77,
@@ -358,8 +358,8 @@
           "positives": 141,
           "auc": 0.778,
           "auc_ci": [
-            0.737,
-            0.817
+            0.738,
+            0.815
           ]
         },
         "sex: male": {
@@ -367,8 +367,8 @@
           "positives": 146,
           "auc": 0.742,
           "auc_ci": [
-            0.695,
-            0.786
+            0.696,
+            0.785
           ]
         },
         "age under 49": {
@@ -376,8 +376,8 @@
           "positives": 85,
           "auc": 0.761,
           "auc_ci": [
-            0.71,
-            0.811
+            0.709,
+            0.81
           ]
         },
         "age 49 and over": {
@@ -385,8 +385,8 @@
           "positives": 202,
           "auc": 0.73,
           "auc_ci": [
-            0.691,
-            0.767
+            0.69,
+            0.77
           ]
         }
       }
@@ -525,13 +525,13 @@
       "n_test": 120,
       "auc": 0.969,
       "auc_ci": [
-        0.938,
+        0.937,
         0.991
       ],
       "sensitivity": 0.731,
       "sensitivity_ci": [
-        0.545,
-        0.889
+        0.538,
+        0.893
       ],
       "specificity": 0.979,
       "specificity_ci": [
@@ -553,7 +553,7 @@
           "positives": 12,
           "auc": 0.959,
           "auc_ci": [
-            0.906,
+            0.904,
             0.998
           ]
         },
@@ -562,8 +562,8 @@
           "positives": 14,
           "auc": 0.978,
           "auc_ci": [
-            0.944,
-            0.998
+            0.942,
+            0.999
           ]
         },
         "age under 57": {
@@ -571,8 +571,8 @@
           "positives": 12,
           "auc": 0.957,
           "auc_ci": [
-            0.897,
-            0.997
+            0.902,
+            0.998
           ]
         },
         "age 57 and over": {
@@ -580,7 +580,7 @@
           "positives": 14,
           "auc": 0.983,
           "auc_ci": [
-            0.952,
+            0.949,
             1.0
           ]
         }
@@ -627,102 +627,93 @@
       "alkaline_phosphatase"
     ],
     "cohort_design": "23,794 US adults from NHANES 2005 to 2014, nationally representative. Age, sex and a complete blood count, which is the ColonFlag feature set, built from open data. 96 cases diagnosed within eight years of the draw, the smallest event count of any shipped panel, so its interval is correspondingly wide. Bloodwork adds 0.030 over age and sex. Lung and prostate were tested the same way and failed: lung on events, prostate because bloodwork adds nothing without PSA.",
-    "auc": 0.825,
-    "auc_std": 0.017,
-    "accuracy": 0.876,
-    "sensitivity": 0.421,
-    "specificity": 0.878,
-    "n_samples": 23794,
-    "n_positive": 96,
+    "auc": 0.81,
+    "auc_std": 0.044,
+    "accuracy": 0.873,
+    "sensitivity": 0.565,
+    "specificity": 0.875,
+    "n_samples": 28527,
+    "n_positive": 113,
     "n_features": 16,
     "cv_folds": 5,
     "threshold": 0.01,
     "rule_out": {
-      "threshold": 0.0007413010923914424,
-      "sensitivity": 0.979,
-      "specificity": 0.368,
-      "share_ruled_out": 0.367,
-      "cases_missed_per_100": 2.1,
-      "target_sensitivity": 0.979
+      "threshold": 0.0008040584279102475,
+      "sensitivity": 0.956,
+      "specificity": 0.387,
+      "share_ruled_out": 0.386,
+      "cases_missed_per_100": 4.4,
+      "target_sensitivity": 0.947
     },
     "no_rule_out_reason": "",
     "model_selection": {
-      "ensemble": 0.814,
-      "logistic": 0.832
+      "ensemble": 0.803,
+      "logistic": 0.815
     },
     "chosen_model": "logistic",
     "held_out": {
-      "n_test": 4759,
-      "auc": 0.793,
+      "n_test": 5706,
+      "auc": 0.815,
       "auc_ci": [
-        0.708,
-        0.867
+        0.755,
+        0.868
       ],
-      "sensitivity": 0.526,
+      "sensitivity": 0.478,
       "sensitivity_ci": [
-        0.286,
-        0.75
+        0.267,
+        0.696
       ],
-      "specificity": 0.853,
+      "specificity": 0.861,
       "specificity_ci": [
-        0.843,
-        0.862
+        0.852,
+        0.87
       ],
       "brier": 0.004,
-      "calibration_slope": 0.656,
-      "ppv_at_population_prevalence": 0.0013,
-      "people_flagged_per_true_case": 768.4,
+      "calibration_slope": 0.971,
+      "ppv_at_population_prevalence": 0.00126,
+      "people_flagged_per_true_case": 795.0,
       "population_prevalence": 0.000365,
       "prevalence_source": "Colon and rectum, per 100,000 men and women per year",
       "cohort_prevalence": 0.004,
-      "baseline_logistic_auc": 0.8,
-      "baseline_age_sex_auc": 0.817,
+      "baseline_logistic_auc": 0.82,
+      "baseline_age_sex_auc": 0.843,
       "subgroups": {
         "sex: female": {
-          "n": 2525,
-          "positives": 13,
-          "auc": 0.809,
+          "n": 2983,
+          "positives": 12,
+          "auc": 0.807,
           "auc_ci": [
-            0.696,
-            0.903
+            0.738,
+            0.872
           ]
         },
         "sex: male": {
-          "n": 2234,
-          "positives": 6,
-          "auc": 0.743,
+          "n": 2723,
+          "positives": 11,
+          "auc": 0.823,
           "auc_ci": [
-            0.602,
-            0.876
-          ]
-        },
-        "age under 47": {
-          "n": 2333,
-          "positives": 1,
-          "auc": 0.69,
-          "auc_ci": [
-            0.674,
-            0.704
+            0.715,
+            0.907
           ]
         },
         "age 47 and over": {
-          "n": 2426,
-          "positives": 18,
-          "auc": 0.647,
+          "n": 2909,
+          "positives": 23,
+          "auc": 0.642,
           "auc_ci": [
-            0.521,
-            0.767
+            0.531,
+            0.741
           ]
         }
       }
     },
     "stability": {
-      "stable_auc": 0.799,
+      "stable_auc": 0.823,
       "split_spread": [
-        0.785,
-        0.817
+        0.788,
+        0.859
       ],
-      "split_sd": 0.012,
+      "split_sd": 0.024,
       "shipped_split_percentile": 40.0,
       "n_splits": 5
     },
@@ -785,9 +776,9 @@
     "no_action_note": "",
     "panel_kind_note": "Reads a routine blood count. Anyone can run it.",
     "screening_viable": false,
-    "gain_over_age_sex": 0.039,
+    "gain_over_age_sex": 0.033,
     "barely_beats_demographics": false,
-    "flagged_per_true_case": 768.4
+    "flagged_per_true_case": 795.0
   },
   "ovarian": {
     "label": "Ovarian Malignancy, in a known ovarian mass",
@@ -850,17 +841,17 @@
       "n_test": 70,
       "auc": 0.949,
       "auc_ci": [
-        0.886,
-        0.994
+        0.888,
+        0.992
       ],
       "sensitivity": 0.853,
       "sensitivity_ci": [
-        0.731,
-        0.968
+        0.722,
+        0.966
       ],
       "specificity": 0.944,
       "specificity_ci": [
-        0.857,
+        0.861,
         1.0
       ],
       "brier": 0.0797,
@@ -878,7 +869,7 @@
           "positives": 6,
           "auc": 0.818,
           "auc_ci": [
-            0.539,
+            0.528,
             1.0
           ]
         },
@@ -887,7 +878,7 @@
           "positives": 28,
           "auc": 0.972,
           "auc_ci": [
-            0.909,
+            0.913,
             1.0
           ]
         }
@@ -970,12 +961,12 @@
       "n_test": 4384,
       "auc": 0.829,
       "auc_ci": [
-        0.73,
+        0.732,
         0.902
       ],
       "sensitivity": 0.571,
       "sensitivity_ci": [
-        0.333,
+        0.35,
         0.792
       ],
       "specificity": 0.852,
@@ -998,8 +989,8 @@
           "positives": 10,
           "auc": 0.867,
           "auc_ci": [
-            0.791,
-            0.935
+            0.795,
+            0.934
           ]
         },
         "sex: male": {
@@ -1008,7 +999,7 @@
           "auc": 0.809,
           "auc_ci": [
             0.649,
-            0.932
+            0.935
           ]
         },
         "age under 48": {
@@ -1025,8 +1016,8 @@
           "positives": 19,
           "auc": 0.759,
           "auc_ci": [
-            0.66,
-            0.851
+            0.655,
+            0.855
           ]
         }
       }
@@ -1144,18 +1135,18 @@
       "n_test": 43,
       "auc": 0.84,
       "auc_ci": [
-        0.705,
-        0.952
+        0.709,
+        0.948
       ],
       "sensitivity": 0.8,
       "sensitivity_ci": [
         0.63,
-        0.945
+        0.955
       ],
       "specificity": 0.778,
       "specificity_ci": [
-        0.571,
-        0.947
+        0.562,
+        0.955
       ],
       "brier": 0.1642,
       "calibration_slope": 0.86,
@@ -1173,7 +1164,7 @@
           "auc": 0.745,
           "auc_ci": [
             0.5,
-            0.945
+            0.946
           ]
         },
         "age 69 and over": {
@@ -1181,7 +1172,7 @@
           "positives": 15,
           "auc": 0.91,
           "auc_ci": [
-            0.748,
+            0.743,
             1.0
           ]
         }
