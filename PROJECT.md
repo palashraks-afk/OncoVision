@@ -1013,6 +1013,40 @@ have the FibroScan, so **liver ships no rule-out at all**, and its card says why
 An absent feature with no explanation reads as an oversight. This one is a result, and the panel
 that carries it is the strongest discriminator in the project.
 
+### The lung panel keeps its lifetime target, and the reason is events
+
+The general and bowel panels both use a screening window: a diagnosis within a fixed period of the
+blood draw, with long-ago survivors excluded rather than counted as positive. The reason is that a
+lifetime target is largely a proxy for age — predicting "were you ever told you had cancer" from a
+blood sample mostly means predicting how old someone is.
+
+The lung panel never got that treatment. It still uses `MCQ230A-D`, the site of any cancer ever
+reported, so a man diagnosed at 45 and cured is a positive at 70 with unremarkable bloodwork. That
+looked like an inconsistency worth fixing, and `MCQ240N` records the age at lung cancer diagnosis
+in every cycle from 2005 to 2016, so a window was available.
+
+| Target | n | Cases | AUC | Age and sex | Gain |
+|---|---|---|---|---|---|
+| **Lifetime, smokers only — ships today** | 20,321 | **104** | 0.819 | 0.772 | **+0.047** |
+| Window 8 years, smokers only | 12,308 | 45 | 0.793 | 0.743 | +0.050 |
+| Window 4 years, smokers only | 12,297 | 34 | 0.783 | 0.730 | +0.053 |
+
+The windows do gain slightly more over demographics, which is the effect the theory predicts. They
+gain it on **fewer than half the events**, and +0.006 does not buy that. The bar was 0.01 of gain
+and 40 events, set before the experiment ran, and the best arm clears neither comfortably. **The
+lifetime target stays**, and the panel keeps the inconsistency, with the reason recorded.
+
+The more useful part of this is a mistake I made measuring it. The first version compared the
+windows against the **full-cohort** lifetime arm, which gains +0.070, and concluded the window
+should be adopted. But the panel does not ship on the full cohort — it ships on the
+smoker-restricted one, where the lifetime target gains only +0.047, because on the full cohort the
+smoking question separates the groups nearly on its own. Comparing a windowed smoker cohort against
+a lifetime full cohort compares two populations and concludes nothing.
+
+It reached the right answer for the wrong reason on the second pass and the wrong answer on the
+first. The reference arm is now the shipped configuration, measured the same way as everything it
+is compared against.
+
 ### The best panel is the one triage helps least, and that is the point
 
 The cost model now covers liver too, and its answer is the most useful thing in it.

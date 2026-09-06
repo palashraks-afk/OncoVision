@@ -192,9 +192,12 @@ def main():
     cols = [c for c in shipped.columns
             if c not in ("race_ethnicity", "cycle", "smoking_packyears",
                          "cotinine", "crp", "neutrophil_pct", "mch", "ggt")]
-    results["lifetime (ships today)"] = measure(
-        shipped[cols].dropna(subset=["lung_cancer"]), "lung_cancer",
-        "lifetime, 10 cycles")
+    full = shipped[cols].dropna(subset=["lung_cancer"])
+    results["lifetime (ships today)"] = measure(full, "lung_cancer", "lifetime, 10 cycles")
+    # The reference the window has to beat: same lifetime target, same
+    # smoker restriction the panel actually ships with.
+    results["lifetime, smokers only"] = measure(
+        full[full["smoking"].fillna(0) > 0], "lung_cancer", "lifetime, smokers only")
 
     for w in (4, 8):
         df = build_windowed(w)
@@ -203,10 +206,43 @@ def main():
             continue
         results[f"window {w} years"] = measure(df, "lung_cancer", f"window {w} years")
 
+    # The arm that would actually ship.
+    #
+    # The panel does not train on the full cohort. It trains on the
+    # smoker-restricted one, because almost every case smoked and most controls
+    # did not, so on the full cohort the smoking question separates the groups
+    # nearly on its own. Comparing a windowed FULL cohort against the shipped
+    # lifetime panel would compare two different populations and conclude
+    # nothing, which is what the first version of this file did.
+    print()
+    for w in (4, 8):
+        df = build_windowed(w)
+        if df is None:
+            continue
+        sm = df[df["smoking"].fillna(0) > 0]
+        if sm["lung_cancer"].sum() < 10:
+            print(f"  window {w}y, smokers only: "
+                  f"{int(sm['lung_cancer'].sum())} cases, too few to measure")
+            results[f"window {w} years, smokers only"] = {
+                "n": int(len(sm)), "cases": int(sm["lung_cancer"].sum()),
+                "too_few": True}
+            continue
+        results[f"window {w} years, smokers only"] = measure(
+            sm, "lung_cancer", f"window {w}y, smokers only")
+
     print("\n" + "=" * 82)
     ship = results["lifetime (ships today)"]
-    best = max((k for k in results if k != "lifetime (ships today)"),
-               key=lambda k: results[k]["gain"], default=None)
+    # Compare like with like. The reference is the SHIPPED configuration —
+    # lifetime target, smokers only — not the full-cohort lifetime arm, which
+    # is a different population and gains more simply because the smoking
+    # question separates the groups there. An earlier version of this file
+    # compared against the full-cohort number and reached the right conclusion
+    # for the wrong reason.
+    ship = results.get("lifetime, smokers only") or results["lifetime (ships today)"]
+    shippable = [k for k in results
+                 if "window" in k and "smokers only" in k
+                 and not results[k].get("too_few")]
+    best = max(shippable, key=lambda k: results[k]["gain"], default=None)
     if best:
         d = results[best]["gain"] - ship["gain"]
         print(f"  best window arm: {best}, gain {results[best]['gain']:+.3f} "
