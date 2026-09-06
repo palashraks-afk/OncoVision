@@ -814,6 +814,23 @@ export default function OncovisionDashboard() {
                               avoids 36,052 colonoscopies per 100,000 and misses
                               8.
                             */}
+                            {/*
+                              Panels with nowhere to send a flagged person. The
+                              general panel predicts a diagnosis of any cancer
+                              within four years and no single test confirms that,
+                              so even a perfect version would route nowhere. That
+                              belongs on the card next to the score, not in a
+                              methods file. See experiments/cost_model.py.
+                            */}
+                            {d.no_action_note && (
+                              <p className="text-[11px] leading-relaxed mb-3 pl-3 border-l-2
+                                border-[var(--warn)] text-[var(--ink-3)]">
+                                <span className="font-bold text-[var(--warn)]">
+                                  Nothing to follow this up with.{" "}
+                                </span>
+                                {d.no_action_note}
+                              </p>
+                            )}
                             {!d.rule_out && d.no_rule_out_reason && d.panel_kind === "screening" && (
                               <div className="mb-3 p-3 border border-[var(--rule)] bg-[var(--paper-2)]">
                                 <p className="text-[10px] uppercase font-bold tracking-widest mb-1

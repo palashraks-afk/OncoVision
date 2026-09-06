@@ -127,6 +127,25 @@ NOT_SCREENING_ABOVE = 50.0
 # the honest response is not silence but a weaker answer clearly labelled as
 # weaker. Only listed where a reduced model was measured and found to beat
 # chance by a useful margin.
+# Panels with no confirmatory procedure to send a flagged person to.
+#
+# Measured in experiments/cost_model.py, and stated on the card because it is a
+# limit the user needs and no amount of accuracy repairs. The general panel is
+# the one that matters: it predicts a diagnosis of ANY cancer within four years,
+# and no single test confirms or excludes that. Even a perfect version of it
+# would have nowhere to route the person it flagged.
+#
+# The others are here for completeness rather than as a criticism: an
+# interpretation panel reads a test already performed, so having no downstream
+# procedure is what it IS, not a shortcoming.
+NO_ACTION = {
+    "general": ("There is no single test that confirms or rules out "
+                "“any cancer”, so a raised score here does not point "
+                "anywhere in particular. Read it as a reason to make sure your "
+                "routine screening is up to date, not as something to act on by "
+                "itself."),
+}
+
 REDUCED_INPUTS = {
     # 0.676 against 0.825 with the MRI, on the same 212 biopsied men. Weak, and
     # available to a man holding an ordinary lab report.
@@ -1359,6 +1378,7 @@ def main():
             "stability": stability,
             "fairness": fairness,
             "panel_kind": kind,
+            "no_action_note": NO_ACTION.get(name, ""),
             "panel_kind_note": kind_note,
             "screening_viable": screening_viable,
             "gain_over_age_sex": demo_gain,
@@ -1382,6 +1402,7 @@ def main():
             "stability": stability,
             "fairness": fairness,
             "panel_kind": kind,
+            "no_action_note": NO_ACTION.get(name, ""),
             "panel_kind_note": kind_note,
             "screening_viable": screening_viable,
             "gain_over_age_sex": demo_gain,

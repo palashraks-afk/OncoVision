@@ -874,6 +874,29 @@ The upload path itself works. One of the repository's own test reports, fed thro
 input, populated 28 of 72 fields, listed the filename under "files read", and scored without a
 single NaN.
 
+### The general panel now says it has nowhere to send you
+
+The cost analysis found that four panels have no confirmatory procedure to triage for, and that for
+one of them this is a real limitation rather than a definitional quirk.
+
+Breast, prostate, ovarian and pancreatic each read a test that has already been performed, so
+having no downstream procedure is what they *are*. The general panel is different. It predicts a
+diagnosis of **any** cancer within four years, and no single test confirms or excludes that. Even a
+perfect version of it would have nowhere to route the person it flagged.
+
+That sat in the methodology and nowhere the user could see it, which is the same failure the panel
+taxonomy was built to fix. It is now on the card:
+
+> **Nothing to follow this up with.** There is no single test that confirms or rules out "any
+> cancer", so a raised score here does not point anywhere in particular. Read it as a reason to
+> make sure your routine screening is up to date, not as something to act on by itself.
+
+The general panel now carries three disclosures at once: it barely beats age and sex, the same
+question asked prospectively failed to survive external validation, and there is nothing to do with
+a positive. Together those are a stronger argument for reading it sceptically than any of them
+alone, and all three are visible to the person reading the score rather than to someone who opens
+the methodology.
+
 ### The threshold the product ships is now the one the economics picked
 
 The rule-out cut was originally set to catch 95 percent of cases on every panel. That is a round

@@ -1101,6 +1101,9 @@ async def predict_risk(data: PatientData):
             # defensible. Carried to the card so a demo cannot imply otherwise.
             "panel_kind": bundle.get("panel_kind", "screening"),
             "panel_kind_note": bundle.get("panel_kind_note", ""),
+            # Panels with no confirmatory procedure to send a flagged person to.
+            # A limit the reader needs, and one no amount of accuracy repairs.
+            "no_action_note": bundle.get("no_action_note", ""),
             "screening_viable": bundle.get("screening_viable", True),
             # How much this panel adds over knowing age and sex. Surfaced
             # because a 0.75 AUC looks respectable right up until you learn

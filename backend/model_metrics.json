@@ -177,6 +177,7 @@
       ]
     },
     "panel_kind": "screening",
+    "no_action_note": "There is no single test that confirms or rules out \u201cany cancer\u201d, so a raised score here does not point anywhere in particular. Read it as a reason to make sure your routine screening is up to date, not as something to act on by itself.",
     "panel_kind_note": "Reads routine bloodwork and your history. Anyone can run it.",
     "screening_viable": true,
     "gain_over_age_sex": 0.006,
@@ -283,6 +284,7 @@
     },
     "fairness": {},
     "panel_kind": "interpretation",
+    "no_action_note": "",
     "panel_kind_note": "Needs nuclear measurements from a breast biopsy that has already been taken and imaged. It interprets that biopsy; it does not screen for one.",
     "screening_viable": true,
     "gain_over_age_sex": null,
@@ -476,6 +478,7 @@
       "materially_worse_groups": []
     },
     "panel_kind": "screening",
+    "no_action_note": "",
     "panel_kind_note": "Reads routine bloodwork and your history. Anyone can run it.",
     "screening_viable": true,
     "gain_over_age_sex": 0.106,
@@ -595,6 +598,7 @@
     },
     "fairness": {},
     "panel_kind": "triage",
+    "no_action_note": "",
     "panel_kind_note": "For someone ALREADY being investigated for pancreatic or biliary disease. It reads CA 19-9, which is a tumour marker ordered when cancer is suspected rather than part of routine bloodwork, and its controls were people with benign disease of the same organs. It asks which of those two a sick person has.",
     "screening_viable": true,
     "gain_over_age_sex": 0.498,
@@ -778,6 +782,7 @@
       ]
     },
     "panel_kind": "screening",
+    "no_action_note": "",
     "panel_kind_note": "Reads a routine blood count. Anyone can run it.",
     "screening_viable": false,
     "gain_over_age_sex": 0.039,
@@ -900,6 +905,7 @@
     },
     "fairness": {},
     "panel_kind": "triage",
+    "no_action_note": "",
     "panel_kind_note": "For a woman who ALREADY has an ovarian mass found on imaging. It asks whether that mass is malignant, not whether one exists.",
     "screening_viable": true,
     "gain_over_age_sex": 0.174,
@@ -1091,6 +1097,7 @@
       ]
     },
     "panel_kind": "screening",
+    "no_action_note": "",
     "panel_kind_note": "Reads routine bloodwork. Offered to people with tobacco exposure, which is who lung screening is for.",
     "screening_viable": false,
     "gain_over_age_sex": 0.044,
@@ -1192,6 +1199,7 @@
     },
     "fairness": {},
     "panel_kind": "interpretation",
+    "no_action_note": "",
     "panel_kind_note": "Needs a PI-RADS score from a prostate MRI. Without it this panel only matches reading the PSA number, so it is not a lab-report test.",
     "screening_viable": true,
     "gain_over_age_sex": 0.258,
