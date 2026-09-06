@@ -42,6 +42,23 @@ jobs:
       - name: API and gating tests
         run: python -m pytest tests/ -q
 
+      - name: Drive the running service as a user
+        # The checks above all pass a well-formed request written by someone who
+        # knows the schema. Every serious bug this project has shipped survived
+        # that and was found by using the application: the ovarian panel scoring
+        # 94.9% with no tumour marker, the liver panel rating fulminant
+        # hepatitis safer than health, panels vanishing from a response, the
+        # rule-out cut sitting below the display floor and so never firing, and
+        # a PDF upload returning both an ovarian and a prostate risk for one
+        # person. None was caught by a unit test.
+        run: |
+          python -m uvicorn api:app --port 8000 --app-dir backend &
+          for i in $(seq 1 60); do
+            curl -sf http://127.0.0.1:8000/models >/dev/null && break
+            sleep 2
+          done
+          python tools/drive_app.py
+
       - name: Documentation tables match the artifacts
         # A stale table is a false claim, not merely an old one. The breast row
         # read 0.972 for a while after the panel was retrained to 0.997.

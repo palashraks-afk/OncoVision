@@ -28,6 +28,7 @@ Run:  python tools/drive_app.py            against http://127.0.0.1:8000
 """
 
 import json
+import os
 import sys
 import time
 import urllib.error
@@ -242,6 +243,69 @@ def scenario_rule_out():
           f"{seen} panels offer a rule-out call, all looser than their flagging cut")
 
 
+# --------------------------------------------------------------- 3d. journeys
+def scenario_sex_unknown():
+    """
+    A lab report does not carry sex, and the anatomy gate used to fire only when
+    sex had been supplied. Uploading a PDF therefore returned an ovarian risk
+    AND a prostate risk for the same person, one of which is always wrong.
+    """
+    payload = {k: v for k, v in HEALTHY.items() if k != "gender"}
+    payload.update({"ca125": 20, "he4": 50, "psa": 2.0, "pi_rads": 2})
+    body = post(payload)
+    scored = " ".join(body.get("predictions") or {}).lower()
+    both = "ovarian" in scored and "prostate" in scored
+    check(not both,
+          "one person was given both an ovarian and a prostate risk"
+          if both else
+          "sex-specific panels stand down when sex is unknown")
+
+
+def scenario_pdf_round_trip():
+    """
+    The path a user actually takes: a report goes in, values come out, those
+    values are scored. Tested end to end rather than as two endpoints, because
+    the seam between them is where a schema change would break silently.
+    """
+    pdf = os.path.join("tests", "lab_reports", "layout_1_two_column_table.pdf")
+    if not os.path.exists(pdf):
+        notes.append("no sample report on disk, PDF round trip skipped")
+        return
+    boundary = "----oncovisiondrive"
+    with open(pdf, "rb") as fh:
+        blob = fh.read()
+    body = (f"--{boundary}\r\n"
+            f'Content-Disposition: form-data; name="files"; filename="report.pdf"\r\n'
+            f"Content-Type: application/pdf\r\n\r\n").encode() + blob + \
+           f"\r\n--{boundary}--\r\n".encode()
+    req = urllib.request.Request(
+        f"{BASE}/parse-pdf", data=body,
+        headers={"Content-Type": f"multipart/form-data; boundary={boundary}"})
+    try:
+        parsed = json.load(urllib.request.urlopen(req, timeout=180))
+    except urllib.error.HTTPError as e:
+        failures.append(f"PDF upload failed: {e.code} {e.read()[:160]!r}")
+        return
+
+    if parsed.get("status") != "success":
+        failures.append(f"PDF parsed to nothing: {parsed}")
+        return
+    values = parsed["data"]
+    check(len(values) >= 20,
+          f"only {len(values)} values came out of a report known to carry 28"
+          if len(values) < 20 else
+          f"PDF round trip: {len(values)} values extracted and scored")
+
+    scored = post(values)
+    if scored.get("status") != "success":
+        failures.append(f"values from a PDF would not score: {scored}")
+        return
+    for name, v in (scored.get("predictions") or {}).items():
+        r = v.get("risk")
+        if r is not None and not (0.0 <= r <= 100.0):
+            failures.append(f"PDF round trip: {name} returned {r}")
+
+
 # --------------------------------------------------------------- 4. stability
 def scenario_irrelevant_input():
     """Adding one unremarkable value should not swing a score."""
@@ -294,7 +358,8 @@ def main():
     print(f"driving {BASE} as a user\n")
     for fn in (scenario_healthy, scenario_defining_inputs, scenario_monotonic,
                scenario_coherent_patterns, scenario_extreme_values_are_declared,
-               scenario_rule_out,
+               scenario_rule_out, scenario_sex_unknown,
+               scenario_pdf_round_trip,
                scenario_irrelevant_input, scenario_edges):
         fn()
 
