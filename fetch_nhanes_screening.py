@@ -56,6 +56,13 @@ CYCLES = [
     ("2009", "F", "2009-2010"),
     ("2011", "G", "2011-2012"),
     ("2013", "H", "2013-2014"),
+    # 2015-2016 still carries the MCQ240 age-at-diagnosis series, so it can be
+    # cut into a screening window the same way the earlier cycles are. It was
+    # simply never added. 2017-2018 is NOT here and cannot be: that cycle
+    # dropped MCQ240 entirely, so there is no way to tell a recent diagnosis
+    # from a thirty-year-old one, which is the distinction this cohort is built
+    # on. Verified by fetching both files rather than assumed.
+    ("2015", "I", "2015-2016"),
 ]
 
 # How close to the exam a diagnosis has to be to count as detectable then.
@@ -121,11 +128,15 @@ def build_cycle(year, suffix, label):
     # why "bloodwork does not help the general panel" was only ever tested
     # against a blood count and a metabolic panel. File names move per cycle.
     # grab() appends the cycle suffix itself, so these are base names.
+    # 2015-2016 renamed both again: cotinine is COT_I and CRP became the high
+    # sensitivity assay, HSCRP_I. Without these two entries the new cycle would
+    # have joined with both columns silently empty.
     cot_base = {"D": "COT", "E": "COTNAL", "F": "COTNAL",
-                "G": "COTNAL", "H": "COT"}.get(suffix)
-    crp_base = {"D": "CRP", "E": "CRP", "F": "CRP"}.get(suffix)
+                "G": "COTNAL", "H": "COT", "I": "COT"}.get(suffix)
+    crp_base = {"D": "CRP", "E": "CRP", "F": "CRP", "I": "HSCRP"}.get(suffix)
     cot = take(grab(year, suffix, cot_base) if cot_base else None, ["SEQN", "LBXCOT"])
-    crp = take(grab(year, suffix, crp_base) if crp_base else None, ["SEQN", "LBXCRP"])
+    crp = take(grab(year, suffix, crp_base) if crp_base else None,
+               ["SEQN", "LBXCRP", "LBXHSCRP"])
     # Physical activity. The application asks "hours of exercise per week" and
     # then no panel read the answer, which is a question asked for nothing.
     # From 2007 NHANES uses the Global Physical Activity Questionnaire, where
@@ -227,8 +238,19 @@ def build_cycle(year, suffix, label):
         # never against these two.
         "cotinine": (pd.to_numeric(df["LBXCOT"], errors="coerce")
                      if "LBXCOT" in df.columns else np.nan),
+        # Two different CRP assays with two different units, and mixing them up
+        # would be a tenfold error in a feature.
+        #
+        #   LBXCRP    the older assay, mg/dL, median about 0.12, so x10 to mg/L
+        #   LBXHSCRP  the high sensitivity assay used from 2015, ALREADY mg/L,
+        #             median about 1.2, so no conversion
+        #
+        # Checked by pulling HSCRP_I and reading the distribution rather than by
+        # assuming the newer file was a drop-in rename.
         "crp": (pd.to_numeric(df["LBXCRP"], errors="coerce") * 10.0
-                if "LBXCRP" in df.columns else np.nan),
+                if "LBXCRP" in df.columns
+                else (pd.to_numeric(df["LBXHSCRP"], errors="coerce")
+                      if "LBXHSCRP" in df.columns else np.nan)),
         "waist": pd.to_numeric(df.get("BMXWAIST"), errors="coerce"),
         # Lifestyle
         "smoking": smoking,
