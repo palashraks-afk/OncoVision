@@ -46,11 +46,22 @@ app = FastAPI(title="Oncovision AI")
 # to a wildcard origin, so the combination never did what it looked like it did.
 # The deployed frontend and local development are the only callers that exist.
 # ALLOWED_ORIGINS overrides without a redeploy, as a comma-separated list.
+# The deployed frontend is oncovisionai.vercel.app, with the "ai". Tightening
+# CORS from a wildcard, this list was first written as oncovision.vercel.app
+# without it, which would have blocked the live site the moment the backend
+# redeployed. Locking down an allowlist and getting the one entry that matters
+# wrong is worse than the wildcard it replaced, so the deployed host is checked
+# against README.md rather than typed from memory.
 DEFAULT_ORIGINS = [
-    "https://oncovision.vercel.app",
+    "https://oncovisionai.vercel.app",
     "http://localhost:3000",
     "http://127.0.0.1:3000",
 ]
+# Vercel gives every branch and every pull request its own preview host. Those
+# are real deployments of this same frontend and there is no point serving a
+# backend they cannot call, so they are matched by pattern rather than listed.
+PREVIEW_ORIGIN_PATTERN = r"https://oncovision[a-z0-9-]*\.vercel\.app"
+
 _origins_env = os.getenv("ALLOWED_ORIGINS", "").strip()
 ALLOWED_ORIGINS = ([o.strip() for o in _origins_env.split(",") if o.strip()]
                    if _origins_env else DEFAULT_ORIGINS)
@@ -58,6 +69,7 @@ ALLOWED_ORIGINS = ([o.strip() for o in _origins_env.split(",") if o.strip()]
 app.add_middleware(
     CORSMiddleware,
     allow_origins=ALLOWED_ORIGINS,
+    allow_origin_regex=PREVIEW_ORIGIN_PATTERN,
     allow_credentials=False,
     allow_methods=["GET", "POST", "OPTIONS"],
     allow_headers=["Content-Type"],

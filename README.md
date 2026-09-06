@@ -874,6 +874,26 @@ The upload path itself works. One of the repository's own test reports, fed thro
 input, populated 28 of 72 fields, listed the filename under "files read", and scored without a
 single NaN.
 
+### Locking down CORS nearly took the live site offline
+
+Worth recording because the fix was more dangerous than the problem.
+
+The API had `allow_origins=["*"]` with `allow_credentials=True`, which is permissive and
+self-contradictory, and tightening it to an explicit allowlist was straightforwardly right. The
+allowlist was then written as `oncovision.vercel.app`.
+
+The deployed frontend is **`oncovisionai.vercel.app`**, with the "ai".
+
+Nothing local caught it. The dev server runs on localhost, which was on the list; every test passes
+an origin the test itself chose; the browser checks all ran against localhost. It would have
+surfaced the first time Render redeployed the backend, as a live site that silently could not reach
+its own API.
+
+**An allowlist that omits the one host that matters is worse than the wildcard it replaced.** The
+deployed origin is now asserted in the test suite against the link in README.md rather than typed
+from memory, so the two cannot drift apart, and Vercel's per-branch preview hosts are matched by
+pattern since those are real deployments of the same frontend.
+
 ### The general panel now says it has nowhere to send you
 
 The cost analysis found that four panels have no confirmatory procedure to triage for, and that for

@@ -265,6 +265,31 @@ def test_screening_panels_still_work_from_routine_bloodwork(client):
 
 
 # --------------------------------------------------------------- exposure
+def test_cors_allows_the_actually_deployed_frontend(client):
+    """
+    Tightening CORS from a wildcard, the allowlist was first written as
+    oncovision.vercel.app when the live site is oncovisionai.vercel.app. That
+    would have blocked the real frontend the moment the backend redeployed.
+
+    An allowlist missing the one host that matters is worse than the wildcard it
+    replaced, so the deployed origin is asserted here against the link in
+    README.md rather than trusted to memory.
+    """
+    import re
+
+    root = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
+    readme = open(os.path.join(root, "README.md"), encoding="utf-8").read()
+    live = re.search(r"https://[a-z0-9.-]*vercel\.app", readme)
+    assert live, "README no longer links to a deployed frontend"
+    origin = live.group(0)
+
+    r = client.get("/models", headers={"Origin": origin})
+    allowed = r.headers.get("access-control-allow-origin")
+    assert allowed, (
+        f"the deployed frontend {origin} is not allowed by CORS, so the live "
+        f"site cannot call this backend")
+
+
 def test_cors_is_not_open_to_everyone(client):
     """
     It was allow_origins=["*"] with allow_credentials=True, which is both
