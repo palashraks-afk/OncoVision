@@ -123,6 +123,22 @@ def test_sex_gating_both_directions(client):
     assert "prostate" in skipped, "a prostate score was offered to a woman"
 
 
+def test_sex_specific_panels_refuse_when_sex_is_unknown(client):
+    """
+    A lab report PDF carries no sex. Scoring sex-specific panels anyway returned
+    an ovarian risk AND a prostate risk for the same person, one of which is
+    always wrong, with nothing on the card to say which.
+    """
+    body = client.post("/predict", json={"age": 58, **FULL_BLOODS,
+                                         "ca125": 20, "he4": 50,
+                                         "psa": 2.0, "pi_rads": 2}).json()
+    scored = " ".join(body["predictions"]).lower()
+    assert not ("ovarian" in scored and "prostate" in scored), \
+        "one person was given both an ovarian and a prostate risk"
+    skipped = " ".join(body["skipped"].values()).lower()
+    assert "sex" in skipped, "nothing told the user that sex was the missing piece"
+
+
 def test_thin_input_is_refused_not_guessed(client):
     """
     One value out of many is not enough, and the panel has to say so rather

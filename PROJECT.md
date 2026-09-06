@@ -928,6 +928,27 @@ Only a genuinely external cohort caught it. The panels here that have no externa
 read with that in mind, and that caution is now the honest headline of this section rather than a
 footnote. Reproduce with `python experiments/prospective_external.py`.
 
+### Uploading a PDF gave one person both an ovarian and a prostate risk
+
+Found by driving the actual upload path in the browser rather than by calling the endpoint, which
+is the only reason it turned up: the API tests all pass a sex because a developer writing a test
+naturally does.
+
+A lab report does not say whether you are a man or a woman. The anatomy gate only fired when sex
+had been supplied, on the reasoning that a gate should act on information the patient actually gave
+rather than on an assumption. That reasoning produced something worse than the gap it avoided:
+upload a PDF, supply no sex, and the result carried an **ovarian malignancy risk and a prostate
+cancer risk for the same person**. One of those is always wrong, and nothing on the card said
+which.
+
+Sex-specific panels now say so and stop: *"Needs your sex. This panel only applies to women, and a
+lab report does not say which you are. Answer the sex question and run the analysis again."* One
+click removes both wrong answers instead of leaving the reader to work out that they are wrong.
+
+The upload path itself works. One of the repository's own test reports, fed through the real file
+input, populated 28 of 72 fields, listed the filename under "files read", and scored without a
+single NaN.
+
 ### The rule-out promise was tested on another decade, and it held
 
 A threshold is a promise about a rate, and this project has already watched a rate estimated on one

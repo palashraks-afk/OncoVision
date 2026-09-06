@@ -761,6 +761,21 @@ async def predict_risk(data: PatientData):
         # report with a PSA on it came back with a "Raised" cervical panel.
         # Sex is only a gate when the patient actually told us their sex.
         required_sex = SEX_SPECIFIC.get(name)
+        if required_sex is not None and "gender" not in values:
+            # Sex-specific panels used to score whenever sex was simply absent,
+            # on the reasoning that a gate should only fire on information the
+            # patient actually gave. The result was worse than the gap it was
+            # avoiding: a lab report PDF carries no sex, so uploading one
+            # returned an ovarian risk AND a prostate risk for the same person.
+            # One of those is always wrong and the interface had no way to say
+            # which. Asking is one click and removes both.
+            skipped[bundle.get("label", name)] = (
+                "Needs your sex. This panel only applies to "
+                + ("women" if required_sex == 0 else "men")
+                + ", and a lab report does not say which you are. Answer the sex "
+                  "question and run the analysis again."
+            )
+            continue
         if required_sex is not None and "gender" in values:
             if float(values["gender"]) != float(required_sex):
                 skipped[bundle.get("label", name)] = (
