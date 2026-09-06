@@ -761,14 +761,15 @@ SENSITIVITY_FLOOR = 0.70
 RULE_OUT_SENSITIVITY = 0.95
 
 
-def rule_out_threshold(y_true, p):
+def rule_out_threshold(y_true, p, target: float = None):
     """
-    The highest threshold that still keeps sensitivity at RULE_OUT_SENSITIVITY.
+    The highest threshold that still keeps sensitivity at `target`.
 
     Returns the threshold and what it buys, so the interface can say how many
     people it would exclude and how many cases it would miss doing so, rather
     than presenting a cut with no consequences attached.
     """
+    target = RULE_OUT_SENSITIVITY if target is None else float(target)
     y_true = np.asarray(y_true).astype(int)
     p = np.asarray(p, dtype=float)
     if y_true.sum() == 0:
@@ -778,7 +779,7 @@ def rule_out_threshold(y_true, p):
     for thr in order:
         flagged = p >= thr
         sens = float(flagged[y_true == 1].mean())
-        if sens < RULE_OUT_SENSITIVITY:
+        if sens < target:
             continue
         spec = float((~flagged)[y_true == 0].mean())
         best = {
@@ -787,7 +788,7 @@ def rule_out_threshold(y_true, p):
             "specificity": round(spec, 3),
             "share_ruled_out": round(float((~flagged).mean()), 3),
             "cases_missed_per_100": round((1 - sens) * 100, 1),
-            "target_sensitivity": RULE_OUT_SENSITIVITY,
+            "target_sensitivity": round(target, 3),
         }
     return best
 
@@ -874,7 +875,7 @@ def choose_threshold(y_true, p, prevalence: float | None = None) -> float:
 
 
 def evaluate(clf_factory, X: pd.DataFrame, y: pd.Series,
-             prevalence: float | None = None) -> dict:
+             prevalence: float | None = None, panel: str | None = None) -> dict:
     """
     Cross validated AUC, a held-out confusion matrix, and the operating point.
 
@@ -896,7 +897,42 @@ def evaluate(clf_factory, X: pd.DataFrame, y: pd.Series,
     oof = cross_val_predict(calibrated(), X, y, cv=cv, method="predict_proba", n_jobs=1)[:, 1]
     cv_auc = roc_auc_score(y, oof)
     threshold = choose_threshold(y, oof, prevalence)
-    rule_out = rule_out_threshold(y, oof)
+    # The rule-out target comes from the cost model where it has an opinion, and
+    # falls back to RULE_OUT_SENSITIVITY where it does not. A panel the cost
+    # model says to run on everyone gets no rule-out: see load_cost_optimum.
+    opt = COST_OPTIMUM.get(panel) or {}
+    no_rule_out_reason = ""
+    # A target of exactly 1.0 is not achievable as a threshold: catching every
+    # case out of fold means setting the cut at zero and excluding nobody, which
+    # is a rule-out in name only. The cost model can legitimately return 1.0
+    # because it reads a smoothed ROC curve; the threshold has to live on real
+    # predictions, so the target is capped just below.
+    target = opt.get("sensitivity") or RULE_OUT_SENSITIVITY
+    target = min(float(target), 0.99)
+    if opt and not opt.get("worth_triaging", True):
+        rule_out = None
+        no_rule_out_reason = (
+            "The cost analysis says everyone in this group should have the "
+            "confirmatory test, so this panel is not offered as a way to skip "
+            "it. It separates well, but the condition is common and the test is "
+            "cheap, so the tests a threshold would save are worth less than the "
+            "cases it would miss."
+        )
+    else:
+        rule_out = rule_out_threshold(y, oof, target=target)
+        # A cut that excludes almost nobody saves no procedures and is not worth
+        # showing. Lung reached exactly this: a target of 1.0 produced a cut of
+        # zero that ruled out 0 percent of people, presented as though it were a
+        # feature.
+        if rule_out and rule_out["share_ruled_out"] < 0.05:
+            no_rule_out_reason = (
+                f"To catch {rule_out['sensitivity'] * 100:.0f} of every 100 cases "
+                f"this panel would have to send "
+                f"{(1 - rule_out['share_ruled_out']) * 100:.0f} percent of people "
+                f"for the test anyway, which saves nothing. It is not offered as a "
+                f"way to skip anything."
+            )
+            rule_out = None
 
     fold_aucs = []
     for tr, te in cv.split(X, y):
@@ -926,6 +962,9 @@ def evaluate(clf_factory, X: pd.DataFrame, y: pd.Series,
         # RULE_OUT_SENSITIVITY for why a panel used before an expensive
         # procedure needs both.
         "rule_out": rule_out,
+        # Why there is no rule-out, when there is none. Silence would read as an
+        # oversight rather than as a finding.
+        "no_rule_out_reason": no_rule_out_reason,
     }
 
 
@@ -1078,18 +1117,53 @@ def load_held_out() -> dict:
     return out
 
 
+def load_cost_optimum() -> dict:
+    """
+    The operating point experiments/cost_model.py chose for each panel.
+
+    Read here so the threshold the product ships is the one the economics
+    picked, rather than a round number. A rule-out cut fixed at 95 percent
+    sensitivity is an assumption; the cost model computes the sensitivity that
+    actually maximises net benefit once a missed case is priced at a life, and
+    that figure differs per panel because it depends on prevalence and on what
+    the confirmatory procedure costs.
+
+    Panels whose optimum is "send everyone" get no rule-out at all. Offering one
+    there would invite a person to skip a test that the analysis says they
+    should have.
+    """
+    path = "experiments/cost_model_result.json"
+    if not os.path.isfile(path):
+        return {}
+    with open(path, encoding="utf-8") as f:
+        data = json.load(f)
+    out = {}
+    for name, entry in (data.get("panels") or {}).items():
+        best = entry.get("best_operating_point")
+        if not best:
+            continue
+        out[name] = {
+            "sensitivity": best["sensitivity"],
+            "procedures_per_100k": best["procedures_per_100k"],
+            "worth_triaging": best["procedures_per_100k"] < 99_000,
+        }
+    return out
+
+
 HELD_OUT = {}
 STABILITY = {}
 FAIRNESS = {}
 DEMO_GAIN = {}
+COST_OPTIMUM = {}
 
 
 def main():
-    global HELD_OUT, STABILITY, FAIRNESS, DEMO_GAIN
+    global HELD_OUT, STABILITY, FAIRNESS, DEMO_GAIN, COST_OPTIMUM
     HELD_OUT = load_held_out()
     STABILITY = load_split_stability()
     FAIRNESS = load_fairness()
     DEMO_GAIN = load_demographic_gain()
+    COST_OPTIMUM = load_cost_optimum()
 
     for d in MODEL_DIRS:
         os.makedirs(d, exist_ok=True)
@@ -1161,7 +1235,7 @@ def main():
                 prev = SEER_INCIDENCE[name][0] / 100_000.0
         except Exception:
             prev = None
-        metrics = evaluate(factory, X, y, prev)
+        metrics = evaluate(factory, X, y, prev, panel=name)
         metrics["model_selection"] = candidates
         metrics["chosen_model"] = chosen
         print(f"  AUC {metrics['auc']} +/- {metrics['auc_std']}   "

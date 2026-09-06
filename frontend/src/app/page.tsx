@@ -814,6 +814,20 @@ export default function OncovisionDashboard() {
                               avoids 36,052 colonoscopies per 100,000 and misses
                               8.
                             */}
+                            {!d.rule_out && d.no_rule_out_reason && d.panel_kind === "screening" && (
+                              <div className="mb-3 p-3 border border-[var(--rule)] bg-[var(--paper-2)]">
+                                <p className="text-[10px] uppercase font-bold tracking-widest mb-1
+                                  text-[var(--ink-3)]">
+                                  Before an expensive test
+                                </p>
+                                <p className="text-[11px] leading-relaxed text-[var(--ink-2)]">
+                                  <span className="font-bold text-[var(--ink)]">
+                                    No one is ruled out by this panel.{" "}
+                                  </span>
+                                  {d.no_rule_out_reason}
+                                </p>
+                              </div>
+                            )}
                             {d.rule_out && d.panel_kind === "screening" && (
                               <div className={`mb-3 p-3 border ${d.rule_out.below_cut
                                 ? "border-[var(--ok)] bg-[var(--ok)]/5"

@@ -242,9 +242,20 @@ threshold each, chosen by Youden's J, which weights a false positive and a false
 
 For a tool used **before** an expensive diagnostic that weighting is wrong. A false positive costs a
 colonoscopy; a false negative costs a life. Each panel therefore carries a second, looser threshold
-— the least aggressive cut that still catches 95% of cases — and reports both: whether the person is
-flagged, and separately whether there is enough evidence to *exclude* them from further testing. The
-second is stored with what it buys, so a cut is never presented without its consequences.
+and reports both: whether the person is flagged, and separately whether there is enough evidence to
+*exclude* them from further testing. The second is stored with what it buys, so a cut is never
+presented without its consequences.
+
+The sensitivity that second threshold targets is **not a round number**. An earlier version fixed it
+at 95% for every panel, which is an assumption dressed as a standard. It is now read from the cost
+model in section 2.10, which computes the sensitivity that maximises net benefit once a missed case
+is priced at a life — a figure that differs per panel because it depends on prevalence and on what
+the confirmatory procedure costs.
+
+Where that analysis concludes that everyone should be tested, the panel ships **no rule-out at all**
+and says so on its own card. Offering one there would invite a person to skip a test the analysis
+says they should have, and an absent feature with no explanation reads as an oversight rather than
+as a finding.
 
 ### 2.10 A cost model
 
@@ -613,8 +624,8 @@ accept ours.
 **The rule-out thresholds are chosen on the training cohorts, and only one has been tested outside
 one.** They are computed from out-of-fold predictions rather than from the fitted model's own
 scores, so they are not fit to the data they are evaluated on. The colorectal cut was then applied
-unchanged to NHANES III: it promised to catch 95.8% of cases while excluding 40.4% of people, and
-delivered 92.9% and 46.8%, ruling out 4 of 56 cancers that it should not have. That is inside the
+unchanged to NHANES III: it promised to catch 97.9% of cases while excluding 36.7% of people, and
+delivered 94.6% and 43.6%, ruling out 3 of 56 cancers that it should not have. That is inside the
 5-point tolerance set beforehand and it is a real degradation, so the interface quotes the rate as
 approximate rather than exact. The lung, liver and general cuts have no such test, and given
 section 4.2 that should be read seriously.

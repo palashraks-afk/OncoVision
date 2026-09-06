@@ -874,6 +874,27 @@ The upload path itself works. One of the repository's own test reports, fed thro
 input, populated 28 of 72 fields, listed the filename under "files read", and scored without a
 single NaN.
 
+### The threshold the product ships is now the one the economics picked
+
+The rule-out cut was originally set to catch 95 percent of cases on every panel. That is a round
+number, not a finding, and this project's own cost analysis computes a better one: the sensitivity
+that maximises net benefit once a missed case is priced at a life. It differs per panel, because it
+depends on how common the condition is and on what the confirmatory test costs.
+
+So `train_models.py` now reads `experiments/cost_model_result.json` and takes the target from
+there, falling back to 95 percent only where the cost model has no opinion.
+
+The consequence that matters is the liver panel. The analysis says everyone in that group should
+have the FibroScan, so **liver ships no rule-out at all**, and its card says why:
+
+> **No one is ruled out by this panel.** The cost analysis says everyone in this group should have
+> the confirmatory test, so this panel is not offered as a way to skip it. It separates well, but
+> the condition is common and the test is cheap, so the tests a threshold would save are worth less
+> than the cases it would miss.
+
+An absent feature with no explanation reads as an oversight. This one is a result, and the panel
+that carries it is the strongest discriminator in the project.
+
 ### The best panel is the one triage helps least, and that is the point
 
 The cost model now covers liver too, and its answer is the most useful thing in it.
@@ -924,10 +945,10 @@ any of them.
 
 | | Promised, on the training cohort | Actual, on NHANES III |
 |---|---|---|
-| Catches | 95.8% of cases | **92.9%** |
-| Excludes | 40.4% of people | 46.8% |
+| Catches | 97.9% of cases | **94.6%** |
+| Excludes | 36.7% of people | 43.6% |
 
-**4 of 56 cancers were ruled out when they should not have been.** The cut is slightly more
+**3 of 56 cancers were ruled out when they should not have been.** The cut is slightly more
 aggressive on the older cohort than advertised — it excludes more people and catches fewer cases —
 and it stays inside the 5-point tolerance set before the test was run, so the promise holds.
 

@@ -221,14 +221,24 @@ def test_screening_panels_offer_a_rule_out_call(client):
     for name, v in body["predictions"].items():
         if not any(p in name.lower() for p in ("bowel", "lung", "liver")):
             continue
+        checked += 1
         ro = v.get("rule_out")
-        assert ro, f"{name} offers no rule-out call"
+        if not ro:
+            # A panel may legitimately have none. The liver one does not, because
+            # the cost analysis says everyone in that group should have the test.
+            # What it may not do is stay silent about why: an absent feature with
+            # no explanation reads as an oversight rather than as a finding.
+            assert v.get("no_rule_out_reason"), (
+                f"{name} offers no rule-out and gives no reason for it")
+            continue
         assert 0.0 <= ro["threshold_pct"] <= 100.0
         assert ro["sensitivity"] >= 0.9, \
             f"{name} rule-out only catches {ro['sensitivity']} of cases, which is not a rule-out"
+        assert ro["share_of_people_ruled_out"] >= 0.05, (
+            f"{name} rule-out excludes only {ro['share_of_people_ruled_out']:.0%} "
+            f"of people, so it saves no procedures and should not be offered")
         assert isinstance(ro["below_cut"], bool)
         assert ro["meaning"]
-        checked += 1
     assert checked, "no screening panel was scored, so nothing was checked"
 
 

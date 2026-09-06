@@ -89,9 +89,13 @@ def _rule_out_view(bundle, proba_pct: float) -> dict:
     consequences attached is not information. experiments/cost_model.py is the
     argument for offering this at all.
     """
-    ro = (bundle.get("metrics") or {}).get("rule_out")
+    metrics = bundle.get("metrics") or {}
+    ro = metrics.get("rule_out")
     if not ro:
-        return {"rule_out": None}
+        # A panel with no rule-out has a reason, and saying it is the difference
+        # between a finding and an apparent omission.
+        return {"rule_out": None,
+                "no_rule_out_reason": metrics.get("no_rule_out_reason", "")}
     below = proba_pct < ro["threshold"] * 100.0
     return {
         "rule_out": {
@@ -106,10 +110,11 @@ def _rule_out_view(bundle, proba_pct: float) -> dict:
                 f"cases and excludes {ro['share_ruled_out'] * 100:.0f} percent of "
                 "people, so it misses "
                 f"{ro['cases_missed_per_100']} in 100. Those rates were measured "
-                "on the cohort the cut was tuned on; tested on a cohort from "
-                "another decade the bowel panel caught 93 of 100 rather than 96, "
-                "so treat them as approximate. It is a reason to feel less "
-                "worried, not a clearance."
+                "on the cohort this cut was tuned on. Tested on a cohort from "
+                "another decade the bowel panel caught slightly fewer cases and "
+                "excluded slightly more people than promised, so treat the "
+                "numbers as approximate rather than exact. It is a reason to "
+                "feel less worried, not a clearance."
                 if below else
                 "This panel would NOT leave you out of further testing. That is "
                 "not a prediction that you have cancer. It means there is not "

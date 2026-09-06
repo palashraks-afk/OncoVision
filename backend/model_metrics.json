@@ -28,6 +28,7 @@
       "cases_missed_per_100": 4.9,
       "target_sensitivity": 0.95
     },
+    "no_rule_out_reason": "",
     "model_selection": {
       "ensemble": 0.758,
       "logistic": 0.762
@@ -236,6 +237,7 @@
       "cases_missed_per_100": 4.7,
       "target_sensitivity": 0.95
     },
+    "no_rule_out_reason": "",
     "model_selection": {
       "ensemble": 0.993,
       "logistic": 0.994
@@ -315,14 +317,8 @@
     "n_features": 12,
     "cv_folds": 5,
     "threshold": 0.05,
-    "rule_out": {
-      "threshold": 0.017642129257173508,
-      "sensitivity": 0.951,
-      "specificity": 0.248,
-      "share_ruled_out": 0.24,
-      "cases_missed_per_100": 4.9,
-      "target_sensitivity": 0.95
-    },
+    "rule_out": null,
+    "no_rule_out_reason": "The cost analysis says everyone in this group should have the confirmatory test, so this panel is not offered as a way to skip it. It separates well, but the condition is common and the test is cheap, so the tests a threshold would save are worth less than the cases it would miss.",
     "model_selection": {
       "ensemble": 0.749,
       "logistic": 0.742
@@ -516,6 +512,7 @@
       "cases_missed_per_100": 4.6,
       "target_sensitivity": 0.95
     },
+    "no_rule_out_reason": "",
     "model_selection": {
       "ensemble": 0.971,
       "logistic": 0.974
@@ -637,13 +634,14 @@
     "cv_folds": 5,
     "threshold": 0.01,
     "rule_out": {
-      "threshold": 0.0009017623869732114,
-      "sensitivity": 0.958,
-      "specificity": 0.406,
-      "share_ruled_out": 0.404,
-      "cases_missed_per_100": 4.2,
-      "target_sensitivity": 0.95
+      "threshold": 0.0007413010923914424,
+      "sensitivity": 0.979,
+      "specificity": 0.368,
+      "share_ruled_out": 0.367,
+      "cases_missed_per_100": 2.1,
+      "target_sensitivity": 0.979
     },
+    "no_rule_out_reason": "",
     "model_selection": {
       "ensemble": 0.814,
       "logistic": 0.832
@@ -837,6 +835,7 @@
       "cases_missed_per_100": 4.1,
       "target_sensitivity": 0.95
     },
+    "no_rule_out_reason": "",
     "model_selection": {
       "ensemble": 0.943,
       "logistic": 0.897
@@ -948,13 +947,14 @@
     "cv_folds": 5,
     "threshold": 0.01,
     "rule_out": {
-      "threshold": 0.001090796821027382,
-      "sensitivity": 0.952,
-      "specificity": 0.423,
-      "share_ruled_out": 0.421,
-      "cases_missed_per_100": 4.8,
-      "target_sensitivity": 0.95
+      "threshold": 0.0002835270768358378,
+      "sensitivity": 0.99,
+      "specificity": 0.124,
+      "share_ruled_out": 0.124,
+      "cases_missed_per_100": 1.0,
+      "target_sensitivity": 0.99
     },
+    "no_rule_out_reason": "",
     "model_selection": {
       "ensemble": 0.826,
       "logistic": 0.84
@@ -1127,6 +1127,7 @@
       "cases_missed_per_100": 5.0,
       "target_sensitivity": 0.95
     },
+    "no_rule_out_reason": "",
     "model_selection": {
       "ensemble": 0.837,
       "logistic": 0.842
