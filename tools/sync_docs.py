@@ -292,7 +292,7 @@ def table_paper_results(ev, extra):
         out.append("### 3.7 Does triage on free bloodwork save money?\n")
         out.append("Per 100,000 people at real incidence, sending everyone for the "
                    "confirmatory procedure against sending only those the panel flags.\n")
-        rows = ["| Panel | Procedure | Sent everyone | Sent if flagged | Cancers missed | Apparent saving |",
+        rows = ["| Panel | Procedure | Sent everyone | Sent if flagged | Cases missed | Apparent saving |",
                 "|---|---|---|---|---|---|"]
         for k, v in cost.get("panels", {}).items():
             b, cfg = v["base_case"], v["settings"]
@@ -304,8 +304,10 @@ def table_paper_results(ev, extra):
         out.append("\n".join(rows))
         out.append("")
         out.append("That apparent saving counts only treatment dollars. Charging a missed "
-                   "cancer what a life is conventionally worth changes the answer:\n")
-        rows = ["| Panel | Break-even per missed cancer | 15 life-years at $150k/QALY | Verdict |",
+                   "case what a life is conventionally worth changes the answer. Each panel "
+                   "is valued on its own endpoint: fifteen life-years for a cancer, five for "
+                   "liver disease, at $150,000 per QALY.\n")
+        rows = ["| Panel | Break-even per missed case | A case, valued | Verdict |",
                 "|---|---|---|---|"]
         for k, v in cost.get("panels", {}).items():
             be = v.get("break_even_per_missed_cancer")
@@ -317,9 +319,9 @@ def table_paper_results(ev, extra):
         out.append("\n".join(rows))
         out.append("")
         out.append("**The operating point, not the model, decides this.** Choosing the point on "
-                   "each panel's real ROC curve that maximises net benefit after charging every "
-                   "missed cancer $2,250,000:\n")
-        rows = ["| Panel | Sensitivity | Specificity | Procedures avoided per 100,000 | Cancers missed | Net benefit |",
+                   "each panel's real ROC curve that maximises net benefit once a missed case "
+                   "is priced at a life:\n")
+        rows = ["| Panel | Sensitivity | Specificity | Procedures avoided per 100,000 | Cases missed | Net benefit |",
                 "|---|---|---|---|---|---|"]
         for k, v in cost.get("panels", {}).items():
             bo = v.get("best_operating_point")
@@ -331,9 +333,21 @@ def table_paper_results(ev, extra):
                         f"${bo['net_benefit']:,} |")
         out.append("\n".join(rows))
         out.append("")
+        liver = (cost.get("panels", {}).get("liver") or {}).get("best_operating_point")
+        if liver and liver["procedures_per_100k"] >= 99_000:
+            out.append("**The liver row is the interesting one.** That panel has the largest "
+                       "gain over age and sex of anything in this project, +0.106, and its "
+                       "best operating point is to send everyone: no triage threshold beats "
+                       "universal testing once a missed case is priced. Liver disease is "
+                       "common at 4% and a FibroScan is cheap at $500, so the scans a "
+                       "threshold saves are worth less than the cases it misses. "
+                       "**Discrimination did not decide this; prevalence and procedure cost "
+                       "did.** The panel that separates best is the one where triage helps "
+                       "least, which is the clearest available demonstration that AUC and "
+                       "decision value are different quantities.\n")
         out.append("An illustrative model, not a cost-effectiveness analysis: no discounting, no "
-                   "quality-adjusted life years beyond the single figure above, and no price on "
-                   "the harm of an unnecessary procedure. The treatment costs are first-year "
+                   "quality-adjusted life years beyond the per-panel figure above, and no price "
+                   "on the harm of an unnecessary procedure. The treatment costs are first-year "
                    "figures and understate the late-stage penalty, which biases the model "
                    "*towards* triage.")
 

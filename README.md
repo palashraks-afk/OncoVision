@@ -874,6 +874,40 @@ The upload path itself works. One of the repository's own test reports, fed thro
 input, populated 28 of 72 fields, listed the filename under "files read", and scored without a
 single NaN.
 
+### The best panel is the one triage helps least, and that is the point
+
+The cost model now covers liver too, and its answer is the most useful thing in it.
+
+The liver panel has the **largest gain over age and sex of anything here, +0.106**, well ahead of
+bowel's +0.039. Asked whether triaging on it saves money against sending everyone for a FibroScan,
+the answer is no at every threshold. Its optimal operating point is to test everybody.
+
+| Panel | Gain over age and sex | Best operating point | Procedures avoided per 100,000 | Net benefit |
+|---|---|---|---|---|
+| **Liver** | **+0.106** | send everyone | **0** | $0 |
+| Bowel | +0.039 | sens 0.979 | **36,052 colonoscopies** | +$68.2M |
+| Lung | +0.044 | sens 1.000 | **21,561 CT scans** | +$6.5M |
+
+Liver disease is common in this cohort at 4% and a FibroScan costs $500, so the scans a threshold
+saves are worth less than the cases it misses. Colorectal cancer is rare at 0.4% and a colonoscopy
+costs $2,412, so the reverse holds.
+
+**Discrimination decided neither. Prevalence and procedure cost did.** The panel that separates
+best is the one where triage helps least, and the panel with an unremarkable 0.793 is the one that
+takes 36,000 people out of a queue. Judging these models by AUC alone gives exactly the wrong
+ordering.
+
+### Three panels have no confirmatory test to triage for at all
+
+For breast, prostate, ovarian and pancreatic the cost question is not unanswered, it is malformed:
+each reads a test that has already been performed, so there is no downstream procedure for them to
+save.
+
+The general panel is the one that matters. It predicts a diagnosis of **any** cancer within four
+years, and no single procedure confirms or excludes that. Even a good version of it would have
+nowhere to send the person it flagged. That sits alongside its 0.006 gain and its failure to
+survive external validation, and it is the limit that no amount of extra accuracy would repair.
+
 ### The rule-out promise was tested on another decade, and it held
 
 A threshold is a promise about a rate, and this project has already watched a rate estimated on one

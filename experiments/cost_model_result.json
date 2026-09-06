@@ -8,6 +8,7 @@
         "early_cost": 49000.0,
         "late_cost": 116000.0,
         "incidence": 0.004,
+        "life_years_lost": 15,
         "note": "incidence is this cohort's 8-year rate, not annual SEER"
       },
       "sensitivity": 0.526,
@@ -66,6 +67,7 @@
         "early_cost": 60000.0,
         "late_cost": 120000.0,
         "incidence": 0.0047,
+        "life_years_lost": 15,
         "note": "eligible group is adults with measurable tobacco exposure"
       },
       "sensitivity": 0.571,
@@ -116,10 +118,77 @@
         "pays_once_a_life_is_priced": true,
         "shipped_sensitivity": 0.571
       }
+    },
+    "liver": {
+      "settings": {
+        "procedure": "FibroScan (transient elastography)",
+        "procedure_cost": 500.0,
+        "early_cost": 5280.0,
+        "late_cost": 20651.0,
+        "incidence": 0.0404,
+        "life_years_lost": 5,
+        "note": "endpoint is clinical liver disease, not liver cancer"
+      },
+      "sensitivity": 0.61,
+      "specificity": 0.77,
+      "base_case": {
+        "procedures_universal": 100000,
+        "procedures_triaged": 24535,
+        "cancers_found": 2464.4,
+        "cancers_missed": 1575.6,
+        "cost_universal": 50000000,
+        "cost_triaged": 36486148,
+        "saving": 13513852,
+        "saving_per_person": 135.14,
+        "cost_per_cancer_missed": 8577
+      },
+      "sweeps": {
+        "procedure cost": {
+          "x0.5": -5352348,
+          "x0.75": 4080752,
+          "x1.0": 13513852,
+          "x1.5": 32380052,
+          "x2.0": 51246252
+        },
+        "late-stage penalty": {
+          "x0.75": 19568489,
+          "x1.0": 13513852,
+          "x1.5": 1404579,
+          "x2.0": -10704695,
+          "x3.0": -34923243
+        },
+        "incidence": {
+          "x0.5": 26006926,
+          "x1.0": 13513852,
+          "x2.0": -11472295,
+          "x5.0": -86430738,
+          "x10.0": -211361476
+        }
+      },
+      "break_even_per_missed_cancer": 23948,
+      "societal_cost_of_a_missed_cancer": 750000,
+      "saves_money_once_a_life_is_priced": false,
+      "best_operating_point": {
+        "sensitivity": 1.0,
+        "specificity": 0.0,
+        "procedures_per_100k": 100000,
+        "cancers_missed": 0.0,
+        "net_benefit": 0,
+        "pays_once_a_life_is_priced": false,
+        "shipped_sensitivity": 0.61
+      }
     }
   },
   "panels_that_save": [
     "colorectal",
-    "lung"
-  ]
+    "lung",
+    "liver"
+  ],
+  "no_confirmatory_test": {
+    "general": "predicts a diagnosis of any cancer within four years, and no single procedure confirms or excludes that, so there is no test for it to save",
+    "breast": "an interpretation panel: the biopsy it reads has already been performed, so there is no downstream procedure to triage",
+    "prostate": "an interpretation panel over an MRI that has already been done",
+    "ovarian": "a triage panel for a mass already found, and the operative decision it informs is not a screening procedure",
+    "pancreatic": "a triage panel run on someone already under investigation"
+  }
 }

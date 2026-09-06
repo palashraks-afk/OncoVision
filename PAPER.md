@@ -369,26 +369,31 @@ Gain over age and sex, transferred: **+0.029**, against +0.039 measured inside t
 
 Per 100,000 people at real incidence, sending everyone for the confirmatory procedure against sending only those the panel flags.
 
-| Panel | Procedure | Sent everyone | Sent if flagged | Cancers missed | Apparent saving |
+| Panel | Procedure | Sent everyone | Sent if flagged | Cases missed | Apparent saving |
 |---|---|---|---|---|---|
 | Bowel | colonoscopy | 100,000 | 14,852 | 189.6 of 400 | $192,674,741 |
 | Lung | low-dose chest CT | 100,000 | 14,999 | 201.6 of 470 | $13,402,557 |
+| Liver | FibroScan (transient elastography) | 100,000 | 24,535 | 1575.6 of 4040 | $13,513,852 |
 
-That apparent saving counts only treatment dollars. Charging a missed cancer what a life is conventionally worth changes the answer:
+That apparent saving counts only treatment dollars. Charging a missed case what a life is conventionally worth changes the answer. Each panel is valued on its own endpoint: fifteen life-years for a cancer, five for liver disease, at $150,000 per QALY.
 
-| Panel | Break-even per missed cancer | 15 life-years at $150k/QALY | Verdict |
+| Panel | Break-even per missed case | A case, valued | Verdict |
 |---|---|---|---|
 | Bowel | $1,083,217 | $2,250,000 | **stops saving** |
 | Lung | $126,481 | $2,250,000 | **stops saving** |
+| Liver | $23,948 | $750,000 | **stops saving** |
 
-**The operating point, not the model, decides this.** Choosing the point on each panel's real ROC curve that maximises net benefit after charging every missed cancer $2,250,000:
+**The operating point, not the model, decides this.** Choosing the point on each panel's real ROC curve that maximises net benefit once a missed case is priced at a life:
 
-| Panel | Sensitivity | Specificity | Procedures avoided per 100,000 | Cancers missed | Net benefit |
+| Panel | Sensitivity | Specificity | Procedures avoided per 100,000 | Cases missed | Net benefit |
 |---|---|---|---|---|---|
 | Bowel | 0.979 | 0.362 | **36,052** | 8.3 | $68,208,115 |
 | Lung | 1.0 | 0.217 | **21,561** | 0.0 | $6,468,172 |
+| Liver | 1.0 | 0.0 | **0** | 0.0 | $0 |
 
-An illustrative model, not a cost-effectiveness analysis: no discounting, no quality-adjusted life years beyond the single figure above, and no price on the harm of an unnecessary procedure. The treatment costs are first-year figures and understate the late-stage penalty, which biases the model *towards* triage.
+**The liver row is the interesting one.** That panel has the largest gain over age and sex of anything in this project, +0.106, and its best operating point is to send everyone: no triage threshold beats universal testing once a missed case is priced. Liver disease is common at 4% and a FibroScan is cheap at $500, so the scans a threshold saves are worth less than the cases it misses. **Discrimination did not decide this; prevalence and procedure cost did.** The panel that separates best is the one where triage helps least, which is the clearest available demonstration that AUC and decision value are different quantities.
+
+An illustrative model, not a cost-effectiveness analysis: no discounting, no quality-adjusted life years beyond the per-panel figure above, and no price on the harm of an unnecessary procedure. The treatment costs are first-year figures and understate the late-stage penalty, which biases the model *towards* triage.
 <!-- /AUTOGEN:paper_results -->
 
 ---
@@ -497,7 +502,18 @@ scans and misses none.
 
 Nothing about the model changed. What changed was the question asked of it. **A panel too weak to
 screen with can be strong enough to rule out with**, and those are different claims with different
-thresholds and different evidentiary burdens. A literature that reports AUC and a single balanced
+thresholds and different evidentiary burdens.
+
+The converse also holds, and the liver panel demonstrates it. That panel has the largest gain over
+age and sex in this project, +0.106, comfortably ahead of colorectal's +0.039. Its optimal
+operating point is to send everyone: no threshold beats universal testing once a missed case is
+priced. Liver disease is common in this cohort at 4%, and transient elastography costs $500, so the
+scans a threshold saves are worth less than the cases it misses.
+
+**Discrimination did not decide either result. Prevalence and procedure cost did.** The panel that
+separates best is the one where triage helps least, and the panel with an unremarkable 0.793 is the
+one that avoids 36,052 colonoscopies. Any account of a model's usefulness that stops at AUC has no
+way of telling those two apart. A literature that reports AUC and a single balanced
 operating point is systematically failing to find this, and it is available for free in models that
 already exist.
 
