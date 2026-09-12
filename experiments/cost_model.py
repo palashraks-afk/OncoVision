@@ -337,9 +337,18 @@ def main():
     print("  the person it flagged, which is a limit no amount of accuracy repairs.")
 
     print()
+    # Two different claims, and a single list used to conflate them. Counting
+    # treatment dollars alone, every panel here "saves"; once a missed case is
+    # priced at a life, only a panel whose best operating point has a positive
+    # net benefit does. The old list printed "beats sending everyone" for lung
+    # and liver while both of their best operating points were to send everyone.
     savers = [p for p, r in results.items() if r["base_case"]["saving"] > 0]
-    print(f"  panels where triaging on free bloodwork beats sending everyone: "
+    payers = [p for p, r in results.items()
+              if (r.get("best_operating_point") or {}).get("pays_once_a_life_is_priced")]
+    print(f"  saves treatment dollars at the shipped point, missed cases unpriced: "
           f"{savers or 'none'}")
+    print(f"  beats sending everyone once a missed case is priced at a life:     "
+          f"{payers or 'none'}")
     print("  this is an illustrative model, not a cost-effectiveness analysis: no "
           "discounting,")
     print("  no quality-adjusted life years, and no price on the harm of an "
@@ -347,7 +356,8 @@ def main():
 
     with open(OUT, "w") as f:
         json.dump({"cohort_size": COHORT, "panels": results,
-                   "panels_that_save": savers,
+                   "panels_that_save_treatment_dollars": savers,
+                   "panels_that_pay_once_a_life_is_priced": payers,
                    "no_confirmatory_test": NO_CONFIRMATORY_TEST}, f, indent=2)
     print(f"\nwrote {OUT}")
 

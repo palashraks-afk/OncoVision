@@ -1,0 +1,107 @@
+{
+  "colorectal": {
+    "arms": {
+      "full_logistic": {
+        "sensitivity": 0.965,
+        "specificity": 0.363,
+        "procedures_avoided": 36129,
+        "cancers_missed": 14.2,
+        "net_benefit": 55285735
+      },
+      "full_ensemble": {
+        "sensitivity": 0.947,
+        "specificity": 0.467,
+        "procedures_avoided": 46551,
+        "cancers_missed": 21.2,
+        "net_benefit": 64492872
+      },
+      "base_logistic": {
+        "sensitivity": 0.973,
+        "specificity": 0.43,
+        "procedures_avoided": 42863,
+        "cancers_missed": 10.6,
+        "net_benefit": 79491959
+      },
+      "base_ensemble": {
+        "sensitivity": 0.956,
+        "specificity": 0.414,
+        "procedures_avoided": 41268,
+        "cancers_missed": 17.7,
+        "net_benefit": 59715980
+      }
+    },
+    "best_panel_arm": "full_ensemble",
+    "best_baseline_arm": "base_logistic",
+    "panel_minus_age_and_sex": -14999087
+  },
+  "lung": {
+    "arms": {
+      "full_logistic": {
+        "sensitivity": 1.0,
+        "specificity": 0.0,
+        "procedures_avoided": 0,
+        "cancers_missed": 0.0,
+        "net_benefit": 0
+      },
+      "full_ensemble": {
+        "sensitivity": 1.0,
+        "specificity": 0.0,
+        "procedures_avoided": 0,
+        "cancers_missed": 0.0,
+        "net_benefit": 0
+      },
+      "base_logistic": {
+        "sensitivity": 1.0,
+        "specificity": 0.0,
+        "procedures_avoided": 0,
+        "cancers_missed": 0.0,
+        "net_benefit": 0
+      },
+      "base_ensemble": {
+        "sensitivity": 1.0,
+        "specificity": 0.024,
+        "procedures_avoided": 2340,
+        "cancers_missed": 0.0,
+        "net_benefit": 702121
+      }
+    },
+    "best_panel_arm": "full_logistic",
+    "best_baseline_arm": "base_ensemble",
+    "panel_minus_age_and_sex": -702121
+  },
+  "liver": {
+    "arms": {
+      "full_logistic": {
+        "sensitivity": 1.0,
+        "specificity": 0.0,
+        "procedures_avoided": 0,
+        "cancers_missed": 0.0,
+        "net_benefit": 0
+      },
+      "full_ensemble": {
+        "sensitivity": 1.0,
+        "specificity": 0.0,
+        "procedures_avoided": 0,
+        "cancers_missed": 0.0,
+        "net_benefit": 0
+      },
+      "base_logistic": {
+        "sensitivity": 1.0,
+        "specificity": 0.002,
+        "procedures_avoided": 205,
+        "cancers_missed": 0.0,
+        "net_benefit": 102615
+      },
+      "base_ensemble": {
+        "sensitivity": 1.0,
+        "specificity": 0.0,
+        "procedures_avoided": 0,
+        "cancers_missed": 0.0,
+        "net_benefit": 0
+      }
+    },
+    "best_panel_arm": "full_logistic",
+    "best_baseline_arm": "base_logistic",
+    "panel_minus_age_and_sex": -102615
+  }
+}

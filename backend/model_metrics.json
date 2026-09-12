@@ -203,7 +203,7 @@
     "no_action_note": "There is no single test that confirms or rules out \u201cany cancer\u201d, so a raised score here does not point anywhere in particular. Read it as a reason to make sure your routine screening is up to date, not as something to act on by itself.",
     "panel_kind_note": "Reads routine bloodwork and your history. Anyone can run it.",
     "screening_viable": true,
-    "gain_over_age_sex": 0.006,
+    "gain_over_age_sex": 0.002,
     "barely_beats_demographics": true,
     "flagged_per_true_case": 13.5
   },
@@ -316,6 +316,127 @@
     "barely_beats_demographics": false,
     "flagged_per_true_case": 1.0
   },
+  "breast_screening": {
+    "label": "Breast Cancer Risk, from your mammogram report",
+    "shipped": true,
+    "features": [
+      "age",
+      "bmi",
+      "breast_density",
+      "family_history_breast",
+      "prior_breast_biopsy",
+      "age_at_first_birth",
+      "last_mammogram_result",
+      "menopause",
+      "surgical_menopause",
+      "hormone_therapy"
+    ],
+    "cohort_design": "2,392,998 screening mammograms from the NCI-funded Breast Cancer Surveillance Consortium, 11,638 followed by a breast cancer within the year. This is a screening population at its real prevalence of 0.49%, not a set of cases with matched controls, and the risk factors are recorded at the mammogram while the cancer is diagnosed after it. The panel is trained on a 400,000-mammogram sample of the training split BCSC specifies and judged on the 597,859-mammogram validation split it never saw. It scores about 0.63 there against 0.60 for age alone, a gain of roughly 0.03. That is modest and it is what this question is worth: published BCSC and Gail-type models land between 0.58 and 0.66, and a screening model reporting 0.9 would be measuring something else. Race and ethnicity are recorded and are not features. BMI and age are banded in the source and mapped to band midpoints, so the panel cannot be more precise about either than the band it learned from.",
+    "auc": 0.613,
+    "auc_std": 0.012,
+    "accuracy": 0.991,
+    "sensitivity": 0.018,
+    "specificity": 0.996,
+    "n_samples": 400000,
+    "n_positive": 1974,
+    "n_features": 10,
+    "cv_folds": 5,
+    "threshold": 0.01,
+    "rule_out": {
+      "threshold": 0.0026527430577210193,
+      "sensitivity": 0.951,
+      "specificity": 0.111,
+      "share_ruled_out": 0.11,
+      "cases_missed_per_100": 4.9,
+      "target_sensitivity": 0.95
+    },
+    "no_rule_out_reason": "",
+    "model_selection": {
+      "ensemble": 0.611,
+      "logistic": 0.615
+    },
+    "chosen_model": "logistic",
+    "held_out": {
+      "n_test": 80000,
+      "auc": 0.628,
+      "auc_ci": [
+        0.599,
+        0.654
+      ],
+      "sensitivity": 0.018,
+      "sensitivity_ci": [
+        0.006,
+        0.032
+      ],
+      "specificity": 0.994,
+      "specificity_ci": [
+        0.993,
+        0.994
+      ],
+      "brier": 0.0049,
+      "calibration_slope": 0.965,
+      "ppv_at_population_prevalence": 0.01351,
+      "people_flagged_per_true_case": 74.0,
+      "population_prevalence": 0.00486,
+      "prevalence_source": "Breast cancer within 1 year of a screening mammogram, BCSC 2,392,998 mammograms",
+      "cohort_prevalence": 0.005,
+      "baseline_logistic_auc": 0.628,
+      "baseline_age_sex_auc": 0.608,
+      "subgroups": {
+        "age under 52": {
+          "n": 24163,
+          "positives": 57,
+          "auc": 0.52,
+          "auc_ci": [
+            0.443,
+            0.599
+          ]
+        },
+        "age 52 and over": {
+          "n": 55837,
+          "positives": 338,
+          "auc": 0.594,
+          "auc_ci": [
+            0.565,
+            0.625
+          ]
+        }
+      }
+    },
+    "stability": {},
+    "fairness": {},
+    "temporal_validation": {
+      "cycle": "BCSC validation split",
+      "n": 597859,
+      "events": 2871,
+      "auc": 0.623,
+      "gain": 0.028,
+      "gain_ci": [
+        0.021,
+        0.035
+      ],
+      "confirmed": true,
+      "verdict": "Held up on 597,859 mammograms the model never saw, with 2,871 cancers: it beat age alone by +0.028, with a range of +0.021 to +0.035."
+    },
+    "rule_out_external": {
+      "promised_catch_rate": 0.951,
+      "actual_catch_rate": 0.953,
+      "promised_share_excluded": 0.11,
+      "actual_share_excluded": 0.116,
+      "cases_in_test_cohort": 2871,
+      "cases_ruled_out_wrongly": 134,
+      "promise_kept": true,
+      "tolerance": 0.05,
+      "cohort": "BCSC validation split"
+    },
+    "panel_kind": "triage",
+    "no_action_note": "",
+    "panel_kind_note": "For a woman who has had a mammogram. It reads the report's density grading together with her own history, and estimates the risk of a breast cancer in the year after that mammogram.",
+    "screening_viable": true,
+    "gain_over_age_sex": 0.028,
+    "barely_beats_demographics": false,
+    "flagged_per_true_case": 74.0
+  },
   "liver": {
     "label": "Liver Disease Risk",
     "shipped": true,
@@ -356,16 +477,16 @@
       "auc": 0.78,
       "auc_ci": [
         0.748,
-        0.812
+        0.811
       ],
       "sensitivity": 0.588,
       "sensitivity_ci": [
-        0.523,
+        0.525,
         0.651
       ],
       "specificity": 0.828,
       "specificity_ci": [
-        0.818,
+        0.819,
         0.838
       ],
       "brier": 0.0332,
@@ -383,8 +504,8 @@
           "positives": 99,
           "auc": 0.757,
           "auc_ci": [
-            0.704,
-            0.807
+            0.703,
+            0.809
           ]
         },
         "sex: male": {
@@ -392,8 +513,8 @@
           "positives": 134,
           "auc": 0.795,
           "auc_ci": [
-            0.755,
-            0.833
+            0.754,
+            0.835
           ]
         },
         "age under 48": {
@@ -401,8 +522,8 @@
           "positives": 58,
           "auc": 0.757,
           "auc_ci": [
-            0.685,
-            0.826
+            0.683,
+            0.824
           ]
         },
         "age 48 and over": {
@@ -410,8 +531,8 @@
           "positives": 175,
           "auc": 0.747,
           "auc_ci": [
-            0.703,
-            0.788
+            0.704,
+            0.787
           ]
         }
       }
@@ -445,7 +566,7 @@
     "no_action_note": "",
     "panel_kind_note": "Reads routine bloodwork and your history. Anyone can run it.",
     "screening_viable": true,
-    "gain_over_age_sex": 0.106,
+    "gain_over_age_sex": 0.114,
     "barely_beats_demographics": false,
     "flagged_per_true_case": 8.0
   },
@@ -494,12 +615,12 @@
       ],
       "sensitivity": 0.769,
       "sensitivity_ci": [
-        0.593,
-        0.923
+        0.595,
+        0.917
       ],
       "specificity": 0.979,
       "specificity_ci": [
-        0.946,
+        0.944,
         1.0
       ],
       "brier": 0.0651,
@@ -517,7 +638,7 @@
           "positives": 12,
           "auc": 0.952,
           "auc_ci": [
-            0.889,
+            0.887,
             0.995
           ]
         },
@@ -526,7 +647,7 @@
           "positives": 14,
           "auc": 0.982,
           "auc_ci": [
-            0.951,
+            0.954,
             1.0
           ]
         },
@@ -535,7 +656,7 @@
           "positives": 12,
           "auc": 0.959,
           "auc_ci": [
-            0.904,
+            0.903,
             0.997
           ]
         },
@@ -544,7 +665,7 @@
           "positives": 14,
           "auc": 0.978,
           "auc_ci": [
-            0.938,
+            0.937,
             1.0
           ]
         }
@@ -567,194 +688,15 @@
     "no_action_note": "",
     "panel_kind_note": "For someone ALREADY being investigated for pancreatic or biliary disease. It reads CA 19-9, which is a tumour marker ordered when cancer is suspected rather than part of routine bloodwork, and its controls were people with benign disease of the same organs. It asks which of those two a sick person has.",
     "screening_viable": true,
-    "gain_over_age_sex": 0.498,
+    "gain_over_age_sex": 0.505,
     "barely_beats_demographics": false,
     "flagged_per_true_case": 200.0
   },
   "colorectal": {
     "label": "Bowel Cancer Risk",
-    "shipped": true,
-    "features": [
-      "age",
-      "gender",
-      "wbc",
-      "rbc",
-      "hemoglobin",
-      "platelets",
-      "glucose",
-      "calcium",
-      "bun",
-      "creatinine",
-      "protein_total",
-      "albumin",
-      "ast",
-      "alt",
-      "bilirubin",
-      "alkaline_phosphatase"
-    ],
-    "cohort_design": "23,794 US adults from NHANES 2005 to 2014, nationally representative. Age, sex and a complete blood count, which is the ColonFlag feature set, built from open data. 96 cases diagnosed within eight years of the draw, the smallest event count of any shipped panel, so its interval is correspondingly wide. Bloodwork adds 0.030 over age and sex. Lung and prostate were tested the same way and failed: lung on events, prostate because bloodwork adds nothing without PSA.",
-    "auc": 0.81,
-    "auc_std": 0.044,
-    "accuracy": 0.873,
-    "sensitivity": 0.565,
-    "specificity": 0.875,
-    "n_samples": 28527,
-    "n_positive": 113,
-    "n_features": 16,
-    "cv_folds": 5,
-    "threshold": 0.01,
-    "rule_out": {
-      "threshold": 0.0008040584279102475,
-      "sensitivity": 0.956,
-      "specificity": 0.387,
-      "share_ruled_out": 0.386,
-      "cases_missed_per_100": 4.4,
-      "target_sensitivity": 0.947
-    },
-    "no_rule_out_reason": "",
-    "model_selection": {
-      "ensemble": 0.803,
-      "logistic": 0.815
-    },
-    "chosen_model": "logistic",
-    "held_out": {
-      "n_test": 5706,
-      "auc": 0.821,
-      "auc_ci": [
-        0.747,
-        0.891
-      ],
-      "sensitivity": 0.522,
-      "sensitivity_ci": [
-        0.31,
-        0.724
-      ],
-      "specificity": 0.894,
-      "specificity_ci": [
-        0.885,
-        0.902
-      ],
-      "brier": 0.004,
-      "calibration_slope": 0.968,
-      "ppv_at_population_prevalence": 0.00179,
-      "people_flagged_per_true_case": 559.8,
-      "population_prevalence": 0.000365,
-      "prevalence_source": "Colon and rectum, per 100,000 men and women per year",
-      "cohort_prevalence": 0.004,
-      "baseline_logistic_auc": 0.82,
-      "baseline_age_sex_auc": 0.843,
-      "subgroups": {
-        "sex: female": {
-          "n": 2983,
-          "positives": 12,
-          "auc": 0.821,
-          "auc_ci": [
-            0.711,
-            0.922
-          ]
-        },
-        "sex: male": {
-          "n": 2723,
-          "positives": 11,
-          "auc": 0.823,
-          "auc_ci": [
-            0.717,
-            0.922
-          ]
-        },
-        "age 47 and over": {
-          "n": 2909,
-          "positives": 23,
-          "auc": 0.662,
-          "auc_ci": [
-            0.526,
-            0.795
-          ]
-        }
-      }
-    },
-    "stability": {
-      "stable_auc": 0.823,
-      "split_spread": [
-        0.788,
-        0.859
-      ],
-      "split_sd": 0.024,
-      "shipped_split_percentile": 40.0,
-      "n_splits": 5
-    },
-    "fairness": {
-      "overall_auc": 0.793,
-      "groups": {
-        "Non-Hispanic Black": {
-          "n": 6115,
-          "events": 23,
-          "auc": 0.767,
-          "auc_ci": [
-            0.692,
-            0.836
-          ],
-          "gap_vs_overall": -0.026,
-          "materially_worse": false
-        },
-        "Non-Hispanic White": {
-          "n": 11666,
-          "events": 73,
-          "auc": 0.784,
-          "auc_ci": [
-            0.735,
-            0.827
-          ],
-          "gap_vs_overall": -0.009,
-          "materially_worse": false
-        }
-      },
-      "unmeasurable_groups": [
-        {
-          "group": "Mexican American",
-          "n": 4881,
-          "events": 7
-        },
-        {
-          "group": "Non-Hispanic Asian",
-          "n": 1870,
-          "events": 3
-        },
-        {
-          "group": "Other Hispanic",
-          "n": 2853,
-          "events": 5
-        },
-        {
-          "group": "Other or multiracial",
-          "n": 1142,
-          "events": 2
-        }
-      ],
-      "worst_group": "Non-Hispanic Black",
-      "worst_auc": 0.767,
-      "spread": 0.017,
-      "materially_worse_groups": []
-    },
-    "temporal_validation": null,
-    "rule_out_external": {
-      "cut": 0.000804,
-      "promised_catch_rate": 0.956,
-      "actual_catch_rate": 0.946,
-      "promised_share_excluded": 0.386,
-      "actual_share_excluded": 0.425,
-      "cases_in_test_cohort": 56,
-      "cases_ruled_out_wrongly": 3,
-      "promise_kept": true,
-      "tolerance": 0.05
-    },
-    "panel_kind": "screening",
-    "no_action_note": "",
-    "panel_kind_note": "Reads a routine blood count. Anyone can run it.",
-    "screening_viable": false,
-    "gain_over_age_sex": 0.033,
-    "barely_beats_demographics": false,
-    "flagged_per_true_case": 559.8
+    "shipped": false,
+    "withdrawn_reason": "Withdrawn when its lab values were shown to add nothing over age and sex. Against a logistic model on age and sex alone, the best version of the panel scored -0.010 AUC across five repeated paired folds and lost all five, and -0.000 on 14,499 NHANES III adults, 95% CI -0.012 to +0.013. The earlier in-survey gain of +0.033, and the external +0.028 that was described as surviving transfer, were both measured against a calibrated tree ensemble fitted on two features, which ranks age in coarse steps and scored 0.765 where logistic regression on the same two features scores 0.822. On cost, triage on age and sex alone avoided 42,863 colonoscopies per 100,000, missed 10.6 cancers and netted $79.5M, against 46,551, 21.2 and $64.5M for the panel, so its rule-out call was worse than the patient's age and it told people they could skip a colonoscopy on that basis. See experiments/baseline_strength.py, external_baseline_strength.py and triage_on_age_alone.py. The DATASETS entry, cohorts and fetchers are kept so the panel is still trained and evaluated as evidence, and the cost model still reads it.",
+    "cohort_design": "23,794 US adults from NHANES 2005 to 2014, nationally representative. Age, sex and a complete blood count, which is the ColonFlag feature set, built from open data. 96 cases diagnosed within eight years of the draw, the smallest event count of any shipped panel, so its interval is correspondingly wide. Bloodwork adds 0.030 over age and sex. Lung and prostate were tested the same way and failed: lung on events, prostate because bloodwork adds nothing without PSA."
   },
   "ovarian": {
     "label": "Ovarian Malignancy, in a known ovarian mass",
@@ -817,13 +759,13 @@
       "n_test": 70,
       "auc": 0.949,
       "auc_ci": [
-        0.886,
-        0.993
+        0.882,
+        0.994
       ],
       "sensitivity": 0.853,
       "sensitivity_ci": [
         0.722,
-        0.964
+        0.966
       ],
       "specificity": 0.944,
       "specificity_ci": [
@@ -845,7 +787,7 @@
           "positives": 6,
           "auc": 0.818,
           "auc_ci": [
-            0.534,
+            0.552,
             1.0
           ]
         },
@@ -854,7 +796,7 @@
           "positives": 28,
           "auc": 0.972,
           "auc_ci": [
-            0.907,
+            0.909,
             1.0
           ]
         }
@@ -932,18 +874,18 @@
       "n_test": 3974,
       "auc": 0.872,
       "auc_ci": [
-        0.802,
+        0.801,
         0.925
       ],
       "sensitivity": 0.5,
       "sensitivity_ci": [
         0.25,
-        0.75
+        0.739
       ],
       "specificity": 0.882,
       "specificity_ci": [
         0.872,
-        0.893
+        0.892
       ],
       "brier": 0.0044,
       "calibration_slope": 0.971,
@@ -960,7 +902,7 @@
           "positives": 8,
           "auc": 0.826,
           "auc_ci": [
-            0.7,
+            0.699,
             0.914
           ]
         },
@@ -969,7 +911,7 @@
           "positives": 10,
           "auc": 0.906,
           "auc_ci": [
-            0.844,
+            0.837,
             0.959
           ]
         },
@@ -978,8 +920,8 @@
           "positives": 18,
           "auc": 0.776,
           "auc_ci": [
-            0.677,
-            0.86
+            0.672,
+            0.862
           ]
         }
       }
@@ -1013,7 +955,7 @@
     "no_action_note": "",
     "panel_kind_note": "Reads routine bloodwork. Offered to people with tobacco exposure, which is who lung screening is for.",
     "screening_viable": false,
-    "gain_over_age_sex": 0.044,
+    "gain_over_age_sex": 0.024,
     "barely_beats_demographics": false,
     "flagged_per_true_case": 50.3
   },
@@ -1057,18 +999,18 @@
       "n_test": 43,
       "auc": 0.88,
       "auc_ci": [
-        0.753,
-        0.978
+        0.746,
+        0.979
       ],
       "sensitivity": 0.76,
       "sensitivity_ci": [
-        0.583,
+        0.577,
         0.92
       ],
       "specificity": 0.778,
       "specificity_ci": [
-        0.562,
-        0.947
+        0.571,
+        0.952
       ],
       "brier": 0.1509,
       "calibration_slope": 0.602,
@@ -1085,8 +1027,8 @@
           "positives": 10,
           "auc": 0.782,
           "auc_ci": [
-            0.538,
-            0.973
+            0.546,
+            0.971
           ]
         },
         "age 69 and over": {
@@ -1094,7 +1036,7 @@
           "positives": 15,
           "auc": 0.971,
           "auc_ci": [
-            0.889,
+            0.886,
             1.0
           ]
         }
@@ -1117,7 +1059,7 @@
     "no_action_note": "",
     "panel_kind_note": "Needs a PI-RADS score from a prostate MRI. Without it this panel only matches reading the PSA number, so it is not a lab-report test.",
     "screening_viable": true,
-    "gain_over_age_sex": 0.258,
+    "gain_over_age_sex": 0.222,
     "barely_beats_demographics": false,
     "flagged_per_true_case": 1.4
   }

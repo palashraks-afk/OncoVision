@@ -86,6 +86,11 @@ def flatten(entry):
 
 def main():
     raw = json.load(open(METRICS, encoding="utf-8"))
+    # A withdrawn panel is still recorded in model_metrics.json, as evidence,
+    # with "shipped": False and no held-out block. The page's fallback is what
+    # the interface shows when the service is unreachable, and it must not show
+    # a panel the service would refuse to serve.
+    raw = {k: v for k, v in raw.items() if v.get("shipped", True) is not False}
     metrics = {k: flatten(v) for k, v in raw.items()}
     missing = [k for k, v in metrics.items() if v.get("auc") is None]
     if missing:

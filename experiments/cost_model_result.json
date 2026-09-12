@@ -179,10 +179,13 @@
       }
     }
   },
-  "panels_that_save": [
+  "panels_that_save_treatment_dollars": [
     "colorectal",
     "lung",
     "liver"
+  ],
+  "panels_that_pay_once_a_life_is_priced": [
+    "colorectal"
   ],
   "no_confirmatory_test": {
     "general": "predicts a diagnosis of any cancer within four years, and no single procedure confirms or excludes that, so there is no test for it to save",

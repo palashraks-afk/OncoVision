@@ -62,7 +62,7 @@ const FALLBACK_METRICS: Record<string, any> = {
     n_samples: 600, n_test: 120, n_features: 6,
   },
   ovarian: {
-    label: "Ovarian Malignancy, in a known ovarian mass", auc: 0.949, auc_ci: [0.886, 0.993],
+    label: "Ovarian Malignancy, in a known ovarian mass", auc: 0.949, auc_ci: [0.882, 0.994],
     threshold: 0.5286,
     sensitivity: 0.853, specificity: 0.944,
     brier: 0.0797, calibration_slope: 0.455,
@@ -73,7 +73,7 @@ const FALLBACK_METRICS: Record<string, any> = {
     n_samples: 349, n_test: 70, n_features: 27,
   },
   prostate: {
-    label: "Prostate Cancer Risk, with an MRI score", auc: 0.88, auc_ci: [0.753, 0.978],
+    label: "Prostate Cancer Risk, with an MRI score", auc: 0.88, auc_ci: [0.746, 0.979],
     threshold: 0.4444,
     sensitivity: 0.76, specificity: 0.778,
     brier: 0.1509, calibration_slope: 0.602,
@@ -84,7 +84,7 @@ const FALLBACK_METRICS: Record<string, any> = {
     n_samples: 212, n_test: 43, n_features: 6,
   },
   lung: {
-    label: "Lung Cancer Risk, with tobacco exposure", auc: 0.872, auc_ci: [0.802, 0.925],
+    label: "Lung Cancer Risk, with tobacco exposure", auc: 0.872, auc_ci: [0.801, 0.925],
     threshold: 0.01,
     sensitivity: 0.5, specificity: 0.882,
     brier: 0.0044, calibration_slope: 0.971,
@@ -93,17 +93,6 @@ const FALLBACK_METRICS: Record<string, any> = {
     population_prevalence: 0.00475, cohort_prevalence: 0.005,
     baseline_logistic_auc: 0.867, baseline_age_sex_auc: 0.842,
     n_samples: 19866, n_test: 3974, n_features: 24,
-  },
-  colorectal: {
-    label: "Bowel Cancer Risk", auc: 0.821, auc_ci: [0.747, 0.891],
-    threshold: 0.01,
-    sensitivity: 0.522, specificity: 0.894,
-    brier: 0.004, calibration_slope: 0.968,
-    ppv_at_population_prevalence: 0.00179,
-    people_flagged_per_true_case: 559.8,
-    population_prevalence: 0.000365, cohort_prevalence: 0.004,
-    baseline_logistic_auc: 0.82, baseline_age_sex_auc: 0.843,
-    n_samples: 28527, n_test: 5706, n_features: 16,
   },
   general: {
     label: "General Cancer Risk", auc: 0.781, auc_ci: [0.749, 0.811],
@@ -117,7 +106,7 @@ const FALLBACK_METRICS: Record<string, any> = {
     n_samples: 28711, n_test: 5743, n_features: 5,
   },
   liver: {
-    label: "Liver Disease Risk", auc: 0.78, auc_ci: [0.748, 0.812],
+    label: "Liver Disease Risk", auc: 0.78, auc_ci: [0.748, 0.811],
     threshold: 0.0443,
     sensitivity: 0.588, specificity: 0.828,
     brier: 0.0332, calibration_slope: 1.045,
@@ -126,6 +115,17 @@ const FALLBACK_METRICS: Record<string, any> = {
     population_prevalence: 0.04, cohort_prevalence: 0.038,
     baseline_logistic_auc: 0.761, baseline_age_sex_auc: 0.623,
     n_samples: 30624, n_test: 6125, n_features: 12,
+  },
+  breast_screening: {
+    label: "Breast Cancer Risk, from your mammogram report", auc: 0.628, auc_ci: [0.599, 0.654],
+    threshold: 0.01,
+    sensitivity: 0.018, specificity: 0.994,
+    brier: 0.0049, calibration_slope: 0.965,
+    ppv_at_population_prevalence: 0.01351,
+    people_flagged_per_true_case: 74,
+    population_prevalence: 0.00486, cohort_prevalence: 0.005,
+    baseline_logistic_auc: 0.628, baseline_age_sex_auc: 0.608,
+    n_samples: 400000, n_test: 80000, n_features: 10,
   },
 };
 
@@ -156,7 +156,6 @@ const SPLIT_STABILITY = [
   { panel: "Ovarian", mean: 0.928, spread: "0.852 to 0.969", shipped: 0.949, pct: 70, ok: true },
   { panel: "Lung", mean: 0.839, spread: "0.822 to 0.86", shipped: 0.829, pct: 40, ok: true },
   { panel: "Prostate", mean: 0.822, spread: "0.732 to 0.909", shipped: 0.84, pct: 70, ok: true },
-  { panel: "Bowel", mean: 0.799, spread: "0.785 to 0.817", shipped: 0.793, pct: 40, ok: true },
   { panel: "Liver", mean: 0.75, spread: "0.744 to 0.756", shipped: 0.753, pct: 60, ok: true },
   { panel: "General", mean: 0.743, spread: "0.692 to 0.772", shipped: 0.732, pct: 20, ok: true },
   { panel: "Cervical, withdrawn", mean: 0.594, spread: "0.421 to 0.789", shipped: 0.725, pct: 97, ok: false },
@@ -166,7 +165,21 @@ const SPLIT_STABILITY = [
 // because a withdrawn panel is evidence about the method.
 const WITHDRAWN_PANELS = [
   {
-    name: "Prostate",
+    name: "Bowel",
+    auc: 0.821, ci: [0.746, 0.89], logistic: 0.82,
+    specificity: 0.894, spec_ci: [0.885, 0.902],
+    n: 28527, n_test: 5706, features: 16,
+    reason:
+      "Withdrawn when its lab values were shown to add nothing over age and sex. A logistic model " +
+      "on age and sex alone matched it inside the survey, and on 14,499 adults measured fifteen " +
+      "years earlier the difference was -0.000 with an interval of -0.012 to +0.013. The gain it " +
+      "used to report came from comparing it against a tree model given only two features, which " +
+      "cannot use age smoothly. Its rule-out call was worse than age as well: triage on age and sex " +
+      "alone avoided a similar number of colonoscopies while missing half as many cancers. A panel " +
+      "that tells someone they could skip a colonoscopy has to beat their age, and this one did not.",
+  },
+  {
+    name: "Prostate, Stanford cohort (since replaced)",
     auc: 0.786, ci: [0.505, 0.99], logistic: 0.769,
     specificity: 0.571, spec_ci: [0.167, 1.0],
     n: 97, n_test: 20, features: 2,
@@ -177,7 +190,8 @@ const WITHDRAWN_PANELS = [
       "has no site column, so unlike the pancreatic cohort it cannot be split by institution, and " +
       "NHANES measured PSA on 4,697 men across 2005 to 2010 but holds only 17 prostate cancer " +
       "cases, because men already diagnosed are excluded from the PSA subsample. 97 records and " +
-      "two usable features, with no route to an external test, cannot support a clinical claim.",
+      "two usable features, with no route to an external test, cannot support a clinical claim. " +
+      "The prostate panel that ships now was rebuilt on a separate cohort of 212 biopsied men.",
   },
 ];
 
@@ -600,7 +614,18 @@ export default function OncovisionDashboard() {
                         <p className="text-[10px] text-[var(--ink-3)] uppercase font-bold tracking-widest mt-4 mb-2 pt-3 border-t border-[var(--rule)]">
                           {gname}
                           <span className="block normal-case tracking-normal font-normal text-[var(--ink-4)] mt-0.5">
-                            Read by the cervical and ovarian panels. Leave blank if you would rather not answer.
+                            {/*
+                              Named per group. This used to be one sentence for
+                              every non-General group, and it still credited the
+                              cervical panel after that panel was withdrawn --
+                              and then labelled the breast questions as read by
+                              panels that never read them.
+                            */}
+                            {gname === "Breast history"
+                              ? "Read by the mammogram-report breast panel. Leave blank if you would rather not answer."
+                              : gname === "Reproductive history"
+                                ? "Read by the ovarian and mammogram-report breast panels. Leave blank if you would rather not answer."
+                                : "Leave blank if you would rather not answer."}
                           </span>
                         </p>
                       )}
@@ -811,8 +836,8 @@ export default function OncovisionDashboard() {
                               balanced point the bowel panel misses 190 cancers
                               in 400 and stops paying the moment a missed cancer
                               is priced at a life, while at the rule-out point it
-                              avoids 36,052 colonoscopies per 100,000 and misses
-                              8.
+                              pays even after that pricing. Current figures are
+                              in experiments/cost_model_result.json.
                             */}
                             {/*
                               Panels with nowhere to send a flagged person. The
@@ -916,10 +941,29 @@ export default function OncovisionDashboard() {
                             */}
                             {!isBenign && d.barely_beats_demographics && (
                               <p className="text-[11px] leading-relaxed mb-3 pl-3 border-l-2 border-[var(--warn)] text-[var(--ink-3)]">
-                                <span className="font-bold text-[var(--warn)]">Barely beats age and sex. </span>
-                                This panel scores only {d.gain_over_age_sex?.toFixed(3)} above what
-                                your age and sex predict on their own, so most of this number is
-                                demographics rather than anything read from your lab report.
+                                {/*
+                                  A gain at or below zero is not "barely" anything.
+                                  The bowel panel measured -0.011 against a logistic
+                                  age-and-sex model, and "scores only -0.011 above"
+                                  is a sentence that hides the finding inside a minus
+                                  sign.
+                                */}
+                                {(d.gain_over_age_sex ?? 0) <= 0 ? (
+                                  <>
+                                    <span className="font-bold text-[var(--warn)]">No better than age and sex. </span>
+                                    Measured against a model that knows only your age and sex, this
+                                    panel did not do better ({d.gain_over_age_sex?.toFixed(3)}). The
+                                    number above is what your age and sex predict, not something read
+                                    from your lab report.
+                                  </>
+                                ) : (
+                                  <>
+                                    <span className="font-bold text-[var(--warn)]">Barely beats age and sex. </span>
+                                    This panel scores only {d.gain_over_age_sex?.toFixed(3)} above what
+                                    your age and sex predict on their own, so most of this number is
+                                    demographics rather than anything read from your lab report.
+                                  </>
+                                )}
                               </p>
                             )}
                             {/*
@@ -1833,7 +1877,7 @@ export default function OncovisionDashboard() {
                     {
                       icon: Cpu,
                       title: "Ensemble inference",
-                      body: "Five soft voting ensembles, one per domain, each combining an XGBoost gradient boosted forest with an Extra Trees classifier. XGBoost fits sequentially against its own errors while Extra Trees randomises split thresholds across independent trees, so the two make different mistakes and averaging their probabilities is steadier than either alone. Class imbalance is handled with positive class weighting inside XGBoost and balanced subsampling inside Extra Trees.",
+                      body: "Each panel is fitted twice, as a logistic regression and as a soft voting ensemble of XGBoost and Extra Trees, and the logistic regression ships unless the ensemble leads it by more than 0.005 in cross-validated AUC. Most panels ship logistic regression. A draw used to go to the ensemble by accident of dictionary order, which shipped a 7 MB model in place of a 9 KB one for no measured accuracy. Every score is then isotonic calibrated, so the percentage shown is a rate rather than a ranking.",
                     },
                     {
                       icon: Layers,
@@ -1882,11 +1926,14 @@ export default function OncovisionDashboard() {
                     </thead>
                     <tbody className="divide-y divide-[var(--rule)]">
                       {[
-                        ["Liver", "Hepatocellular cohort, 5,000 records", "A liver cancer diagnosis"],
-                        ["General", "Cancer risk cohort, 1,500 records", "A recorded cancer diagnosis"],
-                        ["Pancreatic", "Pancreatic biomarker cohort, 600 records", "Confirmed adenocarcinoma, separated from both healthy controls and benign hepatobiliary disease"],
-                        ["Breast", "Wisconsin Diagnostic Breast Cancer, 569 records", "A malignant fine needle aspirate"],
-                        ["Prostate", "Stanford prostate cohort, 97 records", "Gleason score of 7 or above"],
+                        ["Liver", "NHANES 2005 to 2016, 30,624 US adults; 2017 to 2018 withheld as a test", "Told by a doctor they have a liver condition: liver disease, not liver cancer"],
+                        ["General", "NHANES 2005 to 2016, 28,711 US adults", "Any cancer diagnosed within four years of the exam"],
+                        ["Lung", "NHANES 1999 to 2016, 19,866 adults with tobacco exposure; 2017 to 2018 withheld", "Lung cancer"],
+                        ["Breast, mammogram", "Breast Cancer Surveillance Consortium, 400,000 mammograms sampled from 1.8 million", "Breast cancer within a year of the mammogram"],
+                        ["Breast, biopsy", "Wisconsin Diagnostic Breast Cancer, 569 records", "A malignant fine needle aspirate"],
+                        ["Pancreatic", "Pancreatic biomarker cohort, 600 records from three tissue banks", "Confirmed adenocarcinoma, separated from both healthy controls and benign hepatobiliary disease"],
+                        ["Ovarian", "349 women operated on for an ovarian mass", "A malignant tumour on surgical pathology"],
+                        ["Prostate", "212 men taken to prostate biopsy", "Adenocarcinoma on biopsy"],
                       ].map(([a, b, c]) => (
                         <tr key={a} className="text-[var(--ink-2)]">
                           <td className="py-3 pr-4 font-bold text-[var(--stamp)] whitespace-nowrap">{a}</td>
@@ -1904,13 +1951,12 @@ export default function OncovisionDashboard() {
                   <AlertTriangle className="text-[var(--warn)] w-5 h-5" /> Known limitations
                 </h3>
                 <ul className="space-y-3 text-sm text-[var(--ink-2)] leading-relaxed list-disc pl-5">
-                  <li><strong className="text-[var(--ink)]">Every cohort is case-control, not a screening series.</strong> These records come from people who already had a reason to be tested, so the cohorts run 21 to 37 percent positive against a real incidence measured in hundredths of a percent. That gap is why the precision table above matters more than the AUC table.</li>
-                  <li><strong className="text-[var(--ink)]">The breast panel contradicts the schema rule.</strong> Its four inputs are nuclear morphology from a fine needle aspirate, which requires a biopsy that has already happened. It interprets a biopsy rather than screening for one, and calling it a screening panel would be wrong.</li>
-                  <li><strong className="text-[var(--ink)]">The general panel barely beats age and sex.</strong> It reaches 0.732 against 0.727 for age and sex alone. Adding all 14 routine blood values was measured and made it worse, 0.737 against 0.748 on a held-out cycle, so routine chemistry does not detect general cancer and this panel reads risk factors rather than the lab report.</li>
-                  <li><strong className="text-[var(--ink)]">No external validation.</strong> Every number comes from a held-out split of the same cohort the model trained on. Nothing here has been tested against a dataset collected somewhere else, which is the single largest gap.</li>
+                  <li><strong className="text-[var(--ink)]">Two kinds of cohort, and only one supports a screening claim.</strong> Liver, general, lung and the mammogram-report breast panel are trained on population cohorts at real prevalence. Pancreatic, ovarian, prostate and the biopsy breast panel are case-control: people who already had a reason to be tested, running far above real incidence. Their high AUCs describe separating cases from selected controls, not screening.</li>
+                  <li><strong className="text-[var(--ink)]">The biopsy breast panel interprets a biopsy.</strong> Its thirty inputs are nuclear measurements from a fine needle aspirate that has already been taken. The mammogram-report breast panel is the one that answers the screening question, and it scores far lower because that question is harder.</li>
+                  <li><strong className="text-[var(--ink)]">Lab values add nothing for general cancer risk, or for bowel cancer.</strong> The general panel reads risk factors and barely beats age and sex. A bowel panel built on sixteen blood values matched a logistic model on age and sex alone, inside its survey and on a cohort measured fifteen years earlier, and was withdrawn.</li>
+                  <li><strong className="text-[var(--ink)]">External validation is uneven.</strong> Liver was tested in India, in Germany, and on a withheld later survey cycle, and it scores below chance in Germany. Lung&apos;s advantage over age and sex was not confirmed on its withheld cycle, which held only thirteen cases. The general panel&apos;s rule-out call caught fewer cancers than promised on a 1988 to 1994 cohort. No public cohort exists to test the four case-control panels externally.</li>
                   <li><strong className="text-[var(--ink)]">No prospective test and no IRB.</strong> No real patient report has been run through this and followed to an outcome. There is no ethics approval, no registration, and no clinical validation of any kind.</li>
-                  <li><strong className="text-[var(--ink)]">The ensemble is within noise of logistic regression on two panels.</strong> Breast at 0.972 against 0.964, pancreatic at 0.969 against 0.968. The added complexity is not clearly earning its place there.</li>
-                  <li><strong className="text-[var(--ink)]">Subgroup coverage is thin.</strong> AUC is broken out by sex and age band where the test split allows, but the cohorts carry no race or ethnicity, so accuracy across those groups is unmeasured rather than acceptable.</li>
+                  <li><strong className="text-[var(--ink)]">Subgroup coverage is uneven.</strong> AUC by race and ethnicity is measured on the population cohorts, where the general panel works less well for Other Hispanic adults. The case-control cohorts record no race or ethnicity, so for those panels accuracy across groups is unmeasured rather than acceptable.</li>
                   <li>The source datasets do not share a schema, so each panel sees a different slice of what you enter. A model scores only when it receives at least one real value, and every card reports how many of its inputs you supplied.</li>
                 </ul>
               </section>

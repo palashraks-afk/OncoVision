@@ -1,6 +1,6 @@
 # What routine blood work can and cannot tell you about cancer risk
 
-**A feature-constrained multi-panel evaluation on eight public cohorts, with a prospective
+**A feature-constrained multi-panel evaluation on nine public cohorts, with a prospective
 mortality analysis and a cost model of triage before expensive diagnostics**
 
 Oncovision AI. Mentored research project, UCI CHOC.
@@ -15,7 +15,7 @@ one at a time against a reference range. The hypothesis behind this work is that
 signal, where it exists, lies in combinations of values that are individually unremarkable, and
 that this is the kind of pattern a model finds and a person scanning a printout does not.
 
-**Methods.** We built eight risk panels under a strict constraint: a model may only use features
+**Methods.** We built nine risk panels under a strict constraint: a model may only use features
 the application can actually collect from a patient's own lab report and a short history. Every
 dataset column was mapped onto one canonical input schema or dropped before fitting. Panels were
 calibrated, evaluated on a held-out split, and then re-evaluated by repeated cross-validation on
@@ -25,49 +25,41 @@ recorded it, and split stability across many random partitions. The central hypo
 tested on a design none of the training cohorts can support: 33,834 NHANES participants linked by
 NCHS to the National Death Index, where blood was drawn years before the outcome existed.
 
-**Results.** The premise holds strongly for some questions and barely at all for others, and the
-distinction is the main finding. Where the organ's own chemistry appears on the lab report, the
-combination of values adds a great deal over knowing age and sex: +0.106 AUC for liver disease and
-+0.498 for pancreatic adenocarcinoma. Where the question is undifferentiated — will this person be
-diagnosed with any cancer — it adds +0.006. On the prospective cohort of 33,834 adults with
-NDI-confirmed outcomes, the full blood panel adds +0.013 over age and sex for cancer death within
-five years, winning 5 of 5 paired repeats. **That gain did not survive external validation.**
-Trained on NHANES 1999–2014 and tested on NHANES III (1988–1994, 14,630 adults, 254 events), age
-and sex alone reached 0.852 while the full blood panel reached 0.839: a transferred gain of −0.013.
-The same external test applied to an organ-specific panel gave the opposite answer. The bowel panel,
-trained on NHANES 2005–2016 and tested on 14,499 NHANES III adults with 56 colorectal cancers,
-transferred a gain of **+0.028** against +0.033 internally — around five sixths of the effect
-survived a fifteen-year gap and a change of analysers. Separately, discrimination and usability
-diverge sharply: three panels with AUCs between 0.79 and
-0.97 flag between 55 and 768 people per true case at real incidence, and a threshold sweep shows
-no operating point repairs any of them.
+**Results.** The premise holds for some questions and not at all for others, and telling them apart
+required a stronger baseline than this work first used. Every gain below is measured against the
+better of a logistic and an ensemble model on age and sex alone, on identical folds. Where the
+organ's own chemistry is on the lab report, the combination adds a great deal: +0.114 AUC for liver
+disease, confirmed on a withheld later survey cycle (+0.091, 95% CI +0.057 to +0.125), and +0.505
+for pancreatic adenocarcinoma in a case-control cohort. Lung adds +0.026 inside its survey but was not
+confirmed on a withheld cycle holding thirteen cases. For the undifferentiated question — will this
+person be diagnosed with any cancer — risk factors add +0.002. **A bowel panel built on sixteen blood
+values added nothing**: −0.010 inside its survey and −0.000 on 14,499 NHANES III adults (95% CI
+−0.012 to +0.013). An earlier analysis had reported that gain as surviving external transfer; it had
+been measured against a tree ensemble given only age and sex, which cannot use age smoothly. On the
+prospective cohort of 33,834 adults with NDI-confirmed outcomes, the full blood panel gains +0.013 for
+cancer death within five years inside its survey and −0.013 on NHANES III. A breast panel fitted on
+2,392,998 screening mammograms adds +0.028 over age on the consortium's own 597,859-mammogram
+validation split (95% CI +0.021 to +0.035). Discrimination and usability diverge sharply: panels with
+good AUCs flag dozens to hundreds of healthy people per true case at real incidence.
 
-**Cost.** Discrimination is not the outcome that matters for a tool whose purpose is to reduce
-spending on diagnostics, so we modelled it directly: per 100,000 people, sending everyone for the
-confirmatory procedure against sending only those a panel flags, charging missed cancers the
-difference between early and late-stage treatment. At the balanced operating points these panels
-ship, triage appears to save $192M per 100,000 on colorectal — by missing 190 of 400 cancers.
-Break-even is $1.08M per missed cancer against roughly $2.25M for fifteen life-years at
-conventional willingness-to-pay, so the saving disappears once a life is priced. Choosing instead
-the point on each panel's ROC curve that maximises net benefit **after** charging a missed cancer
-$2.25M: colorectal avoids 36,052 colonoscopies per 100,000 while missing 8.3 of 400 cancers
-(+$68.2M), and lung avoids 21,561 CT scans while missing none (+$6.5M).
+<!-- AUTOGEN:abstract_cost -->
+**Cost.** Discrimination is not the outcome that matters for a tool whose purpose is to reduce spending on diagnostics, so we modelled it directly: per 100,000 people, sending everyone for the confirmatory procedure against sending only those a panel flags, charging missed cancers the difference between early and late-stage treatment. At the balanced operating point the bowel panel ships, triage appears to save $202M per 100,000 — by missing 191 of 400 cancers. Break-even is $1.13M per missed cancer against $2.25M for fifteen life-years at conventional willingness-to-pay, so the saving disappears once a life is priced. Choosing instead the point on each panel's ROC curve that maximises net benefit **after** charging a missed cancer at a life: bowel avoids 46,551 procedures per 100,000 while missing 21.2 of 400 cases (+$64.5M). **But the lab values are not what pays.** Triage on age and sex alone, with no lab values at all, avoids 42,863 procedures, misses 10.6 cancers and nets $79.5M, against $64.5M for the best version of the panel on the same folds. For lung and liver, no threshold beats sending everyone.
+<!-- /AUTOGEN:abstract_cost -->
 
 **Conclusions.** Routine blood work carries usable signal about organ-specific disease when the
-relevant analytes are on the panel, and essentially none about undifferentiated cancer risk that
-generalises beyond the survey it was fitted on. The two questions differ not merely in effect size
-but in whether the effect exists at all: under an identical external test, one gain kept three
-quarters of its magnitude and the other reversed sign. Separately, and independently of any model
-improvement, the operating point matters more than the model: Youden's J treats a false positive
-and a false negative as equally costly, and before an expensive diagnostic they are not. A panel
-too weak to screen with can still be strong enough to **rule out** with, and that is a different
-and more useful claim. The ceiling is a property of the question rather
-than of the model: serum cotinine, C-reactive protein, the complete blood count, the full metabolic
-panel, waist circumference and physical activity were each tested and each rejected. Two
-methodological cautions follow. Resampling within one survey — including leave-one-cycle-out, which
-gave an encouraging 0.837 here — measures stability and not generalisation, and only a genuinely
-external cohort distinguished the two. And for a tool of this kind, the number of healthy people
-flagged per true case matters more than AUC, with which it frequently disagrees.
+organ's own chemistry is on the panel — liver most clearly — and none we could confirm about
+undifferentiated cancer risk or about bowel cancer. The one population panel whose triage appeared to
+save money once a missed cancer was priced at a life owed that saving to age: triage on age and sex
+alone saved more and missed fewer cancers, and the panel was withdrawn. The ceiling is a property of
+the question rather than of the model: serum cotinine, C-reactive protein, the complete blood count,
+the full metabolic panel, waist circumference and physical activity were each tested and each
+rejected. Two methodological cautions follow, and both concern what a result is compared against.
+Resampling within one survey — including leave-one-cycle-out, which gave an encouraging 0.837 here —
+measures stability and not generalisation, and only a genuinely external cohort distinguished the
+two. And **a baseline is a claim too**: an age-and-sex model that cannot use age smoothly flatters
+every panel measured against it, and here it manufactured this project's clearest-looking external
+result. For the panels that remain, the operating point matters more than the model, and the number
+of healthy people flagged per true case matters more than AUC, with which it frequently disagrees.
 
 ---
 
@@ -124,13 +116,13 @@ label, after one panel was found to have been silently claiming to screen.
 
 ### 2.3 Cohorts
 
-Eight cohorts, four population-based and four case-control. Cohort design bounds what a number
+Nine cohorts, five population-based and four case-control. Cohort design bounds what a number
 means, so it is stated on every panel rather than kept in a methods section.
 
 <!-- AUTOGEN:paper_cohorts -->
 | Panel | Design | n | Events | Prevalence | Cohort |
 |---|---|---|---|---|---|
-| Breast | Case-control | 569 | 212 | 37.30% | Wisconsin fine needle aspirates, post-biopsy |
+| Breast (biopsy) | Case-control | 569 | 212 | 37.30% | Wisconsin fine needle aspirates, post-biopsy |
 | Pancreatic | Case-control | 600 | 130 | 21.70% | 3 tissue banks, adenocarcinoma vs benign hepatobiliary |
 | Ovarian | Case-control | 349 | 171 | 49.00% | operated ovarian masses, malignant vs benign |
 | Prostate | Case-control | 212 | 121 | 57.10% | biopsied men, adenocarcinoma vs benign biopsy |
@@ -138,6 +130,7 @@ means, so it is stated on every panel rather than kept in a methods section.
 | Bowel | Population | 28,527 | 114 | 0.40% | NHANES 2005-2016, colon or rectal cancer within 8 years |
 | General | Population | 28,711 | 890 | 3.10% | NHANES 2005-2016, cancer diagnosed within 4 years |
 | Liver | Population | 30,624 | 1,164 | 3.80% | NHANES, 7 cycles, clinical liver disease |
+| Breast (mammogram) | Population | 400,000 | 2,000 | 0.50% | BCSC screening mammograms, cancer within 1 year |
 <!-- /AUTOGEN:paper_cohorts -->
 
 Race and ethnicity are carried as a **stratifier and never as a model feature**, following the
@@ -278,14 +271,15 @@ years beyond a single sensitivity figure, and no price on the harm of an unneces
 
 | Panel | Model | Logistic | Age and sex alone | Gain over age and sex |
 |---|---|---|---|---|
-| Breast | 0.997 | 0.995 | — | not measurable |
-| Pancreatic | 0.966 | 0.968 | 0.5 | +0.498 |
+| Breast (biopsy) | 0.997 | 0.995 | — | not measurable |
+| Pancreatic | 0.966 | 0.968 | 0.5 | +0.505 |
 | Ovarian | 0.949 | 0.911 | 0.813 | +0.174 |
-| Prostate | 0.880 | 0.876 | 0.661 | +0.258 |
-| Lung | 0.872 | 0.867 | 0.842 | +0.044 |
-| Bowel | 0.821 | 0.82 | 0.843 | +0.033 |
-| General | 0.781 | 0.78 | 0.779 | **+0.006** |
-| Liver | 0.780 | 0.761 | 0.623 | +0.106 |
+| Prostate | 0.880 | 0.876 | 0.661 | +0.222 |
+| Lung | 0.872 | 0.867 | 0.842 | +0.024 |
+| ~~Bowel~~ withdrawn | 0.821 | 0.82 | 0.843 | **-0.011** |
+| General | 0.781 | 0.78 | 0.779 | **+0.002** |
+| Liver | 0.780 | 0.761 | 0.623 | +0.114 |
+| Breast (mammogram) | 0.628 | 0.628 | 0.608 | +0.028 |
 
 The gain column is measured by repeated paired cross-validation on identical folds, not from the held-out split, because a single split proved unreliable.
 
@@ -293,7 +287,7 @@ The gain column is measured by repeated paired cross-validation on identical fol
 
 | Panel | Test AUC | PPV at population incidence | Flagged per true case | Usable as screening? |
 |---|---|---|---|---|
-| Breast | 0.997 | 95.91% | 1.0 | not a screening panel |
+| Breast (biopsy) | 0.997 | 95.91% | 1.0 | not a screening panel |
 | Pancreatic | 0.966 | 0.50% | 200.0 | not a screening panel |
 | Ovarian | 0.949 | 79.33% | 1.3 | not a screening panel |
 | Prostate | 0.880 | 69.51% | 1.4 | not a screening panel |
@@ -301,6 +295,7 @@ The gain column is measured by repeated paired cross-validation on identical fol
 | Bowel | 0.821 | 0.18% | 559.8 | no |
 | General | 0.781 | 7.39% | 13.5 | yes, with caveats |
 | Liver | 0.780 | 12.47% | 8.0 | yes, with caveats |
+| Breast (mammogram) | 0.628 | 1.35% | 74.0 | no |
 
 This is the table that decides whether a panel is a screening instrument. Discrimination and usability are different properties, and three panels have the first without the second.
 
@@ -308,7 +303,7 @@ This is the table that decides whether a panel is a screening instrument. Discri
 
 | Panel | Rows | Events | Mean AUC | Spread across splits | Shipped split | Percentile |
 |---|---|---|---|---|---|---|
-| Breast | 569 | 212 | 0.992 | 0.970 to 1.000 | 0.997 | 77th |
+| Breast (biopsy) | 569 | 212 | 0.992 | 0.970 to 1.000 | 0.997 | 77th |
 | Pancreatic | 600 | 130 | 0.969 | 0.939 to 0.995 | 0.969 | 50th |
 | Ovarian | 349 | 171 | 0.928 | 0.852 to 0.969 | 0.949 | 70th |
 | Bowel | 28,527 | 113 | 0.823 | 0.788 to 0.859 | 0.815 | 40th |
@@ -363,7 +358,7 @@ This is also a caution about the leave-one-cycle-out result above. Holding out o
 
 ### 3.6 The same test on an organ-specific panel
 
-The bowel panel is one of only two here that screen for a named cancer from a routine lab report alone, so it carries more of the application's claim than the case-control panels do. NHANES III recorded both the site of any reported cancer and the age at which it was first told, which reconstructs the same eight-year window the training cohort uses.
+The bowel panel was one of two here that claimed to screen for a named cancer from a routine lab report alone, so it carried more of the application's claim than the case-control panels did, and it has since been withdrawn for the reason this section records. NHANES III recorded both the site of any reported cancer and the age at which it was first told, which reconstructs the same eight-year window the training cohort uses.
 
 Train: NHANES 2005-2014, 28,527 adults, 113 cases. Test: NHANES III, 14,499 adults, 56 cases. The two prevalences agree to within a hundredth of a percent, which is a check that the window was reconstructed the same way on both sides.
 
@@ -374,7 +369,7 @@ Train: NHANES 2005-2014, 28,527 adults, 113 cases. Test: NHANES III, 14,499 adul
 
 Gain over age and sex, transferred: **+0.028**, against +0.033 measured inside the training survey.
 
-**This gain survives.** Roughly three quarters of it is still there on a cohort measured a decade and a half earlier, on different analysers. Set beside section 3.5, where the undifferentiated panel's gain reversed sign under the same test, this is the sharpest form of the paper's main result: the two questions do not merely differ in effect size, they differ in whether the effect is real at all.
+**That gain belongs to the baseline, not the bloodwork.** Both arms above were fitted with a calibrated tree ensemble, which given only age and a binary sex flag ranks people in coarse steps. Refitted with logistic regression, age and sex alone score 0.822 on NHANES III and the full sixteen-feature panel scores 0.822. Against the stronger baseline the transferred gain is -0.000, 95% CI -0.012 to +0.013, and the original interval, -0.013 to +0.072, never excluded zero either. **On this evidence routine bloodwork adds nothing to age and sex for bowel cancer.** An earlier draft of this paper read the ensemble comparison as a gain that survived transfer; it was a weak baseline.
 
 ### 3.7 Does triage on free bloodwork save money?
 
@@ -402,7 +397,7 @@ That apparent saving counts only treatment dollars. Charging a missed case what 
 | Lung | 1.0 | 0.0 | **0** | 0.0 | $0 |
 | Liver | 1.0 | 0.0 | **0** | 0.0 | $0 |
 
-**The liver row is the interesting one.** That panel has the largest gain over age and sex of anything in this project, +0.106, and its best operating point is to send everyone: no triage threshold beats universal testing once a missed case is priced. Liver disease is common at 4% and a FibroScan is cheap at $500, so the scans a threshold saves are worth less than the cases it misses. **Discrimination did not decide this; prevalence and procedure cost did.** The panel that separates best is the one where triage helps least, which is the clearest available demonstration that AUC and decision value are different quantities.
+**The liver row is the interesting one.** That panel has the largest gain over age and sex of anything in this project, +0.114, and its best operating point is to send everyone: no triage threshold beats universal testing once a missed case is priced. Liver disease is common at 4% and a FibroScan is cheap at $500, so the scans a threshold saves are worth less than the cases it misses. **Discrimination did not decide this; prevalence and procedure cost did.** The panel that separates best is the one where triage helps least, which is the clearest available demonstration that AUC and decision value are different quantities.
 
 An illustrative model, not a cost-effectiveness analysis: no discounting, no quality-adjusted life years beyond the per-panel figure above, and no price on the harm of an unnecessary procedure. The treatment costs are first-year figures and understate the late-stage penalty, which biases the model *towards* triage.
 <!-- /AUTOGEN:paper_results -->
@@ -416,8 +411,8 @@ with different laboratory runs, a different sample and a slowly moving populatio
 most recent cycle gives a test set that shares the protocol and shares nothing else — no rows, no
 calibration, no threshold. TRIPOD calls this temporal validation.
 
-The 2017–2018 cycle is withheld from the liver and lung panels. The bowel and general panels
-cannot join: CDC dropped the MCQ240 age-at-diagnosis series after 2015–2016, so their
+The 2017–2018 cycle is withheld from the liver and lung panels. The general panel, and the since-withdrawn
+bowel panel, cannot join: CDC dropped the MCQ240 age-at-diagnosis series after 2015–2016, so their
 screening-window target cannot be constructed on later data at all. Those two keep NHANES III.
 
 | Panel | Withheld n | Events | AUC | Age and sex | Gain | 95% CI on the gain |
@@ -448,6 +443,55 @@ cohort beside India and Germany — all 4,887 rows matched. No published number 
 that file refits models rather than loading the shipped one, but the framing invited a reader to
 believe the shipped panel had been tested on a cohort it had been trained on. The holdout makes the
 claim true rather than merely unstated, and an assertion now fails loudly if the holdout is removed.
+
+### 3.9 A breast panel built on a screening population
+
+The breast panel that shipped reads thirty nuclear measurements off a fine needle aspirate and
+scores 0.997 on 569 Wisconsin biopsies. That number is real and it answers the wrong question for
+this tool: the patient already has a biopsy, and 37% of the cohort is malignant. No sample size
+turns a case-control set of post-biopsy lesions into a screening population. It stays, labelled
+as interpretation.
+
+The Breast Cancer Surveillance Consortium publishes a risk-estimation dataset that is the thing
+the Wisconsin cohort lacks by construction: **2,392,998 screening mammograms, 11,638 followed by a
+breast cancer within one year (0.49%)**, with risk factors recorded at the mammogram and the
+cancer diagnosed after it, and a training/validation split specified by the consortium. A second
+breast panel was fitted on a 400,000-mammogram sample of the training split, using what a woman
+holding a mammogram report can answer — age, BMI, BI-RADS density, first-degree family history,
+previous biopsy, previous mammogram result, age at first birth, menopause type and hormone
+therapy. Race and ethnicity are recorded and are not features. Age and BMI are banded in the
+source and mapped to band midpoints, so the feature is on the scale the service receives.
+
+It was judged on the consortium's validation split, which it never saw — every statistic weighted
+by count, intervals from a Poisson bootstrap over mammograms:
+
+| | Result |
+|---|---|
+| Mammograms / cancers | 597,859 / 2,871 |
+| AUC | **0.623** (0.613 to 0.633) |
+| Age alone | 0.595 |
+| Gain over age | **+0.028** (+0.021 to +0.035) |
+| Rule-out cut, promised | catch 95.1%, exclude 11.0% |
+| Rule-out cut, delivered | catch 95.3%, exclude 11.6% |
+| Subgroups | White 0.625, Black 0.622, Asian or Pacific Islander 0.605; two groups under 50 cancers, not measured |
+
+**0.623 is the lowest AUC on the site and the best-evidenced number on it.** Published BCSC and
+Gail-type models land between 0.58 and 0.66; a screening model scoring 0.9 on this question would
+be measuring something other than screening risk. The gain over age is small, its interval is the
+tightest in the project, and it is measured on more held-out events than every other panel's test
+sets combined. Its rule-out cut is the only one here whose delivered rate matched the promised rate
+to within a point, which is what a cut tuned and tested on the same population at its real
+prevalence should do and what the enriched cohorts cannot.
+
+Two alternatives were tried first and failed, and both are worth recording. Rebuilding prostate on
+NHANES PSA looked promising — 4,697 men with a measured PSA and 253 reported prostate cancers — until
+the cases were checked: only 17 of the 253 had a PSA measured, because NHANES did not draw it in men
+with a prostate cancer history, and those 17 had a *lower* median PSA than controls (0.85 against
+1.0), because they had been treated. A model trained on that would have learned that low PSA means
+cancer. Routine bloodwork on NHANES adds nothing for prostate at any diagnosis window either (gain
+0.000 on 373 events). The ovarian and prostate screening arms of PLCO — CA-125 on 78,000 women,
+PSA on the prostate arm — would answer both properly, and are available only through an NCI
+project proposal with a named investigator.
 
 ---
 
@@ -502,12 +546,20 @@ strategy used in this project, including the repeated paired cross-validation th
 arbiter throughout, would have reported this panel as working. Only an external cohort caught it.
 The panels here that have no external cohort should be read with that in mind.
 
-The corollary is that the external test is not simply a harsher grader that marks everything down.
-Applied to the bowel panel, the identical procedure — same survey, same decade gap, same imputation
-discipline — returned +0.029 against +0.039 internally. An organ-specific panel kept three quarters
-of its effect while the undifferentiated one reversed sign. That is what distinguishes a transfer
-test from a difficulty penalty, and it is why the contrast rather than either number alone is the
-finding.
+An earlier draft drew a corollary here: applied to the bowel panel, the identical procedure appeared
+to keep most of an organ-specific gain while the undifferentiated one reversed, which read as proof
+that the external test is not simply a harsher grader. That contrast was an artefact of the
+baseline. Both arms were fitted with a calibrated tree ensemble, and given only age and a binary sex
+flag a tree ensemble ranks people in coarse steps. Against a logistic age-and-sex model the bowel
+panel's transferred gain cannot be distinguished from zero (section 3.6). The external test did not
+mark the bowel panel down less than the undifferentiated one; it marked both down to nothing.
+
+The lesson is of the same kind as the one above, one level further in. Internal resampling
+flattered the prospective panel because it held the measurement process fixed. The ensemble
+baseline flattered the bowel panel because it could not use the one variable that carries most of
+the risk. **A baseline is a claim too**, and every gain in this paper is now measured against the
+strongest age-and-sex model available rather than against the one that shares the panel's model
+kind.
 
 ### 4.3 Why that distinction matters more than any AUC here
 
@@ -516,19 +568,22 @@ informative. Breast at 0.997 and pancreatic at 0.969 are case-control designs: t
 cases from selected controls, on cohorts of 569 and 600. Read as screening performance they are
 badly misleading, and the taxonomy exists to stop them being read that way.
 
-The tool ships eight panels. Two of them screen for a named cancer from a lab report alone. Four
-require the patient to already be inside the diagnostic pathway, and one detects liver disease
-rather than liver cancer. That sentence is a more honest summary of the work than any table of
+The tool ships eight panels. One screens for a named cancer from a lab report alone, lung, and its
+advantage over age and sex is not confirmed on unseen data. One estimates breast cancer risk from a
+mammogram report at real screening prevalence. Four require the patient to already be inside the
+diagnostic pathway, and one detects liver disease rather than liver cancer. A bowel panel was
+withdrawn when its lab values were shown to add nothing to age and sex. That sentence is a more honest summary of the work than any table of
 discrimination statistics.
 
 ### 4.4 Discrimination is not usability
 
-Three panels have good discrimination and no usable operating point. Projected onto real
-incidence, the bowel panel flags roughly 768 people for every true case, pancreatic 210 and lung
-55. A threshold sweep confirms that no operating point brings any of them to a defensible ratio:
-raising specificity far enough to fix precision destroys sensitivity first.
+Panels with good discrimination can still have no usable operating point. Projected onto real
+incidence, the pancreatic panel flags roughly 200 people for every true case and lung about 50, and
+the withdrawn bowel panel flagged several hundred. A threshold sweep confirms that no operating point
+brings them to a defensible ratio: raising specificity far enough to fix precision destroys
+sensitivity first.
 
-This is arithmetic, not a modelling deficiency. At an incidence of 36.5 per 100,000, no classifier
+This is arithmetic, not a modelling deficiency. At an incidence of 13.9 per 100,000, no classifier
 with achievable specificity produces a tolerable positive predictive value. Reporting AUC without
 reporting this is the single most common way a paper of this kind overstates itself, which is why
 the flagged-per-case figure appears on every panel's own card rather than in an appendix.
@@ -543,54 +598,53 @@ sensitivity plus specificity, which is to say it treats a false positive and a f
 equally costly. Before an expensive diagnostic they are not remotely equal: a false positive costs
 a colonoscopy, and a false negative costs a life.
 
-The consequence is measurable. At Youden, the colorectal panel flags 14,852 people per 100,000 and
-misses 190 of 400 cancers. It appears to save $192M, and the appearance survives only while a
-missed cancer is priced at the $67,000 difference between early and late-stage treatment. Priced at
-fifteen life-years, the break-even is $1.08M against roughly $2.25M and the saving evaporates.
+<!-- AUTOGEN:operating_point -->
+The consequence is measurable. At Youden, the colorectal panel flags 10,766 people per 100,000 and misses 191 of 400 cancers. It appears to save $202M, and the appearance survives only while a missed cancer is priced at the $67,000 difference between early and late-stage treatment. Priced at fifteen life-years, the break-even is $1.13M against $2.25M and the saving evaporates.
 
-Move along the same ROC curve — the same model, the same features, the same data — to the point
-that maximises net benefit once a missed cancer costs $2.25M, and the panel avoids 36,052
-colonoscopies per 100,000 people while missing 8.3 of 400 cancers. The lung panel avoids 21,561 CT
-scans and misses none.
+Move along the same ROC curve — the same model, the same features, the same data — to the point that maximises net benefit once a missed cancer costs $2.25M, and the panel avoids 46,551 colonoscopies per 100,000 people while missing 21.2 of 400 cancers.
+**But the lab values are not what pays.** Triage on age and sex alone, with no lab values at all, avoids 42,863 procedures, misses 10.6 cancers and nets $79.5M, against $64.5M for the best version of the panel on the same folds.
+For lung and liver, no point on the curve beats sending everyone, which is why those panels offer no rule-out call.
+<!-- /AUTOGEN:operating_point -->
 
 Nothing about the model changed. What changed was the question asked of it. **A panel too weak to
 screen with can be strong enough to rule out with**, and those are different claims with different
 thresholds and different evidentiary burdens.
 
 The converse also holds, and the liver panel demonstrates it. That panel has the largest gain over
-age and sex in this project, +0.106, comfortably ahead of colorectal's +0.039. Its optimal
+age and sex in this project, far ahead of any other population panel (section 3.7). Its optimal
 operating point is to send everyone: no threshold beats universal testing once a missed case is
 priced. Liver disease is common in this cohort at 4%, and transient elastography costs $500, so the
 scans a threshold saves are worth less than the cases it misses.
 
 **Discrimination did not decide either result. Prevalence and procedure cost did.** The panel that
-separates best is the one where triage helps least, and the panel with an unremarkable 0.793 is the
-one that avoids 36,052 colonoscopies. Any account of a model's usefulness that stops at AUC has no
+separates best is the one where triage helps least, and the one triage appeared to help was bowel, where the saving turned out to be the patient's age rather than the lab report. Any account of a model's usefulness that stops at AUC has no
 way of telling those two apart. A literature that reports AUC and a single balanced
 operating point is systematically failing to find this, and it is available for free in models that
 already exist.
 
 The corollary matters for how this application presents itself. "You are flagged" is a claim about
 a person. "There is not enough here to exclude you" is a claim about the evidence, it is the one
-these panels can actually support, and it is the one a patient deciding whether to push for a
-colonoscopy needs.
+these panels can actually support, and it is the one a patient deciding whether to push for an
+expensive test needs.
 
 ### 4.6 A tool can be useful below the accuracy at which it is interesting
 
-The colorectal panel reaches 0.793. By the standards of a modelling paper that is unremarkable, and
-it is the number that would be reported. At a rule-out threshold the same panel excludes 40% of
-people from consideration for a $2,412 procedure while missing 4 cases in 100, and that is a useful
-thing to be able to do with a blood test somebody has already paid for.
+The mammogram-report breast panel reaches 0.623, the lowest AUC on the site. By the standards of a
+modelling paper that is unremarkable, and it is the number that would be reported. On the
+consortium's 597,859-mammogram validation split, its rule-out cut excluded 11.6% of women while
+catching 95.3% of the cancers that followed, which is the rate it promised to within a point.
 
 The two statements describe one model. The first is what gets published and the second is what
 would matter to a health system, and the gap between them is not a modelling problem. It is a
 reporting convention.
 
-This does not rescue the panels that fail on other grounds. The general panel's gain does not
-survive external validation, and no threshold repairs a signal that is not there. But for the
-panels that do transfer, the honest summary is not "moderately accurate". It is: this can safely
-take a substantial fraction of people out of an expensive queue, and here is exactly how many
-cancers that costs.
+This section used to make the argument with the bowel panel, which at a rule-out threshold took a
+large share of people out of the colonoscopy queue. That was true, and it was not the panel's doing:
+the same search run on age and sex alone took out a similar share and missed half as many cancers.
+So the argument needs a condition it did not have. **A tool can be useful below the accuracy at which
+it is interesting only if it is useful beyond what the patient's age already says**, and that has to
+be measured rather than assumed. For the breast panel's cut it has not yet been measured, and after
+the bowel panel it has to be. No threshold repairs a signal that is not there.
 
 ### 4.7 Methodological findings
 
@@ -631,9 +685,13 @@ trained on it partly learns who gets treated. Deaths from other causes inside th
 treated as non-cases, which is true as stated but is a competing risk that a cause-specific hazard
 model would handle more carefully than a binary classifier.
 
-**Four cohorts are case-control.** Breast, pancreatic, ovarian and prostate assemble cases and
-match controls to them. Their discrimination does not transfer to a screening population and is
-not claimed to.
+**Four cohorts are case-control.** The biopsy breast panel, pancreatic, ovarian and prostate
+assemble cases and match controls to them. Their discrimination does not transfer to a screening
+population and is not claimed to. Breast is the one cancer where that is no longer the only
+evidence: the mammogram-report panel in section 3.9 is fitted and validated on a screening
+population at its real prevalence. Pancreatic has no screening population anywhere to build on,
+because no screening programme for it exists. Ovarian and prostate do, in PLCO, behind an
+application this project has not made.
 
 **Small test sets on the highest-scoring panels.** Prostate is measured on 43 held-out patients,
 ovarian on 70, breast on 114. Prostate's confidence interval runs from 0.705 to 0.952, which spans
@@ -642,8 +700,9 @@ ovarian on 70, breast on 114. Prostate's confidence interval runs from 0.705 to 
 **External validation is uneven.** The liver panel is tested across three countries and transfers
 badly to one of them — 0.442 on the German cohort, below chance, because ALT and alkaline
 phosphatase run in opposite directions between a mild-disease population and an advanced-disease
-one. The bowel and general panels transfer to NHANES III, and liver and lung to a withheld 2017–2018
-cycle, but a withheld cycle of the same survey is a weaker test than another country and section 3.8
+one. The general panel was tested on NHANES III, and liver and lung on a withheld 2017–2018 cycle; the
+bowel panel's apparent transfer to NHANES III was an artefact of a weak baseline (section 3.6).
+A withheld cycle of the same survey is a weaker test than another country and section 3.8
 does not claim otherwise. The lung result is uninformative either way on thirteen events. No
 external cohort exists in public data for any of the four case-control panels, and none is likely
 to: they are assembled from cases and matched controls, and a screening population is the thing
@@ -659,8 +718,8 @@ quality-adjusted life years beyond the single figure used to price a missed canc
 the harm, anxiety or complication risk of an unnecessary procedure — only its invoice. Treatment
 costs are first-year figures and understate the late-stage penalty, which biases it *towards*
 triage. It compares triage against universal screening, not against current practice, which is
-neither. The sign of the lung result flips if incidence is five times higher or the late-stage
-penalty three times worse, and both sweeps are reported.
+neither. Every input is swept and the sweeps are
+reported, so a reader can see which inputs would move the sign.
 
 **Pricing a life at fifteen years and $150,000 per QALY is a convention, not a fact.** It is the
 figure conventionally used in US health economics, it is contested, and the break-even table is
@@ -669,8 +728,9 @@ accept ours.
 
 **The rule-out thresholds are chosen on the training cohorts, and they degrade when moved.** They
 are computed from out-of-fold predictions rather than from the fitted model's own scores, so they
-are not fit to the data they are evaluated on. Both cuts that ship on a population cohort have now
-been applied unchanged to NHANES III, and both lost ground:
+are not fit to the data they are evaluated on. The two population-cohort cuts that were applied
+unchanged to NHANES III both lost ground, and the bowel panel has since been withdrawn, so of these
+only the general cut still ships:
 
 | Cut | Promised | Delivered | Wrongly ruled out |
 |---|---|---|---|
@@ -684,8 +744,12 @@ promised while catching fewer, which is the direction that matters — a cut tha
 reassures more people on less evidence. The interface quotes each panel's own transferred figures
 rather than the tuned ones, and rounds them as approximate.
 
-The four case-control panels (breast, ovarian, pancreatic, prostate) also ship cuts, and no public
-cohort exists to test those against. Liver and lung ship no cut at all: the cost model says
+The mammogram-report breast cut is the exception, and the reason is design rather than luck: tuned
+and tested at real screening prevalence on the consortium's own split, it promised to catch 95.1% and
+exclude 11.0%, and delivered 95.3% and 11.6%. Whether it beats a cut on age alone is not yet measured,
+and after the bowel panel that is the question it has to answer next. The four case-control panels
+(biopsy breast, ovarian, pancreatic, prostate) also ship cuts, and no public cohort exists to test
+those against. Liver and lung ship no cut at all: the cost model says
 everyone in those groups should have the confirmatory test regardless. Given section 4.2, the
 untested case-control cuts should be read with the same suspicion the discrimination figures earn.
 

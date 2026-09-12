@@ -1,0 +1,194 @@
+{
+  "colorectal": {
+    "shipped_kind": "logistic",
+    "n": 28527,
+    "events": 113,
+    "mean_auc": {
+      "full_logistic": 0.811,
+      "full_ensemble": 0.798,
+      "base_logistic": 0.822,
+      "base_ensemble": 0.765
+    },
+    "gain_same_kind": {
+      "mean": -0.011,
+      "range": [
+        -0.029,
+        -0.002
+      ],
+      "wins": 0,
+      "repeats": 5
+    },
+    "gain_vs_ensemble_baseline": {
+      "mean": 0.046,
+      "range": [
+        0.034,
+        0.061
+      ],
+      "wins": 5,
+      "repeats": 5
+    },
+    "gain_vs_strongest_baseline": {
+      "mean": -0.011,
+      "range": [
+        -0.029,
+        -0.002
+      ],
+      "wins": 0,
+      "repeats": 5
+    },
+    "best_panel_vs_best_baseline": {
+      "mean": -0.01,
+      "range": [
+        -0.025,
+        -0.002
+      ],
+      "wins": 0,
+      "repeats": 5
+    },
+    "bloodwork_adds_signal": false
+  },
+  "general": {
+    "shipped_kind": "logistic",
+    "n": 28711,
+    "events": 897,
+    "mean_auc": {
+      "full_logistic": 0.767,
+      "full_ensemble": 0.765,
+      "base_logistic": 0.766,
+      "base_ensemble": 0.76
+    },
+    "gain_same_kind": {
+      "mean": 0.002,
+      "range": [
+        0.001,
+        0.002
+      ],
+      "wins": 5,
+      "repeats": 5
+    },
+    "gain_vs_ensemble_baseline": {
+      "mean": 0.007,
+      "range": [
+        0.006,
+        0.009
+      ],
+      "wins": 5,
+      "repeats": 5
+    },
+    "gain_vs_strongest_baseline": {
+      "mean": 0.002,
+      "range": [
+        0.001,
+        0.002
+      ],
+      "wins": 5,
+      "repeats": 5
+    },
+    "best_panel_vs_best_baseline": {
+      "mean": 0.002,
+      "range": [
+        0.001,
+        0.004
+      ],
+      "wins": 5,
+      "repeats": 5
+    },
+    "bloodwork_adds_signal": true
+  },
+  "lung": {
+    "shipped_kind": "logistic",
+    "n": 19866,
+    "events": 91,
+    "mean_auc": {
+      "full_logistic": 0.82,
+      "full_ensemble": 0.822,
+      "base_logistic": 0.798,
+      "base_ensemble": 0.756
+    },
+    "gain_same_kind": {
+      "mean": 0.022,
+      "range": [
+        0.021,
+        0.023
+      ],
+      "wins": 5,
+      "repeats": 5
+    },
+    "gain_vs_ensemble_baseline": {
+      "mean": 0.065,
+      "range": [
+        0.053,
+        0.076
+      ],
+      "wins": 5,
+      "repeats": 5
+    },
+    "gain_vs_strongest_baseline": {
+      "mean": 0.022,
+      "range": [
+        0.021,
+        0.023
+      ],
+      "wins": 5,
+      "repeats": 5
+    },
+    "best_panel_vs_best_baseline": {
+      "mean": 0.026,
+      "range": [
+        0.023,
+        0.031
+      ],
+      "wins": 5,
+      "repeats": 5
+    },
+    "bloodwork_adds_signal": true
+  },
+  "liver": {
+    "shipped_kind": "ensemble",
+    "n": 30624,
+    "events": 1167,
+    "mean_auc": {
+      "full_logistic": 0.743,
+      "full_ensemble": 0.753,
+      "base_logistic": 0.612,
+      "base_ensemble": 0.639
+    },
+    "gain_same_kind": {
+      "mean": 0.114,
+      "range": [
+        0.111,
+        0.119
+      ],
+      "wins": 5,
+      "repeats": 5
+    },
+    "gain_vs_ensemble_baseline": {
+      "mean": 0.114,
+      "range": [
+        0.111,
+        0.119
+      ],
+      "wins": 5,
+      "repeats": 5
+    },
+    "gain_vs_strongest_baseline": {
+      "mean": 0.114,
+      "range": [
+        0.111,
+        0.119
+      ],
+      "wins": 5,
+      "repeats": 5
+    },
+    "best_panel_vs_best_baseline": {
+      "mean": 0.114,
+      "range": [
+        0.111,
+        0.119
+      ],
+      "wins": 5,
+      "repeats": 5
+    },
+    "bloodwork_adds_signal": true
+  }
+}

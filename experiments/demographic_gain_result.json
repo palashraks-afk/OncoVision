@@ -1,12 +1,13 @@
 {
   "general": {
+    "model": "logistic",
     "n_repeats": 5,
-    "panel_auc": 0.765,
-    "age_sex_auc": 0.76,
-    "gain": 0.006,
+    "panel_auc": 0.767,
+    "age_sex_auc": 0.766,
+    "gain": 0.002,
     "gain_range": [
-      0.003,
-      0.008
+      0.001,
+      0.002
     ],
     "wins": 5,
     "baseline_features": [
@@ -19,14 +20,29 @@
     "gain": null,
     "reason": "cohort records neither age nor sex"
   },
+  "breast_screening": {
+    "source": "experiments/bcsc_validation_result.json",
+    "panel_auc": 0.623,
+    "age_sex_auc": 0.595,
+    "gain": 0.028,
+    "gain_ci": [
+      0.021,
+      0.035
+    ],
+    "baseline_features": [
+      "age"
+    ],
+    "barely_beats_demographics": false
+  },
   "liver": {
+    "model": "ensemble",
     "n_repeats": 5,
-    "panel_auc": 0.749,
-    "age_sex_auc": 0.643,
-    "gain": 0.106,
+    "panel_auc": 0.753,
+    "age_sex_auc": 0.639,
+    "gain": 0.114,
     "gain_range": [
-      0.104,
-      0.11
+      0.111,
+      0.119
     ],
     "wins": 5,
     "baseline_features": [
@@ -36,13 +52,14 @@
     "barely_beats_demographics": false
   },
   "pancreatic": {
+    "model": "logistic",
     "n_repeats": 20,
-    "panel_auc": 0.966,
-    "age_sex_auc": 0.469,
-    "gain": 0.498,
+    "panel_auc": 0.97,
+    "age_sex_auc": 0.464,
+    "gain": 0.505,
     "gain_range": [
-      0.467,
-      0.524
+      0.473,
+      0.549
     ],
     "wins": 20,
     "baseline_features": [
@@ -52,22 +69,24 @@
     "barely_beats_demographics": false
   },
   "colorectal": {
+    "model": "logistic",
     "n_repeats": 5,
-    "panel_auc": 0.798,
-    "age_sex_auc": 0.765,
-    "gain": 0.033,
+    "panel_auc": 0.811,
+    "age_sex_auc": 0.822,
+    "gain": -0.011,
     "gain_range": [
-      0.028,
-      0.038
+      -0.029,
+      -0.002
     ],
-    "wins": 5,
+    "wins": 0,
     "baseline_features": [
       "age",
       "gender"
     ],
-    "barely_beats_demographics": false
+    "barely_beats_demographics": true
   },
   "ovarian": {
+    "model": "ensemble",
     "n_repeats": 20,
     "panel_auc": 0.932,
     "age_sex_auc": 0.758,
@@ -83,15 +102,16 @@
     "barely_beats_demographics": false
   },
   "lung": {
-    "n_repeats": 5,
+    "model": "logistic",
+    "n_repeats": 20,
     "panel_auc": 0.819,
-    "age_sex_auc": 0.775,
-    "gain": 0.044,
+    "age_sex_auc": 0.796,
+    "gain": 0.024,
     "gain_range": [
-      0.037,
-      0.054
+      0.012,
+      0.042
     ],
-    "wins": 5,
+    "wins": 20,
     "baseline_features": [
       "age",
       "gender"
@@ -99,13 +119,14 @@
     "barely_beats_demographics": false
   },
   "prostate": {
+    "model": "logistic",
     "n_repeats": 20,
-    "panel_auc": 0.826,
-    "age_sex_auc": 0.568,
-    "gain": 0.258,
+    "panel_auc": 0.836,
+    "age_sex_auc": 0.614,
+    "gain": 0.222,
     "gain_range": [
-      0.224,
-      0.286
+      0.202,
+      0.238
     ],
     "wins": 20,
     "baseline_features": [

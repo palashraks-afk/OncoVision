@@ -1,16 +1,5 @@
 {
   "panels": {
-    "colorectal": {
-      "cut": 0.000804,
-      "promised_catch_rate": 0.956,
-      "actual_catch_rate": 0.946,
-      "promised_share_excluded": 0.386,
-      "actual_share_excluded": 0.425,
-      "cases_in_test_cohort": 56,
-      "cases_ruled_out_wrongly": 3,
-      "promise_kept": true,
-      "tolerance": 0.05
-    },
     "general": {
       "cut": 0.007675,
       "promised_catch_rate": 0.951,
@@ -24,5 +13,7 @@
     }
   },
   "promises_broken": [],
-  "not_tested": {}
+  "not_tested": {
+    "colorectal": "panel withdrawn, no cut ships"
+  }
 }

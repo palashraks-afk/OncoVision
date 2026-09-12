@@ -1,0 +1,51 @@
+{
+  "n_mammograms": 597859,
+  "n_cancers": 2871,
+  "auc": 0.623,
+  "auc_ci": [
+    0.613,
+    0.633
+  ],
+  "age_only_auc": 0.595,
+  "gain": 0.028,
+  "gain_ci": [
+    0.021,
+    0.035
+  ],
+  "gain_beats_age": true,
+  "rule_out": {
+    "promised_catch_rate": 0.951,
+    "actual_catch_rate": 0.953,
+    "promised_share_excluded": 0.11,
+    "actual_share_excluded": 0.116,
+    "cases_in_test_cohort": 2871,
+    "cases_ruled_out_wrongly": 134,
+    "promise_kept": true,
+    "tolerance": 0.05
+  },
+  "groups": {
+    "White": {
+      "events": 2184,
+      "auc": 0.625,
+      "materially_worse": false
+    },
+    "Asian or Pacific Islander": {
+      "events": 113,
+      "auc": 0.605,
+      "materially_worse": false
+    },
+    "Black": {
+      "events": 138,
+      "auc": 0.622,
+      "materially_worse": false
+    },
+    "Native American": {
+      "events": 19,
+      "auc": null
+    },
+    "Other or mixed": {
+      "events": 22,
+      "auc": null
+    }
+  }
+}

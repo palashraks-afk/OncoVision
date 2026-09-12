@@ -1,0 +1,48 @@
+{
+  "colorectal": {
+    "test_n": 14499,
+    "test_events": 56,
+    "auc": {
+      "full_logistic": 0.822,
+      "base_logistic": 0.822,
+      "full_ensemble": 0.792,
+      "base_ensemble": 0.764
+    },
+    "old_gain_ensemble_vs_ensemble": 0.029,
+    "old_gain_ci": [
+      -0.013,
+      0.072
+    ],
+    "honest_gain_best_vs_best": -0.0,
+    "honest_gain_ci": [
+      -0.012,
+      0.013
+    ],
+    "strongest_baseline": "base_logistic",
+    "best_panel": "full_logistic",
+    "gain_survives_honest_baseline": false
+  },
+  "general": {
+    "test_n": 15896,
+    "test_events": 252,
+    "auc": {
+      "full_logistic": 0.746,
+      "base_logistic": 0.748,
+      "full_ensemble": 0.753,
+      "base_ensemble": 0.729
+    },
+    "old_gain_ensemble_vs_ensemble": 0.024,
+    "old_gain_ci": [
+      0.008,
+      0.04
+    ],
+    "honest_gain_best_vs_best": 0.005,
+    "honest_gain_ci": [
+      -0.005,
+      0.018
+    ],
+    "strongest_baseline": "base_logistic",
+    "best_panel": "full_ensemble",
+    "gain_survives_honest_baseline": false
+  }
+}

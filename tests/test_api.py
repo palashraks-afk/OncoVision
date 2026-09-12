@@ -209,11 +209,12 @@ def test_screening_panels_offer_a_rule_out_call(client):
     The question this application is for is not "are you flagged", it is "is
     there enough here to leave you out before an expensive test".
 
-    Those are different thresholds. experiments/cost_model.py finds that at the
-    balanced point the bowel panel misses 190 cancers in 400 and stops saving
-    money the moment a missed cancer is priced at a life rather than a treatment
-    bill; at the rule-out point it avoids 36,052 colonoscopies per 100,000 and
-    misses 8.
+    Those are different thresholds. The bowel panel used to be the example here:
+    its rule-out point appeared to pay once a missed cancer was priced at a life.
+    It paid because age does. Triage on age and sex alone paid more and missed
+    fewer cancers, and the panel was withdrawn (train_models.WITHDRAWN). Lung and
+    liver remain, and both ship no rule-out, so what this test now holds them to
+    is saying why.
     """
     payload = {"age": 58, "gender": 0, **FULL_BLOODS}
     body = client.post("/predict", json=payload).json()
@@ -255,13 +256,43 @@ def test_rule_out_is_a_looser_cut_than_the_flag(client):
             f"flagging threshold ({thr}%), which cannot be right")
 
 
+def test_every_feature_a_shipped_panel_reads_is_accepted_by_the_api():
+    """The reverse of the dead-field check, and the one that was missing.
+
+    The API's request model ignores fields it does not declare. When the
+    mammogram-report breast panel was added, its seven history fields reached
+    the form, the training data and the audit, and were silently discarded at
+    the API boundary: a user who answered every question was told they had
+    entered 3 of 10 values, and the panel could never score for anyone. Every
+    other check passed, because they all asked whether the API reads what it
+    accepts, never whether it accepts what the models read.
+    """
+    import train_models as tm
+
+    accepted = set(api.PatientData.model_fields)
+    for cfg in tm.DATASETS:
+        if cfg["name"] in tm.WITHDRAWN:
+            continue
+        dropped = sorted(set(cfg["features"]) - accepted)
+        assert not dropped, (
+            f"{cfg['name']} reads {dropped}, which the API does not accept, so "
+            f"those values are discarded before they reach the model")
+
+
 def test_screening_panels_still_work_from_routine_bloodwork(client):
-    """The gate must not catch the panels whose whole point is a lab report."""
+    """The gate must not catch the panels whose whole point is a lab report.
+
+    Bowel used to be in this list. It was withdrawn after its lab values were
+    shown to add nothing over age and sex, so the assertion for it is inverted:
+    a withdrawn panel scoring would mean the withdrawal did not reach the
+    service, which is the failure that matters now.
+    """
     payload = {"age": 58, "gender": 0, **FULL_BLOODS}
     body = client.post("/predict", json=payload).json()
     scored = " ".join(body["predictions"]).lower()
-    for panel in ("liver", "bowel", "lung"):
+    for panel in ("liver", "lung"):
         assert panel in scored, f"the {panel} panel stopped scoring from routine bloodwork"
+    assert "bowel" not in scored, "the withdrawn bowel panel is still being served"
 
 
 # --------------------------------------------------------------- exposure

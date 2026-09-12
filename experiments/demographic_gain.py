@@ -54,13 +54,31 @@ def repeats_for(n_rows: int) -> int:
     return 20
 
 
-def oof_auc(X, y, seed):
+def oof_auc(X, y, seed, kind):
     cv = StratifiedKFold(5, shuffle=True, random_state=seed)
     p = cross_val_predict(
-        CalibratedClassifierCV(tm.build_ensemble(len(y), float(y.mean())),
+        CalibratedClassifierCV(tm.model_factory(kind, len(y), float(y.mean())),
                                method="isotonic", cv=cv),
         X, y, cv=cv, method="predict_proba")[:, 1]
     return float(roc_auc_score(y, p))
+
+
+# Panels whose gain is measured on a split nothing was fitted on, which is a
+# better number than resampling the training data, and far cheaper: repeating
+# a calibrated model with nested folds five times over 400,000 mammograms
+# would take hours to reproduce a figure the validation split already gives
+# with a tighter interval.
+FROM_VALIDATION_SPLIT = {
+    "breast_screening": "experiments/bcsc_validation_result.json",
+}
+
+
+def save(results):
+    # Written after every panel. This file used to be written once, at the end,
+    # and a run that hit a time limit on the last panel lost all of them -- the
+    # docs then quoted a week-old version without anyone noticing.
+    with open(OUT, "w") as f:
+        json.dump(results, f, indent=2)
 
 
 def main():
@@ -68,6 +86,26 @@ def main():
     for cfg in tm.DATASETS:
         name = cfg["name"]
         if name in tm.WITHDRAWN:
+            continue
+        if name in FROM_VALIDATION_SPLIT:
+            path = FROM_VALIDATION_SPLIT[name]
+            if not os.path.isfile(path):
+                print(f"=== {name} ===  {path} missing, run it first")
+                continue
+            r = json.load(open(path))
+            results[name] = {
+                "source": path,
+                "panel_auc": r["auc"],
+                "age_sex_auc": r["age_only_auc"],
+                "gain": r["gain"],
+                "gain_ci": r["gain_ci"],
+                "baseline_features": ["age"],
+                "barely_beats_demographics": bool(r["gain"] < tm.BARELY_BEATS_DEMOGRAPHICS),
+            }
+            print(f"=== {name} ===  from its validation split: panel {r['auc']}  "
+                  f"age {r['age_only_auc']}  gain {r['gain']:+.3f} {tuple(r['gain_ci'])}",
+                  flush=True)
+            save(results)
             continue
         X, y, _ = tm.prepare(cfg)
         X = X.apply(pd.to_numeric, errors="coerce").reset_index(drop=True)
@@ -80,14 +118,22 @@ def main():
             results[name] = {"gain": None, "reason": "cohort records neither age nor sex"}
             continue
 
+        # The model kind that actually ships for this panel, chosen by the same
+        # rule the trainer uses. This file used to hardcode the ensemble while
+        # six of the panels shipped logistic regression, so the gain it
+        # reported -- and the "barely beats demographics" warning built on it --
+        # belonged to a model no user was scored by. Both arms use the same
+        # kind, so the comparison stays like for like.
+        kind, _ = tm.select_model(X, y, float(y.mean()))
         n = repeats_for(len(y))
         full, base = [], []
         for s in range(n):
-            full.append(oof_auc(X, y, s))
-            base.append(oof_auc(X[base_feats], y, s))
+            full.append(oof_auc(X, y, s, kind))
+            base.append(oof_auc(X[base_feats], y, s, kind))
         d = np.array(full) - np.array(base)
         wins = int((d > 0).sum())
         entry = {
+            "model": kind,
             "n_repeats": n,
             "panel_auc": round(float(np.mean(full)), 3),
             "age_sex_auc": round(float(np.mean(base)), 3),
@@ -103,13 +149,13 @@ def main():
               f"gain {entry['gain']:+.3f}  wins {wins}/{n}"
               f"{'   <-- barely beats demographics' if entry['barely_beats_demographics'] else ''}",
               flush=True)
+        save(results)
 
     print("\n" + "=" * 80)
     weak = [k for k, v in results.items() if v.get("barely_beats_demographics")]
     print("panels that barely beat age and sex:", weak or "none")
 
-    with open(OUT, "w") as f:
-        json.dump(results, f, indent=2)
+    save(results)
     print(f"wrote {OUT}")
 
 

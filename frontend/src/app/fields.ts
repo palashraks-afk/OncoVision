@@ -149,7 +149,7 @@ export type HistoryField = {
   // Which heading this sits under. The list runs to 22 fields once the
   // cervical panel's risk history is included, which is too many to read as
   // one flat block.
-  group: "General" | "Reproductive history";
+  group: "General" | "Reproductive history" | "Breast history";
   type: "select" | "number";
   options?: { value: number; label: string }[];
   min?: number;
@@ -217,11 +217,73 @@ export const HISTORY_FIELDS: HistoryField[] = [
     meaning: "Read by the ovarian panel. CA 125 and HE4 are interpreted against different cut-offs before and after menopause.",
     options: [{ value: 0, label: "Pre-menopausal" }, { value: 1, label: "Post-menopausal" }],
   },
+  // The mammogram-report breast panel. Density is the one that earns its place:
+  // US law requires it on every mammogram report, so a woman who has had one
+  // can read it off the page, and it adds more over age than anything else here.
+  {
+    key: "breast_density", label: "Breast density", type: "select",
+    group: "Breast history",
+    meaning: "The BI-RADS density category printed on your mammogram report, from 'almost entirely fatty' to 'extremely dense'. US mammogram reports are required to state it. Dense breasts both raise risk and make a mammogram harder to read.",
+    options: [
+      { value: 1, label: "a — almost entirely fatty" },
+      { value: 2, label: "b — scattered fibroglandular density" },
+      { value: 3, label: "c — heterogeneously dense" },
+      { value: 4, label: "d — extremely dense" },
+    ],
+  },
+  {
+    key: "family_history_breast", label: "Relatives with breast cancer", type: "select",
+    group: "Breast history",
+    meaning: "First-degree relatives — mother, sister, daughter — diagnosed with breast cancer. The cohort this panel learned from recorded 'two or more' as a single category, so it cannot tell three from two.",
+    options: [
+      { value: 0, label: "None" },
+      { value: 1, label: "One" },
+      { value: 2, label: "Two or more" },
+    ],
+  },
+  {
+    key: "prior_breast_biopsy", label: "Previous breast biopsy", type: "select",
+    group: "Breast history",
+    meaning: "Whether you have had a breast biopsy or other breast procedure before. Having had one raises risk, which is partly why it was done.",
+    options: [{ value: 0, label: "No" }, { value: 1, label: "Yes" }],
+  },
+  {
+    key: "last_mammogram_result", label: "Last mammogram result", type: "select",
+    group: "Breast history",
+    meaning: "Whether your previous mammogram was negative, or was called back and turned out not to be cancer. A previous false positive is associated with higher risk later, which is a real effect and not a reason to regret the callback.",
+    options: [
+      { value: 0, label: "Negative" },
+      { value: 1, label: "Called back, not cancer" },
+    ],
+  },
+  {
+    key: "age_at_first_birth", label: "Age at first birth", type: "select",
+    group: "Reproductive history",
+    meaning: "Recorded as a band rather than a number, because the cohort this panel learned from recorded it that way.",
+    options: [
+      { value: 0, label: "Under 30" },
+      { value: 1, label: "30 or older" },
+      { value: 2, label: "No children" },
+    ],
+  },
+  {
+    key: "surgical_menopause", label: "Type of menopause", type: "select",
+    group: "Reproductive history",
+    meaning: "Whether menopause happened naturally or followed surgery. Read alongside menopausal status by the mammogram-report breast panel.",
+    options: [{ value: 0, label: "Natural" }, { value: 1, label: "Surgical" }],
+  },
+  {
+    key: "hormone_therapy", label: "Hormone therapy", type: "select",
+    group: "Reproductive history",
+    meaning: "Whether you currently use menopausal hormone therapy.",
+    options: [{ value: 0, label: "No" }, { value: 1, label: "Yes" }],
+  },
 ];
 
 export const HISTORY_GROUPS: HistoryField["group"][] = [
   "General",
   "Reproductive history",
+  "Breast history",
 ];
 
 export const HISTORY_KEYS = HISTORY_FIELDS.map(f => f.key);

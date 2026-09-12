@@ -9,12 +9,13 @@ before any model was fitted and was not used for training, model selection, or c
 |---|---|---|---|---|---|
 | general | 0.781 | 0.749 to 0.811 | 0.78 | 0.779 | marginal |
 | breast | 0.997 | 0.989 to 1.0 | 0.995 | n/a | marginal |
-| liver | 0.78 | 0.748 to 0.812 | 0.761 | 0.623 | marginal |
+| breast_screening | 0.628 | 0.599 to 0.654 | 0.628 | 0.608 | marginal |
+| liver | 0.78 | 0.748 to 0.811 | 0.761 | 0.623 | marginal |
 | pancreatic | 0.966 | 0.933 to 0.99 | 0.968 | 0.5 | marginal |
-| colorectal | 0.821 | 0.747 to 0.891 | 0.82 | 0.843 | marginal |
-| ovarian | 0.949 | 0.886 to 0.993 | 0.911 | 0.813 | yes |
-| lung | 0.872 | 0.802 to 0.925 | 0.867 | 0.842 | marginal |
-| prostate | 0.88 | 0.753 to 0.978 | 0.876 | 0.661 | marginal |
+| colorectal | 0.821 | 0.746 to 0.89 | 0.82 | 0.843 | marginal |
+| ovarian | 0.949 | 0.882 to 0.994 | 0.911 | 0.813 | yes |
+| lung | 0.872 | 0.801 to 0.925 | 0.867 | 0.842 | marginal |
+| prostate | 0.88 | 0.746 to 0.979 | 0.876 | 0.661 | marginal |
 
 ## Precision at real population prevalence
 
@@ -26,6 +27,7 @@ whether a screening tool is usable.
 |---|---|---|---|---|---|
 | general | 3.1400% | 0.67 | 0.728 | **7.39%** | 13.5 |
 | breast | 25.0000% | 0.976 | 0.986 | **95.91%** | 1.0 |
+| breast_screening | 0.4860% | 0.018 | 0.994 | **1.35%** | 74.0 |
 | liver | 4.0000% | 0.588 | 0.828 | **12.47%** | 8.0 |
 | pancreatic | 0.0139% | 0.769 | 0.979 | **0.50%** | 200.0 |
 | colorectal | 0.0365% | 0.522 | 0.894 | **0.18%** | 559.8 |
@@ -41,6 +43,7 @@ Slope 1.0 and intercept 0.0 is perfect. Slope below 1 means the model is over-co
 |---|---|---|---|---|
 | general | 0.202 | 0.0292 | 0.914 | 0.721 |
 | breast | 0.0222 | 0.0189 | 0.978 | 1.417 |
+| breast_screening | 0.2403 | 0.0049 | 0.965 | 0.164 |
 | liver | 0.1562 | 0.0332 | 1.045 | 0.573 |
 | pancreatic | 0.0707 | 0.0651 | 0.457 | 4.164 |
 | colorectal | 0.1731 | 0.004 | 0.968 | 1.849 |
@@ -98,25 +101,49 @@ Slope 1.0 and intercept 0.0 is perfect. Slope below 1 means the model is over-co
   | 0.6 to 0.8 | 1 | 0.612 | 1.0 |
   | 0.8 to 1.0 | 38 | 0.994 | 1.0 |
 
+### breast_screening
+
+- **Cohort design**: BCSC screening population, 400,000 mammograms sampled from 1.8M, 0.49% cancer within a year. Judged on BCSC's own 597,859-mammogram validation split.
+- **Records**: 400000 total, 320000 train, 80000 held-out test
+- **Features** (10): age, bmi, breast_density, family_history_breast, prior_breast_biopsy, age_at_first_birth, last_mammogram_result, menopause, surgical_menopause, hormone_therapy
+- **Cohort prevalence**: 0.5% vs population 0.4860%
+- **Test AUC**: 0.628 (95% CI 0.599 to 0.654)
+- **Sensitivity**: 0.018 (95% CI 0.006 to 0.032)
+- **Specificity**: 0.994 (95% CI 0.993 to 0.994)
+- **PPV at SEER prevalence**: 1.35%, about 74.0 people flagged per true case
+
+  Subgroups:
+
+  | Group | n | positives | AUC | 95% CI |
+  |---|---|---|---|---|
+  | age under 52 | 24163 | 57 | 0.52 | 0.443 to 0.599 |
+  | age 52 and over | 55837 | 338 | 0.594 | 0.565 to 0.625 |
+
+  Reliability (calibrated):
+
+  | Predicted bin | n | mean predicted | observed rate |
+  |---|---|---|---|
+  | 0.0 to 0.2 | 80000 | 0.005 | 0.005 |
+
 ### liver
 
-- **Cohort design**: 35,511 US adults, NHANES 2005-2018. Externally validated on India and Germany.
+- **Cohort design**: 30,624 US adults, NHANES 2005-2016. 2017-2018 withheld as a temporal test; also tested on India and Germany.
 - **Records**: 30624 total, 24499 train, 6125 held-out test
 - **Features** (12): age, gender, bilirubin, alkaline_phosphatase, ggt, alt, ast, protein_total, albumin, diabetes, hepatitis_b, hepatitis_c
 - **Cohort prevalence**: 3.8% vs population 4.0000%
-- **Test AUC**: 0.78 (95% CI 0.748 to 0.812)
-- **Sensitivity**: 0.588 (95% CI 0.523 to 0.651)
-- **Specificity**: 0.828 (95% CI 0.818 to 0.838)
+- **Test AUC**: 0.78 (95% CI 0.748 to 0.811)
+- **Sensitivity**: 0.588 (95% CI 0.525 to 0.651)
+- **Specificity**: 0.828 (95% CI 0.819 to 0.838)
 - **PPV at SEER prevalence**: 12.47%, about 8.0 people flagged per true case
 
   Subgroups:
 
   | Group | n | positives | AUC | 95% CI |
   |---|---|---|---|---|
-  | sex: female | 3187 | 99 | 0.757 | 0.704 to 0.807 |
-  | sex: male | 2938 | 134 | 0.795 | 0.755 to 0.833 |
-  | age under 48 | 2961 | 58 | 0.757 | 0.685 to 0.826 |
-  | age 48 and over | 3164 | 175 | 0.747 | 0.703 to 0.788 |
+  | sex: female | 3187 | 99 | 0.757 | 0.703 to 0.809 |
+  | sex: male | 2938 | 134 | 0.795 | 0.754 to 0.835 |
+  | age under 48 | 2961 | 58 | 0.757 | 0.683 to 0.824 |
+  | age 48 and over | 3164 | 175 | 0.747 | 0.704 to 0.787 |
 
   Reliability (calibrated):
 
@@ -134,18 +161,18 @@ Slope 1.0 and intercept 0.0 is perfect. Slope below 1 means the model is over-co
 - **Features** (6): age, gender, creatinine, plasma_ca19_9, bilirubin, glucose
 - **Cohort prevalence**: 21.7% vs population 0.0139%
 - **Test AUC**: 0.966 (95% CI 0.933 to 0.99)
-- **Sensitivity**: 0.769 (95% CI 0.593 to 0.923)
-- **Specificity**: 0.979 (95% CI 0.946 to 1.0)
+- **Sensitivity**: 0.769 (95% CI 0.595 to 0.917)
+- **Specificity**: 0.979 (95% CI 0.944 to 1.0)
 - **PPV at SEER prevalence**: 0.50%, about 200.0 people flagged per true case
 
   Subgroups:
 
   | Group | n | positives | AUC | 95% CI |
   |---|---|---|---|---|
-  | sex: female | 54 | 12 | 0.952 | 0.889 to 0.995 |
-  | sex: male | 66 | 14 | 0.982 | 0.951 to 1.0 |
-  | age under 57 | 58 | 12 | 0.959 | 0.904 to 0.997 |
-  | age 57 and over | 62 | 14 | 0.978 | 0.938 to 1.0 |
+  | sex: female | 54 | 12 | 0.952 | 0.887 to 0.995 |
+  | sex: male | 66 | 14 | 0.982 | 0.954 to 1.0 |
+  | age under 57 | 58 | 12 | 0.959 | 0.903 to 0.997 |
+  | age 57 and over | 62 | 14 | 0.978 | 0.937 to 1.0 |
 
   Reliability (calibrated):
 
@@ -163,8 +190,8 @@ Slope 1.0 and intercept 0.0 is perfect. Slope below 1 means the model is over-co
 - **Records**: 28527 total, 22821 train, 5706 held-out test
 - **Features** (16): age, gender, wbc, rbc, hemoglobin, platelets, glucose, calcium, bun, creatinine, protein_total, albumin, ast, alt, bilirubin, alkaline_phosphatase
 - **Cohort prevalence**: 0.4% vs population 0.0365%
-- **Test AUC**: 0.821 (95% CI 0.747 to 0.891)
-- **Sensitivity**: 0.522 (95% CI 0.31 to 0.724)
+- **Test AUC**: 0.821 (95% CI 0.746 to 0.89)
+- **Sensitivity**: 0.522 (95% CI 0.308 to 0.75)
 - **Specificity**: 0.894 (95% CI 0.885 to 0.902)
 - **PPV at SEER prevalence**: 0.18%, about 559.8 people flagged per true case
 
@@ -173,8 +200,8 @@ Slope 1.0 and intercept 0.0 is perfect. Slope below 1 means the model is over-co
   | Group | n | positives | AUC | 95% CI |
   |---|---|---|---|---|
   | sex: female | 2983 | 12 | 0.821 | 0.711 to 0.922 |
-  | sex: male | 2723 | 11 | 0.823 | 0.717 to 0.922 |
-  | age 47 and over | 2909 | 23 | 0.662 | 0.526 to 0.795 |
+  | sex: male | 2723 | 11 | 0.823 | 0.708 to 0.921 |
+  | age 47 and over | 2909 | 23 | 0.662 | 0.529 to 0.791 |
 
   Reliability (calibrated):
 
@@ -188,8 +215,8 @@ Slope 1.0 and intercept 0.0 is perfect. Slope below 1 means the model is over-co
 - **Records**: 349 total, 279 train, 70 held-out test
 - **Features** (27): age, menopause, albumin, protein_total, glucose, calcium, creatinine, bun, bilirubin, alt, ast, alkaline_phosphatase, ggt, hemoglobin, rbc, platelets, hematocrit, mcv, mch, rdw, mpv, neutrophil_pct, ca125, he4, cea, alpha_fetoprotein_level, plasma_ca19_9
 - **Cohort prevalence**: 49.0% vs population 20.0000%
-- **Test AUC**: 0.949 (95% CI 0.886 to 0.993)
-- **Sensitivity**: 0.853 (95% CI 0.722 to 0.964)
+- **Test AUC**: 0.949 (95% CI 0.882 to 0.994)
+- **Sensitivity**: 0.853 (95% CI 0.722 to 0.966)
 - **Specificity**: 0.944 (95% CI 0.857 to 1.0)
 - **PPV at SEER prevalence**: 79.33%, about 1.3 people flagged per true case
 
@@ -197,8 +224,8 @@ Slope 1.0 and intercept 0.0 is perfect. Slope below 1 means the model is over-co
 
   | Group | n | positives | AUC | 95% CI |
   |---|---|---|---|---|
-  | age under 43 | 33 | 6 | 0.818 | 0.534 to 1.0 |
-  | age 43 and over | 37 | 28 | 0.972 | 0.907 to 1.0 |
+  | age under 43 | 33 | 6 | 0.818 | 0.552 to 1.0 |
+  | age 43 and over | 37 | 28 | 0.972 | 0.909 to 1.0 |
 
   Reliability (calibrated):
 
@@ -211,22 +238,22 @@ Slope 1.0 and intercept 0.0 is perfect. Slope below 1 means the model is over-co
 
 ### lung
 
-- **Cohort design**: 21,916 US adults with tobacco exposure, NHANES 1999-2018. Controls are smokers, not the general population.
+- **Cohort design**: 19,866 US adults with tobacco exposure, NHANES 1999-2016, 2017-2018 withheld. Controls are smokers, not the general population.
 - **Records**: 19866 total, 15892 train, 3974 held-out test
 - **Features** (24): age, gender, smoking, smoking_packyears, cotinine, crp, wbc, rbc, hemoglobin, platelets, hematocrit, mcv, rdw, mpv, glucose, calcium, bun, creatinine, protein_total, albumin, ast, alt, bilirubin, alkaline_phosphatase
 - **Cohort prevalence**: 0.5% vs population 0.4750%
-- **Test AUC**: 0.872 (95% CI 0.802 to 0.925)
-- **Sensitivity**: 0.5 (95% CI 0.25 to 0.75)
-- **Specificity**: 0.882 (95% CI 0.872 to 0.893)
+- **Test AUC**: 0.872 (95% CI 0.801 to 0.925)
+- **Sensitivity**: 0.5 (95% CI 0.25 to 0.739)
+- **Specificity**: 0.882 (95% CI 0.872 to 0.892)
 - **PPV at SEER prevalence**: 1.99%, about 50.3 people flagged per true case
 
   Subgroups:
 
   | Group | n | positives | AUC | 95% CI |
   |---|---|---|---|---|
-  | sex: female | 1578 | 8 | 0.826 | 0.7 to 0.914 |
-  | sex: male | 2396 | 10 | 0.906 | 0.844 to 0.959 |
-  | age 48 and over | 2049 | 18 | 0.776 | 0.677 to 0.86 |
+  | sex: female | 1578 | 8 | 0.826 | 0.699 to 0.914 |
+  | sex: male | 2396 | 10 | 0.906 | 0.837 to 0.959 |
+  | age 48 and over | 2049 | 18 | 0.776 | 0.672 to 0.862 |
 
   Reliability (calibrated):
 
@@ -240,17 +267,17 @@ Slope 1.0 and intercept 0.0 is perfect. Slope below 1 means the model is over-co
 - **Records**: 212 total, 169 train, 43 held-out test
 - **Features** (6): age, psa, prostate_volume, psa_density, bmi, pi_rads
 - **Cohort prevalence**: 57.1% vs population 40.0000%
-- **Test AUC**: 0.88 (95% CI 0.753 to 0.978)
-- **Sensitivity**: 0.76 (95% CI 0.583 to 0.92)
-- **Specificity**: 0.778 (95% CI 0.562 to 0.947)
+- **Test AUC**: 0.88 (95% CI 0.746 to 0.979)
+- **Sensitivity**: 0.76 (95% CI 0.577 to 0.92)
+- **Specificity**: 0.778 (95% CI 0.571 to 0.952)
 - **PPV at SEER prevalence**: 69.51%, about 1.4 people flagged per true case
 
   Subgroups:
 
   | Group | n | positives | AUC | 95% CI |
   |---|---|---|---|---|
-  | age under 69 | 21 | 10 | 0.782 | 0.538 to 0.973 |
-  | age 69 and over | 22 | 15 | 0.971 | 0.889 to 1.0 |
+  | age under 69 | 21 | 10 | 0.782 | 0.546 to 0.971 |
+  | age 69 and over | 22 | 15 | 0.971 | 0.886 to 1.0 |
 
   Reliability (calibrated):
 

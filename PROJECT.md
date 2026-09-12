@@ -240,12 +240,13 @@ Reproduce with `python evaluate.py`.
 |---|---|---|---|---|---|---|---|
 | Breast malignancy | 569 Wisconsin biopsies | 0.997 | 0.989 to 1.0 | 31.6% | 0.976 | 0.986 | 1.0 |
 | Pancreatic cancer | 600 samples, 3 tissue banks | 0.966 | 0.933 to 0.99 | 76.4% | 0.769 | 0.979 | 200.0 |
-| Ovarian malignancy | 349 operated ovarian masses | 0.949 | 0.886 to 0.993 | 58.1% | 0.853 | 0.944 | 1.3 |
-| Prostate cancer | 212 biopsied men | 0.880 | 0.753 to 0.978 | 65.9% | 0.76 | 0.778 | 1.4 |
-| Lung cancer | 21,916 adults with tobacco exposure | 0.872 | 0.802 to 0.925 | 1.0% | 0.5 | 0.882 | 50.3 |
-| Bowel cancer | 28,527 NHANES adults | 0.821 | 0.747 to 0.891 | 1.0% | 0.522 | 0.894 | 559.8 |
+| Ovarian malignancy | 349 operated ovarian masses | 0.949 | 0.882 to 0.994 | 58.1% | 0.853 | 0.944 | 1.3 |
+| Prostate cancer | 212 biopsied men | 0.880 | 0.746 to 0.979 | 65.9% | 0.76 | 0.778 | 1.4 |
+| Lung cancer | 19,866 adults with tobacco exposure | 0.872 | 0.801 to 0.925 | 1.0% | 0.5 | 0.882 | 50.3 |
+| ~~Bowel cancer~~ withdrawn | 28,527 NHANES adults | 0.821 | 0.746 to 0.89 | 1.0% | 0.522 | 0.894 | 559.8 |
 | General cancer | 28,711 NHANES adults | 0.781 ⚠️<br>_a lucky draw, 100th pct;_<br>_stable mean 0.758_ | 0.749 to 0.811 | 3.5% | 0.67 | 0.728 | 13.5 |
-| Liver disease | 35,511 NHANES adults | 0.780 ⚠️<br>_a lucky draw, 100th pct;_<br>_stable mean 0.759_ | 0.748 to 0.812 | 4.3% | 0.588 | 0.828 | 8.0 |
+| Liver disease | 30,624 NHANES adults | 0.780 ⚠️<br>_a lucky draw, 100th pct;_<br>_stable mean 0.759_ | 0.748 to 0.811 | 4.3% | 0.588 | 0.828 | 8.0 |
+| Breast cancer within a year | 400,000 BCSC mammograms | 0.628 | 0.599 to 0.654 | 1.0% | 0.018 | 0.994 | 74.0 |
 | ~~Cervical~~ | 858 Caracas referrals | 0.725 | withdrawn, a lucky split | | | | |
 <!-- /AUTOGEN:shipped -->
 
@@ -254,14 +255,15 @@ Reproduce with `python evaluate.py`.
 <!-- AUTOGEN:baselines -->
 | Panel | Model | Logistic | Age and sex alone | Gain over age and sex |
 |---|---|---|---|---|
-| Breast | 0.997 | 0.995 | — | not measurable |
-| Pancreatic | 0.966 | 0.968 | 0.5 | +0.498 |
+| Breast (biopsy) | 0.997 | 0.995 | — | not measurable |
+| Pancreatic | 0.966 | 0.968 | 0.5 | +0.505 |
 | Ovarian | 0.949 | 0.911 | 0.813 | +0.174 |
-| Prostate | 0.880 | 0.876 | 0.661 | +0.258 |
-| Lung | 0.872 | 0.867 | 0.842 | +0.044 |
-| Bowel | 0.821 | 0.82 | 0.843 | +0.033 |
-| General | 0.781 | 0.78 | 0.779 | **+0.006** |
-| Liver | 0.780 | 0.761 | 0.623 | +0.106 |
+| Prostate | 0.880 | 0.876 | 0.661 | +0.222 |
+| Lung | 0.872 | 0.867 | 0.842 | +0.024 |
+| ~~Bowel~~ withdrawn | 0.821 | 0.82 | 0.843 | **-0.011** |
+| General | 0.781 | 0.78 | 0.779 | **+0.002** |
+| Liver | 0.780 | 0.761 | 0.623 | +0.114 |
+| Breast (mammogram) | 0.628 | 0.628 | 0.608 | +0.028 |
 <!-- /AUTOGEN:baselines -->
 
 Bowel is quoted from 20 paired repeats rather than one split, because its single
@@ -283,7 +285,7 @@ someone's age and sex, which is a real limitation rather than a rounding error.
 <!-- AUTOGEN:cv_vs_heldout -->
 | Panel | CV AUC | Held-out AUC | Gap |
 |---|---|---|---|
-| Breast | 0.995 | 0.997 | +0.002 |
+| Breast (biopsy) | 0.995 | 0.997 | +0.002 |
 | Pancreatic | 0.971 | 0.966 | -0.005 |
 | Ovarian | 0.942 | 0.949 | +0.007 |
 | Prostate | 0.818 | 0.880 | +0.062 |
@@ -291,6 +293,7 @@ someone's age and sex, which is a real limitation rather than a rounding error.
 | Bowel | 0.807 | 0.821 | +0.014 |
 | General | 0.766 | 0.781 | +0.015 |
 | Liver | 0.749 | 0.780 | +0.031 |
+| Breast (mammogram) | 0.610 | 0.628 | +0.018 |
 | ~~Cervical~~ | 0.587 | 0.725 | **+0.138** |
 <!-- /AUTOGEN:cv_vs_heldout -->
 
@@ -321,12 +324,13 @@ Every result card now carries its type.
 |---|---|---|
 | General | Screening | Nothing. Routine bloodwork and your history. |
 | Liver | Screening | Nothing. Routine bloodwork and your history. |
-| Bowel | Screening | Nothing. A routine blood count. |
+| ~~Bowel~~ | Withdrawn | Its lab values added nothing to age and sex, so it no longer ships. |
 | Lung | Screening | Nothing, but it is offered to people with tobacco exposure. |
+| Breast, mammogram | **Triage** | A screening mammogram already done, for the density grading on its report. |
 | Pancreatic | **Triage** | A CA 19-9 result, which is ordered when pancreatic or biliary cancer is already suspected. |
 | Ovarian | **Triage** | An ovarian mass already found on imaging. |
 | Prostate | **Interpretation** | A PI-RADS score from a prostate MRI. |
-| Breast | **Interpretation** | Nuclear measurements from a biopsy already taken. |
+| Breast, biopsy | **Interpretation** | Nuclear measurements from a biopsy already taken. |
 
 A triage panel asks whether something already found is malignant. An
 interpretation panel reads a diagnostic test that has already been performed.
@@ -530,7 +534,7 @@ three calibration methods on every small panel, that is wrong:
 <!-- AUTOGEN:calibration -->
 | Panel | n | AUC none | AUC isotonic | AUC sigmoid | Brier none | Brier isotonic |
 |---|---|---|---|---|---|---|
-| Breast | 569 | 0.993 | 0.992 | 0.993 | 0.0276 | 0.0267 |
+| Breast (biopsy) | 569 | 0.993 | 0.992 | 0.993 | 0.0276 | 0.0267 |
 | Pancreatic | 600 | 0.969 | 0.966 | 0.968 | 0.0585 | 0.0533 |
 | Ovarian | 349 | 0.935 | 0.933 | 0.935 | 0.0985 | 0.0889 |
 | Prostate | 212 | 0.829 | 0.83 | 0.831 | 0.1661 | 0.1664 |
@@ -649,7 +653,7 @@ distribution. Reproduce with `python experiments/split_stability.py`.
 <!-- AUTOGEN:stability -->
 | Panel | Rows | Events | Mean AUC | Spread across splits | Shipped split | Percentile |
 |---|---|---|---|---|---|---|
-| Breast | 569 | 212 | 0.992 | 0.970 to 1.000 | 0.997 | 77th |
+| Breast (biopsy) | 569 | 212 | 0.992 | 0.970 to 1.000 | 0.997 | 77th |
 | Pancreatic | 600 | 130 | 0.969 | 0.939 to 0.995 | 0.969 | 50th |
 | Ovarian | 349 | 171 | 0.928 | 0.852 to 0.969 | 0.949 | 70th |
 | Bowel | 28,527 | 113 | 0.823 | 0.788 to 0.859 | 0.815 | 40th |
@@ -886,8 +890,8 @@ Leave-one-cycle-out, training on seven NHANES cycles and testing on the eighth, 
 0.837, so the model transfers between survey waves rather than fitting one of them.
 
 **The gain is real and it is too small to act on.** Every arm beats age and sex on 5 of 5 paired
-repeats, and the largest gain is 0.016. Set against the liver panel's +0.106 and the pancreatic
-panel's +0.498, this is the clearest statement in the project of where routine bloodwork carries
+repeats, and the largest gain is 0.016. Set against the liver and pancreatic panels'
+gains in the baselines table above, this is the clearest statement in the project of where routine bloodwork carries
 signal and where it does not: it carries a great deal about organ-specific disease when the
 organ's chemistry is on the panel, and very little about undifferentiated cancer risk.
 
@@ -1051,23 +1055,24 @@ is compared against.
 
 The cost model now covers liver too, and its answer is the most useful thing in it.
 
-The liver panel has the **largest gain over age and sex of anything here, +0.106**, well ahead of
-bowel's +0.039. Asked whether triaging on it saves money against sending everyone for a FibroScan,
+The liver panel has the **largest gain over age and sex of anything here**, well ahead of
+bowel's. Asked whether triaging on it saves money against sending everyone for a FibroScan,
 the answer is no at every threshold. Its optimal operating point is to test everybody.
 
+<!-- AUTOGEN:cost_ranking -->
 | Panel | Gain over age and sex | Best operating point | Procedures avoided per 100,000 | Net benefit |
 |---|---|---|---|---|
-| **Liver** | **+0.106** | send everyone | **0** | $0 |
-| Bowel | +0.033 | sens 0.947 | **46,551 colonoscopies** | +$64.5M |
-| Lung | +0.044 | sens 1.000 | **21,561 CT scans** | +$6.5M |
+| Liver | +0.114 | send everyone | **0** | $0 |
+| Lung | +0.024 | send everyone | **0** | $0 |
+| Bowel | -0.011 | sens 0.947 | **46,551** | $64.5M |
+<!-- /AUTOGEN:cost_ranking -->
 
 Liver disease is common in this cohort at 4% and a FibroScan costs $500, so the scans a threshold
 saves are worth less than the cases it misses. Colorectal cancer is rare at 0.4% and a colonoscopy
 costs $2,412, so the reverse holds.
 
 **Discrimination decided neither. Prevalence and procedure cost did.** The panel that separates
-best is the one where triage helps least, and the panel with an unremarkable 0.793 is the one that
-takes 36,000 people out of a queue. Judging these models by AUC alone gives exactly the wrong
+best is the one where triage helps least, and the one triage appeared to help was bowel, where the saving turned out to be the patient's age rather than the lab report. Judging these models by AUC alone gives exactly the wrong
 ordering.
 
 ### Three panels have no confirmatory test to triage for at all
@@ -1126,23 +1131,28 @@ missed cancers, and a missed cancer is found later, at a worse stage, at a highe
 
 **At the operating points the panels currently ship, the answer is no.**
 
-| Panel | Break-even per missed cancer | A missed cancer at 15 life-years x $150k/QALY | Verdict |
+<!-- AUTOGEN:cost_breakeven -->
+| Panel | Break-even per missed case | A case, valued | Verdict |
 |---|---|---|---|
-| Bowel | $1,083,217 | $2,250,000 | **stops saving** |
-| Lung | $126,481 | $2,250,000 | **stops saving** |
+| Bowel | $1,125,687 | $2,250,000 | **stops saving** |
+| Lung | $112,367 | $2,250,000 | **stops saving** |
+| Liver | $24,368 | $750,000 | **stops saving** |
+<!-- /AUTOGEN:cost_breakeven -->
 
-On treatment dollars alone, triage looks like it saves $192M per 100,000 people on bowel. It does
-that by missing 190 of 400 cancers. Price a missed cancer at what health economics conventionally
-prices a life-year and the saving disappears. **A cost argument that counts only treatment dollars
-and not the person is not an argument.**
+<!-- AUTOGEN:youden_sentence -->
+On treatment dollars alone, triage looks like it saves $202M per 100,000 people on bowel. It does that by missing 191 of 400 cancers. Price a missed cancer at what health economics conventionally prices a life-year and the saving disappears. **A cost argument that counts only treatment dollars and not the person is not an argument.**
+<!-- /AUTOGEN:youden_sentence -->
 
 **At a different operating point, the answer is yes.** Reading each panel's real ROC curve and
 choosing the point that maximises net benefit *after* pricing every missed cancer at $2.25M:
 
-| Panel | Sensitivity | Specificity | Procedures avoided per 100,000 | Cancers missed | Net benefit |
+<!-- AUTOGEN:cost_best -->
+| Panel | Sensitivity | Specificity | Procedures avoided per 100,000 | Cases missed | Net benefit |
 |---|---|---|---|---|---|
-| **Bowel** | 0.979 | 0.362 | **36,052 colonoscopies** | 8.3 of 400 | **+$68,208,115** |
-| **Lung** | 1.000 | 0.217 | **21,561 CT scans** | **0** of 470 | +$6,468,172 |
+| Bowel | 0.947 | 0.467 | **46,551** | 21.2 | $64,492,872 |
+| Lung | 1.0 | 0.0 | **0** | 0.0 | $0 |
+| Liver | 1.0 | 0.0 | **0** | 0.0 | $0 |
+<!-- /AUTOGEN:cost_best -->
 
 That is the concept working, and it says something specific about how the tool should be operated.
 These panels ship at Youden's J, which balances sensitivity against specificity as if the two
@@ -1155,8 +1165,8 @@ Caveats, because this is an illustrative model and not a cost-effectiveness anal
 discounting, no quality-adjusted life years beyond the single figure above, and no price on the
 harm and anxiety of an unnecessary procedure. The treatment figures are first-year costs and
 understate the true late-stage penalty, which biases the model *towards* triage. Sources are listed
-in the file. Every input is swept, and the sign of the lung result flips if incidence is five times
-higher or the late-stage penalty three times worse.
+in the file. Every input is swept, and the sweeps are in
+`experiments/cost_model_result.json`.
 
 An earlier version of this analysis inferred each ROC curve from the shipped operating point with a
 guessed shape. It returned sensitivity 1.0 at specificity 0.0 and was thrown away in favour of
@@ -1304,14 +1314,15 @@ entered. So each now declares the input without which it will not answer:
 | Prostate | Interpretation | a PI-RADS score |
 
 Verified in both directions, because a gate that breaks the panel is not a fix. With routine
-bloodwork alone, ovarian and pancreatic are now skipped with a plain explanation, and liver, bowel
+bloodwork alone, ovarian and pancreatic are now skipped with a plain explanation, and liver
 and lung — the panels whose whole point is a lab report — still score. Supply a genuinely raised
 CA 125 and HE4 and the ovarian panel answers again.
 
-### The bowel panel was tested the same way, and it passed
+### The bowel panel was tested the same way, and the first reading of it was wrong
 
 The section above should not be read as "external validation always fails". It is a test, not a
-penalty, and the same test applied to an organ-specific panel gave the opposite answer.
+penalty, and the first time it was applied to the bowel panel it appeared to give the opposite
+answer. It did not, and why it only appeared to is worth more than the original result.
 
 NHANES III recorded both the site of any reported cancer and the age at which the person was first
 told, which reconstructs exactly the eight-year window the bowel panel's training cohort uses.
@@ -1322,20 +1333,22 @@ told, which reconstructs exactly the eight-year window the bowel panel's trainin
 The two prevalences agree to within a hundredth of a percent, which is a check that the window was
 reconstructed the same way on both sides rather than a coincidence.
 
-| Feature set | Features | External AUC | 95% CI |
-|---|---|---|---|
-| Age and sex only | 2 | 0.764 | 0.705 to 0.815 |
-| **Full panel** | 16 | **0.792** | 0.740 to 0.841 |
+<!-- AUTOGEN:bowel_external -->
+| Feature set | Tree ensemble | Logistic regression |
+|---|---|---|
+| Age and sex only | 0.764 | **0.822** |
+| Full panel, 16 features | 0.792 | 0.822 |
 
-**Transferred gain +0.028, against +0.033 measured inside the training survey.** Around
-five sixths of the effect is still there on people measured fifteen years earlier, on different
-analysers, by different field staff.
+Comparing the two ensemble cells gives +0.029, with an interval of -0.013 to +0.072 that never excluded zero. The best panel against the best age-and-sex model gains **-0.000**, 95% CI -0.012 to +0.013. **On this evidence routine bloodwork adds nothing to age and sex for bowel cancer.** The contrast this section used to draw, an organ-specific gain surviving where the undifferentiated one reversed, does not exist.
+<!-- /AUTOGEN:bowel_external -->
 
-Put beside the section above, this is the sharpest form of the whole project's result. Under an
-identical procedure, the undifferentiated panel's gain reversed sign and the organ-specific panel's
-gain largely survived. The two questions do not merely differ in effect size. They differ in
-whether the effect is real at all. Reproduce with
-`python experiments/colorectal_external.py`.
+The first version fitted a calibrated tree ensemble on both rows. Given only age and a binary sex
+flag, a tree ensemble ranks people in coarse steps, so the age-and-sex row scored low for a reason
+that has nothing to do with bowel cancer. Age predicts bowel cancer along a smooth curve, and
+logistic regression fits exactly that shape. The comparison that counts is the best panel against
+the best age-and-sex model, never the weakest baseline available. A baseline is a claim too, and a
+weak one flatters everything measured against it. Reproduce with
+`python experiments/external_baseline_strength.py`.
 
 ### A good mechanism is not evidence: the bowel panel and iron deficiency
 

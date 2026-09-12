@@ -212,6 +212,9 @@ models = {}
 # risk score.
 SEX_SPECIFIC = {
     "ovarian": 0,
+    # Male breast cancer exists and the BCSC cohort is entirely women, so the
+    # panel has no evidence to rank a man with and should not pretend to.
+    "breast_screening": 0,
     "cervical": 0,
     "prostate": 1,
 }
@@ -283,6 +286,14 @@ BIOLOGICAL_BOUNDS = {
     # withdrawn: the service should not accept a sexual history that nothing
     # scores.
     "menopause": (0, 1), "smoking_packyears": (0, 200),
+    # The mammogram-report breast panel. Density is BI-RADS a to d as 1 to 4;
+    # family history counts first-degree relatives and stops at "2 or more";
+    # age at first birth is a band, not a number, because BCSC recorded it that
+    # way: 0 under 30, 1 thirty or older, 2 no children.
+    "breast_density": (1, 4), "family_history_breast": (0, 2),
+    "prior_breast_biopsy": (0, 1), "age_at_first_birth": (0, 2),
+    "last_mammogram_result": (0, 1), "surgical_menopause": (0, 1),
+    "hormone_therapy": (0, 1),
     # Tobacco exposure, inflammation, and the prostate work-up.
     "cotinine": (0.0, 2000.0), "crp": (0.0, 500.0),
     "prostate_volume": (1.0, 300.0), "psa_density": (0.0, 50.0), "pi_rads": (1, 5),
@@ -365,6 +376,8 @@ HISTORY_FLAGS = {
     "hepatitis_c": ("Hepatitis C", ["liver"]),
     "diabetes": ("Diabetes", ["liver", "pancreatic"]),
     "menopause": ("Post-menopausal", ["ovarian"]),
+    "prior_breast_biopsy": ("Previous breast biopsy", ["breast_screening"]),
+    "hormone_therapy": ("On hormone therapy", ["breast_screening"]),
 }
 
 # Coded history answers rendered back into words for the driver breakdown.
@@ -375,6 +388,15 @@ CODED_VALUES = {
     "hepatitis_c": {0: "Negative", 1: "Positive"},
     "diabetes": {0: "No", 1: "Yes"},
     "menopause": {0: "Pre-menopausal", 1: "Post-menopausal"},
+    "breast_density": {1: "Almost entirely fatty", 2: "Scattered density",
+                       3: "Heterogeneously dense", 4: "Extremely dense"},
+    "family_history_breast": {0: "No first-degree relatives", 1: "One relative",
+                              2: "Two or more relatives"},
+    "prior_breast_biopsy": {0: "No", 1: "Yes"},
+    "age_at_first_birth": {0: "Under 30", 1: "30 or older", 2: "No children"},
+    "last_mammogram_result": {0: "Negative", 1: "False positive"},
+    "surgical_menopause": {0: "Natural", 1: "Surgical"},
+    "hormone_therapy": {0: "No", 1: "Yes"},
 }
 
 UNITS = {
@@ -405,6 +427,10 @@ DISPLAY_NAMES = {
     "mpv": "MPV", "neutrophil_pct": "Neutrophils", "ggt": "GGT",
     "ca125": "CA 125", "he4": "HE4", "cea": "CEA",
     "menopause": "Menopausal status", "smoking_packyears": "Pack-years",
+    "breast_density": "Breast density", "family_history_breast": "Family history of breast cancer",
+    "prior_breast_biopsy": "Previous breast biopsy", "age_at_first_birth": "Age at first birth",
+    "last_mammogram_result": "Last mammogram result", "surgical_menopause": "Type of menopause",
+    "hormone_therapy": "Hormone therapy",
     "cotinine": "Serum cotinine", "crp": "CRP",
     "prostate_volume": "Prostate volume", "psa_density": "PSA density",
     "pi_rads": "PI-RADS score",
@@ -726,9 +752,24 @@ class PatientData(BaseModel):
     hepatitis_c: Optional[float] = None
     diabetes: Optional[float] = None
 
-    # Menopausal status, read by the ovarian panel. Pack-years, read by lung.
+    # Menopausal status, read by the ovarian and mammogram-report breast panels.
+    # Pack-years, read by lung.
     menopause: Optional[float] = None
     smoking_packyears: Optional[float] = None
+
+    # The mammogram-report breast panel. These were added to the form, the
+    # training data, the ranges and the audit, and not here -- and because this
+    # model ignores undeclared keys, every one of them was silently discarded
+    # before it reached the model. A woman who answered every question was told
+    # she had entered 3 of 10 values. tests/test_api.py now fails if any feature
+    # a shipped panel reads is missing from this class.
+    breast_density: Optional[float] = None
+    family_history_breast: Optional[float] = None
+    prior_breast_biopsy: Optional[float] = None
+    age_at_first_birth: Optional[float] = None
+    last_mammogram_result: Optional[float] = None
+    surgical_menopause: Optional[float] = None
+    hormone_therapy: Optional[float] = None
 
 
 @app.get("/")

@@ -77,6 +77,13 @@ def main():
     results = {}
     skipped = {}
     for panel, cfg in PANELS.items():
+        if panel in tm.WITHDRAWN or not os.path.exists(f"models/model_{panel}.joblib"):
+            # The bowel panel was withdrawn after its lab values were shown to
+            # add nothing over age and sex, so its cut no longer ships and there
+            # is no promise left to test. Recorded as not tested, never as held.
+            print(f"{panel}: withdrawn, no shipped cut to test")
+            skipped[panel] = "panel withdrawn, no cut ships"
+            continue
         bundle = joblib.load(f"models/model_{panel}.joblib")
         ro = (bundle.get("metrics") or {}).get("rule_out")
         if not ro:

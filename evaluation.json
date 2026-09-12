@@ -354,9 +354,163 @@
     },
     "subgroups": {}
   },
+  "breast_screening": {
+    "domain": "breast_screening",
+    "cohort_design": "BCSC screening population, 400,000 mammograms sampled from 1.8M, 0.49% cancer within a year. Judged on BCSC's own 597,859-mammogram validation split.",
+    "n_total": 400000,
+    "n_train": 320000,
+    "n_test": 80000,
+    "n_features": 10,
+    "features": [
+      "age",
+      "bmi",
+      "breast_density",
+      "family_history_breast",
+      "prior_breast_biopsy",
+      "age_at_first_birth",
+      "last_mammogram_result",
+      "menopause",
+      "surgical_menopause",
+      "hormone_therapy"
+    ],
+    "cohort_prevalence": 0.005,
+    "cv_auc_train_only": 0.61,
+    "uncalibrated": {
+      "variant": "uncalibrated",
+      "threshold": 0.4844,
+      "auc": 0.628,
+      "auc_ci": [
+        0.601,
+        0.655
+      ],
+      "sensitivity": 0.666,
+      "sensitivity_ci": [
+        0.62,
+        0.711
+      ],
+      "specificity": 0.522,
+      "specificity_ci": [
+        0.518,
+        0.525
+      ],
+      "ppv_in_cohort": 0.007,
+      "brier": 0.2403,
+      "calibration_slope": 1.087,
+      "calibration_intercept": -5.215,
+      "reliability": [
+        {
+          "bin": "0.2 to 0.4",
+          "n": 17304,
+          "predicted": 0.348,
+          "observed": 0.002
+        },
+        {
+          "bin": "0.4 to 0.6",
+          "n": 52662,
+          "predicted": 0.491,
+          "observed": 0.005
+        },
+        {
+          "bin": "0.6 to 0.8",
+          "n": 9975,
+          "predicted": 0.649,
+          "observed": 0.01
+        },
+        {
+          "bin": "0.8 to 1.0",
+          "n": 59,
+          "predicted": 0.822,
+          "observed": 0.0
+        }
+      ],
+      "ppv_at_population_prevalence": 0.00675,
+      "npv_at_population_prevalence": 0.99688,
+      "people_flagged_per_true_case": 148.1,
+      "population_prevalence": 0.00486,
+      "prevalence_source": "Breast cancer within 1 year of a screening mammogram, BCSC 2,392,998 mammograms"
+    },
+    "calibrated": {
+      "variant": "isotonic calibrated",
+      "threshold": 0.01,
+      "auc": 0.628,
+      "auc_ci": [
+        0.599,
+        0.654
+      ],
+      "sensitivity": 0.018,
+      "sensitivity_ci": [
+        0.006,
+        0.032
+      ],
+      "specificity": 0.994,
+      "specificity_ci": [
+        0.993,
+        0.994
+      ],
+      "ppv_in_cohort": 0.014,
+      "brier": 0.0049,
+      "calibration_slope": 0.965,
+      "calibration_intercept": 0.164,
+      "reliability": [
+        {
+          "bin": "0.0 to 0.2",
+          "n": 80000,
+          "predicted": 0.005,
+          "observed": 0.005
+        }
+      ],
+      "ppv_at_population_prevalence": 0.01351,
+      "npv_at_population_prevalence": 0.9952,
+      "people_flagged_per_true_case": 74.0,
+      "population_prevalence": 0.00486,
+      "prevalence_source": "Breast cancer within 1 year of a screening mammogram, BCSC 2,392,998 mammograms"
+    },
+    "baselines": {
+      "prevalence_only": {
+        "auc": 0.5
+      },
+      "logistic_regression": {
+        "auc": 0.628,
+        "auc_ci": [
+          0.601,
+          0.654
+        ]
+      },
+      "age_sex_only": {
+        "features": [
+          "age"
+        ],
+        "auc": 0.608,
+        "auc_ci": [
+          0.58,
+          0.633
+        ]
+      }
+    },
+    "subgroups": {
+      "age under 52": {
+        "n": 24163,
+        "positives": 57,
+        "auc": 0.52,
+        "auc_ci": [
+          0.443,
+          0.599
+        ]
+      },
+      "age 52 and over": {
+        "n": 55837,
+        "positives": 338,
+        "auc": 0.594,
+        "auc_ci": [
+          0.565,
+          0.625
+        ]
+      }
+    }
+  },
   "liver": {
     "domain": "liver",
-    "cohort_design": "35,511 US adults, NHANES 2005-2018. Externally validated on India and Germany.",
+    "cohort_design": "30,624 US adults, NHANES 2005-2016. 2017-2018 withheld as a temporal test; also tested on India and Germany.",
     "n_total": 30624,
     "n_train": 24499,
     "n_test": 6125,
@@ -382,18 +536,18 @@
       "threshold": 0.4214,
       "auc": 0.779,
       "auc_ci": [
-        0.744,
+        0.748,
         0.81
       ],
       "sensitivity": 0.721,
       "sensitivity_ci": [
-        0.662,
-        0.779
+        0.663,
+        0.777
       ],
       "specificity": 0.685,
       "specificity_ci": [
         0.673,
-        0.697
+        0.696
       ],
       "ppv_in_cohort": 0.083,
       "brier": 0.1562,
@@ -443,16 +597,16 @@
       "auc": 0.78,
       "auc_ci": [
         0.748,
-        0.812
+        0.811
       ],
       "sensitivity": 0.588,
       "sensitivity_ci": [
-        0.523,
+        0.525,
         0.651
       ],
       "specificity": 0.828,
       "specificity_ci": [
-        0.818,
+        0.819,
         0.838
       ],
       "ppv_in_cohort": 0.119,
@@ -498,8 +652,8 @@
       "logistic_regression": {
         "auc": 0.761,
         "auc_ci": [
-          0.727,
-          0.792
+          0.728,
+          0.794
         ]
       },
       "age_sex_only": {
@@ -509,8 +663,8 @@
         ],
         "auc": 0.623,
         "auc_ci": [
-          0.593,
-          0.652
+          0.592,
+          0.651
         ]
       }
     },
@@ -520,8 +674,8 @@
         "positives": 99,
         "auc": 0.757,
         "auc_ci": [
-          0.704,
-          0.807
+          0.703,
+          0.809
         ]
       },
       "sex: male": {
@@ -529,8 +683,8 @@
         "positives": 134,
         "auc": 0.795,
         "auc_ci": [
-          0.755,
-          0.833
+          0.754,
+          0.835
         ]
       },
       "age under 48": {
@@ -538,8 +692,8 @@
         "positives": 58,
         "auc": 0.757,
         "auc_ci": [
-          0.685,
-          0.826
+          0.683,
+          0.824
         ]
       },
       "age 48 and over": {
@@ -547,8 +701,8 @@
         "positives": 175,
         "auc": 0.747,
         "auc_ci": [
-          0.703,
-          0.788
+          0.704,
+          0.787
         ]
       }
     }
@@ -580,7 +734,7 @@
       ],
       "sensitivity": 0.769,
       "sensitivity_ci": [
-        0.6,
+        0.586,
         0.92
       ],
       "specificity": 0.979,
@@ -640,12 +794,12 @@
       ],
       "sensitivity": 0.769,
       "sensitivity_ci": [
-        0.593,
-        0.923
+        0.595,
+        0.917
       ],
       "specificity": 0.979,
       "specificity_ci": [
-        0.946,
+        0.944,
         1.0
       ],
       "ppv_in_cohort": 0.909,
@@ -697,8 +851,8 @@
       "logistic_regression": {
         "auc": 0.968,
         "auc_ci": [
-          0.937,
-          0.992
+          0.936,
+          0.99
         ]
       },
       "age_sex_only": {
@@ -708,8 +862,8 @@
         ],
         "auc": 0.5,
         "auc_ci": [
-          0.372,
-          0.624
+          0.379,
+          0.627
         ]
       }
     },
@@ -719,7 +873,7 @@
         "positives": 12,
         "auc": 0.952,
         "auc_ci": [
-          0.889,
+          0.887,
           0.995
         ]
       },
@@ -728,7 +882,7 @@
         "positives": 14,
         "auc": 0.982,
         "auc_ci": [
-          0.951,
+          0.954,
           1.0
         ]
       },
@@ -737,7 +891,7 @@
         "positives": 12,
         "auc": 0.959,
         "auc_ci": [
-          0.904,
+          0.903,
           0.997
         ]
       },
@@ -746,7 +900,7 @@
         "positives": 14,
         "auc": 0.978,
         "auc_ci": [
-          0.938,
+          0.937,
           1.0
         ]
       }
@@ -784,13 +938,13 @@
       "threshold": 0.5584,
       "auc": 0.82,
       "auc_ci": [
-        0.748,
+        0.746,
         0.889
       ],
       "sensitivity": 0.652,
       "sensitivity_ci": [
-        0.44,
-        0.846
+        0.45,
+        0.85
       ],
       "specificity": 0.783,
       "specificity_ci": [
@@ -844,13 +998,13 @@
       "threshold": 0.01,
       "auc": 0.821,
       "auc_ci": [
-        0.747,
-        0.891
+        0.746,
+        0.89
       ],
       "sensitivity": 0.522,
       "sensitivity_ci": [
-        0.31,
-        0.724
+        0.308,
+        0.75
       ],
       "specificity": 0.894,
       "specificity_ci": [
@@ -882,8 +1036,8 @@
       "logistic_regression": {
         "auc": 0.82,
         "auc_ci": [
-          0.74,
-          0.891
+          0.744,
+          0.892
         ]
       },
       "age_sex_only": {
@@ -893,8 +1047,8 @@
         ],
         "auc": 0.843,
         "auc_ci": [
-          0.777,
-          0.907
+          0.779,
+          0.909
         ]
       }
     },
@@ -913,8 +1067,8 @@
         "positives": 11,
         "auc": 0.823,
         "auc_ci": [
-          0.717,
-          0.922
+          0.708,
+          0.921
         ]
       },
       "age 47 and over": {
@@ -922,8 +1076,8 @@
         "positives": 23,
         "auc": 0.662,
         "auc_ci": [
-          0.526,
-          0.795
+          0.529,
+          0.791
         ]
       }
     }
@@ -971,13 +1125,13 @@
       "threshold": 0.6246,
       "auc": 0.949,
       "auc_ci": [
-        0.894,
+        0.892,
         0.99
       ],
       "sensitivity": 0.824,
       "sensitivity_ci": [
-        0.69,
-        0.939
+        0.677,
+        0.941
       ],
       "specificity": 0.972,
       "specificity_ci": [
@@ -1031,13 +1185,13 @@
       "threshold": 0.5806,
       "auc": 0.949,
       "auc_ci": [
-        0.886,
-        0.993
+        0.882,
+        0.994
       ],
       "sensitivity": 0.853,
       "sensitivity_ci": [
         0.722,
-        0.964
+        0.966
       ],
       "specificity": 0.944,
       "specificity_ci": [
@@ -1087,8 +1241,8 @@
       "logistic_regression": {
         "auc": 0.911,
         "auc_ci": [
-          0.835,
-          0.971
+          0.832,
+          0.973
         ]
       },
       "age_sex_only": {
@@ -1097,8 +1251,8 @@
         ],
         "auc": 0.813,
         "auc_ci": [
-          0.695,
-          0.915
+          0.694,
+          0.911
         ]
       }
     },
@@ -1108,7 +1262,7 @@
         "positives": 6,
         "auc": 0.818,
         "auc_ci": [
-          0.534,
+          0.552,
           1.0
         ]
       },
@@ -1117,7 +1271,7 @@
         "positives": 28,
         "auc": 0.972,
         "auc_ci": [
-          0.907,
+          0.909,
           1.0
         ]
       }
@@ -1125,7 +1279,7 @@
   },
   "lung": {
     "domain": "lung",
-    "cohort_design": "21,916 US adults with tobacco exposure, NHANES 1999-2018. Controls are smokers, not the general population.",
+    "cohort_design": "19,866 US adults with tobacco exposure, NHANES 1999-2016, 2017-2018 withheld. Controls are smokers, not the general population.",
     "n_total": 19866,
     "n_train": 15892,
     "n_test": 3974,
@@ -1163,12 +1317,12 @@
       "threshold": 0.4898,
       "auc": 0.867,
       "auc_ci": [
-        0.796,
-        0.924
+        0.797,
+        0.923
       ],
       "sensitivity": 0.889,
       "sensitivity_ci": [
-        0.72,
+        0.714,
         1.0
       ],
       "specificity": 0.777,
@@ -1223,18 +1377,18 @@
       "threshold": 0.01,
       "auc": 0.872,
       "auc_ci": [
-        0.802,
+        0.801,
         0.925
       ],
       "sensitivity": 0.5,
       "sensitivity_ci": [
         0.25,
-        0.75
+        0.739
       ],
       "specificity": 0.882,
       "specificity_ci": [
         0.872,
-        0.893
+        0.892
       ],
       "ppv_in_cohort": 0.019,
       "brier": 0.0044,
@@ -1261,8 +1415,8 @@
       "logistic_regression": {
         "auc": 0.867,
         "auc_ci": [
-          0.799,
-          0.926
+          0.796,
+          0.928
         ]
       },
       "age_sex_only": {
@@ -1273,7 +1427,7 @@
         "auc": 0.842,
         "auc_ci": [
           0.789,
-          0.89
+          0.891
         ]
       }
     },
@@ -1283,7 +1437,7 @@
         "positives": 8,
         "auc": 0.826,
         "auc_ci": [
-          0.7,
+          0.699,
           0.914
         ]
       },
@@ -1292,7 +1446,7 @@
         "positives": 10,
         "auc": 0.906,
         "auc_ci": [
-          0.844,
+          0.837,
           0.959
         ]
       },
@@ -1301,8 +1455,8 @@
         "positives": 18,
         "auc": 0.776,
         "auc_ci": [
-          0.677,
-          0.86
+          0.672,
+          0.862
         ]
       }
     }
@@ -1329,8 +1483,8 @@
       "threshold": 0.6298,
       "auc": 0.876,
       "auc_ci": [
-        0.753,
-        0.976
+        0.74,
+        0.98
       ],
       "sensitivity": 0.76,
       "sensitivity_ci": [
@@ -1339,8 +1493,8 @@
       ],
       "specificity": 0.778,
       "specificity_ci": [
-        0.562,
-        0.944
+        0.556,
+        0.947
       ],
       "ppv_in_cohort": 0.826,
       "brier": 0.1386,
@@ -1389,18 +1543,18 @@
       "threshold": 0.6591,
       "auc": 0.88,
       "auc_ci": [
-        0.753,
-        0.978
+        0.746,
+        0.979
       ],
       "sensitivity": 0.76,
       "sensitivity_ci": [
-        0.583,
+        0.577,
         0.92
       ],
       "specificity": 0.778,
       "specificity_ci": [
-        0.562,
-        0.947
+        0.571,
+        0.952
       ],
       "ppv_in_cohort": 0.826,
       "brier": 0.1509,
@@ -1445,8 +1599,8 @@
       "logistic_regression": {
         "auc": 0.876,
         "auc_ci": [
-          0.75,
-          0.973
+          0.738,
+          0.976
         ]
       },
       "age_sex_only": {
@@ -1455,8 +1609,8 @@
         ],
         "auc": 0.661,
         "auc_ci": [
-          0.491,
-          0.82
+          0.49,
+          0.819
         ]
       }
     },
@@ -1466,8 +1620,8 @@
         "positives": 10,
         "auc": 0.782,
         "auc_ci": [
-          0.538,
-          0.973
+          0.546,
+          0.971
         ]
       },
       "age 69 and over": {
@@ -1475,7 +1629,7 @@
         "positives": 15,
         "auc": 0.971,
         "auc_ci": [
-          0.889,
+          0.886,
           1.0
         ]
       }

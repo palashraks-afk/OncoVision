@@ -73,6 +73,21 @@ WITHDRAWN = {
         "fetch_cervical.py, fetch_nhanes_cervical.py and experiments/cervical_panel.py are "
         "kept, so restoring the panel means re-adding those fields and the DATASETS entry."
     ),
+    "colorectal": (
+        "Withdrawn when its lab values were shown to add nothing over age and sex. Against a "
+        "logistic model on age and sex alone, the best version of the panel scored -0.010 AUC "
+        "across five repeated paired folds and lost all five, and -0.000 on 14,499 NHANES III "
+        "adults, 95% CI -0.012 to +0.013. The earlier in-survey gain of +0.033, and the external "
+        "+0.028 that was described as surviving transfer, were both measured against a calibrated "
+        "tree ensemble fitted on two features, which ranks age in coarse steps and scored 0.765 "
+        "where logistic regression on the same two features scores 0.822. On cost, triage on age "
+        "and sex alone avoided 42,863 colonoscopies per 100,000, missed 10.6 cancers and netted "
+        "$79.5M, against 46,551, 21.2 and $64.5M for the panel, so its rule-out call was worse "
+        "than the patient's age and it told people they could skip a colonoscopy on that basis. "
+        "See experiments/baseline_strength.py, external_baseline_strength.py and "
+        "triage_on_age_alone.py. The DATASETS entry, cohorts and fetchers are kept so the panel "
+        "is still trained and evaluated as evidence, and the cost model still reads it."
+    ),
 }
 
 # What kind of question each panel answers, and what the user must already have.
@@ -102,6 +117,9 @@ PANEL_KIND = {
     "prostate":   ("interpretation", "Needs a PI-RADS score from a prostate MRI. Without it this "
                                      "panel only matches reading the PSA number, so it is not a "
                                      "lab-report test."),
+    "breast_screening": ("triage", "For a woman who has had a mammogram. It reads the report's "
+                                   "density grading together with her own history, and estimates "
+                                   "the risk of a breast cancer in the year after that mammogram."),
     "breast":     ("interpretation", "Needs nuclear measurements from a breast biopsy that has "
                                      "already been taken and imaged. It interprets that biopsy; "
                                      "it does not screen for one."),
@@ -176,6 +194,22 @@ BARELY_BEATS_DEMOGRAPHICS = 0.02
 
 # Cohort design, stated on every panel because it bounds what the numbers mean.
 COHORT_DESIGN = {
+    "breast_screening":
+        "2,392,998 screening mammograms from the NCI-funded Breast Cancer "
+        "Surveillance Consortium, 11,638 followed by a breast cancer within "
+        "the year. This is a screening population at its real prevalence of "
+        "0.49%, not a set of cases with matched controls, and the risk factors "
+        "are recorded at the mammogram while the cancer is diagnosed after it. "
+        "The panel is trained on a 400,000-mammogram sample of the training "
+        "split BCSC specifies and judged on the 597,859-mammogram validation "
+        "split it never saw. It scores about 0.63 there against 0.60 for age "
+        "alone, a gain of roughly 0.03. That is modest and it is what this "
+        "question is worth: published BCSC and Gail-type models land between "
+        "0.58 and 0.66, and a screening model reporting 0.9 would be measuring "
+        "something else. Race and ethnicity are recorded and are not features. "
+        "BMI and age are banded in the source and mapped to band midpoints, so "
+        "the panel cannot be more precise about either than the band it "
+        "learned from.",
     "general": "23,923 US adults from NHANES 2005 to 2014, nationally representative. The "
                "target is a cancer diagnosis within four years of the blood draw, with "
                "long-ago survivors excluded, so this is a screening question rather than a "
@@ -324,6 +358,21 @@ LAB_FIELDS = [
 # cohort. A real cancer risk factor at the population level is not the same thing
 # as one that adds information once you already know a person's age, sex, BMI,
 # smoking and drinking. See experiments/general_body_activity.py.
+# BCSC records age and BMI as bands, and the application collects both as
+# numbers. Training on the band index and then being handed a real BMI of 22
+# would be the CRP units error again, where a field measured in mg/L was read
+# as mg/dL and every value was out by a factor of ten. The bands are mapped to
+# their midpoints so the feature the model learns is on the scale the service
+# actually sends it.
+#
+# The cost is real and bounded: a woman with a BMI of 26 and one with a BMI of
+# 29 both arrive as 27.5 in training, so the panel cannot be more precise about
+# BMI than the band it was taught on. That is a limit of the cohort, not of the
+# mapping, and no alternative recovers information the file never held.
+BCSC_AGE_MIDPOINT = {1: 37, 2: 42, 3: 47, 4: 52, 5: 57,
+                     6: 62, 7: 67, 8: 72, 9: 77, 10: 82}
+BCSC_BMI_MIDPOINT = {1: 22.5, 2: 27.5, 3: 32.5, 4: 37.5}
+
 HISTORY_FIELDS = [
     "gender", "smoking", "alcohol_intake",
     "hepatitis_b", "hepatitis_c", "diabetes",
@@ -337,6 +386,16 @@ HISTORY_FIELDS = [
     # though the measurement below beats it: pack-years added 0.001 over the
     # smoking question while serum cotinine added 0.016.
     "smoking_packyears",
+    # Read only by the mammogram-report breast panel. Breast density is the one
+    # that makes it worth running: it is printed on every US mammogram report
+    # by law, and it is the single factor that adds most over age.
+    "breast_density",
+    "family_history_breast",
+    "prior_breast_biopsy",
+    "age_at_first_birth",
+    "last_mammogram_result",
+    "surgical_menopause",
+    "hormone_therapy",
 ]
 
 APP_FIELDS = LAB_FIELDS + HISTORY_FIELDS
@@ -430,6 +489,50 @@ DATASETS = [
         },
         "target": lambda d: (d["diagnosis"].astype(str).str.upper() == "M").astype(int),
         "positive_means": "a malignant fine needle aspirate",
+    },
+    {
+        "name": "breast_screening",
+        # 400,000 mammograms sampled from the 1,795,139 in the BCSC training
+        # split, 0.49% of them followed by a breast cancer within the year.
+        #
+        # This is the screening question the Wisconsin panel above cannot
+        # answer. That one reads a biopsy that somebody already decided to take
+        # and scores 0.997; this one reads a mammogram report and what a woman
+        # knows about herself, at the real population prevalence, and scores
+        # about 0.63 against 0.60 for age alone.
+        #
+        # The modest number is the honest one. Published BCSC and Gail-type
+        # models land between 0.58 and 0.66, and anything scoring 0.9 here
+        # would be measuring something other than screening risk. A gain of
+        # +0.03 over age on two million mammograms is better evidence than a
+        # gain of 0.4 over nothing on 569 biopsies.
+        #
+        # Race and Hispanic ethnicity are in the cohort and are NOT features,
+        # on the eGFR precedent. They are carried so subgroup accuracy can be
+        # measured rather than disclaimed.
+        "file": "bcsc_breast_train.csv",
+        "label": "Breast Cancer Risk, from your mammogram report",
+        "features": {
+            "age": lambda d: d["agegrp"].map(BCSC_AGE_MIDPOINT),
+            "bmi": lambda d: d["bmi"].map(BCSC_BMI_MIDPOINT),
+            # BI-RADS density, 1 almost entirely fatty to 4 extremely dense.
+            # Printed on every US mammogram report.
+            "breast_density": lambda d: d["density"],
+            # First-degree relatives with breast cancer, 2 meaning two or more.
+            "family_history_breast": lambda d: d["nrelbc"],
+            "prior_breast_biopsy": lambda d: d["brstproc"],
+            # 0 under 30, 1 thirty or older, 2 no children. A band rather than
+            # a number because that is how the cohort recorded it.
+            "age_at_first_birth": lambda d: d["agefirst"],
+            # 0 the last mammogram was negative, 1 it was a false positive.
+            "last_mammogram_result": lambda d: d["lastmamm"],
+            "menopause": lambda d: d["menopaus"],
+            "surgical_menopause": lambda d: d["surgmeno"],
+            "hormone_therapy": lambda d: d["hrt"],
+        },
+        "target": lambda d: d["cancer"].astype(int),
+        "positive_means": ("breast cancer diagnosed within one year of the "
+                           "mammogram"),
     },
     {
         "name": "liver",
@@ -770,8 +873,8 @@ SENSITIVITY_FLOOR = 0.70
 # negative costs a life. experiments/cost_model.py finds that at Youden the
 # bowel panel misses 190 cancers in 400 and stops saving money the moment a
 # missed cancer is priced at a life rather than at a treatment bill, while at
-# high sensitivity it avoids 36,052 colonoscopies per 100,000 people and misses
-# 8.
+# high sensitivity it pays even after that pricing. The current figures live in
+# experiments/cost_model_result.json rather than here, where they went stale.
 #
 # So every panel also carries a rule-out point: the least aggressive threshold
 # that still catches this share of cases. It answers a different and more useful
@@ -1108,7 +1211,18 @@ def load_rule_out_external() -> dict:
         return {}
     with open(path) as f:
         raw = json.load(f)
-    return raw.get("panels", {})
+    panels = dict(raw.get("panels", {}))
+    # The mammogram-report breast panel's cut is tested on BCSC's own
+    # validation split rather than on a cohort from another decade, so its
+    # result lives in a different file. It is the same promise measured the
+    # same way -- the shipped cut, unchanged, on mammograms nothing was fitted on.
+    bcsc = "experiments/bcsc_validation_result.json"
+    if os.path.isfile(bcsc):
+        with open(bcsc) as f:
+            ro = (json.load(f) or {}).get("rule_out")
+        if ro:
+            panels["breast_screening"] = {**ro, "cohort": "BCSC validation split"}
+    return panels
 
 
 def model_factory(kind: str, n: int, pos_rate: float):
@@ -1204,6 +1318,34 @@ def load_temporal_validation() -> dict:
                 f"advantage over age and sex measured {r['gain']:+.3f} with a "
                 f"range of {lo:+.3f} to {hi:+.3f}. That is too little evidence "
                 f"to say either way."
+            ),
+        }
+
+    # BCSC's own held-out split plays the same role for the breast panel that a
+    # withheld survey cycle plays for liver and lung: data nothing was fitted
+    # on. It is larger than either, so its interval is the tightest here.
+    bcsc = "experiments/bcsc_validation_result.json"
+    if os.path.isfile(bcsc):
+        with open(bcsc) as f:
+            r = json.load(f)
+        lo, hi = r["gain_ci"]
+        confirmed = bool(r.get("gain_beats_age"))
+        out["breast_screening"] = {
+            "cycle": "BCSC validation split",
+            "n": r["n_mammograms"],
+            "events": r["n_cancers"],
+            "auc": r["auc"],
+            "gain": r["gain"],
+            "gain_ci": [lo, hi],
+            "confirmed": confirmed,
+            "verdict": (
+                f"Held up on {r['n_mammograms']:,} mammograms the model never "
+                f"saw, with {r['n_cancers']:,} cancers: it beat age alone by "
+                f"{r['gain']:+.3f}, with a range of {lo:+.3f} to {hi:+.3f}."
+                if confirmed else
+                f"On {r['n_mammograms']:,} unseen mammograms its advantage over "
+                f"age measured {r['gain']:+.3f}, with a range of {lo:+.3f} to "
+                f"{hi:+.3f}, which does not separate it from age alone."
             ),
         }
     return out

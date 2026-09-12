@@ -43,6 +43,13 @@ NORMAL = {
     # the reproductive and sexual history went when the cervical panel was
     # withdrawn.
     "menopause": 0, "smoking_packyears": 0,
+    # The mammogram-report breast panel. "Healthy" here means the lowest-risk
+    # answer that is still common: scattered density rather than almost
+    # entirely fatty, because category 1 is the rarest of the four and a
+    # reference reading should look like a real woman's report.
+    "breast_density": 2, "family_history_breast": 0, "prior_breast_biopsy": 0,
+    "age_at_first_birth": 0, "last_mammogram_result": 0,
+    "surgical_menopause": 0, "hormone_therapy": 0,
     # Tobacco exposure, inflammation, prostate work-up.
     "cotinine": 0.05, "crp": 1.2,
     "prostate_volume": 28, "psa_density": 0.1, "pi_rads": 2,
@@ -79,7 +86,7 @@ LABELS = {
     "general": "General", "breast": "Breast", "liver": "Liver",
     "pancreatic": "Pancreatic", "prostate": "Prostate",
     "ovarian": "Ovarian", "cervical": "Cervical", "colorectal": "Bowel",
-    "lung": "Lung",
+    "lung": "Lung", "breast_screening": "Breast",
 }
 
 SOURCES = {
@@ -91,7 +98,8 @@ SOURCES = {
     "ovarian": "Soochow ovarian mass cohort",
     "cervical": "Caracas colposcopy referral cohort",
     "colorectal": "NHANES 2005-2014, US adults",
-    "lung": "NHANES 1999-2018, adults with tobacco exposure",
+    "lung": "NHANES 1999-2016, adults with tobacco exposure",
+    "breast_screening": "Breast Cancer Surveillance Consortium, screening mammograms",
 }
 
 models = {
@@ -151,6 +159,16 @@ def note_for(domain: str, v: dict) -> str:
         return (f"{age} year old {who}, {smoke}, {v['smoking_packyears']:g} pack-years. "
                 f"Serum cotinine {v['cotinine']:g} ng/mL, CRP {v['crp']:g} mg/L, "
                 f"WBC {v['wbc']:g}, haemoglobin {v['hemoglobin']:g}.")
+    if domain == "breast_screening":
+        dens = {1: "almost entirely fatty", 2: "scattered fibroglandular density",
+                3: "heterogeneously dense", 4: "extremely dense"}.get(
+            int(round(v.get("breast_density", 2))), "density not recorded")
+        rel = int(round(v.get("family_history_breast", 0)))
+        fam = {0: "No", 1: "One"}.get(rel, "Two or more")
+        biopsy = ("a previous breast biopsy" if round(v.get("prior_breast_biopsy", 0)) == 1
+                  else "no previous biopsy")
+        return (f"{age} year old woman after a screening mammogram reported as {dens}. "
+                f"{fam} first-degree relatives with breast cancer, {biopsy}.")
     if domain == "colorectal":
         return (f"{age} year old {who}. Blood count and chemistry only: haemoglobin "
                 f"{v['hemoglobin']:g}, platelets {v['platelets']:g}, WBC {v['wbc']:g}, "
@@ -187,7 +205,8 @@ def build(domain: str, config: dict):
     # narrated as "62 year old man" arrived at the API without a sex and picked
     # up an ovarian score. Set it explicitly here so the sample cases exercise
     # the same anatomy gate a real user would.
-    forced_sex = {"prostate": 1.0, "ovarian": 0.0, "cervical": 0.0}.get(domain)
+    forced_sex = {"prostate": 1.0, "ovarian": 0.0, "cervical": 0.0,
+                  "breast_screening": 0.0}.get(domain)
     if forced_sex is not None:
         for c in cases:
             c["gender"] = forced_sex

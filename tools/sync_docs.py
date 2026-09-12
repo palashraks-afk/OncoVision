@@ -23,7 +23,11 @@ Each managed table sits between a pair of HTML comments:
     ...whatever is here is replaced...
     <!-- /AUTOGEN:shipped -->
 
-Prose is never touched. Only the rows between the markers.
+Only what sits between the markers is touched. Most markers hold tables; a few
+hold sentences, where a sentence states a figure the pipeline produces -- the
+paper's abstract quoted a cost result for a full retrain cycle after it had
+stopped being true, and a claim that a gain "survives transfer" outlived the
+baseline it was measured against.
 
 Run:  python tools/sync_docs.py           rewrite the tables
       python tools/sync_docs.py --check   fail if they are stale, change nothing
@@ -39,21 +43,24 @@ DOCS = ["README.md", "PROJECT.md", "PAPER.md"]
 
 NAME = {
     "colorectal": "Bowel", "general": "General", "liver": "Liver",
-    "breast": "Breast", "ovarian": "Ovarian", "lung": "Lung",
+    "breast": "Breast (biopsy)", "breast_screening": "Breast (mammogram)",
+    "ovarian": "Ovarian", "lung": "Lung",
     "prostate": "Prostate", "pancreatic": "Pancreatic",
 }
 COHORT = {
     "breast": "569 Wisconsin biopsies",
+    "breast_screening": "400,000 BCSC mammograms",
     "pancreatic": "600 samples, 3 tissue banks",
     "ovarian": "349 operated ovarian masses",
     "prostate": "212 biopsied men",
-    "lung": "21,916 adults with tobacco exposure",
+    "lung": "19,866 adults with tobacco exposure",
     "colorectal": "28,527 NHANES adults",
-    "liver": "35,511 NHANES adults",
+    "liver": "30,624 NHANES adults",
     "general": "28,711 NHANES adults",
 }
 LABEL = {
-    "breast": "Breast malignancy", "pancreatic": "Pancreatic cancer",
+    "breast": "Breast malignancy", "breast_screening": "Breast cancer within a year",
+    "pancreatic": "Pancreatic cancer",
     "ovarian": "Ovarian malignancy", "prostate": "Prostate cancer",
     "lung": "Lung cancer", "colorectal": "Bowel cancer",
     "liver": "Liver disease", "general": "General cancer",
@@ -66,6 +73,15 @@ def load(path, default=None):
         return default
     with open(p, encoding="utf-8") as f:
         return json.load(f)
+
+
+def _withdrawn(extra, k):
+    return ((extra or {}).get("metrics") or {}).get(k, {}).get("shipped") is False
+
+
+def _name(extra, k):
+    n = NAME.get(k, k)
+    return f"~~{n}~~ withdrawn" if _withdrawn(extra, k) else n
 
 
 def _rank(evaluation):
@@ -100,7 +116,7 @@ def table_shipped(ev, extra):
             auc_cell = (f"{c['auc']:.3f} ⚠️<br>_a lucky draw, {pct:.0f}th pct;_<br>"
                         f"_stable mean {sv['mean_auc']:.3f}_")
         rows.append(
-            f"| {LABEL.get(k, k)} | {COHORT.get(k, '')} | {auc_cell} | "
+            f"| {('~~' + LABEL.get(k, k) + '~~ withdrawn') if _withdrawn(extra, k) else LABEL.get(k, k)} | {COHORT.get(k, '')} | {auc_cell} | "
             f"{ci[0]} to {ci[1]} | {thr_s} | {c.get('sensitivity')} | "
             f"{c.get('specificity')} | {c.get('people_flagged_per_true_case')} |")
     rows.append("| ~~Cervical~~ | 858 Caracas referrals | 0.725 | withdrawn, a lucky split | | | | |")
@@ -123,7 +139,7 @@ def table_baselines(ev, extra):
         # error that got the cervical panel withdrawn.
         gs = (f"**{gv:+.3f}**" if isinstance(gv, (int, float)) and gv < 0.02
               else (f"{gv:+.3f}" if isinstance(gv, (int, float)) else "not measurable"))
-        rows.append(f"| {NAME.get(k, k)} | {c['auc']:.3f} | {lr if lr is not None else '—'} | "
+        rows.append(f"| {_name(extra, k)} | {c['auc']:.3f} | {lr if lr is not None else '—'} | "
                     f"{agesex if agesex is not None else '—'} | {gs} |")
     return "\n".join(rows)
 
@@ -149,6 +165,7 @@ DESIGN = {
     "pancreatic": ("Case-control", "3 tissue banks, adenocarcinoma vs benign hepatobiliary"),
     "ovarian": ("Case-control", "operated ovarian masses, malignant vs benign"),
     "breast": ("Case-control", "Wisconsin fine needle aspirates, post-biopsy"),
+    "breast_screening": ("Population", "BCSC screening mammograms, cancer within 1 year"),
     "prostate": ("Case-control", "biopsied men, adenocarcinoma vs benign biopsy"),
 }
 
@@ -278,9 +295,10 @@ def table_paper_results(ev, extra):
 
         out.append("")
         out.append("### 3.6 The same test on an organ-specific panel\n")
-        out.append(f"The bowel panel is one of only two here that screen for a named cancer from a "
-                   f"routine lab report alone, so it carries more of the application's claim than "
-                   f"the case-control panels do. NHANES III recorded both the site of any reported "
+        out.append(f"The bowel panel was one of two here that claimed to screen for a named cancer "
+                   f"from a routine lab report alone, so it carried more of the application's claim "
+                   f"than the case-control panels did, and it has since been withdrawn for the "
+                   f"reason this section records. NHANES III recorded both the site of any reported "
                    f"cancer and the age at which it was first told, which reconstructs the same "
                    f"eight-year window the training cohort uses.\n")
         out.append(f"Train: NHANES 2005-2014, {cx['train_n']:,} adults, {cx['train_events']} cases. "
@@ -297,13 +315,32 @@ def table_paper_results(ev, extra):
         g, gi = cx["external_gain_over_age_sex"], cx.get("internal_gain_for_reference")
         out.append(f"Gain over age and sex, transferred: **{g:+.3f}**, against {gi:+.3f} measured "
                    f"inside the training survey.\n")
-        if cx.get("gain_survives_transfer"):
-            out.append("**This gain survives.** Roughly three quarters of it is still there on a "
-                       "cohort measured a decade and a half earlier, on different analysers. Set "
-                       "beside section 3.5, where the undifferentiated panel's gain reversed sign "
-                       "under the same test, this is the sharpest form of the paper's main result: "
-                       "the two questions do not merely differ in effect size, they differ in "
-                       "whether the effect is real at all.")
+        # Both arms of that table were fitted with a calibrated tree ensemble, and
+        # a tree ensemble given only age and a binary sex flag ranks people in
+        # coarse steps. The paper used to call the resulting gain a transfer that
+        # "survives"; refitted against a logistic age-and-sex model it is zero.
+        # The claim now follows the stronger baseline, never the weaker one.
+        xb = (extra.get("external_baseline") or {}).get("colorectal")
+        if xb:
+            a = xb["auc"]
+            lo, hi = xb["honest_gain_ci"]
+            olo, ohi = xb["old_gain_ci"]
+            if xb["gain_survives_honest_baseline"]:
+                out.append(f"**The gain survives a baseline that can use age:** "
+                           f"{xb['honest_gain_best_vs_best']:+.3f}, 95% CI {lo:+.3f} to {hi:+.3f}.")
+            else:
+                out.append(
+                    f"**That gain belongs to the baseline, not the bloodwork.** Both arms above "
+                    f"were fitted with a calibrated tree ensemble, which given only age and a "
+                    f"binary sex flag ranks people in coarse steps. Refitted with logistic "
+                    f"regression, age and sex alone score {a['base_logistic']:.3f} on NHANES III "
+                    f"and the full sixteen-feature panel scores {a['full_logistic']:.3f}. Against "
+                    f"the stronger baseline the transferred gain is "
+                    f"{xb['honest_gain_best_vs_best']:+.3f}, 95% CI {lo:+.3f} to {hi:+.3f}, and "
+                    f"the original interval, {olo:+.3f} to {ohi:+.3f}, never excluded zero "
+                    f"either. **On this evidence routine bloodwork adds nothing to age and sex "
+                    f"for bowel cancer.** An earlier draft of this paper read the ensemble "
+                    f"comparison as a gain that survived transfer; it was a weak baseline.")
     cost = extra.get("cost") or {}
     if cost:
         out.append("")
@@ -325,36 +362,17 @@ def table_paper_results(ev, extra):
                    "case what a life is conventionally worth changes the answer. Each panel "
                    "is valued on its own endpoint: fifteen life-years for a cancer, five for "
                    "liver disease, at $150,000 per QALY.\n")
-        rows = ["| Panel | Break-even per missed case | A case, valued | Verdict |",
-                "|---|---|---|---|"]
-        for k, v in cost.get("panels", {}).items():
-            be = v.get("break_even_per_missed_cancer")
-            soc = v.get("societal_cost_of_a_missed_cancer")
-            if be is None:
-                continue
-            rows.append(f"| {NAME.get(k, k)} | ${be:,} | ${soc:,} | "
-                        f"{'still saves' if be > soc else '**stops saving**'} |")
-        out.append("\n".join(rows))
+        out.append(cost_breakeven_table(cost))
         out.append("")
         out.append("**The operating point, not the model, decides this.** Choosing the point on "
                    "each panel's real ROC curve that maximises net benefit once a missed case "
                    "is priced at a life:\n")
-        rows = ["| Panel | Sensitivity | Specificity | Procedures avoided per 100,000 | Cases missed | Net benefit |",
-                "|---|---|---|---|---|---|"]
-        for k, v in cost.get("panels", {}).items():
-            bo = v.get("best_operating_point")
-            if not bo:
-                continue
-            avoided = 100_000 - bo["procedures_per_100k"]
-            rows.append(f"| {NAME.get(k, k)} | {bo['sensitivity']} | {bo['specificity']} | "
-                        f"**{avoided:,}** | {bo['cancers_missed']} | "
-                        f"${bo['net_benefit']:,} |")
-        out.append("\n".join(rows))
+        out.append(cost_best_table(cost))
         out.append("")
         liver = (cost.get("panels", {}).get("liver") or {}).get("best_operating_point")
         if liver and liver["procedures_per_100k"] >= 99_000:
             out.append("**The liver row is the interesting one.** That panel has the largest "
-                       "gain over age and sex of anything in this project, +0.106, and its "
+                       f"gain over age and sex of anything in this project, {_gain(extra, 'liver')}, and its "
                        "best operating point is to send everyone: no triage threshold beats "
                        "universal testing once a missed case is priced. Liver disease is "
                        "common at 4% and a FibroScan is cheap at $500, so the scans a "
@@ -410,6 +428,279 @@ def table_cv_vs_heldout(ev, extra):
     return "\n".join(rows)
 
 
+# ------------------------------------------------------------- cost prose
+#
+# Every sentence below used to be typed by hand, and they went stale in the
+# worst possible place: the paper's abstract kept saying the lung panel avoids
+# 21,561 CT scans and nets $6.5M per 100,000 for a full retrain cycle after the
+# cost model had concluded that lung's best operating point is to send
+# everyone. A figure a pipeline produces belongs to the pipeline.
+
+def _m(x):
+    return "$0" if abs(x) < 50_000 else f"${x / 1e6:,.1f}M"
+
+
+def _gain(extra, panel):
+    g = ((extra.get("demographic_gain") or {}).get(panel) or {}).get("gain")
+    return f"{g:+.3f}" if isinstance(g, (int, float)) else "n/a"
+
+
+def _cases(v):
+    return round(100_000 * v["settings"]["incidence"])
+
+
+def _cost_panels(extra):
+    return (extra.get("cost") or {}).get("panels", {}) or {}
+
+
+def cost_breakeven_table(cost):
+    rows = ["| Panel | Break-even per missed case | A case, valued | Verdict |",
+            "|---|---|---|---|"]
+    for k, v in cost.get("panels", {}).items():
+        be = v.get("break_even_per_missed_cancer")
+        soc = v.get("societal_cost_of_a_missed_cancer")
+        if be is None:
+            continue
+        rows.append(f"| {NAME.get(k, k)} | ${be:,} | ${soc:,} | "
+                    f"{'still saves' if be > soc else '**stops saving**'} |")
+    return "\n".join(rows)
+
+
+def cost_best_table(cost):
+    rows = ["| Panel | Sensitivity | Specificity | Procedures avoided per 100,000 | Cases missed | Net benefit |",
+            "|---|---|---|---|---|---|"]
+    for k, v in cost.get("panels", {}).items():
+        bo = v.get("best_operating_point")
+        if not bo:
+            continue
+        avoided = 100_000 - bo["procedures_per_100k"]
+        rows.append(f"| {NAME.get(k, k)} | {bo['sensitivity']} | {bo['specificity']} | "
+                    f"**{avoided:,}** | {bo['cancers_missed']} | "
+                    f"${bo['net_benefit']:,} |")
+    return "\n".join(rows)
+
+
+def _age_alone_sentence(extra, k):
+    """Whether the lab values, rather than age, are what makes triage pay.
+
+    The cost model only ever priced the panel. triage_on_age_alone.py runs the
+    same operating-point search on an age-and-sex model with no lab values, on
+    the same folds. For bowel, age and sex alone netted more than the panel and
+    missed half as many cancers, so a sentence crediting the bloodwork with the
+    saving has to be followed by that one.
+    """
+    t = (extra.get("triage_age") or {}).get(k)
+    if not t:
+        return ""
+    base = t["arms"][t["best_baseline_arm"]]
+    panel = t["arms"][t["best_panel_arm"]]
+    if t["panel_minus_age_and_sex"] > 0:
+        return (f"Triage on age and sex alone, with no lab values, nets "
+                f"{_m(base['net_benefit'])}, so the lab values add "
+                f"{_m(t['panel_minus_age_and_sex'])} on top.")
+    return (f"**But the lab values are not what pays.** Triage on age and sex alone, with no lab "
+            f"values at all, avoids {base['procedures_avoided']:,} procedures, misses "
+            f"{base['cancers_missed']} cancers and nets {_m(base['net_benefit'])}, against "
+            f"{_m(panel['net_benefit'])} for the best version of the panel on the same folds.")
+
+
+def table_hero_cost(_, extra):
+    panels = _cost_panels(extra)
+    if not panels:
+        return "_Run experiments/cost_model.py._"
+    labels = {"colorectal": ("Colonoscopies", "Bowel cancers"),
+              "lung": ("Lung CT scans", "Lung cancers"),
+              "liver": ("FibroScans", "Liver disease cases")}
+    rows = ["| | Send everyone | Triage on this panel | Difference |", "|---|---|---|---|"]
+    paying, not_paying, withdrawn_paying = [], [], []
+    for k, v in panels.items():
+        bo = v.get("best_operating_point")
+        if not bo:
+            continue
+        if not bo["pays_once_a_life_is_priced"]:
+            not_paying.append(NAME.get(k, k).lower())
+            continue
+        if _withdrawn(extra, k):
+            withdrawn_paying.append((k, v, bo))
+            continue
+        proc, case = labels.get(k, (v["settings"]["procedure"], "Cases"))
+        rows.append(f"| **{proc}** | 100,000 | {bo['procedures_per_100k']:,} | "
+                    f"**{100_000 - bo['procedures_per_100k']:,} avoided** |")
+        rows.append(f"| {case} missed | 0 | {bo['cancers_missed']} of {_cases(v):,} | |")
+        paying.append((k, bo))
+    out = (["\n".join(rows), ""] if paying else
+           ["**No shipped panel's triage pays once a missed cancer is priced at a life.**", ""])
+    for k, v, bo in withdrawn_paying:
+        t = (extra.get("triage_age") or {}).get(k) or {}
+        base = (t.get("arms") or {}).get(t.get("best_baseline_arm"), {})
+        out.append(
+            f"The one that appeared to was {NAME.get(k, k).lower()}: at its best operating point it "
+            f"avoided {100_000 - bo['procedures_per_100k']:,} procedures per 100,000 and netted "
+            f"{_m(bo['net_benefit'])}."
+            + (f" Triage on age and sex alone, with no lab values, avoided "
+               f"{base['procedures_avoided']:,}, missed {base['cancers_missed']} cancers instead of "
+               f"{bo['cancers_missed']}, and netted {_m(base['net_benefit'])}, so the panel was "
+               f"withdrawn: the saving was the patient's age, not their lab report."
+               if base and t.get("panel_minus_age_and_sex", 1) <= 0 else ""))
+    for k, bo in paying:
+        out.append(f"That is a net benefit of **{_m(bo['net_benefit'])} per 100,000 people** on "
+                   f"{NAME.get(k, k).lower()}, counted *after* pricing every missed cancer at "
+                   f"fifteen life-years.")
+        if _age_alone_sentence(extra, k):
+            out.append(_age_alone_sentence(extra, k))
+    if not_paying:
+        out.append(f"For {' and '.join(not_paying)}, no threshold beats sending everyone once a "
+                   f"missed case is priced, so those panels offer no rule-out call.")
+    return "\n".join(out)
+
+
+def table_cost_ranking(_, extra):
+    panels = _cost_panels(extra)
+    gains = extra.get("demographic_gain") or {}
+
+    def order(k):
+        g = (gains.get(k) or {}).get("gain")
+        return g if isinstance(g, (int, float)) else float("-inf")
+
+    rows = ["| Panel | Gain over age and sex | Best operating point | Procedures avoided per 100,000 | Net benefit |",
+            "|---|---|---|---|---|"]
+    for k in sorted(panels, key=order, reverse=True):
+        bo = panels[k].get("best_operating_point")
+        if not bo:
+            continue
+        point = (f"sens {bo['sensitivity']:.3f}" if bo["pays_once_a_life_is_priced"]
+                 else "send everyone")
+        rows.append(f"| {NAME.get(k, k)} | {_gain(extra, k)} | {point} | "
+                    f"**{100_000 - bo['procedures_per_100k']:,}** | {_m(bo['net_benefit'])} |")
+    return "\n".join(rows)
+
+
+def _bowel_base(extra):
+    c = _cost_panels(extra).get("colorectal")
+    if not c or "break_even_per_missed_cancer" not in c:
+        return None
+    b = c["base_case"]
+    return c, b, round(b["cancers_found"] + b["cancers_missed"])
+
+
+def text_abstract_cost(_, extra):
+    got = _bowel_base(extra)
+    if not got:
+        return "_Run experiments/cost_model.py._"
+    c, b, total = got
+    be, soc = c["break_even_per_missed_cancer"], c["societal_cost_of_a_missed_cancer"]
+    s = ("**Cost.** Discrimination is not the outcome that matters for a tool whose purpose is to "
+         "reduce spending on diagnostics, so we modelled it directly: per 100,000 people, sending "
+         "everyone for the confirmatory procedure against sending only those a panel flags, "
+         "charging missed cancers the difference between early and late-stage treatment. "
+         f"At the balanced operating point the bowel panel ships, triage appears to save "
+         f"${b['saving'] / 1e6:,.0f}M per 100,000 — by missing {b['cancers_missed']:.0f} of "
+         f"{total:,} cancers. Break-even is ${be / 1e6:.2f}M per missed cancer against "
+         f"${soc / 1e6:.2f}M for fifteen life-years at conventional willingness-to-pay, so "
+         + ("the saving survives even once a life is priced. " if be > soc
+            else "the saving disappears once a life is priced. ")
+         + "Choosing instead the point on each panel's ROC curve that maximises net benefit "
+           "**after** charging a missed cancer at a life: ")
+    parts, none = [], []
+    for k, v in _cost_panels(extra).items():
+        bo = v.get("best_operating_point")
+        if not bo:
+            continue
+        if bo["pays_once_a_life_is_priced"]:
+            parts.append(f"{NAME.get(k, k).lower()} avoids "
+                         f"{100_000 - bo['procedures_per_100k']:,} procedures per 100,000 while "
+                         f"missing {bo['cancers_missed']} of {_cases(v):,} cases "
+                         f"(+{_m(bo['net_benefit'])})")
+        else:
+            none.append(NAME.get(k, k).lower())
+    s += ("; ".join(parts) + "." if parts else "no panel's triage pays.")
+    for k, v in _cost_panels(extra).items():
+        if ((v.get("best_operating_point") or {}).get("pays_once_a_life_is_priced")
+                and _age_alone_sentence(extra, k)):
+            s += " " + _age_alone_sentence(extra, k)
+    if none:
+        s += f" For {' and '.join(none)}, no threshold beats sending everyone."
+    return s
+
+
+def text_operating_point(_, extra):
+    got = _bowel_base(extra)
+    if not got:
+        return "_Run experiments/cost_model.py._"
+    c, b, total = got
+    cfg = c["settings"]
+    be, soc = c["break_even_per_missed_cancer"], c["societal_cost_of_a_missed_cancer"]
+    out = [f"The consequence is measurable. At Youden, the colorectal panel flags "
+           f"{b['procedures_triaged']:,} people per 100,000 and misses "
+           f"{b['cancers_missed']:.0f} of {total:,} cancers. It appears to save "
+           f"${b['saving'] / 1e6:,.0f}M, and the appearance survives only while a missed "
+           f"cancer is priced at the ${cfg['late_cost'] - cfg['early_cost']:,.0f} difference "
+           f"between early and late-stage treatment. Priced at fifteen life-years, the "
+           f"break-even is ${be / 1e6:.2f}M against ${soc / 1e6:.2f}M and the saving "
+           + ("survives." if be > soc else "evaporates."), ""]
+    bo = c.get("best_operating_point")
+    if bo and bo["pays_once_a_life_is_priced"]:
+        out.append(f"Move along the same ROC curve — the same model, the same features, the "
+                   f"same data — to the point that maximises net benefit once a missed cancer "
+                   f"costs ${soc / 1e6:.2f}M, and the panel avoids "
+                   f"{100_000 - bo['procedures_per_100k']:,} colonoscopies per 100,000 people "
+                   f"while missing {bo['cancers_missed']} of {_cases(c):,} cancers.")
+        if _age_alone_sentence(extra, "colorectal"):
+            out.append(_age_alone_sentence(extra, "colorectal"))
+    none = [NAME.get(k, k).lower() for k, v in _cost_panels(extra).items()
+            if k != "colorectal"
+            and not (v.get("best_operating_point") or {}).get("pays_once_a_life_is_priced", True)]
+    if none:
+        out.append(f"For {' and '.join(none)}, no point on the curve beats sending everyone, "
+                   f"which is why those panels offer no rule-out call.")
+    return "\n".join(out)
+
+
+def table_bowel_external(_, extra):
+    """Bowel on NHANES III, with both model kinds on both arms.
+
+    The original table showed only the ensemble column and called the gap a
+    gain that survived transfer. Showing the logistic column beside it is the
+    whole correction, so the table carries both and the verdict follows the
+    stronger baseline.
+    """
+    xb = (extra.get("external_baseline") or {}).get("colorectal")
+    if not xb:
+        return "_Run experiments/external_baseline_strength.py._"
+    a = xb["auc"]
+    lo, hi = xb["honest_gain_ci"]
+    olo, ohi = xb["old_gain_ci"]
+    rows = ["| Feature set | Tree ensemble | Logistic regression |",
+            "|---|---|---|",
+            f"| Age and sex only | {a['base_ensemble']:.3f} | **{a['base_logistic']:.3f}** |",
+            f"| Full panel, 16 features | {a['full_ensemble']:.3f} | {a['full_logistic']:.3f} |"]
+    verdict = ("**The gain survives a baseline that can use age.**"
+               if xb["gain_survives_honest_baseline"] else
+               "**On this evidence routine bloodwork adds nothing to age and sex for bowel "
+               "cancer.** The contrast this section used to draw, an organ-specific gain "
+               "surviving where the undifferentiated one reversed, does not exist.")
+    return ("\n".join(rows) + "\n\n"
+            f"Comparing the two ensemble cells gives {xb['old_gain_ensemble_vs_ensemble']:+.3f}, "
+            f"with an interval of {olo:+.3f} to {ohi:+.3f} that never excluded zero. The best "
+            f"panel against the best age-and-sex model gains "
+            f"**{xb['honest_gain_best_vs_best']:+.3f}**, 95% CI {lo:+.3f} to {hi:+.3f}. " + verdict)
+
+
+def text_youden_sentence(_, extra):
+    got = _bowel_base(extra)
+    if not got:
+        return "_Run experiments/cost_model.py._"
+    c, b, total = got
+    gone = c["break_even_per_missed_cancer"] <= c["societal_cost_of_a_missed_cancer"]
+    return (f"On treatment dollars alone, triage looks like it saves ${b['saving'] / 1e6:,.0f}M "
+            f"per 100,000 people on bowel. It does that by missing {b['cancers_missed']:.0f} of "
+            f"{total:,} cancers. Price a missed cancer at what health economics conventionally "
+            f"prices a life-year and the saving "
+            + ("disappears. " if gone else "survives. ")
+            + "**A cost argument that counts only treatment dollars and not the person is not "
+              "an argument.**")
+
+
 TABLES = {
     "cv_vs_heldout": table_cv_vs_heldout,
     "shipped": table_shipped,
@@ -418,6 +709,14 @@ TABLES = {
     "calibration": table_calibration,
     "paper_cohorts": table_paper_cohorts,
     "paper_results": table_paper_results,
+    "hero_cost": table_hero_cost,
+    "cost_ranking": table_cost_ranking,
+    "cost_breakeven": lambda ev, extra: cost_breakeven_table(extra.get("cost") or {}),
+    "cost_best": lambda ev, extra: cost_best_table(extra.get("cost") or {}),
+    "abstract_cost": text_abstract_cost,
+    "operating_point": text_operating_point,
+    "youden_sentence": text_youden_sentence,
+    "bowel_external": table_bowel_external,
 }
 
 
@@ -434,6 +733,9 @@ def main():
         "external": load("experiments/prospective_external_result.json", {}),
         "calibration": load("experiments/calibration_method_result.json", {}),
         "colorectal_external": load("experiments/colorectal_external_result.json", {}),
+        "external_baseline": load("experiments/external_baseline_strength_result.json", {}),
+        "triage_age": load("experiments/triage_on_age_alone_result.json", {}),
+        "metrics": load("backend/model_metrics.json", {}),
         "cost": load("experiments/cost_model_result.json", {}),
     }
 

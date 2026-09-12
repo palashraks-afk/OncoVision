@@ -59,6 +59,14 @@ rng = np.random.default_rng(RANDOM_STATE)
 # Annual incidence per 100,000 from SEER, 2019 to 2023, age adjusted.
 # Used as the prior for projecting precision onto a screening population.
 SEER_INCIDENCE = {
+    # The mammogram-report breast panel does not need a borrowed prior. It was
+    # fitted on a screening population at its own real prevalence -- 11,638
+    # cancers in the year after 2,392,998 mammograms -- so the rate to project
+    # onto is the one the cohort measured, 486 per 100,000 mammograms. This is
+    # the only panel here whose training prevalence IS the deployment
+    # prevalence, which is what makes a screening claim possible at all.
+    "breast_screening": (486.0, "Breast cancer within 1 year of a screening "
+                                "mammogram, BCSC 2,392,998 mammograms"),
     # The general and liver panels predict a LIFETIME diagnosis, "ever told
     # you had this", not an incident one. Scoring them against SEER annual
     # incidence would be comparing a prevalence model to an incidence prior
@@ -97,11 +105,12 @@ SEER_INCIDENCE = {
 COHORT_DESIGN = {
     "general":    "23,923 US adults, NHANES 2005-2014. Recent diagnosis, survivors excluded.",
     "breast":     "Case-control, post-biopsy. Every record is an FNA already taken because a lesion was found.",
-    "liver":      "35,511 US adults, NHANES 2005-2018. Externally validated on India and Germany.",
+    "breast_screening": "BCSC screening population, 400,000 mammograms sampled from 1.8M, 0.49% cancer within a year. Judged on BCSC's own 597,859-mammogram validation split.",
+    "liver":      "30,624 US adults, NHANES 2005-2016. 2017-2018 withheld as a temporal test; also tested on India and Germany.",
     "pancreatic": "Case-control. Cases are confirmed PDAC, controls include benign hepatobiliary disease.",
     "prostate":   "212 men biopsied at one centre. Controls are benign biopsies. Needs an MRI PI-RADS score.",
     "colorectal": "23,794 US adults, NHANES 2005-2014. Diagnosed within 8 years; longer-ago survivors excluded.",
-    "lung":       "21,916 US adults with tobacco exposure, NHANES 1999-2018. Controls are smokers, not the general population.",
+    "lung":       "19,866 US adults with tobacco exposure, NHANES 1999-2016, 2017-2018 withheld. Controls are smokers, not the general population.",
     "ovarian":    "349 women operated on at one Chinese hospital. Controls are benign ovarian tumours, not healthy women.",
     "cervical":   "858 women assessed for colposcopy in Caracas, 55 biopsy-positive. Prior-diagnosis columns dropped as leakage.",
 }

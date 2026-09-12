@@ -132,12 +132,26 @@ def scenario_monotonic():
         ("ovarian", "ca125", [12, 200, 900], "Ovarian"),
         ("pancreatic", "plasma_ca19_9", [12, 200, 1200], "Pancreatic"),
         ("prostate", "psa", [0.9, 8.0, 40.0], "Prostate"),
+        # Denser breasts and more affected relatives are the two best-established
+        # breast risk factors; a panel that lowered risk for either would have
+        # learned the unknown code or a band index instead of the factor.
+        ("breast_screening", "breast_density", [1, 2, 4], "mammogram"),
+        ("breast_screening", "family_history_breast", [0, 1, 2], "mammogram"),
     ]
     extra = {
         "ovarian": {"menopause": 1, "he4": 60, "cea": 1.5},
         "pancreatic": {"plasma_ca19_9": 12},
         "prostate": {"gender": 1, "age": 65, "prostate_volume": 40,
                      "psa_density": 0.2, "pi_rads": 3},
+        # A full mammogram history, so the panel clears its coverage minimum
+        # and the sweep measures something. The first version sent density
+        # alone, the panel declined to score on 3 of 10 values, and the sweep
+        # was logged as skipped -- which this driver used to count as a pass.
+        "breast_screening": {"gender": 0, "age": 57, "menopause": 1,
+                             "breast_density": 2, "family_history_breast": 0,
+                             "prior_breast_biopsy": 0, "last_mammogram_result": 0,
+                             "age_at_first_birth": 0, "surgical_menopause": 0,
+                             "hormone_therapy": 0},
     }
     for panel, field, values, label in cases:
         base = dict(HEALTHY, **extra.get(panel, {}))
@@ -146,7 +160,12 @@ def scenario_monotonic():
             r = risk_of(post(dict(base, **{field: val})), label)
             risks.append(r)
         if any(r is None for r in risks):
-            notes.append(f"{panel}: not scored across the {field} sweep, skipped")
+            # A sweep that was declared and never scored checked nothing. It is
+            # a failure, not a note: logged as "skipped" it let the breast
+            # panel's density check report ok while the API was discarding
+            # every breast field it was sent.
+            check(False, f"{panel}: not scored across the {field} sweep, so its "
+                         f"direction was never checked")
             continue
         drops = [(values[i], risks[i], values[i + 1], risks[i + 1])
                  for i in range(len(risks) - 1) if risks[i + 1] < risks[i] - 1.0]
