@@ -1,0 +1,30 @@
+{
+  "train_n": 28711,
+  "train_events": 897,
+  "test_n": 15896,
+  "test_events": 252,
+  "median_filled_features": [
+    "alcohol_intake"
+  ],
+  "arms": {
+    "age and sex only": {
+      "n_features": 2,
+      "external_auc": 0.729,
+      "external_auc_ci": [
+        0.696,
+        0.759
+      ]
+    },
+    "full panel": {
+      "n_features": 5,
+      "external_auc": 0.753,
+      "external_auc_ci": [
+        0.724,
+        0.781
+      ]
+    }
+  },
+  "external_gain_over_age_sex": 0.024,
+  "internal_gain_for_reference": 0.006,
+  "rule_out_tested_in": "experiments/rule_out_external.py"
+}

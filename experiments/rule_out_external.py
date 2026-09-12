@@ -51,6 +51,21 @@ PANELS = {
         "test_csv": "data/nhanes3_colorectal.csv",
         "target": "colorectal_cancer",
     },
+    # The general panel is the other shipped cut, and the one with the widest
+    # reach: it excludes roughly a fifth of everyone who runs it, on five
+    # questions and no blood test. Liver and lung ship no cut at all, so with
+    # this pair every rule-out the service offers on a population cohort has
+    # been tried on a cohort from another decade.
+    #
+    # NHANES III never asked ALQ130, so alcohol is filled with the training
+    # median here, exactly as the service does for a patient who skips it. That
+    # makes this a test of the panel answered four questions of five, which is
+    # a floor rather than an estimate. See fetch_nhanes3_general.py.
+    "general": {
+        "test_csv": "data/nhanes3_general.csv",
+        "target": "recent_cancer",
+        "median_filled": ["alcohol_intake"],
+    },
 }
 
 # How far the caught-case rate may fall before the promise is broken. A cut sold
@@ -60,26 +75,40 @@ TOLERANCE = 0.05
 
 def main():
     results = {}
+    skipped = {}
     for panel, cfg in PANELS.items():
         bundle = joblib.load(f"models/model_{panel}.joblib")
         ro = (bundle.get("metrics") or {}).get("rule_out")
         if not ro:
             print(f"{panel}: no rule-out point in the bundle, run train_models.py")
+            skipped[panel] = "no rule-out point ships for this panel"
             continue
         if not os.path.exists(cfg["test_csv"]):
             print(f"{panel}: {cfg['test_csv']} missing, run its fetcher")
+            skipped[panel] = f"{cfg['test_csv']} missing"
             continue
 
         te = pd.read_csv(cfg["test_csv"])
         feats = bundle["feature_names"]
         missing = [f for f in feats if f not in te.columns]
-        if missing:
-            print(f"{panel}: test cohort lacks {missing}")
+        allowed = set(cfg.get("median_filled", ()))
+        unexpected = [f for f in missing if f not in allowed]
+        if unexpected:
+            # A feature the cohort was supposed to carry and does not means the
+            # harmonisation is broken, not that the test should quietly proceed
+            # on medians.
+            print(f"{panel}: test cohort lacks {unexpected}")
+            skipped[panel] = f"test cohort lacks {unexpected}"
             continue
+        if missing:
+            print(f"  {panel}: {missing} not asked in this cohort, filled with "
+                  f"the training median as the service does for a blank answer")
 
         med = bundle["feature_medians"]
         ranges = bundle.get("feature_ranges") or {}
-        X = te[feats].apply(pd.to_numeric, errors="coerce")
+        X = pd.DataFrame({f: (pd.to_numeric(te[f], errors="coerce")
+                              if f in te.columns else np.nan)
+                          for f in feats})
         # Training medians and training ranges, never the test cohort's own.
         X = X.fillna(pd.Series(med))
         for f in feats:
@@ -121,16 +150,24 @@ def main():
               f"(tolerance {TOLERANCE})")
 
     print("\n" + "=" * 78)
+    if skipped:
+        # Reporting "every promise held" while a panel was skipped counts a
+        # test that never ran as a test that passed, which is the one summary
+        # this file must not print.
+        for k, why in skipped.items():
+            print(f"  NOT TESTED -- {k}: {why}")
     broken = [k for k, v in results.items() if not v["promise_kept"]]
     if broken:
         print(f"  rule-out promises that do not transfer: {broken}")
         print("  a cut sold as catching 95 in 100 that catches fewer is a different")
         print("  product, and the number on the card has to change")
     else:
-        print("  every rule-out promise held on a cohort from another decade")
+        print(f"  every rule-out promise TESTED held on a cohort from another "
+              f"decade ({len(results)} of {len(PANELS)} panels tested)")
 
     with open(OUT, "w") as f:
-        json.dump({"panels": results, "promises_broken": broken}, f, indent=2)
+        json.dump({"panels": results, "promises_broken": broken,
+                   "not_tested": skipped}, f, indent=2)
     print(f"\nwrote {OUT}")
 
 

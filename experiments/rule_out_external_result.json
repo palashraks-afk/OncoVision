@@ -10,7 +10,19 @@
       "cases_ruled_out_wrongly": 3,
       "promise_kept": true,
       "tolerance": 0.05
+    },
+    "general": {
+      "cut": 0.007675,
+      "promised_catch_rate": 0.951,
+      "actual_catch_rate": 0.905,
+      "promised_share_excluded": 0.222,
+      "actual_share_excluded": 0.276,
+      "cases_in_test_cohort": 252,
+      "cases_ruled_out_wrongly": 24,
+      "promise_kept": true,
+      "tolerance": 0.05
     }
   },
-  "promises_broken": []
+  "promises_broken": [],
+  "not_tested": {}
 }

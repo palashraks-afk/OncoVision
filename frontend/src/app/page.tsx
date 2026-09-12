@@ -40,10 +40,10 @@ const API_BASE = resolveApiBase();
 // Used until the live registry responds.
 const FALLBACK_METRICS: Record<string, any> = {
   breast: {
-    label: "Breast Malignancy, from biopsy imaging", auc: 0.997, auc_ci: [0.991, 1],
+    label: "Breast Malignancy, from biopsy imaging", auc: 0.997, auc_ci: [0.989, 1],
     threshold: 0.2945,
     sensitivity: 0.976, specificity: 0.986,
-    brier: 0.0167, calibration_slope: 1.616,
+    brier: 0.0189, calibration_slope: 0.978,
     ppv_at_population_prevalence: 0.95906,
     people_flagged_per_true_case: 1,
     population_prevalence: 0.25, cohort_prevalence: 0.373,
@@ -51,18 +51,18 @@ const FALLBACK_METRICS: Record<string, any> = {
     n_samples: 569, n_test: 114, n_features: 30,
   },
   pancreatic: {
-    label: "Pancreatic Cancer Risk", auc: 0.969, auc_ci: [0.937, 0.991],
+    label: "Pancreatic Cancer Risk", auc: 0.966, auc_ci: [0.933, 0.99],
     threshold: 0.7664,
-    sensitivity: 0.731, specificity: 0.979,
-    brier: 0.0617, calibration_slope: 0.46,
-    ppv_at_population_prevalence: 0.00475,
-    people_flagged_per_true_case: 210.4,
+    sensitivity: 0.769, specificity: 0.979,
+    brier: 0.0651, calibration_slope: 0.457,
+    ppv_at_population_prevalence: 0.005,
+    people_flagged_per_true_case: 200,
     population_prevalence: 0.000139, cohort_prevalence: 0.217,
     baseline_logistic_auc: 0.968, baseline_age_sex_auc: 0.5,
     n_samples: 600, n_test: 120, n_features: 6,
   },
   ovarian: {
-    label: "Ovarian Malignancy, in a known ovarian mass", auc: 0.949, auc_ci: [0.888, 0.992],
+    label: "Ovarian Malignancy, in a known ovarian mass", auc: 0.949, auc_ci: [0.886, 0.993],
     threshold: 0.5286,
     sensitivity: 0.853, specificity: 0.944,
     brier: 0.0797, calibration_slope: 0.455,
@@ -73,59 +73,59 @@ const FALLBACK_METRICS: Record<string, any> = {
     n_samples: 349, n_test: 70, n_features: 27,
   },
   prostate: {
-    label: "Prostate Cancer Risk, with an MRI score", auc: 0.84, auc_ci: [0.709, 0.948],
+    label: "Prostate Cancer Risk, with an MRI score", auc: 0.88, auc_ci: [0.753, 0.978],
     threshold: 0.4444,
-    sensitivity: 0.8, specificity: 0.778,
-    brier: 0.1642, calibration_slope: 0.86,
-    ppv_at_population_prevalence: 0.70588,
+    sensitivity: 0.76, specificity: 0.778,
+    brier: 0.1509, calibration_slope: 0.602,
+    ppv_at_population_prevalence: 0.69512,
     people_flagged_per_true_case: 1.4,
     population_prevalence: 0.4, cohort_prevalence: 0.571,
     baseline_logistic_auc: 0.876, baseline_age_sex_auc: 0.661,
     n_samples: 212, n_test: 43, n_features: 6,
   },
   lung: {
-    label: "Lung Cancer Risk, with tobacco exposure", auc: 0.829, auc_ci: [0.732, 0.902],
+    label: "Lung Cancer Risk, with tobacco exposure", auc: 0.872, auc_ci: [0.802, 0.925],
     threshold: 0.01,
-    sensitivity: 0.571, specificity: 0.852,
-    brier: 0.0047, calibration_slope: 0.619,
-    ppv_at_population_prevalence: 0.01814,
-    people_flagged_per_true_case: 55.1,
+    sensitivity: 0.5, specificity: 0.882,
+    brier: 0.0044, calibration_slope: 0.971,
+    ppv_at_population_prevalence: 0.0199,
+    people_flagged_per_true_case: 50.3,
     population_prevalence: 0.00475, cohort_prevalence: 0.005,
-    baseline_logistic_auc: 0.785, baseline_age_sex_auc: 0.778,
-    n_samples: 21916, n_test: 4384, n_features: 24,
+    baseline_logistic_auc: 0.867, baseline_age_sex_auc: 0.842,
+    n_samples: 19866, n_test: 3974, n_features: 24,
   },
   colorectal: {
-    label: "Bowel Cancer Risk", auc: 0.815, auc_ci: [0.755, 0.868],
+    label: "Bowel Cancer Risk", auc: 0.821, auc_ci: [0.747, 0.891],
     threshold: 0.01,
-    sensitivity: 0.478, specificity: 0.861,
-    brier: 0.004, calibration_slope: 0.971,
-    ppv_at_population_prevalence: 0.00126,
-    people_flagged_per_true_case: 795,
+    sensitivity: 0.522, specificity: 0.894,
+    brier: 0.004, calibration_slope: 0.968,
+    ppv_at_population_prevalence: 0.00179,
+    people_flagged_per_true_case: 559.8,
     population_prevalence: 0.000365, cohort_prevalence: 0.004,
     baseline_logistic_auc: 0.82, baseline_age_sex_auc: 0.843,
     n_samples: 28527, n_test: 5706, n_features: 16,
   },
   general: {
-    label: "General Cancer Risk", auc: 0.794, auc_ci: [0.764, 0.822],
+    label: "General Cancer Risk", auc: 0.781, auc_ci: [0.749, 0.811],
     threshold: 0.0375,
-    sensitivity: 0.737, specificity: 0.717,
-    brier: 0.0291, calibration_slope: 1.042,
-    ppv_at_population_prevalence: 0.07788,
-    people_flagged_per_true_case: 12.8,
+    sensitivity: 0.67, specificity: 0.728,
+    brier: 0.0292, calibration_slope: 0.914,
+    ppv_at_population_prevalence: 0.07392,
+    people_flagged_per_true_case: 13.5,
     population_prevalence: 0.0314, cohort_prevalence: 0.031,
     baseline_logistic_auc: 0.78, baseline_age_sex_auc: 0.779,
     n_samples: 28711, n_test: 5743, n_features: 5,
   },
   liver: {
-    label: "Liver Disease Risk", auc: 0.76, auc_ci: [0.729, 0.789],
-    threshold: 0.05,
-    sensitivity: 0.61, specificity: 0.77,
-    brier: 0.0356, calibration_slope: 1.059,
-    ppv_at_population_prevalence: 0.09951,
-    people_flagged_per_true_case: 10,
-    population_prevalence: 0.04, cohort_prevalence: 0.04,
-    baseline_logistic_auc: 0.74, baseline_age_sex_auc: 0.602,
-    n_samples: 35511, n_test: 7103, n_features: 12,
+    label: "Liver Disease Risk", auc: 0.78, auc_ci: [0.748, 0.812],
+    threshold: 0.0443,
+    sensitivity: 0.588, specificity: 0.828,
+    brier: 0.0332, calibration_slope: 1.045,
+    ppv_at_population_prevalence: 0.12472,
+    people_flagged_per_true_case: 8,
+    population_prevalence: 0.04, cohort_prevalence: 0.038,
+    baseline_logistic_auc: 0.761, baseline_age_sex_auc: 0.623,
+    n_samples: 30624, n_test: 6125, n_features: 12,
   },
 };
 
@@ -920,6 +920,34 @@ export default function OncovisionDashboard() {
                                 This panel scores only {d.gain_over_age_sex?.toFixed(3)} above what
                                 your age and sex predict on their own, so most of this number is
                                 demographics rather than anything read from your lab report.
+                              </p>
+                            )}
+                            {/*
+                              What a survey cycle withheld from training said.
+                              Both outcomes are shown, not just the good one:
+                              the liver panel kept its advantage on 4,887
+                              unseen patients, and the lung panel's advantage
+                              did not reproduce on thirteen events. A panel
+                              that reports only the number measured by
+                              resampling its own training data is quoting the
+                              one figure that cannot fail.
+                            */}
+                            {!isBenign && d.temporal_validation && (
+                              <p className={`text-[11px] leading-relaxed mb-3 pl-3 border-l-2 ${
+                                d.temporal_validation.confirmed
+                                  ? "border-[var(--ok)]"
+                                  : "border-[var(--warn)]"
+                              } text-[var(--ink-3)]`}>
+                                <span className={`font-bold ${
+                                  d.temporal_validation.confirmed
+                                    ? "text-[var(--ok)]"
+                                    : "text-[var(--warn)]"
+                                }`}>
+                                  {d.temporal_validation.confirmed
+                                    ? "Tested on a later survey. "
+                                    : "Not yet confirmed on unseen data. "}
+                                </span>
+                                {d.temporal_validation.verdict}
                               </p>
                             )}
                             {/*

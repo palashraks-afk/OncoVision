@@ -49,6 +49,26 @@ COHORTS = {
     "USA": ("data/nhanes_liver_usa.csv", "NHANES 2017-2018, CDC, population based"),
 }
 
+# The USA arm was not always honest, and the fix is worth recording.
+#
+# nhanes_liver_usa.csv is the 2017-2018 cycle, and the liver panel used to
+# train on a multi-cycle file that INCLUDED 2017-2018. All 4,887 rows matched.
+# Nothing in this file was wrong -- it refits models from scratch rather than
+# loading the shipped one -- but listing that cohort beside India and Germany
+# invited a reader to believe the shipped panel had been tested on it, and the
+# shipped panel had been trained on it.
+#
+# It is external now because train_models.TEMPORAL_HOLDOUT withholds 2017-2018
+# from liver training. That makes the claim true rather than merely unstated,
+# and this check fails loudly if the holdout is ever removed and the overlap
+# comes back.
+def assert_usa_cohort_is_external():
+    if tm.TEMPORAL_HOLDOUT.get("liver") != "2017-2018":
+        raise AssertionError(
+            "the USA cohort is the 2017-2018 NHANES cycle and is only external "
+            "while train_models.TEMPORAL_HOLDOUT withholds that cycle from "
+            "liver training; it no longer does, so this cohort is training data")
+
 # SEER liver and intrahepatic bile duct incidence, used only to show what the
 # precision would look like at a screening prevalence. Chronic liver disease is
 # far more common than liver cancer, so this is a floor, not an estimate of
@@ -242,6 +262,7 @@ def validate_general_on_nhanes():
 
 
 def main():
+    assert_usa_cohort_is_external()
     print("Loading cohorts")
     for name, (path, desc) in COHORTS.items():
         X, y = load(name)

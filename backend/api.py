@@ -93,6 +93,32 @@ RATE_WINDOW_SECONDS = int(os.getenv("RATE_WINDOW_SECONDS", "60"))
 _hits: dict = {}
 
 
+def _transfer_sentence(bundle) -> str:
+    """What this panel's own cut did on a cohort from another decade.
+
+    Every panel used to be given the bowel panel's result here, which was true
+    of the bowel panel and not of the one the user was reading. The two tested
+    cuts degrade by different amounts -- bowel lost about a point of
+    sensitivity, general nearly five -- so the generic sentence understated the
+    risk for exactly the panel that reaches the most people.
+    """
+    ext = bundle.get("rule_out_external")
+    if not ext:
+        return ("This cut has not yet been tried on a cohort from outside the "
+                "survey it was chosen on, so treat the rates as an estimate "
+                "rather than a measurement.")
+    promised = ext["promised_catch_rate"] * 100
+    actual = ext["actual_catch_rate"] * 100
+    excluded = ext["actual_share_excluded"] * 100
+    return (f"Applied unchanged to a cohort from another decade it caught "
+            f"{actual:.0f} of every 100 cases rather than the {promised:.0f} it "
+            f"promised, and excluded {excluded:.0f} percent of people rather "
+            f"than {ext['promised_share_excluded'] * 100:.0f}, missing "
+            f"{ext['cases_ruled_out_wrongly']} of "
+            f"{ext['cases_in_test_cohort']} cancers there. So treat these "
+            f"numbers as approximate rather than exact.")
+
+
 def _rule_out_view(bundle, proba_pct: float) -> dict:
     """
     Whether this person falls below the panel's high-sensitivity cut.
@@ -122,11 +148,9 @@ def _rule_out_view(bundle, proba_pct: float) -> dict:
                 f"cases and excludes {ro['share_ruled_out'] * 100:.0f} percent of "
                 "people, so it misses "
                 f"{ro['cases_missed_per_100']} in 100. Those rates were measured "
-                "on the cohort this cut was tuned on. Tested on a cohort from "
-                "another decade the bowel panel caught slightly fewer cases and "
-                "excluded slightly more people than promised, so treat the "
-                "numbers as approximate rather than exact. It is a reason to "
-                "feel less worried, not a clearance."
+                "on the cohort this cut was tuned on. "
+                + _transfer_sentence(bundle) +
+                " It is a reason to feel less worried, not a clearance."
                 if below else
                 "This panel would NOT leave you out of further testing. That is "
                 "not a prediction that you have cancer. It means there is not "
@@ -1122,6 +1146,12 @@ async def predict_risk(data: PatientData):
             # that age and sex alone reach 0.75 too.
             "gain_over_age_sex": bundle.get("gain_over_age_sex"),
             "barely_beats_demographics": bundle.get("barely_beats_demographics", False),
+            # Whether the panel was checked against a survey cycle withheld
+            # from training, and what that check said. Two panels have one and
+            # they disagree: liver keeps its advantage, lung's does not
+            # reproduce on thirteen events. Reporting only the resampled gain
+            # would hide that difference behind a single reassuring number.
+            "temporal_validation": bundle.get("temporal_validation"),
             "auc_ci": held.get("auc_ci"),
             "sensitivity": held.get("sensitivity", metrics.get("sensitivity")),
             "sensitivity_ci": held.get("sensitivity_ci"),

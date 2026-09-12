@@ -103,14 +103,14 @@ Eight panels ship. One was withdrawn because the evidence did not support servin
 <!-- AUTOGEN:shipped -->
 | Panel | Trained on | Test AUC | 95% CI | Threshold | Sens | Spec | Flagged per true case |
 |---|---|---|---|---|---|---|---|
-| Breast malignancy | 569 Wisconsin biopsies | 0.997 | 0.991 to 1.0 | 29.8% | 0.976 | 0.986 | 1.0 |
-| Pancreatic cancer | 600 samples, 3 tissue banks | 0.969 | 0.937 to 0.991 | 73.0% | 0.731 | 0.979 | 210.4 |
-| Ovarian malignancy | 349 operated ovarian masses | 0.949 | 0.888 to 0.992 | 58.1% | 0.853 | 0.944 | 1.3 |
-| Prostate cancer | 212 biopsied men | 0.840 | 0.709 to 0.948 | 66.9% | 0.8 | 0.778 | 1.4 |
-| Lung cancer | 21,916 adults with tobacco exposure | 0.829 | 0.732 to 0.902 | 1.0% | 0.571 | 0.852 | 55.1 |
-| Bowel cancer | 28,527 NHANES adults | 0.815 | 0.755 to 0.868 | 1.0% | 0.478 | 0.861 | 795.0 |
-| General cancer | 28,711 NHANES adults | 0.794 ⚠️<br>_a lucky draw, 100th pct;_<br>_stable mean 0.758_ | 0.764 to 0.822 | 3.5% | 0.737 | 0.717 | 12.8 |
-| Liver disease | 35,511 NHANES adults | 0.760 | 0.729 to 0.789 | 4.0% | 0.61 | 0.77 | 10.0 |
+| Breast malignancy | 569 Wisconsin biopsies | 0.997 | 0.989 to 1.0 | 31.6% | 0.976 | 0.986 | 1.0 |
+| Pancreatic cancer | 600 samples, 3 tissue banks | 0.966 | 0.933 to 0.99 | 76.4% | 0.769 | 0.979 | 200.0 |
+| Ovarian malignancy | 349 operated ovarian masses | 0.949 | 0.886 to 0.993 | 58.1% | 0.853 | 0.944 | 1.3 |
+| Prostate cancer | 212 biopsied men | 0.880 | 0.753 to 0.978 | 65.9% | 0.76 | 0.778 | 1.4 |
+| Lung cancer | 21,916 adults with tobacco exposure | 0.872 | 0.802 to 0.925 | 1.0% | 0.5 | 0.882 | 50.3 |
+| Bowel cancer | 28,527 NHANES adults | 0.821 | 0.747 to 0.891 | 1.0% | 0.522 | 0.894 | 559.8 |
+| General cancer | 28,711 NHANES adults | 0.781 ⚠️<br>_a lucky draw, 100th pct;_<br>_stable mean 0.758_ | 0.749 to 0.811 | 3.5% | 0.67 | 0.728 | 13.5 |
+| Liver disease | 35,511 NHANES adults | 0.780 ⚠️<br>_a lucky draw, 100th pct;_<br>_stable mean 0.759_ | 0.748 to 0.812 | 4.3% | 0.588 | 0.828 | 8.0 |
 | ~~Cervical~~ | 858 Caracas referrals | 0.725 | withdrawn, a lucky split | | | | |
 <!-- /AUTOGEN:shipped -->
 
@@ -120,13 +120,13 @@ Eight panels ship. One was withdrawn because the evidence did not support servin
 | Panel | Model | Logistic | Age and sex alone | Gain over age and sex |
 |---|---|---|---|---|
 | Breast | 0.997 | 0.995 | — | not measurable |
-| Pancreatic | 0.969 | 0.968 | 0.5 | +0.498 |
+| Pancreatic | 0.966 | 0.968 | 0.5 | +0.498 |
 | Ovarian | 0.949 | 0.911 | 0.813 | +0.174 |
-| Prostate | 0.840 | 0.876 | 0.661 | +0.258 |
-| Lung | 0.829 | 0.785 | 0.778 | +0.044 |
-| Bowel | 0.815 | 0.82 | 0.843 | +0.033 |
-| General | 0.794 | 0.78 | 0.779 | **+0.006** |
-| Liver | 0.760 | 0.74 | 0.602 | +0.106 |
+| Prostate | 0.880 | 0.876 | 0.661 | +0.258 |
+| Lung | 0.872 | 0.867 | 0.842 | +0.044 |
+| Bowel | 0.821 | 0.82 | 0.843 | +0.033 |
+| General | 0.781 | 0.78 | 0.779 | **+0.006** |
+| Liver | 0.780 | 0.761 | 0.623 | +0.106 |
 <!-- /AUTOGEN:baselines -->
 
 Bowel is quoted from 20 paired repeats rather than one split, because its single
@@ -488,11 +488,11 @@ distribution. Reproduce with `python experiments/split_stability.py`.
 | Breast | 569 | 212 | 0.992 | 0.970 to 1.000 | 0.997 | 77th |
 | Pancreatic | 600 | 130 | 0.969 | 0.939 to 0.995 | 0.969 | 50th |
 | Ovarian | 349 | 171 | 0.928 | 0.852 to 0.969 | 0.949 | 70th |
-| Lung | 21,916 | 104 | 0.839 | 0.822 to 0.860 | 0.829 | 40th |
 | Bowel | 28,527 | 113 | 0.823 | 0.788 to 0.859 | 0.815 | 40th |
 | Prostate | 212 | 121 | 0.822 | 0.732 to 0.909 | 0.840 | 70th |
+| Lung | 19,866 | 91 | 0.819 | 0.715 to 0.850 | 0.826 | 30th |
+| Liver | 30,624 | 1,167 | 0.759 | 0.740 to 0.776 | 0.780 | 100th |
 | General | 28,711 | 897 | 0.758 | 0.735 to 0.779 | 0.794 | 100th |
-| Liver | 35,511 | 1,436 | 0.754 | 0.740 to 0.764 | 0.760 | 80th |
 | Cervical | 858 | 55 | **0.594** | **0.421 to 0.789** | 0.725 | **97th** |
 <!-- /AUTOGEN:stability -->
 

@@ -134,10 +134,10 @@ means, so it is stated on every panel rather than kept in a methods section.
 | Pancreatic | Case-control | 600 | 130 | 21.70% | 3 tissue banks, adenocarcinoma vs benign hepatobiliary |
 | Ovarian | Case-control | 349 | 171 | 49.00% | operated ovarian masses, malignant vs benign |
 | Prostate | Case-control | 212 | 121 | 57.10% | biopsied men, adenocarcinoma vs benign biopsy |
-| Lung | Population | 21,916 | 110 | 0.50% | NHANES, adults with measurable tobacco exposure |
+| Lung | Population | 19,866 | 99 | 0.50% | NHANES, adults with measurable tobacco exposure |
 | Bowel | Population | 28,527 | 114 | 0.40% | NHANES 2005-2016, colon or rectal cancer within 8 years |
 | General | Population | 28,711 | 890 | 3.10% | NHANES 2005-2016, cancer diagnosed within 4 years |
-| Liver | Population | 35,511 | 1,420 | 4.00% | NHANES, 7 cycles, clinical liver disease |
+| Liver | Population | 30,624 | 1,164 | 3.80% | NHANES, 7 cycles, clinical liver disease |
 <!-- /AUTOGEN:paper_cohorts -->
 
 Race and ethnicity are carried as a **stratifier and never as a model feature**, following the
@@ -279,13 +279,13 @@ years beyond a single sensitivity figure, and no price on the harm of an unneces
 | Panel | Model | Logistic | Age and sex alone | Gain over age and sex |
 |---|---|---|---|---|
 | Breast | 0.997 | 0.995 | — | not measurable |
-| Pancreatic | 0.969 | 0.968 | 0.5 | +0.498 |
+| Pancreatic | 0.966 | 0.968 | 0.5 | +0.498 |
 | Ovarian | 0.949 | 0.911 | 0.813 | +0.174 |
-| Prostate | 0.840 | 0.876 | 0.661 | +0.258 |
-| Lung | 0.829 | 0.785 | 0.778 | +0.044 |
-| Bowel | 0.815 | 0.82 | 0.843 | +0.033 |
-| General | 0.794 | 0.78 | 0.779 | **+0.006** |
-| Liver | 0.760 | 0.74 | 0.602 | +0.106 |
+| Prostate | 0.880 | 0.876 | 0.661 | +0.258 |
+| Lung | 0.872 | 0.867 | 0.842 | +0.044 |
+| Bowel | 0.821 | 0.82 | 0.843 | +0.033 |
+| General | 0.781 | 0.78 | 0.779 | **+0.006** |
+| Liver | 0.780 | 0.761 | 0.623 | +0.106 |
 
 The gain column is measured by repeated paired cross-validation on identical folds, not from the held-out split, because a single split proved unreliable.
 
@@ -294,13 +294,13 @@ The gain column is measured by repeated paired cross-validation on identical fol
 | Panel | Test AUC | PPV at population incidence | Flagged per true case | Usable as screening? |
 |---|---|---|---|---|
 | Breast | 0.997 | 95.91% | 1.0 | not a screening panel |
-| Pancreatic | 0.969 | 0.47% | 210.4 | not a screening panel |
+| Pancreatic | 0.966 | 0.50% | 200.0 | not a screening panel |
 | Ovarian | 0.949 | 79.33% | 1.3 | not a screening panel |
-| Prostate | 0.840 | 70.59% | 1.4 | not a screening panel |
-| Lung | 0.829 | 1.81% | 55.1 | no |
-| Bowel | 0.815 | 0.13% | 795.0 | no |
-| General | 0.794 | 7.79% | 12.8 | yes, with caveats |
-| Liver | 0.760 | 9.95% | 10.0 | yes, with caveats |
+| Prostate | 0.880 | 69.51% | 1.4 | not a screening panel |
+| Lung | 0.872 | 1.99% | 50.3 | no |
+| Bowel | 0.821 | 0.18% | 559.8 | no |
+| General | 0.781 | 7.39% | 13.5 | yes, with caveats |
+| Liver | 0.780 | 12.47% | 8.0 | yes, with caveats |
 
 This is the table that decides whether a panel is a screening instrument. Discrimination and usability are different properties, and three panels have the first without the second.
 
@@ -311,11 +311,11 @@ This is the table that decides whether a panel is a screening instrument. Discri
 | Breast | 569 | 212 | 0.992 | 0.970 to 1.000 | 0.997 | 77th |
 | Pancreatic | 600 | 130 | 0.969 | 0.939 to 0.995 | 0.969 | 50th |
 | Ovarian | 349 | 171 | 0.928 | 0.852 to 0.969 | 0.949 | 70th |
-| Lung | 21,916 | 104 | 0.839 | 0.822 to 0.860 | 0.829 | 40th |
 | Bowel | 28,527 | 113 | 0.823 | 0.788 to 0.859 | 0.815 | 40th |
 | Prostate | 212 | 121 | 0.822 | 0.732 to 0.909 | 0.840 | 70th |
+| Lung | 19,866 | 91 | 0.819 | 0.715 to 0.850 | 0.826 | 30th |
+| Liver | 30,624 | 1,167 | 0.759 | 0.740 to 0.776 | 0.780 | 100th |
 | General | 28,711 | 897 | 0.758 | 0.735 to 0.779 | 0.794 | 100th |
-| Liver | 35,511 | 1,436 | 0.754 | 0.740 to 0.764 | 0.760 | 80th |
 | Cervical | 858 | 55 | **0.594** | **0.421 to 0.789** | 0.725 | **97th** |
 
 ### 3.4 The prospective test
@@ -382,30 +382,72 @@ Per 100,000 people at real incidence, sending everyone for the confirmatory proc
 
 | Panel | Procedure | Sent everyone | Sent if flagged | Cases missed | Apparent saving |
 |---|---|---|---|---|---|
-| Bowel | colonoscopy | 100,000 | 14,036 | 208.8 of 400 | $193,356,533 |
-| Lung | low-dose chest CT | 100,000 | 14,999 | 201.6 of 470 | $13,402,557 |
-| Liver | FibroScan (transient elastography) | 100,000 | 24,535 | 1575.6 of 4040 | $13,513,852 |
+| Bowel | colonoscopy | 100,000 | 10,766 | 191.2 of 400 | $202,421,043 |
+| Lung | low-dose chest CT | 100,000 | 11,980 | 235.0 of 470 | $12,306,138 |
+| Liver | FibroScan (transient elastography) | 100,000 | 18,881 | 1664.5 of 4040 | $14,974,958 |
 
 That apparent saving counts only treatment dollars. Charging a missed case what a life is conventionally worth changes the answer. Each panel is valued on its own endpoint: fifteen life-years for a cancer, five for liver disease, at $150,000 per QALY.
 
 | Panel | Break-even per missed case | A case, valued | Verdict |
 |---|---|---|---|
-| Bowel | $993,037 | $2,250,000 | **stops saving** |
-| Lung | $126,481 | $2,250,000 | **stops saving** |
-| Liver | $23,948 | $750,000 | **stops saving** |
+| Bowel | $1,125,687 | $2,250,000 | **stops saving** |
+| Lung | $112,367 | $2,250,000 | **stops saving** |
+| Liver | $24,368 | $750,000 | **stops saving** |
 
 **The operating point, not the model, decides this.** Choosing the point on each panel's real ROC curve that maximises net benefit once a missed case is priced at a life:
 
 | Panel | Sensitivity | Specificity | Procedures avoided per 100,000 | Cases missed | Net benefit |
 |---|---|---|---|---|---|
 | Bowel | 0.947 | 0.467 | **46,551** | 21.2 | $64,492,872 |
-| Lung | 1.0 | 0.217 | **21,561** | 0.0 | $6,468,172 |
+| Lung | 1.0 | 0.0 | **0** | 0.0 | $0 |
 | Liver | 1.0 | 0.0 | **0** | 0.0 | $0 |
 
 **The liver row is the interesting one.** That panel has the largest gain over age and sex of anything in this project, +0.106, and its best operating point is to send everyone: no triage threshold beats universal testing once a missed case is priced. Liver disease is common at 4% and a FibroScan is cheap at $500, so the scans a threshold saves are worth less than the cases it misses. **Discrimination did not decide this; prevalence and procedure cost did.** The panel that separates best is the one where triage helps least, which is the clearest available demonstration that AUC and decision value are different quantities.
 
 An illustrative model, not a cost-effectiveness analysis: no discounting, no quality-adjusted life years beyond the per-panel figure above, and no price on the harm of an unnecessary procedure. The treatment costs are first-year figures and understate the late-stage penalty, which biases the model *towards* triage.
 <!-- /AUTOGEN:paper_results -->
+
+### 3.8 A survey cycle withheld from training
+
+Section 4.2 argues that resampling inside one survey is not evidence of transfer. The strongest
+answer to that is another source, and for most panels no such source exists in public data. The
+always-available substitute is time: NHANES runs in two-year cycles under the same protocol but
+with different laboratory runs, a different sample and a slowly moving population. Withholding the
+most recent cycle gives a test set that shares the protocol and shares nothing else — no rows, no
+calibration, no threshold. TRIPOD calls this temporal validation.
+
+The 2017–2018 cycle is withheld from the liver and lung panels. The bowel and general panels
+cannot join: CDC dropped the MCQ240 age-at-diagnosis series after 2015–2016, so their
+screening-window target cannot be constructed on later data at all. Those two keep NHANES III.
+
+| Panel | Withheld n | Events | AUC | Age and sex | Gain | 95% CI on the gain |
+|---|---|---|---|---|---|---|
+| Liver | 4,887 | 269 | 0.705 | 0.614 | **+0.091** | +0.057 to +0.125 |
+| Lung | 2,050 | 13 | 0.824 | 0.846 | −0.022 | −0.126 to +0.056 |
+
+**The two results say different things, and the difference is the point.** The liver panel keeps a
+gain over age and sex that a bootstrap interval separates from zero, on patients it has never seen,
+from a later period. That is the first confirmation in a US population that the panel is reading
+chemistry rather than demographics. Its AUC still falls, 0.780 to 0.705, so the number on the card
+is optimistic even where the effect is real.
+
+The lung panel's gain does not reproduce. The withheld cycle holds thirteen events and the interval
+runs from −0.126 to +0.056, which refutes nothing and confirms nothing. **Unconfirmed is the honest
+word, and it is a different claim from the +0.047 that repeated resampling inside the training
+cycles reports.** The interface says so on the card rather than quoting only the resampled figure,
+because the resampled figure is the one that cannot fail.
+
+This is the weaker kind of external validation and is not presented as anything else. A panel that
+passes here has survived a change of laboratory run and two years of drift. It has not survived a
+change of country, and the liver panel is the standing proof that those are different questions: it
+scores 0.442 on the German cohort, below chance.
+
+One byproduct is worth recording. The liver panel previously trained on a multi-cycle file that
+included 2017–2018 while `external_validation.py` listed that same cycle as an independent "USA"
+cohort beside India and Germany — all 4,887 rows matched. No published number was wrong, because
+that file refits models rather than loading the shipped one, but the framing invited a reader to
+believe the shipped panel had been tested on a cohort it had been trained on. The holdout makes the
+claim true rather than merely unstated, and an assertion now fails loudly if the holdout is removed.
 
 ---
 
@@ -600,8 +642,12 @@ ovarian on 70, breast on 114. Prostate's confidence interval runs from 0.705 to 
 **External validation is uneven.** The liver panel is tested across three countries and transfers
 badly to one of them — 0.442 on the German cohort, below chance, because ALT and alkaline
 phosphatase run in opposite directions between a mild-disease population and an advanced-disease
-one. Several panels have no external cohort at all, and no external cohort exists in public data
-for the case-control panels.
+one. The bowel and general panels transfer to NHANES III, and liver and lung to a withheld 2017–2018
+cycle, but a withheld cycle of the same survey is a weaker test than another country and section 3.8
+does not claim otherwise. The lung result is uninformative either way on thirteen events. No
+external cohort exists in public data for any of the four case-control panels, and none is likely
+to: they are assembled from cases and matched controls, and a screening population is the thing
+they lack by construction.
 
 **Fairness is measured where it can be and unmeasured where it cannot.** Subgroup performance by
 race and ethnicity is reported for the NHANES panels. Reweighting was tested and did not close the
@@ -621,14 +667,27 @@ figure conventionally used in US health economics, it is contested, and the brea
 presented so a reader who prefers a different number can read off their own answer rather than
 accept ours.
 
-**The rule-out thresholds are chosen on the training cohorts, and only one has been tested outside
-one.** They are computed from out-of-fold predictions rather than from the fitted model's own
-scores, so they are not fit to the data they are evaluated on. The colorectal cut was then applied
-unchanged to NHANES III: it promised to catch 95.6% of cases while excluding 38.6% of people, and
-delivered 94.6% and 42.5%, ruling out 3 of 56 cancers that it should not have. That is inside the
-5-point tolerance set beforehand and it is a real degradation, so the interface quotes the rate as
-approximate rather than exact. The lung, liver and general cuts have no such test, and given
-section 4.2 that should be read seriously.
+**The rule-out thresholds are chosen on the training cohorts, and they degrade when moved.** They
+are computed from out-of-fold predictions rather than from the fitted model's own scores, so they
+are not fit to the data they are evaluated on. Both cuts that ship on a population cohort have now
+been applied unchanged to NHANES III, and both lost ground:
+
+| Cut | Promised | Delivered | Wrongly ruled out |
+|---|---|---|---|
+| Colorectal | catch 95.6%, exclude 38.6% | catch 94.6%, exclude 42.5% | 3 of 56 |
+| General | catch 95.1%, exclude 22.2% | **catch 90.5%**, exclude 27.6% | **24 of 252** |
+
+Both are inside the 5-point tolerance set beforehand, but the general cut clears it by four tenths
+of a point, and it is the cut with the widest reach: it excludes roughly a fifth of everyone who
+runs the panel, on five questions and no blood test. Both also excluded *more* people than
+promised while catching fewer, which is the direction that matters — a cut that drifts this way
+reassures more people on less evidence. The interface quotes each panel's own transferred figures
+rather than the tuned ones, and rounds them as approximate.
+
+The four case-control panels (breast, ovarian, pancreatic, prostate) also ship cuts, and no public
+cohort exists to test those against. Liver and lung ship no cut at all: the cost model says
+everyone in those groups should have the confirmatory test regardless. Given section 4.2, the
+untested case-control cuts should be read with the same suspicion the discrimination figures earn.
 
 **Clipping to the observed range does not make a panel right about an extreme patient.** It stops
 it being confidently backwards. A patient whose ALT is 900 gets the score of a patient at the edge

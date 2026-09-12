@@ -36,25 +36,25 @@
     "chosen_model": "logistic",
     "held_out": {
       "n_test": 5743,
-      "auc": 0.794,
+      "auc": 0.781,
       "auc_ci": [
-        0.764,
-        0.822
+        0.749,
+        0.811
       ],
-      "sensitivity": 0.737,
+      "sensitivity": 0.67,
       "sensitivity_ci": [
-        0.674,
-        0.8
+        0.603,
+        0.736
       ],
-      "specificity": 0.717,
+      "specificity": 0.728,
       "specificity_ci": [
-        0.704,
-        0.729
+        0.716,
+        0.739
       ],
-      "brier": 0.0291,
-      "calibration_slope": 1.042,
-      "ppv_at_population_prevalence": 0.07788,
-      "people_flagged_per_true_case": 12.8,
+      "brier": 0.0292,
+      "calibration_slope": 0.914,
+      "ppv_at_population_prevalence": 0.07392,
+      "people_flagged_per_true_case": 13.5,
       "population_prevalence": 0.0314,
       "prevalence_source": "Cancer diagnosed within 4 years, US adults, NHANES 2005-2014",
       "cohort_prevalence": 0.031,
@@ -64,37 +64,37 @@
         "sex: female": {
           "n": 2912,
           "positives": 78,
-          "auc": 0.766,
+          "auc": 0.758,
           "auc_ci": [
-            0.713,
-            0.816
+            0.7,
+            0.814
           ]
         },
         "sex: male": {
           "n": 2831,
           "positives": 101,
-          "auc": 0.809,
+          "auc": 0.8,
           "auc_ci": [
-            0.776,
-            0.842
+            0.766,
+            0.833
           ]
         },
         "age under 47": {
           "n": 2810,
           "positives": 16,
-          "auc": 0.728,
+          "auc": 0.562,
           "auc_ci": [
-            0.601,
-            0.848
+            0.399,
+            0.713
           ]
         },
         "age 47 and over": {
           "n": 2933,
           "positives": 163,
-          "auc": 0.678,
+          "auc": 0.658,
           "auc_ci": [
-            0.638,
-            0.717
+            0.616,
+            0.698
           ]
         }
       }
@@ -110,71 +110,94 @@
       "n_splits": 5
     },
     "fairness": {
-      "overall_auc": 0.757,
+      "overall_auc": 0.764,
       "groups": {
         "Mexican American": {
-          "n": 3994,
-          "events": 53,
-          "auc": 0.751,
+          "n": 4885,
+          "events": 68,
+          "auc": 0.746,
           "auc_ci": [
-            0.692,
+            0.685,
             0.802
           ],
-          "gap_vs_overall": -0.006,
+          "gap_vs_overall": -0.018,
+          "materially_worse": false
+        },
+        "Non-Hispanic Asian": {
+          "n": 1841,
+          "events": 13,
+          "auc": 0.721,
+          "auc_ci": [
+            0.553,
+            0.874
+          ],
+          "gap_vs_overall": -0.043,
           "materially_worse": false
         },
         "Non-Hispanic Black": {
-          "n": 5036,
-          "events": 122,
-          "auc": 0.718,
+          "n": 6045,
+          "events": 146,
+          "auc": 0.747,
           "auc_ci": [
-            0.677,
-            0.756
+            0.711,
+            0.781
           ],
-          "gap_vs_overall": -0.04,
+          "gap_vs_overall": -0.018,
           "materially_worse": false
         },
         "Non-Hispanic White": {
-          "n": 10474,
-          "events": 516,
-          "auc": 0.752,
+          "n": 11947,
+          "events": 591,
+          "auc": 0.754,
           "auc_ci": [
-            0.732,
-            0.772
+            0.735,
+            0.773
           ],
-          "gap_vs_overall": -0.005,
+          "gap_vs_overall": -0.01,
           "materially_worse": false
         },
         "Other Hispanic": {
-          "n": 2199,
-          "events": 39,
-          "auc": 0.672,
+          "n": 2854,
+          "events": 59,
+          "auc": 0.696,
           "auc_ci": [
-            0.585,
-            0.759
+            0.626,
+            0.763
           ],
-          "gap_vs_overall": -0.085,
+          "gap_vs_overall": -0.068,
           "materially_worse": true
+        },
+        "Other or multiracial": {
+          "n": 459,
+          "events": 12,
+          "auc": 0.869,
+          "auc_ci": [
+            0.797,
+            0.931
+          ],
+          "gap_vs_overall": 0.104,
+          "materially_worse": false
         }
       },
-      "unmeasurable_groups": [
-        {
-          "group": "Non-Hispanic Asian",
-          "n": 1254,
-          "events": 8
-        },
-        {
-          "group": "Other or multiracial",
-          "n": 286,
-          "events": 4
-        }
-      ],
+      "unmeasurable_groups": [],
       "worst_group": "Other Hispanic",
-      "worst_auc": 0.672,
-      "spread": 0.08,
+      "worst_auc": 0.696,
+      "spread": 0.173,
       "materially_worse_groups": [
         "Other Hispanic"
       ]
+    },
+    "temporal_validation": null,
+    "rule_out_external": {
+      "cut": 0.007675,
+      "promised_catch_rate": 0.951,
+      "actual_catch_rate": 0.905,
+      "promised_share_excluded": 0.222,
+      "actual_share_excluded": 0.276,
+      "cases_in_test_cohort": 252,
+      "cases_ruled_out_wrongly": 24,
+      "promise_kept": true,
+      "tolerance": 0.05
     },
     "panel_kind": "screening",
     "no_action_note": "There is no single test that confirms or rules out \u201cany cancer\u201d, so a raised score here does not point anywhere in particular. Read it as a reason to make sure your routine screening is up to date, not as something to act on by itself.",
@@ -182,7 +205,7 @@
     "screening_viable": true,
     "gain_over_age_sex": 0.006,
     "barely_beats_demographics": true,
-    "flagged_per_true_case": 12.8
+    "flagged_per_true_case": 13.5
   },
   "breast": {
     "label": "Breast Malignancy, from biopsy imaging",
@@ -248,7 +271,7 @@
       "n_test": 114,
       "auc": 0.997,
       "auc_ci": [
-        0.991,
+        0.989,
         1.0
       ],
       "sensitivity": 0.976,
@@ -258,11 +281,11 @@
       ],
       "specificity": 0.986,
       "specificity_ci": [
-        0.957,
+        0.956,
         1.0
       ],
-      "brier": 0.0167,
-      "calibration_slope": 1.616,
+      "brier": 0.0189,
+      "calibration_slope": 0.978,
       "ppv_at_population_prevalence": 0.95906,
       "people_flagged_per_true_case": 1.0,
       "population_prevalence": 0.25,
@@ -283,6 +306,8 @@
       "n_splits": 30
     },
     "fairness": {},
+    "temporal_validation": null,
+    "rule_out_external": null,
     "panel_kind": "interpretation",
     "no_action_note": "",
     "panel_kind_note": "Needs nuclear measurements from a breast biopsy that has already been taken and imaged. It interprets that biopsy; it does not screen for one.",
@@ -309,181 +334,120 @@
       "hepatitis_c"
     ],
     "cohort_design": "35,511 US adults from NHANES 2005 to 2018, chemistry plus diabetes and hepatitis serology. Externally validated against 583 patients in India and 589 in Germany, and temporally against later cycles. Detects liver disease, not liver cancer.",
-    "auc": 0.752,
-    "auc_std": 0.014,
-    "accuracy": 0.84,
-    "sensitivity": 0.481,
-    "specificity": 0.855,
-    "n_samples": 35511,
-    "n_positive": 1436,
+    "auc": 0.753,
+    "auc_std": 0.015,
+    "accuracy": 0.82,
+    "sensitivity": 0.584,
+    "specificity": 0.829,
+    "n_samples": 30624,
+    "n_positive": 1167,
     "n_features": 12,
     "cv_folds": 5,
-    "threshold": 0.05,
+    "threshold": 0.0443,
     "rule_out": null,
     "no_rule_out_reason": "The cost analysis says everyone in this group should have the confirmatory test, so this panel is not offered as a way to skip it. It separates well, but the condition is common and the test is cheap, so the tests a threshold would save are worth less than the cases it would miss.",
     "model_selection": {
-      "ensemble": 0.749,
-      "logistic": 0.742
+      "ensemble": 0.753,
+      "logistic": 0.745
     },
     "chosen_model": "ensemble",
     "held_out": {
-      "n_test": 7103,
-      "auc": 0.76,
+      "n_test": 6125,
+      "auc": 0.78,
       "auc_ci": [
-        0.729,
-        0.789
+        0.748,
+        0.812
       ],
-      "sensitivity": 0.61,
+      "sensitivity": 0.588,
       "sensitivity_ci": [
-        0.552,
-        0.667
+        0.523,
+        0.651
       ],
-      "specificity": 0.77,
+      "specificity": 0.828,
       "specificity_ci": [
-        0.76,
-        0.78
+        0.818,
+        0.838
       ],
-      "brier": 0.0356,
-      "calibration_slope": 1.059,
-      "ppv_at_population_prevalence": 0.09951,
-      "people_flagged_per_true_case": 10.0,
+      "brier": 0.0332,
+      "calibration_slope": 1.045,
+      "ppv_at_population_prevalence": 0.12472,
+      "people_flagged_per_true_case": 8.0,
       "population_prevalence": 0.04,
       "prevalence_source": "Ever told had a liver condition, US adults, NHANES 2005-2018",
-      "cohort_prevalence": 0.04,
-      "baseline_logistic_auc": 0.74,
-      "baseline_age_sex_auc": 0.602,
+      "cohort_prevalence": 0.038,
+      "baseline_logistic_auc": 0.761,
+      "baseline_age_sex_auc": 0.623,
       "subgroups": {
         "sex: female": {
-          "n": 3677,
-          "positives": 141,
-          "auc": 0.778,
+          "n": 3187,
+          "positives": 99,
+          "auc": 0.757,
           "auc_ci": [
-            0.738,
-            0.815
+            0.704,
+            0.807
           ]
         },
         "sex: male": {
-          "n": 3426,
-          "positives": 146,
-          "auc": 0.742,
+          "n": 2938,
+          "positives": 134,
+          "auc": 0.795,
           "auc_ci": [
-            0.696,
-            0.785
+            0.755,
+            0.833
           ]
         },
-        "age under 49": {
-          "n": 3471,
-          "positives": 85,
-          "auc": 0.761,
+        "age under 48": {
+          "n": 2961,
+          "positives": 58,
+          "auc": 0.757,
           "auc_ci": [
-            0.709,
-            0.81
+            0.685,
+            0.826
           ]
         },
-        "age 49 and over": {
-          "n": 3632,
-          "positives": 202,
-          "auc": 0.73,
+        "age 48 and over": {
+          "n": 3164,
+          "positives": 175,
+          "auc": 0.747,
           "auc_ci": [
-            0.69,
-            0.77
+            0.703,
+            0.788
           ]
         }
       }
     },
     "stability": {
-      "stable_auc": 0.754,
+      "stable_auc": 0.759,
       "split_spread": [
         0.74,
-        0.764
+        0.776
       ],
-      "split_sd": 0.008,
-      "shipped_split_percentile": 80.0,
+      "split_sd": 0.015,
+      "shipped_split_percentile": 100.0,
       "n_splits": 5
     },
-    "fairness": {
-      "overall_auc": 0.743,
-      "groups": {
-        "Mexican American": {
-          "n": 5660,
-          "events": 267,
-          "auc": 0.722,
-          "auc_ci": [
-            0.689,
-            0.755
-          ],
-          "gap_vs_overall": -0.021,
-          "materially_worse": false
-        },
-        "Non-Hispanic Asian": {
-          "n": 2568,
-          "events": 120,
-          "auc": 0.754,
-          "auc_ci": [
-            0.711,
-            0.794
-          ],
-          "gap_vs_overall": 0.012,
-          "materially_worse": false
-        },
-        "Non-Hispanic Black": {
-          "n": 7393,
-          "events": 182,
-          "auc": 0.798,
-          "auc_ci": [
-            0.762,
-            0.834
-          ],
-          "gap_vs_overall": 0.055,
-          "materially_worse": false
-        },
-        "Non-Hispanic White": {
-          "n": 15033,
-          "events": 586,
-          "auc": 0.737,
-          "auc_ci": [
-            0.715,
-            0.759
-          ],
-          "gap_vs_overall": -0.006,
-          "materially_worse": false
-        },
-        "Other Hispanic": {
-          "n": 3421,
-          "events": 218,
-          "auc": 0.713,
-          "auc_ci": [
-            0.678,
-            0.747
-          ],
-          "gap_vs_overall": -0.03,
-          "materially_worse": false
-        },
-        "Other or multiracial": {
-          "n": 731,
-          "events": 31,
-          "auc": 0.769,
-          "auc_ci": [
-            0.677,
-            0.852
-          ],
-          "gap_vs_overall": 0.027,
-          "materially_worse": false
-        }
-      },
-      "unmeasurable_groups": [],
-      "worst_group": "Other Hispanic",
-      "worst_auc": 0.713,
-      "spread": 0.085,
-      "materially_worse_groups": []
+    "fairness": {},
+    "temporal_validation": {
+      "cycle": "2017-2018",
+      "n": 4887,
+      "events": 269,
+      "auc": 0.705,
+      "gain": 0.091,
+      "gain_ci": [
+        0.057,
+        0.125
+      ],
+      "confirmed": true,
+      "verdict": "Held up on 4,887 patients from the 2017-2018 survey, which the model never saw: it still beat age and sex by +0.091."
     },
+    "rule_out_external": null,
     "panel_kind": "screening",
     "no_action_note": "",
     "panel_kind_note": "Reads routine bloodwork and your history. Anyone can run it.",
     "screening_viable": true,
     "gain_over_age_sex": 0.106,
     "barely_beats_demographics": false,
-    "flagged_per_true_case": 10.0
+    "flagged_per_true_case": 8.0
   },
   "pancreatic": {
     "label": "Pancreatic Cancer Risk",
@@ -523,25 +487,25 @@
     "chosen_model": "logistic",
     "held_out": {
       "n_test": 120,
-      "auc": 0.969,
+      "auc": 0.966,
       "auc_ci": [
-        0.937,
-        0.991
+        0.933,
+        0.99
       ],
-      "sensitivity": 0.731,
+      "sensitivity": 0.769,
       "sensitivity_ci": [
-        0.538,
-        0.893
+        0.593,
+        0.923
       ],
       "specificity": 0.979,
       "specificity_ci": [
         0.946,
         1.0
       ],
-      "brier": 0.0617,
-      "calibration_slope": 0.46,
-      "ppv_at_population_prevalence": 0.00475,
-      "people_flagged_per_true_case": 210.4,
+      "brier": 0.0651,
+      "calibration_slope": 0.457,
+      "ppv_at_population_prevalence": 0.005,
+      "people_flagged_per_true_case": 200.0,
       "population_prevalence": 0.000139,
       "prevalence_source": "Pancreas, per 100,000 men and women per year",
       "cohort_prevalence": 0.217,
@@ -551,36 +515,36 @@
         "sex: female": {
           "n": 54,
           "positives": 12,
-          "auc": 0.959,
+          "auc": 0.952,
           "auc_ci": [
-            0.904,
-            0.998
+            0.889,
+            0.995
           ]
         },
         "sex: male": {
           "n": 66,
           "positives": 14,
-          "auc": 0.978,
+          "auc": 0.982,
           "auc_ci": [
-            0.942,
-            0.999
+            0.951,
+            1.0
           ]
         },
         "age under 57": {
           "n": 58,
           "positives": 12,
-          "auc": 0.957,
+          "auc": 0.959,
           "auc_ci": [
-            0.902,
-            0.998
+            0.904,
+            0.997
           ]
         },
         "age 57 and over": {
           "n": 62,
           "positives": 14,
-          "auc": 0.983,
+          "auc": 0.978,
           "auc_ci": [
-            0.949,
+            0.938,
             1.0
           ]
         }
@@ -597,13 +561,15 @@
       "n_splits": 30
     },
     "fairness": {},
+    "temporal_validation": null,
+    "rule_out_external": null,
     "panel_kind": "triage",
     "no_action_note": "",
     "panel_kind_note": "For someone ALREADY being investigated for pancreatic or biliary disease. It reads CA 19-9, which is a tumour marker ordered when cancer is suspected rather than part of routine bloodwork, and its controls were people with benign disease of the same organs. It asks which of those two a sick person has.",
     "screening_viable": true,
     "gain_over_age_sex": 0.498,
     "barely_beats_demographics": false,
-    "flagged_per_true_case": 210.4
+    "flagged_per_true_case": 200.0
   },
   "colorectal": {
     "label": "Bowel Cancer Risk",
@@ -653,25 +619,25 @@
     "chosen_model": "logistic",
     "held_out": {
       "n_test": 5706,
-      "auc": 0.815,
+      "auc": 0.821,
       "auc_ci": [
-        0.755,
-        0.868
+        0.747,
+        0.891
       ],
-      "sensitivity": 0.478,
+      "sensitivity": 0.522,
       "sensitivity_ci": [
-        0.267,
-        0.696
+        0.31,
+        0.724
       ],
-      "specificity": 0.861,
+      "specificity": 0.894,
       "specificity_ci": [
-        0.852,
-        0.87
+        0.885,
+        0.902
       ],
       "brier": 0.004,
-      "calibration_slope": 0.971,
-      "ppv_at_population_prevalence": 0.00126,
-      "people_flagged_per_true_case": 795.0,
+      "calibration_slope": 0.968,
+      "ppv_at_population_prevalence": 0.00179,
+      "people_flagged_per_true_case": 559.8,
       "population_prevalence": 0.000365,
       "prevalence_source": "Colon and rectum, per 100,000 men and women per year",
       "cohort_prevalence": 0.004,
@@ -681,10 +647,10 @@
         "sex: female": {
           "n": 2983,
           "positives": 12,
-          "auc": 0.807,
+          "auc": 0.821,
           "auc_ci": [
-            0.738,
-            0.872
+            0.711,
+            0.922
           ]
         },
         "sex: male": {
@@ -692,17 +658,17 @@
           "positives": 11,
           "auc": 0.823,
           "auc_ci": [
-            0.715,
-            0.907
+            0.717,
+            0.922
           ]
         },
         "age 47 and over": {
           "n": 2909,
           "positives": 23,
-          "auc": 0.642,
+          "auc": 0.662,
           "auc_ci": [
-            0.531,
-            0.741
+            0.526,
+            0.795
           ]
         }
       }
@@ -718,59 +684,69 @@
       "n_splits": 5
     },
     "fairness": {
-      "overall_auc": 0.804,
+      "overall_auc": 0.793,
       "groups": {
         "Non-Hispanic Black": {
-          "n": 5097,
-          "events": 18,
-          "auc": 0.752,
+          "n": 6115,
+          "events": 23,
+          "auc": 0.767,
           "auc_ci": [
-            0.657,
-            0.839
+            0.692,
+            0.836
           ],
-          "gap_vs_overall": -0.052,
-          "materially_worse": true
+          "gap_vs_overall": -0.026,
+          "materially_worse": false
         },
         "Non-Hispanic White": {
-          "n": 10242,
-          "events": 67,
-          "auc": 0.796,
+          "n": 11666,
+          "events": 73,
+          "auc": 0.784,
           "auc_ci": [
-            0.747,
-            0.838
+            0.735,
+            0.827
           ],
-          "gap_vs_overall": -0.008,
+          "gap_vs_overall": -0.009,
           "materially_worse": false
         }
       },
       "unmeasurable_groups": [
         {
           "group": "Mexican American",
-          "n": 3991,
-          "events": 5
+          "n": 4881,
+          "events": 7
         },
         {
           "group": "Non-Hispanic Asian",
-          "n": 1277,
-          "events": 2
+          "n": 1870,
+          "events": 3
         },
         {
           "group": "Other Hispanic",
-          "n": 2212,
-          "events": 4
+          "n": 2853,
+          "events": 5
         },
         {
           "group": "Other or multiracial",
-          "n": 975,
-          "events": 0
+          "n": 1142,
+          "events": 2
         }
       ],
       "worst_group": "Non-Hispanic Black",
-      "worst_auc": 0.752,
-      "spread": 0.044,
-      "materially_worse_groups": [
-        "Non-Hispanic Black"
-      ]
+      "worst_auc": 0.767,
+      "spread": 0.017,
+      "materially_worse_groups": []
+    },
+    "temporal_validation": null,
+    "rule_out_external": {
+      "cut": 0.000804,
+      "promised_catch_rate": 0.956,
+      "actual_catch_rate": 0.946,
+      "promised_share_excluded": 0.386,
+      "actual_share_excluded": 0.425,
+      "cases_in_test_cohort": 56,
+      "cases_ruled_out_wrongly": 3,
+      "promise_kept": true,
+      "tolerance": 0.05
     },
     "panel_kind": "screening",
     "no_action_note": "",
@@ -778,7 +754,7 @@
     "screening_viable": false,
     "gain_over_age_sex": 0.033,
     "barely_beats_demographics": false,
-    "flagged_per_true_case": 795.0
+    "flagged_per_true_case": 559.8
   },
   "ovarian": {
     "label": "Ovarian Malignancy, in a known ovarian mass",
@@ -841,17 +817,17 @@
       "n_test": 70,
       "auc": 0.949,
       "auc_ci": [
-        0.888,
-        0.992
+        0.886,
+        0.993
       ],
       "sensitivity": 0.853,
       "sensitivity_ci": [
         0.722,
-        0.966
+        0.964
       ],
       "specificity": 0.944,
       "specificity_ci": [
-        0.861,
+        0.857,
         1.0
       ],
       "brier": 0.0797,
@@ -869,7 +845,7 @@
           "positives": 6,
           "auc": 0.818,
           "auc_ci": [
-            0.528,
+            0.534,
             1.0
           ]
         },
@@ -878,7 +854,7 @@
           "positives": 28,
           "auc": 0.972,
           "auc_ci": [
-            0.913,
+            0.907,
             1.0
           ]
         }
@@ -895,6 +871,8 @@
       "n_splits": 30
     },
     "fairness": {},
+    "temporal_validation": null,
+    "rule_out_external": null,
     "panel_kind": "triage",
     "no_action_note": "",
     "panel_kind_note": "For a woman who ALREADY has an ovarian mass found on imaging. It asks whether that mass is malignant, not whether one exists.",
@@ -933,167 +911,111 @@
       "alkaline_phosphatase"
     ],
     "cohort_design": "21,916 US adults with tobacco exposure from NHANES 1999 to 2018, 104 with lung cancer. Controls are restricted to smokers on purpose: on the unrestricted cohort the smoking question alone reaches 0.836 and any lab model inherits the credit. On the restricted comparison the baseline is 0.792 and the lab report adds 0.029, winning every repeat. Serum cotinine alone adds 0.016 while self-reported pack-years adds 0.001, so the measured value beats the questionnaire it replaces. The target is a lifetime diagnosis, and lung cancer survival is poor, so the cases are survivor-biased. Spirometry helps far more but only 13 cases have it.",
-    "auc": 0.836,
-    "auc_std": 0.031,
-    "accuracy": 0.835,
-    "sensitivity": 0.571,
-    "specificity": 0.836,
-    "n_samples": 21916,
-    "n_positive": 104,
+    "auc": 0.824,
+    "auc_std": 0.047,
+    "accuracy": 0.875,
+    "sensitivity": 0.5,
+    "specificity": 0.877,
+    "n_samples": 19866,
+    "n_positive": 91,
     "n_features": 24,
     "cv_folds": 5,
     "threshold": 0.01,
-    "rule_out": {
-      "threshold": 0.0002835270768358378,
-      "sensitivity": 0.99,
-      "specificity": 0.124,
-      "share_ruled_out": 0.124,
-      "cases_missed_per_100": 1.0,
-      "target_sensitivity": 0.99
-    },
-    "no_rule_out_reason": "",
+    "rule_out": null,
+    "no_rule_out_reason": "The cost analysis says everyone in this group should have the confirmatory test, so this panel is not offered as a way to skip it. It separates well, but the condition is common and the test is cheap, so the tests a threshold would save are worth less than the cases it would miss.",
     "model_selection": {
-      "ensemble": 0.826,
-      "logistic": 0.84
+      "ensemble": 0.832,
+      "logistic": 0.832
     },
     "chosen_model": "logistic",
     "held_out": {
-      "n_test": 4384,
-      "auc": 0.829,
+      "n_test": 3974,
+      "auc": 0.872,
       "auc_ci": [
-        0.732,
-        0.902
+        0.802,
+        0.925
       ],
-      "sensitivity": 0.571,
+      "sensitivity": 0.5,
       "sensitivity_ci": [
-        0.35,
-        0.792
+        0.25,
+        0.75
       ],
-      "specificity": 0.852,
+      "specificity": 0.882,
       "specificity_ci": [
-        0.842,
-        0.863
+        0.872,
+        0.893
       ],
-      "brier": 0.0047,
-      "calibration_slope": 0.619,
-      "ppv_at_population_prevalence": 0.01814,
-      "people_flagged_per_true_case": 55.1,
+      "brier": 0.0044,
+      "calibration_slope": 0.971,
+      "ppv_at_population_prevalence": 0.0199,
+      "people_flagged_per_true_case": 50.3,
       "population_prevalence": 0.00475,
       "prevalence_source": "Lung cancer among US adults with tobacco exposure, NHANES 1999-2018",
       "cohort_prevalence": 0.005,
-      "baseline_logistic_auc": 0.785,
-      "baseline_age_sex_auc": 0.778,
+      "baseline_logistic_auc": 0.867,
+      "baseline_age_sex_auc": 0.842,
       "subgroups": {
         "sex: female": {
-          "n": 1745,
-          "positives": 10,
-          "auc": 0.867,
+          "n": 1578,
+          "positives": 8,
+          "auc": 0.826,
           "auc_ci": [
-            0.795,
-            0.934
+            0.7,
+            0.914
           ]
         },
         "sex: male": {
-          "n": 2639,
-          "positives": 11,
-          "auc": 0.809,
+          "n": 2396,
+          "positives": 10,
+          "auc": 0.906,
           "auc_ci": [
-            0.649,
-            0.935
-          ]
-        },
-        "age under 48": {
-          "n": 2116,
-          "positives": 2,
-          "auc": 0.629,
-          "auc_ci": [
-            0.293,
-            0.964
+            0.844,
+            0.959
           ]
         },
         "age 48 and over": {
-          "n": 2268,
-          "positives": 19,
-          "auc": 0.759,
+          "n": 2049,
+          "positives": 18,
+          "auc": 0.776,
           "auc_ci": [
-            0.655,
-            0.855
+            0.677,
+            0.86
           ]
         }
       }
     },
     "stability": {
-      "stable_auc": 0.839,
+      "stable_auc": 0.819,
       "split_spread": [
-        0.822,
-        0.86
+        0.715,
+        0.85
       ],
-      "split_sd": 0.015,
-      "shipped_split_percentile": 40.0,
-      "n_splits": 5
+      "split_sd": 0.038,
+      "shipped_split_percentile": 30.0,
+      "n_splits": 10
     },
-    "fairness": {
-      "overall_auc": 0.823,
-      "groups": {
-        "Non-Hispanic Black": {
-          "n": 4862,
-          "events": 23,
-          "auc": 0.756,
-          "auc_ci": [
-            0.679,
-            0.83
-          ],
-          "gap_vs_overall": -0.066,
-          "materially_worse": true
-        },
-        "Non-Hispanic White": {
-          "n": 10483,
-          "events": 69,
-          "auc": 0.826,
-          "auc_ci": [
-            0.78,
-            0.868
-          ],
-          "gap_vs_overall": 0.003,
-          "materially_worse": false
-        }
-      },
-      "unmeasurable_groups": [
-        {
-          "group": "Mexican American",
-          "n": 3467,
-          "events": 1
-        },
-        {
-          "group": "Non-Hispanic Asian",
-          "n": 666,
-          "events": 2
-        },
-        {
-          "group": "Other Hispanic",
-          "n": 1593,
-          "events": 4
-        },
-        {
-          "group": "Other or multiracial",
-          "n": 845,
-          "events": 5
-        }
+    "fairness": {},
+    "temporal_validation": {
+      "cycle": "2017-2018",
+      "n": 2050,
+      "events": 13,
+      "auc": 0.824,
+      "gain": -0.022,
+      "gain_ci": [
+        -0.126,
+        0.056
       ],
-      "worst_group": "Non-Hispanic Black",
-      "worst_auc": 0.756,
-      "spread": 0.07,
-      "materially_worse_groups": [
-        "Non-Hispanic Black"
-      ]
+      "confirmed": false,
+      "verdict": "On the withheld 2017-2018 survey there were only 13 cases, and the panel's advantage over age and sex measured -0.022 with a range of -0.126 to +0.056. That is too little evidence to say either way."
     },
+    "rule_out_external": null,
     "panel_kind": "screening",
     "no_action_note": "",
     "panel_kind_note": "Reads routine bloodwork. Offered to people with tobacco exposure, which is who lung screening is for.",
     "screening_viable": false,
     "gain_over_age_sex": 0.044,
     "barely_beats_demographics": false,
-    "flagged_per_true_case": 55.1
+    "flagged_per_true_case": 50.3
   },
   "prostate": {
     "label": "Prostate Cancer Risk, with an MRI score",
@@ -1133,24 +1055,24 @@
     "chosen_model": "logistic",
     "held_out": {
       "n_test": 43,
-      "auc": 0.84,
+      "auc": 0.88,
       "auc_ci": [
-        0.709,
-        0.948
+        0.753,
+        0.978
       ],
-      "sensitivity": 0.8,
+      "sensitivity": 0.76,
       "sensitivity_ci": [
-        0.63,
-        0.955
+        0.583,
+        0.92
       ],
       "specificity": 0.778,
       "specificity_ci": [
         0.562,
-        0.955
+        0.947
       ],
-      "brier": 0.1642,
-      "calibration_slope": 0.86,
-      "ppv_at_population_prevalence": 0.70588,
+      "brier": 0.1509,
+      "calibration_slope": 0.602,
+      "ppv_at_population_prevalence": 0.69512,
       "people_flagged_per_true_case": 1.4,
       "population_prevalence": 0.4,
       "prevalence_source": "Adenocarcinoma among men taken to prostate biopsy",
@@ -1161,18 +1083,18 @@
         "age under 69": {
           "n": 21,
           "positives": 10,
-          "auc": 0.745,
+          "auc": 0.782,
           "auc_ci": [
-            0.5,
-            0.946
+            0.538,
+            0.973
           ]
         },
         "age 69 and over": {
           "n": 22,
           "positives": 15,
-          "auc": 0.91,
+          "auc": 0.971,
           "auc_ci": [
-            0.743,
+            0.889,
             1.0
           ]
         }
@@ -1189,6 +1111,8 @@
       "n_splits": 30
     },
     "fairness": {},
+    "temporal_validation": null,
+    "rule_out_external": null,
     "panel_kind": "interpretation",
     "no_action_note": "",
     "panel_kind_note": "Needs a PI-RADS score from a prostate MRI. Without it this panel only matches reading the PSA number, so it is not a lab-report test.",

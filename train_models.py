@@ -987,11 +987,71 @@ def evaluate(clf_factory, X: pd.DataFrame, y: pd.Series,
     }
 
 
+# Survey cycles withheld from training so that a later-era test set exists.
+#
+# Every external result this project had came from a different SOURCE: India,
+# Germany, NHANES III. That is the strongest kind of test and it is also the
+# scarcest, and three of the shipped operating points had no such test at all,
+# which the paper records as a limitation worth reading seriously.
+#
+# A temporal holdout is the weaker but always-available version. The same
+# survey, the same protocol, a later period and different laboratory runs, and
+# rows that touched neither fitting nor calibration nor threshold selection.
+# TRIPOD calls this temporal validation and counts it as external; it is not as
+# convincing as another country and it is not represented as such.
+#
+# Only cohorts whose target exists after 2016 can do this. CDC dropped the
+# MCQ240 age-at-diagnosis series after the 2015-2016 cycle, so the bowel and
+# general panels cannot build their screening-window target on later data at
+# all. Those two keep NHANES III as their external cohort instead.
+TEMPORAL_HOLDOUT = {
+    "liver": "2017-2018",   # 4,887 adults, 269 with a liver condition
+    "lung": "2017-2018",    # 4,522 adults, 14 with lung cancer
+}
+
+
+def split_temporal(df: pd.DataFrame, name: str):
+    """Training rows and the withheld later cycle, for one panel.
+
+    Raises rather than returning everything when the cycle column or the named
+    cycle is missing. A silent no-op here would put the test set back into
+    training and every downstream number would look fine while being wrong,
+    which is the failure mode this whole holdout exists to prevent.
+    """
+    held = TEMPORAL_HOLDOUT.get(name)
+    if held is None:
+        return df, None
+    if "cycle" not in df.columns:
+        raise ValueError(
+            f"{name}: a temporal holdout of {held} is configured but the cohort "
+            f"has no 'cycle' column, so the holdout cannot be enforced")
+    cycles = set(df["cycle"].dropna().astype(str))
+    if held not in cycles:
+        raise ValueError(
+            f"{name}: holdout cycle {held} is not present in the cohort "
+            f"(found {sorted(cycles)}); refusing to train on what looks like a "
+            f"silently applied no-op")
+    mask = df["cycle"].astype(str) == held
+    return df[~mask].reset_index(drop=True), df[mask].reset_index(drop=True)
+
+
+def build_features(config: dict, df: pd.DataFrame) -> pd.DataFrame:
+    """The panel's feature matrix, built from a cohort frame.
+
+    Shared so the temporal holdout is scored through exactly the same
+    expressions the training rows went through, rather than a second
+    transcription of them that could drift.
+    """
+    X = pd.DataFrame({key: fn(df) for key, fn in config["features"].items()})
+    return X.apply(pd.to_numeric, errors="coerce")
+
+
 def prepare(config: dict):
     path = os.path.join(DATA_DIR, config["file"])
     if not os.path.isfile(path):
         raise FileNotFoundError(path)
     df = pd.read_csv(path)
+    df, _ = split_temporal(df, config["name"])
 
     X = pd.DataFrame({key: fn(df) for key, fn in config["features"].items()})
     X = X.apply(pd.to_numeric, errors="coerce")
@@ -1028,6 +1088,125 @@ def load_demographic_gain() -> dict:
         return {}
     with open(path) as f:
         return json.load(f)
+
+
+def load_rule_out_external() -> dict:
+    """
+    What each shipped rule-out cut actually delivered on a cohort from another
+    decade, from experiments/rule_out_external.py.
+
+    Carried on the bundle so the interface can quote the panel's OWN transfer
+    instead of a generic caveat. The text used to tell every panel's user that
+    "the bowel panel caught slightly fewer cases than promised", which was true
+    and was about a different panel. The two tested cuts do not degrade equally:
+    bowel lost one point of sensitivity, general lost nearly five.
+    """
+    path = "experiments/rule_out_external_result.json"
+    if not os.path.isfile(path):
+        print("NOTE: rule_out_external_result.json not found, "
+              "run experiments/rule_out_external.py.")
+        return {}
+    with open(path) as f:
+        raw = json.load(f)
+    return raw.get("panels", {})
+
+
+def model_factory(kind: str, n: int, pos_rate: float):
+    """The two candidate models, built the same way everywhere."""
+    if kind == "ensemble":
+        return build_ensemble(n, pos_rate)
+    return make_pipeline(
+        StandardScaler(),
+        LogisticRegression(max_iter=5000, class_weight="balanced"),
+    )
+
+
+def select_model(X, y, pos_rate: float):
+    """Which model ships for this panel, by cross-validated AUC.
+
+    Shared by train_models and evaluate so the two cannot disagree, and they
+    did disagree: evaluate.py always built the ensemble while the trainer
+    picked per panel, so the held-out AUC printed on a card was measured on a
+    model the user was never scored by. Colorectal and prostate shipped
+    logistic regression and were advertised with ensemble numbers.
+
+    The ensemble has to EARN the swap, and a plain max() did not make it. max()
+    returns the first key on a tie and the ensemble was listed first, so an
+    exact draw silently shipped the complicated model: the lung panel drew at
+    0.832 and shipped a 7 MB ensemble in place of a 9 KB logistic regression,
+    on a service with 512 MB of memory, for no measured accuracy at all.
+
+    A 0.001 win is not a win either. Cross-validated AUC on these cohorts moves
+    by 0.02 to 0.04 between random partitions, so anything inside
+    SIMPLER_MODEL_MARGIN is noise being read as a result. Logistic regression
+    is the default; the ensemble replaces it only when it leads by more.
+
+    Selection runs inside the training data only, never on the held-out split,
+    so it does not leak.
+    """
+    folds = max(2, min(5, int(pd.Series(y).value_counts().min())))
+    cv = StratifiedKFold(n_splits=folds, shuffle=True, random_state=RANDOM_STATE)
+    candidates = {}
+    for kind in ("ensemble", "logistic"):
+        p = cross_val_predict(model_factory(kind, len(y), pos_rate),
+                              X, y, cv=cv, method="predict_proba")[:, 1]
+        candidates[kind] = round(float(roc_auc_score(y, p)), 3)
+    chosen = ("ensemble"
+              if candidates["ensemble"] - candidates["logistic"] > SIMPLER_MODEL_MARGIN
+              else "logistic")
+    return chosen, candidates
+
+
+def load_temporal_validation() -> dict:
+    """
+    What the withheld later cycle said about each panel, from
+    experiments/temporal_validation.py.
+
+    Carried on the bundle because the answer is not the same for the two panels
+    that have one, and a user is entitled to the difference. The liver panel
+    keeps a gain of +0.091 over age and sex on patients from a later cycle,
+    with an interval that excludes zero. The lung panel's gain does not
+    reproduce -- the withheld cycle holds thirteen events and the interval runs
+    from -0.136 to +0.090, which refutes nothing and confirms nothing either.
+
+    "Unconfirmed" is the honest word for the second case, and it is a different
+    claim from the +0.047 that repeated resampling inside the training cycles
+    reports. Section 4.2 exists because those two have disagreed before.
+    """
+    path = "experiments/temporal_validation_result.json"
+    if not os.path.isfile(path):
+        print("NOTE: temporal_validation_result.json not found, "
+              "run experiments/temporal_validation.py.")
+        return {}
+    with open(path) as f:
+        raw = json.load(f)
+    out = {}
+    for name, r in raw.items():
+        if not isinstance(r, dict) or "auc" not in r:
+            continue
+        lo, hi = r.get("gain_ci", [None, None])
+        confirmed = bool(r.get("gain_beats_demographics"))
+        out[name] = {
+            "cycle": r["held_out_cycle"],
+            "n": r["n_test"],
+            "events": r["events_test"],
+            "auc": r["auc"],
+            "gain": r["gain"],
+            "gain_ci": [lo, hi],
+            "confirmed": confirmed,
+            "verdict": (
+                f"Held up on {r['n_test']:,} patients from the "
+                f"{r['held_out_cycle']} survey, which the model never saw: it "
+                f"still beat age and sex by {r['gain']:+.3f}."
+                if confirmed else
+                f"On the withheld {r['held_out_cycle']} survey "
+                f"there were only {r['events_test']} cases, and the panel's "
+                f"advantage over age and sex measured {r['gain']:+.3f} with a "
+                f"range of {lo:+.3f} to {hi:+.3f}. That is too little evidence "
+                f"to say either way."
+            ),
+        }
+    return out
 
 
 def load_fairness() -> dict:
@@ -1174,15 +1353,25 @@ STABILITY = {}
 FAIRNESS = {}
 DEMO_GAIN = {}
 COST_OPTIMUM = {}
+TEMPORAL = {}
+RULE_OUT_EXTERNAL = {}
+
+# How far ahead the ensemble must be, in cross-validated AUC, before it ships
+# instead of logistic regression. Below this the two are indistinguishable at
+# these cohort sizes and the simpler, smaller, more transferable model wins.
+SIMPLER_MODEL_MARGIN = 0.005
 
 
 def main():
-    global HELD_OUT, STABILITY, FAIRNESS, DEMO_GAIN, COST_OPTIMUM
+    global HELD_OUT, STABILITY, FAIRNESS, DEMO_GAIN, COST_OPTIMUM, TEMPORAL
+    global RULE_OUT_EXTERNAL
     HELD_OUT = load_held_out()
     STABILITY = load_split_stability()
     FAIRNESS = load_fairness()
     DEMO_GAIN = load_demographic_gain()
     COST_OPTIMUM = load_cost_optimum()
+    TEMPORAL = load_temporal_validation()
+    RULE_OUT_EXTERNAL = load_rule_out_external()
 
     for d in MODEL_DIRS:
         os.makedirs(d, exist_ok=True)
@@ -1224,22 +1413,11 @@ def main():
         # also generalises better across cohorts in external_validation.py,
         # which is the sort of thing an unexamined "use the fancy model"
         # default would hide.
-        ensemble_factory = lambda: build_ensemble(len(y), pos_rate)
-        logistic_factory = lambda: make_pipeline(
-            StandardScaler(),
-            LogisticRegression(max_iter=5000, class_weight="balanced"),
-        )
+        chosen, candidates = select_model(X, y, pos_rate)
+        print(f"  model selection by CV AUC: {candidates}  ->  {chosen}"
+              f"{'' if chosen == 'ensemble' else f' (ensemble must lead by >{SIMPLER_MODEL_MARGIN})'}")
 
-        folds_sel = max(2, min(5, int(y.value_counts().min())))
-        cv_sel = StratifiedKFold(n_splits=folds_sel, shuffle=True, random_state=RANDOM_STATE)
-        candidates = {}
-        for cand_name, cand in [("ensemble", ensemble_factory), ("logistic", logistic_factory)]:
-            p = cross_val_predict(cand(), X, y, cv=cv_sel, method="predict_proba")[:, 1]
-            candidates[cand_name] = round(float(roc_auc_score(y, p)), 3)
-        chosen = max(candidates, key=lambda k: candidates[k])
-        print(f"  model selection by CV AUC: {candidates}  ->  {chosen}")
-
-        factory = ensemble_factory if chosen == "ensemble" else logistic_factory
+        factory = lambda: model_factory(chosen, len(y), pos_rate)
         algorithm = (
             "Soft-voting ensemble: XGBoost + Extra Trees, isotonic calibrated"
             if chosen == "ensemble"
@@ -1377,6 +1555,8 @@ def main():
             "held_out": held_out,
             "stability": stability,
             "fairness": fairness,
+            "temporal_validation": TEMPORAL.get(name),
+            "rule_out_external": RULE_OUT_EXTERNAL.get(name),
             "panel_kind": kind,
             "no_action_note": NO_ACTION.get(name, ""),
             "panel_kind_note": kind_note,
@@ -1401,6 +1581,8 @@ def main():
             "held_out": held_out,
             "stability": stability,
             "fairness": fairness,
+            "temporal_validation": TEMPORAL.get(name),
+            "rule_out_external": RULE_OUT_EXTERNAL.get(name),
             "panel_kind": kind,
             "no_action_note": NO_ACTION.get(name, ""),
             "panel_kind_note": kind_note,

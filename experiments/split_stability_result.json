@@ -36,21 +36,21 @@
       "shipped_minus_mean": 0.005
     },
     "liver": {
-      "n_rows": 35511,
-      "n_positive": 1436,
+      "n_rows": 30624,
+      "n_positive": 1167,
       "n_splits": 5,
-      "mean_auc": 0.754,
-      "median_auc": 0.754,
-      "std_auc": 0.008,
+      "mean_auc": 0.759,
+      "median_auc": 0.763,
+      "std_auc": 0.015,
       "min_auc": 0.74,
-      "max_auc": 0.764,
+      "max_auc": 0.776,
       "split_range_2p5_97p5": [
         0.741,
-        0.763
+        0.776
       ],
-      "shipped_split_auc": 0.76,
-      "shipped_split_percentile": 80.0,
-      "shipped_minus_mean": 0.006
+      "shipped_split_auc": 0.78,
+      "shipped_split_percentile": 100.0,
+      "shipped_minus_mean": 0.021
     },
     "pancreatic": {
       "n_rows": 600,
@@ -104,21 +104,21 @@
       "shipped_minus_mean": 0.021
     },
     "lung": {
-      "n_rows": 21916,
-      "n_positive": 104,
-      "n_splits": 5,
-      "mean_auc": 0.839,
-      "median_auc": 0.832,
-      "std_auc": 0.015,
-      "min_auc": 0.822,
-      "max_auc": 0.86,
+      "n_rows": 19866,
+      "n_positive": 91,
+      "n_splits": 10,
+      "mean_auc": 0.819,
+      "median_auc": 0.834,
+      "std_auc": 0.038,
+      "min_auc": 0.715,
+      "max_auc": 0.85,
       "split_range_2p5_97p5": [
-        0.822,
-        0.859
+        0.733,
+        0.849
       ],
-      "shipped_split_auc": 0.829,
-      "shipped_split_percentile": 40.0,
-      "shipped_minus_mean": -0.01
+      "shipped_split_auc": 0.826,
+      "shipped_split_percentile": 30.0,
+      "shipped_minus_mean": 0.007
     },
     "prostate": {
       "n_rows": 212,

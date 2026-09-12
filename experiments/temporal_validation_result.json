@@ -1,0 +1,50 @@
+{
+  "liver": {
+    "panel": "liver",
+    "held_out_cycle": "2017-2018",
+    "n_train": 30624,
+    "n_test": 4887,
+    "events_test": 269,
+    "prevalence_test": 0.055,
+    "auc": 0.705,
+    "auc_ci": [
+      0.671,
+      0.737
+    ],
+    "age_sex_auc": 0.614,
+    "gain": 0.091,
+    "gain_ci": [
+      0.057,
+      0.125
+    ],
+    "gain_beats_demographics": true,
+    "shipped_auc": 0.78,
+    "drop_vs_shipped": 0.075,
+    "rule_out": null,
+    "no_rule_out_reason": "The cost analysis says everyone in this group should have the confirmatory test, so this panel is not offered as a way to skip it. It separates well, but the condition is common and the test is cheap, so the tests a threshold would save are worth less than the cases it would miss."
+  },
+  "lung": {
+    "panel": "lung",
+    "held_out_cycle": "2017-2018",
+    "n_train": 19866,
+    "n_test": 2050,
+    "events_test": 13,
+    "prevalence_test": 0.0063,
+    "auc": 0.824,
+    "auc_ci": [
+      0.724,
+      0.912
+    ],
+    "age_sex_auc": 0.846,
+    "gain": -0.022,
+    "gain_ci": [
+      -0.126,
+      0.056
+    ],
+    "gain_beats_demographics": false,
+    "shipped_auc": 0.872,
+    "drop_vs_shipped": 0.048,
+    "rule_out": null,
+    "no_rule_out_reason": "The cost analysis says everyone in this group should have the confirmatory test, so this panel is not offered as a way to skip it. It separates well, but the condition is common and the test is cheap, so the tests a threshold would save are worth less than the cases it would miss."
+  }
+}

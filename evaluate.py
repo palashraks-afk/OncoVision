@@ -205,7 +205,16 @@ def evaluate_domain(config):
         X, y, test_size=0.2, random_state=RANDOM_STATE, stratify=y
     )
 
-    factory = lambda: tm.build_ensemble(len(y_tr), float(y_tr.mean()))
+    # The model that actually ships for this panel, chosen by the same rule the
+    # trainer uses. This used to be hardcoded to the ensemble, which meant the
+    # held-out AUC printed on a card could belong to a different model than the
+    # one scoring the patient -- colorectal and prostate shipped logistic
+    # regression and were advertised with ensemble numbers.
+    #
+    # Selection runs on the training portion only. The test split below is cut
+    # before this line and is not consulted by it.
+    kind, _ = tm.select_model(X_tr, y_tr, float(y_tr.mean()))
+    factory = lambda: tm.model_factory(kind, len(y_tr), float(y_tr.mean()))
 
     # --- cross validated on the training portion only ------------------------
     folds = max(2, min(5, int(y_tr.value_counts().min())))
