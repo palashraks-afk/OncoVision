@@ -239,7 +239,13 @@ def scenario_rule_out():
     the flagging one. If a panel cannot leave anybody out it is not useful
     before an expensive test, whatever its AUC.
     """
-    body = post(HEALTHY)
+    # A healthy woman with a full mammogram history. Since the bowel and general
+    # panels were withdrawn, the mammogram breast panel is the only population
+    # panel that ships a rule-out call, and it needs this history to score.
+    body = post(dict(HEALTHY, age=57, menopause=1, breast_density=2,
+                     family_history_breast=0, prior_breast_biopsy=0,
+                     last_mammogram_result=0, age_at_first_birth=0,
+                     surgical_menopause=0, hormone_therapy=0))
     seen = 0
     for name, v in (body.get("predictions") or {}).items():
         ro = v.get("rule_out")

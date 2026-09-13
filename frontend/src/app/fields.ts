@@ -174,11 +174,6 @@ export const HISTORY_FIELDS: HistoryField[] = [
     ],
   },
   {
-    key: "alcohol_intake", label: "Alcohol intake", type: "number", group: "General",
-    meaning: "On a scale of 0 for none to 5 for heavy. The main driver of cirrhosis, which precedes most liver cancer.",
-    min: 0, max: 5, step: 0.5, suffix: "of 5",
-  },
-  {
     key: "hepatitis_b", label: "Hepatitis B", type: "select", group: "General",
     meaning: "Chronic hepatitis B is one of the strongest liver cancer risk factors known.",
     options: [{ value: 0, label: "Negative" }, { value: 1, label: "Positive" }],

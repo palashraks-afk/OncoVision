@@ -1,0 +1,24 @@
+{
+  "n_mammograms": 597859,
+  "n_cancers": 2871,
+  "panel_cut": {
+    "threshold": 0.0026527430577210193,
+    "caught": 0.953,
+    "excluded": 0.116
+  },
+  "age_cut": {
+    "threshold": 0.00250537426774589,
+    "caught": 0.937,
+    "excluded": 0.138
+  },
+  "matched_sensitivity": 0.953,
+  "panel_excluded_at_matched": 0.1155,
+  "age_excluded_at_matched": 0.0181,
+  "difference": 0.0975,
+  "difference_ci": [
+    0.083,
+    0.1004
+  ],
+  "material_threshold": 0.01,
+  "panel_beats_age": true
+}

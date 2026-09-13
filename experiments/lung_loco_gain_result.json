@@ -1,0 +1,15 @@
+{
+  "panel_model": "logistic",
+  "baseline_model": "logistic",
+  "cycles": 10,
+  "n": 21916,
+  "events": 104,
+  "panel_auc": 0.827,
+  "age_sex_auc": 0.797,
+  "gain": 0.03,
+  "gain_ci": [
+    -0.0,
+    0.06
+  ],
+  "gain_confirmed_within_survey": false
+}

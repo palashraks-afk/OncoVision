@@ -275,20 +275,50 @@ def table_paper_results(ev, extra):
     out.append("")
     g_ext = ex["external_gain_over_age_sex"]
     g_int = ex.get("internal_gain_for_reference")
-    out.append(f"Gain over age and sex, transferred: **{g_ext:+.3f}**. The same gain measured "
-               f"inside the training survey: {g_int:+.3f}.\n")
+    out.append(f"Gain over age and sex, transferred, blood work alone: **{g_ext:+.3f}**. For "
+               f"reference, the full panel inside the training survey, which also includes "
+               f"BMI, smoking and alcohol: {g_int:+.3f}.\n")
     if not ex.get("gain_survives_transfer"):
-        out.append("**The gain does not survive the transfer.** Age and sex transfer well, at "
-                   "0.852. Adding twenty blood values makes the prediction *worse* on a cohort "
-                   "measured in a different decade than using age and sex alone. Whatever the "
-                   "blood panel contributed inside NHANES 1999-2014 was specific to that survey "
-                   "rather than to human physiology.\n")
-        out.append("This is also a caution about the leave-one-cycle-out result above. Holding "
-                   "out one cycle of the same survey gave a mean of 0.837 and looked like "
+        # Both figures used to be typed into these sentences. They are read from
+        # the results now, because the age-and-sex baseline was refitted with
+        # both model kinds and the numbers moved.
+        base_ext = max((a["external_auc"] for k, a in ex["arms"].items()
+                        if k.startswith("age and sex only")), default=float("nan"))
+        loco_mean = pm.get("mean_leave_one_cycle_out", float("nan"))
+        out.append(f"**The gain does not survive the transfer.** Age and sex transfer well, at "
+                   f"{base_ext:.3f}. Adding twenty blood values does not improve on that on a "
+                   f"cohort measured in a different decade. Whatever the blood panel contributed "
+                   f"inside NHANES 1999-2014 was specific to that survey rather than to human "
+                   f"physiology.\n")
+        out.append(f"This is also a caution about the leave-one-cycle-out result above. Holding "
+                   f"out one cycle of the same survey gave a mean of {loco_mean:.3f} and looked like "
                    "evidence of transfer. It was not. Cycles of one survey share protocols, "
                    "instruments and laboratory methods, and resampling within a survey measures "
                    "stability rather than generalisation. Only the genuinely external cohort "
                    "distinguished them.")
+    else:
+        arms_ = ex["arms"]
+
+        def best_ext(prefix):
+            return max((a["external_auc"] for k, a in arms_.items() if k.startswith(prefix)),
+                       default=float("nan"))
+
+        gci = ex.get("external_gain_ci") or [float("nan"), float("nan")]
+        old = ex.get("old_gain_ensemble_vs_ensemble")
+        ens_full = arms_.get("full blood work, ensemble", {}).get("external_auc", float("nan"))
+        out.append(f"**The gain survives the transfer.** The better blood-work model scores "
+                   f"{best_ext('full blood work'):.3f} on NHANES III against "
+                   f"{best_ext('age and sex only'):.3f} for the better age-and-sex model, a gain "
+                   f"of {g_ext:+.3f} (95% CI {gci[0]:+.3f} to {gci[1]:+.3f}).")
+        out.append("")
+        if isinstance(old, (int, float)) and old < 0:
+            out.append(f"An earlier version of this section reported the opposite. It fitted a "
+                       f"tree ensemble on both arms, found the blood-work arm losing to age and sex "
+                       f"by {old:+.3f}, and read that as the signal belonging to one survey. The "
+                       f"signal did not belong to one survey; the ensemble did. On the same "
+                       f"twenty-two features it scores {ens_full:.3f} externally, where logistic "
+                       f"regression transfers. **An external test validates a model, not a "
+                       f"hypothesis**, and a failed transfer can belong to the model.")
 
     cx = extra.get("colorectal_external") or {}
     if cx:
@@ -678,12 +708,183 @@ def table_bowel_external(_, extra):
                if xb["gain_survives_honest_baseline"] else
                "**On this evidence routine bloodwork adds nothing to age and sex for bowel "
                "cancer.** The contrast this section used to draw, an organ-specific gain "
-               "surviving where the undifferentiated one reversed, does not exist.")
+               "that survived beside an undifferentiated one that reversed, does "
+               "not hold in either direction: the bowel gain was a weak baseline, and "
+               "the prospective reversal was an overfitted model.")
     return ("\n".join(rows) + "\n\n"
             f"Comparing the two ensemble cells gives {xb['old_gain_ensemble_vs_ensemble']:+.3f}, "
             f"with an interval of {olo:+.3f} to {ohi:+.3f} that never excluded zero. The best "
             f"panel against the best age-and-sex model gains "
             f"**{xb['honest_gain_best_vs_best']:+.3f}**, 95% CI {lo:+.3f} to {hi:+.3f}. " + verdict)
+
+
+def text_breast_vs_age(_, extra):
+    """Whether the breast panel's rule-out cut beats a cut on age alone.
+
+    The question that withdrew the bowel panel, asked of the one population
+    panel that still ships a cut, at matched sensitivity so neither cut can look
+    better by sitting at a different point on its curve.
+    """
+    r = extra.get("breast_vs_age")
+    if not r:
+        return "_Run experiments/bcsc_rule_out_vs_age.py._"
+    lo, hi = r["difference_ci"]
+    head = (f"At the same share of cancers caught, {r['matched_sensitivity']:.1%}, on the "
+            f"{r['n_mammograms']:,}-mammogram validation split, the panel's cut excluded "
+            f"{r['panel_excluded_at_matched']:.1%} of women and a cut on age alone "
+            f"{r['age_excluded_at_matched']:.1%}: a difference of {r['difference']:+.1%}, 95% CI "
+            f"{lo:+.1%} to {hi:+.1%}.")
+    if r["panel_beats_age"]:
+        return head + (" **Unlike the bowel panel, this one earns its extra questions**: the "
+                       "density grading and history exclude materially more women than their "
+                       "age does, without catching fewer cancers.")
+    return head + " That does not show the panel beating age alone."
+
+
+def text_lung_loco(_, extra):
+    """Lung's gain over age and sex with every survey cycle held out in turn.
+
+    The withheld 2017-2018 cycle held thirteen lung cancers, too few to confirm
+    or refute the panel's in-survey gain. Pooling every cycle, each scored by a
+    model that never saw it, uses all of them. It is still one survey, and the
+    wording says so whichever way the result falls.
+    """
+    r = extra.get("lung_loco")
+    if not r:
+        return "_Run experiments/lung_loco_gain.py._"
+    lo, hi = r["gain_ci"]
+    head = (f"Holding out every survey cycle in turn -- {r['cycles']} cycles, "
+            f"{r['events']} lung cancers, each scored by a model that never saw its cycle -- "
+            f"the lung panel scores {r['panel_auc']:.3f} against {r['age_sex_auc']:.3f} for the "
+            f"stronger age-and-sex model, a gain of {r['gain']:+.3f} (95% CI {lo:+.3f} to "
+            f"{hi:+.3f}).")
+    if r["gain_confirmed_within_survey"]:
+        return head + (" That confirms the in-survey gain across cycles the model never saw. "
+                       "It remains one survey, with one protocol and one laboratory contract, "
+                       "and section 4.2 records why that is not the same as an external cohort.")
+    # Worded to match the lung card, which reads the same result. A point estimate
+    # that agrees with the in-survey gain, with an interval whose lower end sits
+    # at zero, is "not yet shown", not "absent".
+    return head + (" The estimate agrees with the in-survey gain, but its range still reaches "
+                   "zero, so the lung panel's advantage over age and sex is probably real and "
+                   "not yet shown.")
+
+
+def text_general_vs_age(_, extra):
+    """Whether the general panel's rule-out cut beats a cut on age and sex.
+
+    The test that withdrew the bowel panel and that the mammogram breast panel
+    passed, applied to the only other panel that ships a rule-out call.
+    """
+    r = extra.get("general_vs_age")
+    if not r:
+        return "_Run experiments/general_rule_out_vs_age.py._"
+    i, e = r["in_survey"], r["external"]
+    def part(x, where):
+        lo, hi = x["difference_ci"]
+        return (f"{where}, at {x['matched_sensitivity']:.1%} of cancers caught, the panel's cut "
+                f"excluded {x['panel_excluded']:.1%} of adults and a cut on age and sex alone "
+                f"{x['age_sex_excluded']:.1%} ({x['difference']:+.1%}, 95% CI {lo:+.1%} to "
+                f"{hi:+.1%})")
+    head = part(i, "Inside its own survey") + "; " + part(e, "on NHANES III") + "."
+    if r["panel_beats_age_sex_in_both"]:
+        return head + " The general panel's rule-out call beats age and sex in both settings."
+    return head + (" **The general panel's rule-out call does not beat age and sex**, which is "
+                   "the rule that withdrew the bowel panel.")
+
+
+def table_prospective_arms(_, extra):
+    """The prospective mortality arms, and leave-one-cycle-out, from the result.
+
+    This table was typed by hand, and every gain in it was measured against a
+    tree ensemble fitted on age and sex -- the weak baseline that manufactured
+    the bowel panel's result. The experiment now fits both model kinds on every
+    arm, baseline included, and the table follows it.
+    """
+    pm = extra.get("prospective") or {}
+    arms = pm.get("arms") or {}
+    if not arms:
+        return "_Run experiments/prospective_mortality.py._"
+    labels = {"A age and sex": "Age and sex", "B + lifestyle": "+ BMI, smoking, alcohol",
+              "C + blood count": "+ complete blood count",
+              "D + chemistry": "+ metabolic and liver panel", "E everything": "Everything"}
+    rows = ["| Feature set | Features | AUC | Gain over age and sex | Wins |",
+            "|---|---|---|---|---|"]
+    for k, a in arms.items():
+        if k.startswith("A"):
+            rows.append(f"| {labels.get(k, k)} | {a['n_features']} | {a['auc']:.3f} | — | |")
+        else:
+            rows.append(f"| {labels.get(k, k)} | {a['n_features']} | {a['auc']:.3f} | "
+                        f"{a['gain_over_age_sex']:+.3f} | {a['wins']}/{a['repeats']} |")
+    out = "\n".join(rows)
+    if any("auc_by_model" in a for a in arms.values()):
+        out += ("\n\nEvery row is the better of logistic regression and the ensemble on each "
+                "repeat, the age-and-sex row included.")
+    loco = pm.get("mean_leave_one_cycle_out")
+    if isinstance(loco, (int, float)):
+        out += (f"\n\nLeave-one-cycle-out, training on seven NHANES cycles and testing on the "
+                f"eighth, gives a mean of {loco:.3f}.")
+    return out
+
+
+def text_prospective_verdict(_, extra):
+    pm = extra.get("prospective") or {}
+    arms = pm.get("arms") or {}
+    if not arms:
+        return "_Run experiments/prospective_mortality.py._"
+    rest = {k: a for k, a in arms.items() if not k.startswith("A")}
+    best = max(a["gain_over_age_sex"] for a in rest.values())
+    every = all(a.get("wins") == a.get("repeats") for a in rest.values())
+    if best >= 0.02:
+        return (f"**Routine bloodwork carries prospective signal inside the survey.** The largest "
+                f"gain over age and sex is {best:+.3f}.")
+    if best > 0 and every:
+        return (f"**The gain is consistent inside the survey and too small to act on.** Every arm "
+                f"beats age and sex on every paired repeat, and the largest gain is {best:+.3f}.")
+    return (f"**Against the stronger age-and-sex model, bloodwork adds little or nothing.** The "
+            f"largest gain is {best:+.3f}.")
+
+
+def table_prospective_external(_, extra):
+    ex = extra.get("external") or {}
+    arms = ex.get("arms") or {}
+    if not arms:
+        return "_Run experiments/prospective_external.py._"
+    rows = ["| Feature set | Features | External AUC | 95% CI |", "|---|---|---|---|"]
+    for k, a in arms.items():
+        ci = a.get("external_auc_ci") or ["", ""]
+        rows.append(f"| {k} | {a['n_features']} | {a['external_auc']:.3f} | {ci[0]} to {ci[1]} |")
+    g = ex["external_gain_over_age_sex"]
+    gci = ex.get("external_gain_ci")
+    gi = ex.get("internal_gain_for_reference")
+    text = f"**Transferred gain, best panel against best age-and-sex model: {g:+.3f}**"
+    if gci:
+        text += f" (95% CI {gci[0]:+.3f} to {gci[1]:+.3f})"
+    if isinstance(gi, (int, float)):
+        text += (f", against {gi:+.3f} inside the training survey for the full panel, which "
+                 f"also includes BMI, smoking and alcohol")
+    text += ". "
+    text += ("Whatever the blood values contributed inside NHANES 1999-2014 belonged to that survey "
+             "rather than to human physiology." if not ex.get("gain_survives_transfer") else
+             "The gain survives a cohort measured in a different decade.")
+    return "\n".join(rows) + "\n\n" + text
+
+
+def text_prospective_short(_, extra):
+    pm = extra.get("prospective") or {}
+    ex = extra.get("external") or {}
+    e = (pm.get("arms") or {}).get("E everything") or {}
+    if not e or not ex:
+        return "_Run experiments/prospective_mortality.py and prospective_external.py._"
+    gci = ex.get("external_gain_ci")
+    ci = f" (95% CI {gci[0]:+.3f} to {gci[1]:+.3f})" if gci else ""
+    return (f"On the prospective cohort of {pm['n']:,} adults with NDI-confirmed outcomes, the full "
+            f"panel, which adds BMI, smoking and alcohol to routine blood work, gains "
+            f"{e['gain_over_age_sex']:+.3f} over the stronger age-and-sex model for cancer death "
+            f"within five years inside its survey; blood work alone gains "
+            f"{ex['external_gain_over_age_sex']:+.3f}{ci} on NHANES III."
+            + (" That gain does not survive the transfer." if not ex.get("gain_survives_transfer")
+               else " That gain survives the transfer."))
 
 
 def text_youden_sentence(_, extra):
@@ -717,6 +918,13 @@ TABLES = {
     "operating_point": text_operating_point,
     "youden_sentence": text_youden_sentence,
     "bowel_external": table_bowel_external,
+    "breast_vs_age": text_breast_vs_age,
+    "lung_loco": text_lung_loco,
+    "general_vs_age": text_general_vs_age,
+    "prospective_arms": table_prospective_arms,
+    "prospective_verdict": text_prospective_verdict,
+    "prospective_external": table_prospective_external,
+    "prospective_short": text_prospective_short,
 }
 
 
@@ -736,6 +944,9 @@ def main():
         "external_baseline": load("experiments/external_baseline_strength_result.json", {}),
         "triage_age": load("experiments/triage_on_age_alone_result.json", {}),
         "metrics": load("backend/model_metrics.json", {}),
+        "breast_vs_age": load("experiments/bcsc_rule_out_vs_age_result.json", {}),
+        "lung_loco": load("experiments/lung_loco_gain_result.json", {}),
+        "general_vs_age": load("experiments/general_rule_out_vs_age_result.json", {}),
         "cost": load("experiments/cost_model_result.json", {}),
     }
 

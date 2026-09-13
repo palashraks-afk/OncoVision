@@ -1,130 +1,208 @@
 {
   "general": {
-    "overall_auc": 0.764,
+    "model": "logistic",
+    "overall_auc": 0.768,
     "groups": {
       "Mexican American": {
         "n": 4885,
         "events": 68,
-        "auc": 0.746,
+        "auc": 0.77,
         "auc_ci": [
-          0.685,
-          0.802
+          0.708,
+          0.827
         ],
-        "gap_vs_overall": -0.018,
+        "gap_vs_overall": 0.002,
         "materially_worse": false
       },
       "Non-Hispanic Asian": {
         "n": 1841,
         "events": 13,
-        "auc": 0.721,
+        "auc": 0.745,
         "auc_ci": [
-          0.553,
-          0.874
+          0.587,
+          0.898
         ],
-        "gap_vs_overall": -0.043,
+        "gap_vs_overall": -0.023,
         "materially_worse": false
       },
       "Non-Hispanic Black": {
         "n": 6045,
         "events": 146,
-        "auc": 0.747,
+        "auc": 0.749,
         "auc_ci": [
-          0.711,
-          0.781
+          0.714,
+          0.783
         ],
-        "gap_vs_overall": -0.018,
+        "gap_vs_overall": -0.019,
         "materially_worse": false
       },
       "Non-Hispanic White": {
         "n": 11947,
         "events": 591,
-        "auc": 0.754,
+        "auc": 0.756,
         "auc_ci": [
-          0.735,
-          0.773
+          0.737,
+          0.775
         ],
-        "gap_vs_overall": -0.01,
+        "gap_vs_overall": -0.012,
         "materially_worse": false
       },
       "Other Hispanic": {
         "n": 2854,
         "events": 59,
-        "auc": 0.696,
+        "auc": 0.683,
         "auc_ci": [
-          0.626,
-          0.763
+          0.61,
+          0.754
         ],
-        "gap_vs_overall": -0.068,
+        "gap_vs_overall": -0.085,
         "materially_worse": true
       },
       "Other or multiracial": {
         "n": 459,
         "events": 12,
-        "auc": 0.869,
+        "auc": 0.874,
         "auc_ci": [
-          0.797,
-          0.931
+          0.815,
+          0.928
         ],
-        "gap_vs_overall": 0.104,
+        "gap_vs_overall": 0.106,
         "materially_worse": false
       }
     },
     "unmeasurable_groups": [],
     "worst_group": "Other Hispanic",
-    "worst_auc": 0.696,
-    "spread": 0.173
+    "worst_auc": 0.683,
+    "spread": 0.191
   },
-  "colorectal": {
-    "overall_auc": 0.793,
+  "liver": {
+    "model": "ensemble",
+    "overall_auc": 0.754,
     "groups": {
-      "Non-Hispanic Black": {
-        "n": 6115,
-        "events": 23,
-        "auc": 0.767,
+      "Mexican American": {
+        "n": 4988,
+        "events": 212,
+        "auc": 0.74,
         "auc_ci": [
-          0.692,
-          0.836
+          0.704,
+          0.774
         ],
-        "gap_vs_overall": -0.026,
+        "gap_vs_overall": -0.014,
+        "materially_worse": false
+      },
+      "Non-Hispanic Asian": {
+        "n": 1884,
+        "events": 91,
+        "auc": 0.764,
+        "auc_ci": [
+          0.713,
+          0.814
+        ],
+        "gap_vs_overall": 0.01,
+        "materially_worse": false
+      },
+      "Non-Hispanic Black": {
+        "n": 6286,
+        "events": 145,
+        "auc": 0.81,
+        "auc_ci": [
+          0.77,
+          0.849
+        ],
+        "gap_vs_overall": 0.057,
         "materially_worse": false
       },
       "Non-Hispanic White": {
-        "n": 11666,
-        "events": 73,
-        "auc": 0.784,
+        "n": 13324,
+        "events": 498,
+        "auc": 0.743,
         "auc_ci": [
-          0.735,
-          0.827
+          0.72,
+          0.765
         ],
-        "gap_vs_overall": -0.009,
+        "gap_vs_overall": -0.011,
+        "materially_worse": false
+      },
+      "Other Hispanic": {
+        "n": 2956,
+        "events": 170,
+        "auc": 0.746,
+        "auc_ci": [
+          0.707,
+          0.78
+        ],
+        "gap_vs_overall": -0.008,
+        "materially_worse": false
+      },
+      "Other or multiracial": {
+        "n": 481,
+        "events": 19,
+        "auc": 0.781,
+        "auc_ci": [
+          0.666,
+          0.882
+        ],
+        "gap_vs_overall": 0.027,
+        "materially_worse": false
+      }
+    },
+    "unmeasurable_groups": [],
+    "worst_group": "Mexican American",
+    "worst_auc": 0.74,
+    "spread": 0.07
+  },
+  "lung": {
+    "model": "logistic",
+    "overall_auc": 0.832,
+    "groups": {
+      "Non-Hispanic Black": {
+        "n": 4301,
+        "events": 21,
+        "auc": 0.722,
+        "auc_ci": [
+          0.616,
+          0.816
+        ],
+        "gap_vs_overall": -0.111,
+        "materially_worse": true
+      },
+      "Non-Hispanic White": {
+        "n": 9685,
+        "events": 60,
+        "auc": 0.836,
+        "auc_ci": [
+          0.781,
+          0.885
+        ],
+        "gap_vs_overall": 0.004,
         "materially_worse": false
       }
     },
     "unmeasurable_groups": [
       {
         "group": "Mexican American",
-        "n": 4881,
-        "events": 7
+        "n": 3237,
+        "events": 1
       },
       {
         "group": "Non-Hispanic Asian",
-        "n": 1870,
-        "events": 3
+        "n": 511,
+        "events": 2
       },
       {
         "group": "Other Hispanic",
-        "n": 2853,
-        "events": 5
+        "n": 1430,
+        "events": 3
       },
       {
         "group": "Other or multiracial",
-        "n": 1142,
-        "events": 2
+        "n": 702,
+        "events": 4
       }
     ],
     "worst_group": "Non-Hispanic Black",
-    "worst_auc": 0.767,
-    "spread": 0.017
+    "worst_auc": 0.722,
+    "spread": 0.114
   },
   "_not_measurable": {
     "panels": [

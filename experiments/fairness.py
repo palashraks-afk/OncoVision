@@ -73,29 +73,38 @@ TARGETS = {
 
 def main():
     results = {}
+    misaligned = []
     for cfg in tm.DATASETS:
         name = cfg["name"]
         if name in tm.WITHDRAWN or name not in SOURCES:
             continue
 
         raw = pd.read_csv(SOURCES[name])
+        # The rows prepare() actually trains on: the withheld survey cycle comes
+        # out first. Not doing this is what made liver and lung silently drop
+        # out of this measurement once 2017-2018 was withheld from their
+        # training, taking their subgroup warnings off the cards with them.
+        raw, _ = tm.split_temporal(raw, name)
         X, y, _ = tm.prepare(cfg)
         X = X.apply(pd.to_numeric, errors="coerce").reset_index(drop=True)
         X = X.fillna(X.median())
         y = pd.Series(y).astype(int).reset_index(drop=True)
 
-        # prepare() drops rows, so realign race by the rows that survived.
-        race = raw["race_ethnicity"].reset_index(drop=True)
+        # prepare() drops rows with no target, so realign race the same way.
+        keep = cfg["target"](raw).notna()
+        race = raw.loc[keep.values, "race_ethnicity"].reset_index(drop=True)
         if len(race) != len(y):
-            keep = raw[TARGETS[name]].notna()
-            race = raw.loc[keep, "race_ethnicity"].reset_index(drop=True)
-        if len(race) != len(y):
-            print(f"{name}: could not align race to rows, skipped")
+            print(f"{name}: could not align race to rows")
+            misaligned.append(name)
             continue
 
+        # Scored by the model kind that ships. This hardcoded the ensemble, so
+        # the per-group accuracy shown on the cards -- including which group a
+        # panel works worst for -- belonged to a model most panels do not use.
+        kind, _ = tm.select_model(X, y, float(y.mean()))
         cv = StratifiedKFold(5, shuffle=True, random_state=RANDOM_STATE)
         p = cross_val_predict(
-            CalibratedClassifierCV(tm.build_ensemble(len(y), float(y.mean())),
+            CalibratedClassifierCV(tm.model_factory(kind, len(y), float(y.mean())),
                                    method="isotonic", cv=cv),
             X, y, cv=cv, method="predict_proba")[:, 1]
         overall = roc_auc_score(y, p)
@@ -103,7 +112,7 @@ def main():
         print(f"\n=== {name} ===  {len(y)} people, {int(y.sum())} cases, "
               f"overall AUC {overall:.3f}")
 
-        entry = {"overall_auc": round(float(overall), 3), "groups": {},
+        entry = {"model": kind, "overall_auc": round(float(overall), 3), "groups": {},
                  "unmeasurable_groups": []}
         for g in sorted(race.dropna().unique()):
             mask = (race == g).values
@@ -135,6 +144,14 @@ def main():
             print(f"    spread across measurable groups: {entry['spread']:.3f}"
                   f"   worst: {worst} at {scored[worst]:.3f}")
         results[name] = entry
+
+    # A panel that could not be measured is a failure, not a skip. Written as a
+    # skip, it let two panels vanish from this file and from their cards without
+    # anything noticing, and the old result file would have been overwritten
+    # with a smaller one.
+    if misaligned:
+        print(f"\nFAILED: could not align race for {misaligned}; result not written")
+        sys.exit(1)
 
     results["_not_measurable"] = {
         "panels": ["breast", "ovarian", "pancreatic", "prostate"],

@@ -109,34 +109,7 @@ export type DemoCase = {
 
 export const CASE_POOL: DemoCase[] = [
   {
-    id: "general-neg-0",
-    domain: "General",
-    expect: "No cancer detected",
-    positive: false,
-    source: "NHANES 2005-2018, US adults, negative record",
-    note: "22 year old woman, never smoked. BMI 18.64, alcohol 5 of 5.",
-    delta: { age: 22, bmi: 18.64, alcohol_intake: 5 },
-  },
-  {
-    id: "general-neg-1",
-    domain: "General",
-    expect: "No cancer detected",
-    positive: false,
-    source: "NHANES 2005-2018, US adults, negative record",
-    note: "20 year old man, former smoker. BMI 19.23, alcohol 5 of 5.",
-    delta: { age: 20, bmi: 19.23, gender: 1, smoking: 1, alcohol_intake: 5 },
-  },
-  {
-    id: "general-neg-2",
-    domain: "General",
-    expect: "No cancer detected",
-    positive: false,
-    source: "NHANES 2005-2018, US adults, negative record",
-    note: "20 year old man, never smoked. BMI 28.48, alcohol 4 of 5.",
-    delta: { age: 20, bmi: 28.48, gender: 1, alcohol_intake: 4 },
-  },
-  {
-    id: "breast-3",
+    id: "breast-0",
     domain: "Breast",
     expect: "Breast",
     positive: true,
@@ -145,7 +118,7 @@ export const CASE_POOL: DemoCase[] = [
     delta: { radius_mean: 13.96, texture_mean: 17.05, perimeter_mean: 91.43, area_mean: 602.4, smoothness_mean: 0.1096, compactness_mean: 0.1279, concavity_mean: 0.0979, concave_points_mean: 0.0525, symmetry_mean: 0.1908, fractal_dimension_mean: 0.0613, radius_se: 0.425, texture_se: 0.8098, perimeter_se: 2.563, area_se: 35.74, smoothness_se: 0.0064, compactness_se: 0.0268, concavity_se: 0.0312, concave_points_se: 0.0134, symmetry_se: 0.0206, fractal_dimension_se: 0.0027, radius_worst: 16.39, texture_worst: 22.07, perimeter_worst: 108.1, area_worst: 826, smoothness_worst: 0.1512, compactness_worst: 0.3262, concavity_worst: 0.3209, concave_points_worst: 0.1374, symmetry_worst: 0.3068, fractal_dimension_worst: 0.0796 },
   },
   {
-    id: "breast-4",
+    id: "breast-1",
     domain: "Breast",
     expect: "Breast",
     positive: true,
@@ -154,7 +127,7 @@ export const CASE_POOL: DemoCase[] = [
     delta: { radius_mean: 15.85, texture_mean: 23.95, perimeter_mean: 103.7, area_mean: 782.7, smoothness_mean: 0.084, compactness_mean: 0.1002, concavity_mean: 0.0994, concave_points_mean: 0.0536, symmetry_mean: 0.1847, fractal_dimension_mean: 0.0534, radius_se: 0.4033, texture_se: 1.078, perimeter_se: 2.903, area_se: 36.58, smoothness_se: 0.0098, compactness_se: 0.0313, concavity_se: 0.0505, concave_points_se: 0.0199, symmetry_se: 0.0298, fractal_dimension_se: 0.003, radius_worst: 16.84, texture_worst: 27.66, perimeter_worst: 112, area_worst: 876.5, smoothness_worst: 0.1131, compactness_worst: 0.1924, concavity_worst: 0.2322, concave_points_worst: 0.1119, symmetry_worst: 0.2809, fractal_dimension_worst: 0.0629 },
   },
   {
-    id: "breast-5",
+    id: "breast-2",
     domain: "Breast",
     expect: "Breast",
     positive: true,
@@ -163,7 +136,7 @@ export const CASE_POOL: DemoCase[] = [
     delta: { radius_mean: 13.86, texture_mean: 16.93, perimeter_mean: 90.96, area_mean: 578.9, smoothness_mean: 0.1026, compactness_mean: 0.1517, concavity_mean: 0.099, concave_points_mean: 0.056, symmetry_mean: 0.2106, fractal_dimension_mean: 0.0692, radius_se: 0.2563, texture_se: 1.194, perimeter_se: 1.933, area_se: 22.69, smoothness_se: 0.006, compactness_se: 0.0344, concavity_se: 0.0391, concave_points_se: 0.0143, symmetry_se: 0.0194, fractal_dimension_se: 0.0046, radius_worst: 15.75, texture_worst: 26.93, perimeter_worst: 104.4, area_worst: 750.1, smoothness_worst: 0.146, compactness_worst: 0.437, concavity_worst: 0.4636, concave_points_worst: 0.1654, symmetry_worst: 0.363, fractal_dimension_worst: 0.1059 },
   },
   {
-    id: "breast-6",
+    id: "breast-3",
     domain: "Breast",
     expect: "Breast",
     positive: true,
@@ -172,7 +145,7 @@ export const CASE_POOL: DemoCase[] = [
     delta: { radius_mean: 14.22, texture_mean: 23.12, perimeter_mean: 94.37, area_mean: 609.9, smoothness_mean: 0.1075, compactness_mean: 0.2413, concavity_mean: 0.1981, concave_points_mean: 0.0662, symmetry_mean: 0.2384, fractal_dimension_mean: 0.0754, radius_se: 0.286, texture_se: 2.11, perimeter_se: 2.112, area_se: 31.72, smoothness_se: 0.008, compactness_se: 0.1354, concavity_se: 0.1166, concave_points_se: 0.0167, symmetry_se: 0.0511, fractal_dimension_se: 0.0117, radius_worst: 15.74, texture_worst: 37.18, perimeter_worst: 106.4, area_worst: 762.4, smoothness_worst: 0.1533, compactness_worst: 0.9327, concavity_worst: 0.8488, concave_points_worst: 0.1772, symmetry_worst: 0.5166, fractal_dimension_worst: 0.1446 },
   },
   {
-    id: "breast-7",
+    id: "breast-4",
     domain: "Breast",
     expect: "Breast",
     positive: true,
@@ -181,7 +154,7 @@ export const CASE_POOL: DemoCase[] = [
     delta: { radius_mean: 15.12, texture_mean: 16.68, perimeter_mean: 98.78, area_mean: 716.6, smoothness_mean: 0.0888, compactness_mean: 0.0959, concavity_mean: 0.0755, concave_points_mean: 0.0408, symmetry_mean: 0.1594, fractal_dimension_mean: 0.0599, radius_se: 0.2711, texture_se: 0.3621, perimeter_se: 1.974, area_se: 26.44, smoothness_se: 0.0055, compactness_se: 0.0192, concavity_se: 0.0204, concave_points_se: 0.0083, symmetry_se: 0.0152, fractal_dimension_se: 0.0029, radius_worst: 17.77, texture_worst: 20.24, perimeter_worst: 117.7, area_worst: 989.5, smoothness_worst: 0.1491, compactness_worst: 0.3331, concavity_worst: 0.3327, concave_points_worst: 0.1252, symmetry_worst: 0.3415, fractal_dimension_worst: 0.0974 },
   },
   {
-    id: "breast-8",
+    id: "breast-5",
     domain: "Breast",
     expect: "Breast",
     positive: true,
@@ -190,7 +163,7 @@ export const CASE_POOL: DemoCase[] = [
     delta: { radius_mean: 11.8, texture_mean: 16.58, perimeter_mean: 78.99, area_mean: 432, smoothness_mean: 0.1091, compactness_mean: 0.17, concavity_mean: 0.1659, concave_points_mean: 0.0741, symmetry_mean: 0.2678, fractal_dimension_mean: 0.0737, radius_se: 0.3197, texture_se: 1.426, perimeter_se: 2.281, area_se: 24.72, smoothness_se: 0.0054, compactness_se: 0.0363, concavity_se: 0.0465, concave_points_se: 0.0184, symmetry_se: 0.0563, fractal_dimension_se: 0.0046, radius_worst: 13.74, texture_worst: 26.38, perimeter_worst: 91.93, area_worst: 591.7, smoothness_worst: 0.1385, compactness_worst: 0.4092, concavity_worst: 0.4504, concave_points_worst: 0.1865, symmetry_worst: 0.5774, fractal_dimension_worst: 0.103 },
   },
   {
-    id: "breast-9",
+    id: "breast-6",
     domain: "Breast",
     expect: "Breast",
     positive: true,
@@ -199,7 +172,7 @@ export const CASE_POOL: DemoCase[] = [
     delta: { radius_mean: 14.48, texture_mean: 21.46, perimeter_mean: 94.25, area_mean: 648.2, smoothness_mean: 0.0944, compactness_mean: 0.0995, concavity_mean: 0.1204, concave_points_mean: 0.0494, symmetry_mean: 0.2075, fractal_dimension_mean: 0.0564, radius_se: 0.4204, texture_se: 2.22, perimeter_se: 3.301, area_se: 38.87, smoothness_se: 0.0094, compactness_se: 0.0298, concavity_se: 0.0537, concave_points_se: 0.0176, symmetry_se: 0.0242, fractal_dimension_se: 0.0032, radius_worst: 16.21, texture_worst: 29.25, perimeter_worst: 108.4, area_worst: 808.9, smoothness_worst: 0.1306, compactness_worst: 0.1976, concavity_worst: 0.3349, concave_points_worst: 0.1225, symmetry_worst: 0.302, fractal_dimension_worst: 0.0685 },
   },
   {
-    id: "breast-neg-10",
+    id: "breast-neg-7",
     domain: "Breast",
     expect: "No cancer detected",
     positive: false,
@@ -208,7 +181,7 @@ export const CASE_POOL: DemoCase[] = [
     delta: { radius_mean: 13.08, texture_mean: 15.71, perimeter_mean: 85.63, area_mean: 520, smoothness_mean: 0.1075, compactness_mean: 0.127, concavity_mean: 0.0457, concave_points_mean: 0.0311, symmetry_mean: 0.1967, fractal_dimension_mean: 0.0681, radius_se: 0.1852, texture_se: 0.7477, perimeter_se: 1.383, area_se: 14.67, smoothness_se: 0.0041, compactness_se: 0.019, concavity_se: 0.017, concave_points_se: 0.0065, symmetry_se: 0.0168, fractal_dimension_se: 0.0024, radius_worst: 14.5, texture_worst: 20.49, perimeter_worst: 96.09, area_worst: 630.5, smoothness_worst: 0.1312, compactness_worst: 0.2776, concavity_worst: 0.189, concave_points_worst: 0.0728, symmetry_worst: 0.3184, fractal_dimension_worst: 0.0818 },
   },
   {
-    id: "breast-neg-11",
+    id: "breast-neg-8",
     domain: "Breast",
     expect: "No cancer detected",
     positive: false,
@@ -217,7 +190,7 @@ export const CASE_POOL: DemoCase[] = [
     delta: { radius_mean: 12.78, texture_mean: 16.49, perimeter_mean: 81.37, area_mean: 502.5, smoothness_mean: 0.0983, compactness_mean: 0.0523, concavity_mean: 0.0365, concave_points_mean: 0.0286, symmetry_mean: 0.159, fractal_dimension_mean: 0.0565, radius_se: 0.2368, texture_se: 0.8732, perimeter_se: 1.471, area_se: 18.33, smoothness_se: 0.008, compactness_se: 0.0056, concavity_se: 0.0158, concave_points_se: 0.0087, symmetry_se: 0.0225, fractal_dimension_se: 0.0019, radius_worst: 13.46, texture_worst: 19.76, perimeter_worst: 85.67, area_worst: 554.9, smoothness_worst: 0.1296, compactness_worst: 0.0706, concavity_worst: 0.1039, concave_points_worst: 0.0588, symmetry_worst: 0.2383, fractal_dimension_worst: 0.0641 },
   },
   {
-    id: "breast-neg-12",
+    id: "breast-neg-9",
     domain: "Breast",
     expect: "No cancer detected",
     positive: false,
@@ -226,7 +199,7 @@ export const CASE_POOL: DemoCase[] = [
     delta: { radius_mean: 11.41, texture_mean: 10.82, perimeter_mean: 73.34, area_mean: 403.3, smoothness_mean: 0.0937, compactness_mean: 0.0669, concavity_mean: 0.0351, concave_points_mean: 0.0262, symmetry_mean: 0.1667, fractal_dimension_mean: 0.0611, radius_se: 0.1408, texture_se: 0.4607, perimeter_se: 1.103, area_se: 10.5, smoothness_se: 0.006, compactness_se: 0.0153, concavity_se: 0.0151, concave_points_se: 0.0065, symmetry_se: 0.0134, fractal_dimension_se: 0.0022, radius_worst: 12.82, texture_worst: 15.97, perimeter_worst: 83.74, area_worst: 510.5, smoothness_worst: 0.1548, compactness_worst: 0.239, concavity_worst: 0.2102, concave_points_worst: 0.0896, symmetry_worst: 0.3016, fractal_dimension_worst: 0.0852 },
   },
   {
-    id: "breast-neg-13",
+    id: "breast-neg-10",
     domain: "Breast",
     expect: "No cancer detected",
     positive: false,
@@ -235,7 +208,7 @@ export const CASE_POOL: DemoCase[] = [
     delta: { age: 42, bmi: 27.5, breast_density: 1 },
   },
   {
-    id: "breast-neg-14",
+    id: "breast-neg-11",
     domain: "Breast",
     expect: "No cancer detected",
     positive: false,
@@ -244,7 +217,7 @@ export const CASE_POOL: DemoCase[] = [
     delta: { age: 37, bmi: 27.5 },
   },
   {
-    id: "breast-neg-15",
+    id: "breast-neg-12",
     domain: "Breast",
     expect: "No cancer detected",
     positive: false,
@@ -253,7 +226,7 @@ export const CASE_POOL: DemoCase[] = [
     delta: { age: 42, bmi: 27.5, breast_density: 1 },
   },
   {
-    id: "liver-16",
+    id: "liver-13",
     domain: "Liver",
     expect: "Liver",
     positive: true,
@@ -262,7 +235,7 @@ export const CASE_POOL: DemoCase[] = [
     delta: { age: 52, protein_total: 6.8, albumin: 4.2, ast: 51, alt: 37, bilirubin: 1.1, alkaline_phosphatase: 69, hepatitis_c: 1, ggt: 37 },
   },
   {
-    id: "liver-17",
+    id: "liver-14",
     domain: "Liver",
     expect: "Liver",
     positive: true,
@@ -271,7 +244,7 @@ export const CASE_POOL: DemoCase[] = [
     delta: { age: 60, protein_total: 8.9, albumin: 3.4, ast: 61, alt: 49, bilirubin: 1.4, alkaline_phosphatase: 98, gender: 1, hepatitis_c: 1, ggt: 88 },
   },
   {
-    id: "liver-18",
+    id: "liver-15",
     domain: "Liver",
     expect: "Liver",
     positive: true,
@@ -280,7 +253,7 @@ export const CASE_POOL: DemoCase[] = [
     delta: { age: 45, protein_total: 7.3, albumin: 3.8, ast: 64, alt: 66, bilirubin: 0.8, alkaline_phosphatase: 59, hepatitis_c: 1, diabetes: 1, ggt: 39 },
   },
   {
-    id: "liver-19",
+    id: "liver-16",
     domain: "Liver",
     expect: "Liver",
     positive: true,
@@ -289,7 +262,7 @@ export const CASE_POOL: DemoCase[] = [
     delta: { age: 59, protein_total: 6.8, albumin: 3.8, ast: 52, alt: 50, bilirubin: 1, alkaline_phosphatase: 106, gender: 1, hepatitis_c: 1, ggt: 186 },
   },
   {
-    id: "liver-20",
+    id: "liver-17",
     domain: "Liver",
     expect: "Liver",
     positive: true,
@@ -298,7 +271,7 @@ export const CASE_POOL: DemoCase[] = [
     delta: { age: 59, protein_total: 7.2, albumin: 3.1, ast: 87, alt: 44, bilirubin: 1.5, alkaline_phosphatase: 307, gender: 1, hepatitis_c: 1, ggt: 717 },
   },
   {
-    id: "liver-21",
+    id: "liver-18",
     domain: "Liver",
     expect: "Liver",
     positive: true,
@@ -307,16 +280,16 @@ export const CASE_POOL: DemoCase[] = [
     delta: { age: 54, protein_total: 7.7, albumin: 4, ast: 49, alt: 51, bilirubin: 0.8, alkaline_phosphatase: 60, gender: 1, hepatitis_c: 1, diabetes: 1, ggt: 29 },
   },
   {
-    id: "liver-22",
+    id: "liver-19",
     domain: "Liver",
     expect: "Liver",
     positive: true,
     source: "NHANES 2005-2018, US adults, positive record",
-    note: "62 year old man with hepatitis C. AFP at 3.1 ng/mL.",
-    delta: { age: 62, protein_total: 7.2, albumin: 4.3, ast: 45, alt: 50, bilirubin: 1.4, alkaline_phosphatase: 59, gender: 1, hepatitis_c: 1, ggt: 59 },
+    note: "59 year old man with hepatitis C. AFP at 3.1 ng/mL.",
+    delta: { age: 59, protein_total: 7.3, albumin: 3.6, ast: 51, alt: 56, bilirubin: 0.9, alkaline_phosphatase: 127, gender: 1, hepatitis_c: 1, ggt: 648 },
   },
   {
-    id: "liver-neg-23",
+    id: "liver-neg-20",
     domain: "Liver",
     expect: "No cancer detected",
     positive: false,
@@ -325,7 +298,7 @@ export const CASE_POOL: DemoCase[] = [
     delta: { age: 20, protein_total: 5.9, albumin: 2.8, ast: 18, alt: 8, bilirubin: 0.4, alkaline_phosphatase: 166, ggt: 9 },
   },
   {
-    id: "liver-neg-24",
+    id: "liver-neg-21",
     domain: "Liver",
     expect: "No cancer detected",
     positive: false,
@@ -334,7 +307,7 @@ export const CASE_POOL: DemoCase[] = [
     delta: { age: 23, protein_total: 6.4, albumin: 3, ast: 18, alt: 16, bilirubin: 0.3, alkaline_phosphatase: 58, ggt: 7 },
   },
   {
-    id: "liver-neg-25",
+    id: "liver-neg-22",
     domain: "Liver",
     expect: "No cancer detected",
     positive: false,
@@ -343,7 +316,7 @@ export const CASE_POOL: DemoCase[] = [
     delta: { age: 20, albumin: 4.8, ast: 20, alt: 21, bilirubin: 1, alkaline_phosphatase: 42, gender: 1, ggt: 16 },
   },
   {
-    id: "pancreatic-26",
+    id: "pancreatic-23",
     domain: "Pancreatic",
     expect: "Pancreatic",
     positive: true,
@@ -352,7 +325,7 @@ export const CASE_POOL: DemoCase[] = [
     delta: { age: 73, glucose: 120.34, creatinine: 1.212, bilirubin: 2.7186, plasma_ca19_9: 263.9545, gender: 1 },
   },
   {
-    id: "pancreatic-27",
+    id: "pancreatic-24",
     domain: "Pancreatic",
     expect: "Pancreatic",
     positive: true,
@@ -361,7 +334,7 @@ export const CASE_POOL: DemoCase[] = [
     delta: { age: 75, glucose: 97.2, creatinine: 1.4591, bilirubin: 2.5663, plasma_ca19_9: 248.4114, gender: 1 },
   },
   {
-    id: "pancreatic-28",
+    id: "pancreatic-25",
     domain: "Pancreatic",
     expect: "Pancreatic",
     positive: true,
@@ -370,7 +343,7 @@ export const CASE_POOL: DemoCase[] = [
     delta: { age: 31, glucose: 99.93, creatinine: 1.5987, bilirubin: 1.6069, plasma_ca19_9: 334.7348, gender: 1 },
   },
   {
-    id: "pancreatic-29",
+    id: "pancreatic-26",
     domain: "Pancreatic",
     expect: "Pancreatic",
     positive: true,
@@ -379,7 +352,7 @@ export const CASE_POOL: DemoCase[] = [
     delta: { age: 49, glucose: 130.85, creatinine: 1.3822, bilirubin: 3.2066, plasma_ca19_9: 303.4284 },
   },
   {
-    id: "pancreatic-30",
+    id: "pancreatic-27",
     domain: "Pancreatic",
     expect: "Pancreatic",
     positive: true,
@@ -388,7 +361,7 @@ export const CASE_POOL: DemoCase[] = [
     delta: { age: 74, glucose: 122.54, creatinine: 1.6178, bilirubin: 1.0744, plasma_ca19_9: 461.786 },
   },
   {
-    id: "pancreatic-31",
+    id: "pancreatic-28",
     domain: "Pancreatic",
     expect: "Pancreatic",
     positive: true,
@@ -397,7 +370,7 @@ export const CASE_POOL: DemoCase[] = [
     delta: { age: 50, glucose: 83.7, creatinine: 1.3564, bilirubin: 2.3407, plasma_ca19_9: 377.1267 },
   },
   {
-    id: "pancreatic-32",
+    id: "pancreatic-29",
     domain: "Pancreatic",
     expect: "Pancreatic",
     positive: true,
@@ -406,7 +379,7 @@ export const CASE_POOL: DemoCase[] = [
     delta: { age: 31, glucose: 68.24, creatinine: 1.6912, bilirubin: 2.8241, plasma_ca19_9: 310.0204, gender: 1 },
   },
   {
-    id: "pancreatic-neg-33",
+    id: "pancreatic-neg-30",
     domain: "Pancreatic",
     expect: "No cancer detected",
     positive: false,
@@ -415,7 +388,7 @@ export const CASE_POOL: DemoCase[] = [
     delta: { age: 64, glucose: 111.77, creatinine: 0.8561, bilirubin: 1.0505, plasma_ca19_9: 91.2875, gender: 1 },
   },
   {
-    id: "pancreatic-neg-34",
+    id: "pancreatic-neg-31",
     domain: "Pancreatic",
     expect: "No cancer detected",
     positive: false,
@@ -424,7 +397,7 @@ export const CASE_POOL: DemoCase[] = [
     delta: { age: 82, glucose: 98.74, creatinine: 0.9238, bilirubin: 0.7391, plasma_ca19_9: 9.1618, gender: 1 },
   },
   {
-    id: "pancreatic-neg-35",
+    id: "pancreatic-neg-32",
     domain: "Pancreatic",
     expect: "No cancer detected",
     positive: false,
@@ -433,7 +406,7 @@ export const CASE_POOL: DemoCase[] = [
     delta: { age: 64, glucose: 95.29, creatinine: 0.7647, bilirubin: 0.4227, plasma_ca19_9: 106.631, gender: 1 },
   },
   {
-    id: "ovarian-36",
+    id: "ovarian-33",
     domain: "Ovarian",
     expect: "Ovarian",
     positive: true,
@@ -442,7 +415,7 @@ export const CASE_POOL: DemoCase[] = [
     delta: { age: 38, rbc: 4.72, hemoglobin: 11.7, platelets: 274, glucose: 76.5, calcium: 10.5811, bun: 8.372, creatinine: 0.6674, protein_total: 7.86, albumin: 4.73, ast: 17, alt: 14, bilirubin: 0.3509, alkaline_phosphatase: 71, alpha_fetoprotein_level: 1.88, plasma_ca19_9: 12.66, hematocrit: 38.6, mcv: 81.8, mch: 24.8, rdw: 15.3, mpv: 11, neutrophil_pct: 66.1, ggt: 13, ca125: 32.07, he4: 41.85, cea: 0.53 },
   },
   {
-    id: "ovarian-37",
+    id: "ovarian-34",
     domain: "Ovarian",
     expect: "Ovarian",
     positive: true,
@@ -451,7 +424,7 @@ export const CASE_POOL: DemoCase[] = [
     delta: { age: 27, rbc: 4.25, hemoglobin: 12.2, platelets: 168, glucose: 99.36, calcium: 9.0982, bun: 10.668, creatinine: 0.8224, protein_total: 6.6, albumin: 4.45, ast: 14, alt: 12, bilirubin: 0.5205, alkaline_phosphatase: 63, alpha_fetoprotein_level: 17.52, plasma_ca19_9: 8.41, hematocrit: 36.8, mcv: 86.6, mch: 28.7, rdw: 13.9, mpv: 7.78, neutrophil_pct: 63.2, ggt: 15, ca125: 18.16, he4: 29.49, cea: 0.44 },
   },
   {
-    id: "ovarian-38",
+    id: "ovarian-35",
     domain: "Ovarian",
     expect: "Ovarian",
     positive: true,
@@ -460,7 +433,7 @@ export const CASE_POOL: DemoCase[] = [
     delta: { age: 39, rbc: 4.62, hemoglobin: 13.1, platelets: 112, glucose: 83.52, calcium: 10.3006, bun: 10.64, creatinine: 0.543, protein_total: 7.79, albumin: 4.54, ast: 18, alt: 9, bilirubin: 0.8655, alkaline_phosphatase: 77, alpha_fetoprotein_level: 1.5, plasma_ca19_9: 12.18, hematocrit: 39.1, mcv: 84.6, mch: 28.4, rdw: 12, mpv: 11.4, neutrophil_pct: 69.7, ggt: 10, ca125: 56.08, he4: 47.56, cea: 0.77 },
   },
   {
-    id: "ovarian-39",
+    id: "ovarian-36",
     domain: "Ovarian",
     expect: "Ovarian",
     positive: true,
@@ -469,16 +442,16 @@ export const CASE_POOL: DemoCase[] = [
     delta: { age: 54, rbc: 4.48, hemoglobin: 12.1, platelets: 300, glucose: 125.28, calcium: 9.3386, bun: 15.456, creatinine: 0.8824, protein_total: 6.67, albumin: 3.31, ast: 17, alt: 21, bilirubin: 0.3509, alkaline_phosphatase: 84, alpha_fetoprotein_level: 1.85, plasma_ca19_9: 6.97, hematocrit: 38, mcv: 84.8, mch: 27, rdw: 13.3, mpv: 11.2, neutrophil_pct: 46.3, ggt: 35, ca125: 35.56, he4: 53.27, cea: 0.36, menopause: 1 },
   },
   {
-    id: "ovarian-40",
+    id: "ovarian-37",
     domain: "Ovarian",
     expect: "Ovarian",
     positive: true,
     source: "Soochow ovarian mass cohort, positive record",
-    note: "50 year old pre-menopausal woman with an ovarian mass already found on imaging. CA 125 at 21.95 U/mL, HE4 at 55.76 pmol/L, CEA 0.71, platelets 199, albumin 3.42.",
-    delta: { age: 50, rbc: 4.42, hemoglobin: 13.1, platelets: 199, glucose: 86.4, calcium: 9.4188, bun: 12.012, creatinine: 0.5667, protein_total: 7.31, albumin: 3.42, ast: 18, alt: 15, bilirubin: 0.6023, alkaline_phosphatase: 63, alpha_fetoprotein_level: 2.6, plasma_ca19_9: 85.09, hematocrit: 39.5, mcv: 89.4, mch: 29.6, rdw: 14, mpv: 12.9, neutrophil_pct: 50.2, ggt: 17, ca125: 21.95, he4: 55.76, cea: 0.71 },
+    note: "53 year old pre-menopausal woman with an ovarian mass already found on imaging. CA 125 at 44.675 U/mL, HE4 at 53.27 pmol/L, CEA 1.33, platelets 148, albumin 4.2.",
+    delta: { age: 53, rbc: 4.64, hemoglobin: 13.8, platelets: 148, glucose: 127.8, calcium: 8.9779, bun: 7.28, creatinine: 0.4977, protein_total: 7.25, albumin: 4.2, ast: 17, alt: 15, bilirubin: 0.4912, alkaline_phosphatase: 71, alpha_fetoprotein_level: 2.28, plasma_ca19_9: 14.2, hematocrit: 42.1, mcv: 90.7, mch: 29.7, rdw: 12.1, mpv: 12.1, neutrophil_pct: 60.5, ggt: 16, ca125: 44.675, he4: 53.27, cea: 1.33 },
   },
   {
-    id: "ovarian-41",
+    id: "ovarian-38",
     domain: "Ovarian",
     expect: "Ovarian",
     positive: true,
@@ -487,7 +460,7 @@ export const CASE_POOL: DemoCase[] = [
     delta: { age: 47, rbc: 2.64, hemoglobin: 8.9, platelets: 74, glucose: 84.06, calcium: 9.9398, bun: 14.98, creatinine: 1.1652, protein_total: 7.39, albumin: 4.54, ast: 24, alt: 11, bilirubin: 0.3216, alkaline_phosphatase: 56, alpha_fetoprotein_level: 3.58, plasma_ca19_9: 36.48, hematocrit: 27.3, mcv: 103.4, mch: 33.7, rdw: 13.7, mpv: 11.7, neutrophil_pct: 76.2, ggt: 16, ca125: 15.36, he4: 53.27, cea: 1.4 },
   },
   {
-    id: "ovarian-42",
+    id: "ovarian-39",
     domain: "Ovarian",
     expect: "Ovarian",
     positive: true,
@@ -496,7 +469,7 @@ export const CASE_POOL: DemoCase[] = [
     delta: { age: 45, rbc: 4.4, hemoglobin: 12.2, platelets: 272, glucose: 73.26, calcium: 9.9398, bun: 13.692, creatinine: 0.7952, protein_total: 6.65, albumin: 3.5, ast: 27, alt: 21, bilirubin: 0.3099, alkaline_phosphatase: 47, alpha_fetoprotein_level: 2.36, plasma_ca19_9: 11.15, hematocrit: 38.3, mcv: 87, mch: 27.7, rdw: 13.4, mpv: 10.4, neutrophil_pct: 59.5, ggt: 24, ca125: 1391, he4: 404.9, cea: 0.42 },
   },
   {
-    id: "ovarian-neg-43",
+    id: "ovarian-neg-40",
     domain: "Ovarian",
     expect: "No cancer detected",
     positive: false,
@@ -505,7 +478,7 @@ export const CASE_POOL: DemoCase[] = [
     delta: { age: 36, rbc: 4.18, hemoglobin: 12.5, platelets: 234, glucose: 89.82, calcium: 9.4188, bun: 11.34, creatinine: 0.8133, protein_total: 7.38, albumin: 4.57, ast: 12, alt: 27, bilirubin: 0.4854, alkaline_phosphatase: 53, alpha_fetoprotein_level: 2.78, plasma_ca19_9: 14.68, hematocrit: 37.5, mcv: 89.8, rdw: 15, mpv: 11, neutrophil_pct: 48.1, ggt: 23, ca125: 20.94, he4: 33.25, cea: 0.77 },
   },
   {
-    id: "ovarian-neg-44",
+    id: "ovarian-neg-41",
     domain: "Ovarian",
     expect: "No cancer detected",
     positive: false,
@@ -514,7 +487,7 @@ export const CASE_POOL: DemoCase[] = [
     delta: { age: 27, rbc: 4.84, hemoglobin: 14.9, platelets: 241, glucose: 96.48, calcium: 10.3807, bun: 7.392, creatinine: 0.4977, protein_total: 7.08, albumin: 4.58, ast: 21, alt: 16, bilirubin: 0.6374, alkaline_phosphatase: 50, alpha_fetoprotein_level: 0.86, plasma_ca19_9: 35.71, hematocrit: 43.8, mcv: 90.5, mch: 30.8, rdw: 12.4, mpv: 9.4, neutrophil_pct: 66.75, ggt: 12, ca125: 49.14, he4: 34.57, cea: 1.2 },
   },
   {
-    id: "ovarian-neg-45",
+    id: "ovarian-neg-42",
     domain: "Ovarian",
     expect: "No cancer detected",
     positive: false,
@@ -523,7 +496,7 @@ export const CASE_POOL: DemoCase[] = [
     delta: { age: 33, rbc: 4.97, hemoglobin: 14.9, platelets: 260, glucose: 93.42, calcium: 10.9018, bun: 13.608, creatinine: 0.7127, protein_total: 7.31, albumin: 4.48, ast: 11, alt: 13, bilirubin: 0.3392, alkaline_phosphatase: 55, alpha_fetoprotein_level: 1.39, plasma_ca19_9: 8.81, hematocrit: 43.5, mcv: 87.5, rdw: 12.4, mpv: 10.1, neutrophil_pct: 66.75, ggt: 16, ca125: 32.02, he4: 51.86, cea: 0.49 },
   },
   {
-    id: "lung-neg-46",
+    id: "lung-neg-43",
     domain: "Lung",
     expect: "No cancer detected",
     positive: false,
@@ -532,7 +505,7 @@ export const CASE_POOL: DemoCase[] = [
     delta: { age: 27, wbc: 8, rbc: 5.02, hemoglobin: 15.8, platelets: 234, glucose: 103, calcium: 8.6, bun: 10, creatinine: 0.6, protein_total: 6.9, ast: 50, alt: 124, bilirubin: 0.4, alkaline_phosphatase: 90, gender: 1, smoking: 2, hematocrit: 45.8, mcv: 91.1, rdw: 11.9, mpv: 9.4, smoking_packyears: 7.2, cotinine: 13.2 },
   },
   {
-    id: "lung-neg-47",
+    id: "lung-neg-44",
     domain: "Lung",
     expect: "No cancer detected",
     positive: false,
@@ -541,7 +514,7 @@ export const CASE_POOL: DemoCase[] = [
     delta: { age: 46, wbc: 7.7, rbc: 5.34, hemoglobin: 16.2, platelets: 151, glucose: 105, calcium: 9.3, bun: 19, creatinine: 0.6, protein_total: 7.1, albumin: 4.6, alt: 28, bilirubin: 1.1, alkaline_phosphatase: 43, gender: 1, smoking: 2, hematocrit: 48.3, mcv: 91, rdw: 12.5, mpv: 9.7, smoking_packyears: 7.2, cotinine: 212.7, crp: 0.4 },
   },
   {
-    id: "lung-neg-48",
+    id: "lung-neg-45",
     domain: "Lung",
     expect: "No cancer detected",
     positive: false,
@@ -550,7 +523,7 @@ export const CASE_POOL: DemoCase[] = [
     delta: { age: 39, wbc: 11.1, rbc: 5.05, hemoglobin: 16.1, platelets: 223, glucose: 87, calcium: 9.9, bun: 22, creatinine: 1, protein_total: 7.3, albumin: 4.8, ast: 27, alt: 23, bilirubin: 0.9, alkaline_phosphatase: 73, gender: 1, smoking: 2, hematocrit: 45.1, mcv: 89.3, rdw: 11.6, mpv: 8.3, smoking_packyears: 7.2, cotinine: 63.44, crp: 0.4 },
   },
   {
-    id: "prostate-49",
+    id: "prostate-46",
     domain: "Prostate",
     expect: "Prostate",
     positive: true,
@@ -559,7 +532,7 @@ export const CASE_POOL: DemoCase[] = [
     delta: { age: 70, bmi: 19, psa: 11.8, gender: 1, prostate_volume: 33, psa_density: 0.36, pi_rads: 4 },
   },
   {
-    id: "prostate-50",
+    id: "prostate-47",
     domain: "Prostate",
     expect: "Prostate",
     positive: true,
@@ -568,7 +541,7 @@ export const CASE_POOL: DemoCase[] = [
     delta: { bmi: 27, psa: 12.7, gender: 1, prostate_volume: 43, psa_density: 0.3, pi_rads: 5 },
   },
   {
-    id: "prostate-51",
+    id: "prostate-48",
     domain: "Prostate",
     expect: "Prostate",
     positive: true,
@@ -577,7 +550,7 @@ export const CASE_POOL: DemoCase[] = [
     delta: { age: 59, bmi: 22, psa: 26, gender: 1, prostate_volume: 36, psa_density: 0.72, pi_rads: 5 },
   },
   {
-    id: "prostate-52",
+    id: "prostate-49",
     domain: "Prostate",
     expect: "Prostate",
     positive: true,
@@ -586,7 +559,7 @@ export const CASE_POOL: DemoCase[] = [
     delta: { age: 70, bmi: 20, psa: 28, gender: 1, prostate_volume: 21, psa_density: 1.33, pi_rads: 5 },
   },
   {
-    id: "prostate-53",
+    id: "prostate-50",
     domain: "Prostate",
     expect: "Prostate",
     positive: true,
@@ -595,7 +568,7 @@ export const CASE_POOL: DemoCase[] = [
     delta: { age: 81, bmi: 23, psa: 38, gender: 1, prostate_volume: 27, psa_density: 1.41, pi_rads: 5 },
   },
   {
-    id: "prostate-54",
+    id: "prostate-51",
     domain: "Prostate",
     expect: "Prostate",
     positive: true,
@@ -604,7 +577,7 @@ export const CASE_POOL: DemoCase[] = [
     delta: { age: 61, bmi: 19, psa: 98, gender: 1, prostate_volume: 21, psa_density: 4.67, pi_rads: 5 },
   },
   {
-    id: "prostate-55",
+    id: "prostate-52",
     domain: "Prostate",
     expect: "Prostate",
     positive: true,
@@ -613,7 +586,7 @@ export const CASE_POOL: DemoCase[] = [
     delta: { age: 83, bmi: 22, psa: 73, gender: 1, prostate_volume: 33, psa_density: 2.21, pi_rads: 5 },
   },
   {
-    id: "prostate-neg-56",
+    id: "prostate-neg-53",
     domain: "Prostate",
     expect: "No cancer detected",
     positive: false,
@@ -622,7 +595,7 @@ export const CASE_POOL: DemoCase[] = [
     delta: { age: 58, bmi: 25, psa: 14, gender: 1, prostate_volume: 36, psa_density: 0.39, pi_rads: 3 },
   },
   {
-    id: "prostate-neg-57",
+    id: "prostate-neg-54",
     domain: "Prostate",
     expect: "No cancer detected",
     positive: false,
@@ -631,7 +604,7 @@ export const CASE_POOL: DemoCase[] = [
     delta: { age: 62, bmi: 19, psa: 5.6, gender: 1, prostate_volume: 25, psa_density: 0.22, pi_rads: 3 },
   },
   {
-    id: "prostate-neg-58",
+    id: "prostate-neg-55",
     domain: "Prostate",
     expect: "No cancer detected",
     positive: false,
@@ -654,4 +627,4 @@ export function randomCase(previousId?: string): DemoCase {
  * matches between server and client. Every press of Generate case after that
  * draws at random.
  */
-export const OPENING_CASE = CASE_POOL.find(c => c.id === "breast-8")!;
+export const OPENING_CASE = CASE_POOL.find(c => c.id === "breast-5")!;

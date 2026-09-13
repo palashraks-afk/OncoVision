@@ -1,4 +1,13 @@
 """
+SUPERSEDED by experiments/external_baseline_strength.py. Kept as the record of
+how the original result was reached.
+
+Both arms below are fitted with a calibrated tree ensemble. Given only age and a
+binary sex flag, that baseline ranks age in coarse steps and understates what age
+and sex alone can do, so the "gain over age and sex" this file reports is
+inflated. external_baseline_strength.py repeats the same transfer with both model
+kinds on both arms and judges the gain against the stronger baseline.
+
 Does the bowel panel work outside the survey it was fitted on?
 
 Why this is the panel to ask about

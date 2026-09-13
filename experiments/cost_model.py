@@ -151,9 +151,13 @@ def roc_for(panel):
     X = X.apply(pd.to_numeric, errors="coerce")
     X = X.fillna(X.median())
     y = pd.Series(y).astype(int)
+    # The curve of the model that ships. This hardcoded the ensemble, so the
+    # "best operating point" quoted for a panel shipping logistic regression was
+    # read off a different model's ROC curve.
+    kind, _ = tm.select_model(X, y, float(y.mean()))
     cv = StratifiedKFold(5, shuffle=True, random_state=0)
     p = cross_val_predict(
-        CalibratedClassifierCV(tm.build_ensemble(len(y), float(y.mean())),
+        CalibratedClassifierCV(tm.model_factory(kind, len(y), float(y.mean())),
                                method="isotonic", cv=cv),
         X, y, cv=cv, method="predict_proba")[:, 1]
     fpr, tpr, _ = roc_curve(y, p)

@@ -51,11 +51,11 @@
       "societal_cost_of_a_missed_cancer": 2250000,
       "saves_money_once_a_life_is_priced": false,
       "best_operating_point": {
-        "sensitivity": 0.947,
-        "specificity": 0.467,
-        "procedures_per_100k": 53449,
-        "cancers_missed": 21.2,
-        "net_benefit": 64492872,
+        "sensitivity": 0.965,
+        "specificity": 0.363,
+        "procedures_per_100k": 63871,
+        "cancers_missed": 14.2,
+        "net_benefit": 55285735,
         "pays_once_a_life_is_priced": true,
         "shipped_sensitivity": 0.522
       }

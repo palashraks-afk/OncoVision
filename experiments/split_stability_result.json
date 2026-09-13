@@ -2,40 +2,61 @@
   "shipped_seed": 42,
   "panels": {
     "general": {
+      "model": "logistic",
       "n_rows": 28711,
       "n_positive": 897,
       "n_splits": 5,
       "mean_auc": 0.758,
-      "median_auc": 0.758,
-      "std_auc": 0.018,
-      "min_auc": 0.735,
+      "median_auc": 0.754,
+      "std_auc": 0.013,
+      "min_auc": 0.745,
       "max_auc": 0.779,
       "split_range_2p5_97p5": [
-        0.736,
+        0.745,
         0.778
       ],
-      "shipped_split_auc": 0.794,
+      "shipped_split_auc": 0.781,
       "shipped_split_percentile": 100.0,
-      "shipped_minus_mean": 0.036
+      "shipped_minus_mean": 0.022
     },
     "breast": {
+      "model": "logistic",
       "n_rows": 569,
       "n_positive": 212,
       "n_splits": 30,
-      "mean_auc": 0.992,
-      "median_auc": 0.994,
-      "std_auc": 0.007,
-      "min_auc": 0.97,
+      "mean_auc": 0.993,
+      "median_auc": 0.997,
+      "std_auc": 0.008,
+      "min_auc": 0.972,
       "max_auc": 1.0,
       "split_range_2p5_97p5": [
-        0.978,
+        0.976,
         1.0
       ],
       "shipped_split_auc": 0.997,
-      "shipped_split_percentile": 76.7,
-      "shipped_minus_mean": 0.005
+      "shipped_split_percentile": 43.3,
+      "shipped_minus_mean": 0.003
+    },
+    "breast_screening": {
+      "model": "logistic",
+      "n_rows": 400000,
+      "n_positive": 1974,
+      "n_splits": 5,
+      "mean_auc": 0.616,
+      "median_auc": 0.61,
+      "std_auc": 0.012,
+      "min_auc": 0.6,
+      "max_auc": 0.633,
+      "split_range_2p5_97p5": [
+        0.601,
+        0.632
+      ],
+      "shipped_split_auc": 0.628,
+      "shipped_split_percentile": 80.0,
+      "shipped_minus_mean": 0.012
     },
     "liver": {
+      "model": "ensemble",
       "n_rows": 30624,
       "n_positive": 1167,
       "n_splits": 5,
@@ -53,40 +74,25 @@
       "shipped_minus_mean": 0.021
     },
     "pancreatic": {
+      "model": "logistic",
       "n_rows": 600,
       "n_positive": 130,
       "n_splits": 30,
-      "mean_auc": 0.969,
-      "median_auc": 0.968,
+      "mean_auc": 0.973,
+      "median_auc": 0.974,
       "std_auc": 0.013,
-      "min_auc": 0.939,
-      "max_auc": 0.995,
+      "min_auc": 0.938,
+      "max_auc": 0.991,
       "split_range_2p5_97p5": [
-        0.946,
-        0.988
+        0.947,
+        0.99
       ],
-      "shipped_split_auc": 0.969,
-      "shipped_split_percentile": 50.0,
-      "shipped_minus_mean": 0.0
-    },
-    "colorectal": {
-      "n_rows": 28527,
-      "n_positive": 113,
-      "n_splits": 5,
-      "mean_auc": 0.823,
-      "median_auc": 0.817,
-      "std_auc": 0.024,
-      "min_auc": 0.788,
-      "max_auc": 0.859,
-      "split_range_2p5_97p5": [
-        0.79,
-        0.857
-      ],
-      "shipped_split_auc": 0.815,
-      "shipped_split_percentile": 40.0,
+      "shipped_split_auc": 0.966,
+      "shipped_split_percentile": 26.7,
       "shipped_minus_mean": -0.008
     },
     "ovarian": {
+      "model": "ensemble",
       "n_rows": 349,
       "n_positive": 171,
       "n_splits": 30,
@@ -104,38 +110,40 @@
       "shipped_minus_mean": 0.021
     },
     "lung": {
+      "model": "logistic",
       "n_rows": 19866,
       "n_positive": 91,
       "n_splits": 10,
-      "mean_auc": 0.819,
-      "median_auc": 0.834,
-      "std_auc": 0.038,
-      "min_auc": 0.715,
-      "max_auc": 0.85,
+      "mean_auc": 0.827,
+      "median_auc": 0.829,
+      "std_auc": 0.031,
+      "min_auc": 0.768,
+      "max_auc": 0.869,
       "split_range_2p5_97p5": [
-        0.733,
-        0.849
+        0.774,
+        0.868
       ],
-      "shipped_split_auc": 0.826,
-      "shipped_split_percentile": 30.0,
-      "shipped_minus_mean": 0.007
+      "shipped_split_auc": 0.872,
+      "shipped_split_percentile": 100.0,
+      "shipped_minus_mean": 0.045
     },
     "prostate": {
+      "model": "logistic",
       "n_rows": 212,
       "n_positive": 121,
       "n_splits": 30,
-      "mean_auc": 0.822,
-      "median_auc": 0.819,
-      "std_auc": 0.044,
-      "min_auc": 0.732,
-      "max_auc": 0.909,
+      "mean_auc": 0.832,
+      "median_auc": 0.822,
+      "std_auc": 0.047,
+      "min_auc": 0.73,
+      "max_auc": 0.928,
       "split_range_2p5_97p5": [
-        0.748,
-        0.896
+        0.753,
+        0.916
       ],
-      "shipped_split_auc": 0.84,
-      "shipped_split_percentile": 70.0,
-      "shipped_minus_mean": 0.018
+      "shipped_split_auc": 0.88,
+      "shipped_split_percentile": 80.0,
+      "shipped_minus_mean": 0.048
     }
   }
 }

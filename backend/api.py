@@ -275,7 +275,7 @@ BIOLOGICAL_BOUNDS = {
     "plasma_ca19_9": (0.0, 50000.0), "radius_mean": (0.0, 40.0),
     "texture_mean": (0.0, 50.0), "perimeter_mean": (0.0, 250.0), "area_mean": (0.0, 2500.0),
     # History fields
-    "gender": (0, 1), "smoking": (0, 2), "alcohol_intake": (0, 5), "hepatitis_b": (0, 1), "hepatitis_c": (0, 1), "diabetes": (0, 1),
+    "gender": (0, 1), "smoking": (0, 2), "hepatitis_b": (0, 1), "hepatitis_c": (0, 1), "diabetes": (0, 1),
     # Red cell and platelet indices, GGT, and the pelvic-mass tumour markers.
     "hematocrit": (0.0, 70.0), "mcv": (0.0, 150.0), "mch": (0.0, 60.0),
     "rdw": (0.0, 40.0), "mpv": (0.0, 20.0), "neutrophil_pct": (0.0, 100.0),
@@ -354,8 +354,10 @@ CLINICAL_THRESHOLDS = {
     "alkaline_phosphatase": ("Alkaline phosphatase", 120.0, ["liver", "pancreatic"]),
     "ast": ("AST", 40.0, ["liver"]),
     "alt": ("ALT", 40.0, ["liver"]),
-    "wbc": ("WBC", 11.0, ["general"]),
-    "calcium": ("Calcium", 10.3, ["general"]),
+    # Pointed at the general panel until it was withdrawn. The lung panel reads
+    # both, so the flags stay visible where a live panel uses the value.
+    "wbc": ("WBC", 11.0, ["lung"]),
+    "calcium": ("Calcium", 10.3, ["lung"]),
     "glucose": ("Glucose", 99.0, ["pancreatic"]),
     "radius_mean": ("Nuclear radius", 15.0, ["breast"]),
     "area_mean": ("Nuclear area", 600.0, ["breast"]),
@@ -405,7 +407,7 @@ UNITS = {
     "protein_total": "g/dL", "albumin": "g/dL", "ast": "U/L", "alt": "U/L",
     "bilirubin": "mg/dL", "alkaline_phosphatase": "U/L",
     "alpha_fetoprotein_level": "ng/mL", "psa": "ng/mL", "plasma_ca19_9": "U/mL",
-    "age": "years", "alcohol_intake": "of 5",
+    "age": "years",
     "hematocrit": "%", "mcv": "fL", "mch": "pg", "rdw": "%", "mpv": "fL",
     "neutrophil_pct": "%", "ggt": "U/L",
     "ca125": "U/mL", "he4": "pmol/L", "cea": "ng/mL",
@@ -747,7 +749,6 @@ class PatientData(BaseModel):
     # Patient history
     gender: Optional[float] = None
     smoking: Optional[float] = None
-    alcohol_intake: Optional[float] = None
     hepatitis_b: Optional[float] = None
     hepatitis_c: Optional[float] = None
     diabetes: Optional[float] = None

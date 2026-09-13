@@ -61,21 +61,24 @@ def repeats_for(n_rows: int) -> int:
     return 30
 
 
-def fit(X, y, seed):
+def fit(X, y, seed, kind):
+    # The model kind that ships for this panel. This used to hardcode the
+    # ensemble while most panels ship logistic regression, so the stability
+    # table on the About page described models nobody was scored by.
     folds = max(2, min(5, int(pd.Series(y).value_counts().min())))
     cv = StratifiedKFold(n_splits=folds, shuffle=True, random_state=seed)
     return CalibratedClassifierCV(
-        tm.build_ensemble(len(y), float(np.mean(y))), method="isotonic", cv=cv
+        tm.model_factory(kind, len(y), float(np.mean(y))), method="isotonic", cv=cv
     ).fit(X, y)
 
 
-def one_split(X, y, seed):
+def one_split(X, y, seed, kind):
     X_tr, X_te, y_tr, y_te = train_test_split(
         X, y, test_size=0.2, random_state=seed, stratify=y
     )
     med = X_tr.median()
     X_tr, X_te = X_tr.fillna(med), X_te.fillna(med)
-    model = fit(X_tr, y_tr, seed)
+    model = fit(X_tr, y_tr, seed, kind)
     return float(roc_auc_score(y_te, model.predict_proba(X_te)[:, 1]))
 
 
@@ -91,6 +94,7 @@ def main():
         y = pd.Series(y).astype(int).reset_index(drop=True)
         X = X.reset_index(drop=True)
 
+        kind, _ = tm.select_model(X.fillna(X.median()), y, float(y.mean()))
         n = repeats_for(len(y))
         print(f"{name}: {len(y)} rows, {int(y.sum())} positive, {n} repeated splits ...",
               flush=True)
@@ -98,19 +102,20 @@ def main():
         aucs = []
         for seed in range(n):
             try:
-                aucs.append(one_split(X, y, seed))
+                aucs.append(one_split(X, y, seed, kind))
             except Exception as exc:
                 print(f"    seed {seed} failed: {str(exc)[:60]}")
         if not aucs:
             continue
 
-        shipped = one_split(X, y, SHIPPED_SEED)
+        shipped = one_split(X, y, SHIPPED_SEED, kind)
         arr = np.array(aucs)
         lo, hi = float(np.percentile(arr, 2.5)), float(np.percentile(arr, 97.5))
         # Where the shipped split falls inside the distribution of splits.
         pct = float((arr < shipped).mean() * 100)
 
         results[name] = {
+            "model": kind,
             "n_rows": int(len(y)), "n_positive": int(y.sum()), "n_splits": len(aucs),
             "mean_auc": round(float(arr.mean()), 3),
             "median_auc": round(float(np.median(arr)), 3),

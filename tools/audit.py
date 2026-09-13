@@ -154,6 +154,42 @@ try:
 except Exception as exc:  # pragma: no cover
     notes.append(f"could not import make_cases to check its reference table: {exc}")
 
+# --------------------------------------------------------------- model kind
+# A script whose output reaches the app or the documentation must fit the model a
+# panel actually ships -- tm.select_model and tm.model_factory -- never the tree
+# ensemble directly. Seven of them did. One compared the bowel panel against a
+# tree ensemble given only age and sex, which ranks age in coarse steps, and that
+# weak baseline produced the project's clearest-looking external result; the
+# panel added nothing and was withdrawn. The historical one-off experiments are
+# left alone: they record how a decision was reached and feed nothing live.
+LIVE_SCRIPTS = [
+    "evaluate.py",
+    "experiments/demographic_gain.py",
+    "experiments/split_stability.py",
+    "experiments/fairness.py",
+    "experiments/prospective_mortality.py",
+    "experiments/prospective_external.py",
+    "experiments/cost_model.py",
+    "experiments/temporal_validation.py",
+    "experiments/bcsc_validation.py",
+    "experiments/bcsc_rule_out_vs_age.py",
+    "experiments/rule_out_external.py",
+    "experiments/baseline_strength.py",
+    "experiments/external_baseline_strength.py",
+    "experiments/triage_on_age_alone.py",
+    "experiments/general_rule_out_vs_age.py",
+    "experiments/lung_loco_gain.py",
+]
+for path in LIVE_SCRIPTS:
+    if not os.path.exists(path):
+        notes.append(f"{path} listed as live but not found")
+        continue
+    src_live = open(path, encoding="utf-8").read()
+    if re.search(r"tm\.build_ensemble\(", src_live):
+        fail(f"{path} fits tm.build_ensemble directly; a script that feeds the app or "
+             f"the docs must fit the shipped model kind via tm.select_model / "
+             f"tm.model_factory, or its numbers describe a model nobody is scored by")
+
 # --------------------------------------------------------------- panel metadata
 for cfg in tm.DATASETS:
     name = cfg["name"]

@@ -56,7 +56,15 @@ def test_models_load(client):
     assert r.status_code == 200
     body = r.json()
     assert body["status"] == "success"
-    assert len(body["models"]) >= 8, "panels went missing from the registry"
+    # Exactly the panels that ship, not "at least eight". A count broke the
+    # moment a panel was withdrawn, and it could never have caught the failure
+    # that matters more: a withdrawn panel still being served.
+    import train_models as tm
+    shipped = {c["name"] for c in tm.DATASETS if c["name"] not in tm.WITHDRAWN}
+    served = set(body["models"])
+    assert served == shipped, (
+        f"registry serves {sorted(served)}; missing {sorted(shipped - served)}, "
+        f"withdrawn but still served {sorted(served - shipped)}")
 
 
 def test_registry_serves_held_out_fields(client):

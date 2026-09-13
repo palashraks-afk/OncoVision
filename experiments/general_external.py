@@ -1,14 +1,22 @@
 """
+SUPERSEDED by experiments/external_baseline_strength.py. Kept as the record of
+how the original result was reached.
+
+Both arms below are fitted with a calibrated tree ensemble. Given only age and a
+binary sex flag, that baseline ranks age in coarse steps and understates what age
+and sex alone can do, so the "gain over age and sex" this file reports is
+inflated. external_baseline_strength.py repeats the same transfer with both model
+kinds on both arms and judges the gain against the stronger baseline.
+
 Does the general panel's rule-out cut keep its promise outside its own survey?
 
 The last untested one
 ---------------------
-Of the panels that ship a rule-out call, the bowel cut has been applied
-unchanged to NHANES III and kept its promise inside tolerance. Liver ships no
-cut, because the cost model says everyone in that group should have the
-confirmatory test anyway. Lung ships no cut, because catching every case there
-means excluding almost nobody. That leaves the general panel, and it is the one
-that most needs asking.
+When this was written the bowel cut had been applied unchanged to NHANES III and
+kept its promise inside tolerance. The bowel panel has since been withdrawn: its
+lab values added nothing to age and sex, and triage on age alone did better. Liver
+and lung ship no cut. That leaves the general panel as the one population-cohort
+cut still shipping.
 
 The general panel tells 22% of everyone who runs it that they are unlikely to
 have cancer, and it does that on five questions with no blood test at all. It

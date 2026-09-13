@@ -242,9 +242,9 @@ Reproduce with `python evaluate.py`.
 | Pancreatic cancer | 600 samples, 3 tissue banks | 0.966 | 0.933 to 0.99 | 76.4% | 0.769 | 0.979 | 200.0 |
 | Ovarian malignancy | 349 operated ovarian masses | 0.949 | 0.882 to 0.994 | 58.1% | 0.853 | 0.944 | 1.3 |
 | Prostate cancer | 212 biopsied men | 0.880 | 0.746 to 0.979 | 65.9% | 0.76 | 0.778 | 1.4 |
-| Lung cancer | 19,866 adults with tobacco exposure | 0.872 | 0.801 to 0.925 | 1.0% | 0.5 | 0.882 | 50.3 |
+| Lung cancer | 19,866 adults with tobacco exposure | 0.872 ⚠️<br>_a lucky draw, 100th pct;_<br>_stable mean 0.827_ | 0.801 to 0.925 | 1.0% | 0.5 | 0.882 | 50.3 |
 | ~~Bowel cancer~~ withdrawn | 28,527 NHANES adults | 0.821 | 0.746 to 0.89 | 1.0% | 0.522 | 0.894 | 559.8 |
-| General cancer | 28,711 NHANES adults | 0.781 ⚠️<br>_a lucky draw, 100th pct;_<br>_stable mean 0.758_ | 0.749 to 0.811 | 3.5% | 0.67 | 0.728 | 13.5 |
+| ~~General cancer~~ withdrawn | 28,711 NHANES adults | 0.781 ⚠️<br>_a lucky draw, 100th pct;_<br>_stable mean 0.758_ | 0.749 to 0.811 | 3.5% | 0.67 | 0.728 | 13.5 |
 | Liver disease | 30,624 NHANES adults | 0.780 ⚠️<br>_a lucky draw, 100th pct;_<br>_stable mean 0.759_ | 0.748 to 0.811 | 4.3% | 0.588 | 0.828 | 8.0 |
 | Breast cancer within a year | 400,000 BCSC mammograms | 0.628 | 0.599 to 0.654 | 1.0% | 0.018 | 0.994 | 74.0 |
 | ~~Cervical~~ | 858 Caracas referrals | 0.725 | withdrawn, a lucky split | | | | |
@@ -261,7 +261,7 @@ Reproduce with `python evaluate.py`.
 | Prostate | 0.880 | 0.876 | 0.661 | +0.222 |
 | Lung | 0.872 | 0.867 | 0.842 | +0.024 |
 | ~~Bowel~~ withdrawn | 0.821 | 0.82 | 0.843 | **-0.011** |
-| General | 0.781 | 0.78 | 0.779 | **+0.002** |
+| ~~General~~ withdrawn | 0.781 | 0.78 | 0.779 | **+0.002** |
 | Liver | 0.780 | 0.761 | 0.623 | +0.114 |
 | Breast (mammogram) | 0.628 | 0.628 | 0.608 | +0.028 |
 <!-- /AUTOGEN:baselines -->
@@ -322,7 +322,7 @@ Every result card now carries its type.
 
 | Panel | Type | What you must already have |
 |---|---|---|
-| General | Screening | Nothing. Routine bloodwork and your history. |
+| ~~General~~ | Withdrawn | Its rule-out call excluded no more people than age and sex did. |
 | Liver | Screening | Nothing. Routine bloodwork and your history. |
 | ~~Bowel~~ | Withdrawn | Its lab values added nothing to age and sex, so it no longer ships. |
 | Lung | Screening | Nothing, but it is offered to people with tobacco exposure. |
@@ -653,14 +653,14 @@ distribution. Reproduce with `python experiments/split_stability.py`.
 <!-- AUTOGEN:stability -->
 | Panel | Rows | Events | Mean AUC | Spread across splits | Shipped split | Percentile |
 |---|---|---|---|---|---|---|
-| Breast (biopsy) | 569 | 212 | 0.992 | 0.970 to 1.000 | 0.997 | 77th |
-| Pancreatic | 600 | 130 | 0.969 | 0.939 to 0.995 | 0.969 | 50th |
+| Breast (biopsy) | 569 | 212 | 0.993 | 0.972 to 1.000 | 0.997 | 43th |
+| Pancreatic | 600 | 130 | 0.973 | 0.938 to 0.991 | 0.966 | 27th |
 | Ovarian | 349 | 171 | 0.928 | 0.852 to 0.969 | 0.949 | 70th |
-| Bowel | 28,527 | 113 | 0.823 | 0.788 to 0.859 | 0.815 | 40th |
-| Prostate | 212 | 121 | 0.822 | 0.732 to 0.909 | 0.840 | 70th |
-| Lung | 19,866 | 91 | 0.819 | 0.715 to 0.850 | 0.826 | 30th |
+| Prostate | 212 | 121 | 0.832 | 0.730 to 0.928 | 0.880 | 80th |
+| Lung | 19,866 | 91 | 0.827 | 0.768 to 0.869 | 0.872 | 100th |
 | Liver | 30,624 | 1,167 | 0.759 | 0.740 to 0.776 | 0.780 | 100th |
-| General | 28,711 | 897 | 0.758 | 0.735 to 0.779 | 0.794 | 100th |
+| General | 28,711 | 897 | 0.758 | 0.745 to 0.779 | 0.781 | 100th |
+| Breast (mammogram) | 400,000 | 1,974 | 0.616 | 0.600 to 0.633 | 0.628 | 80th |
 | Cervical | 858 | 55 | **0.594** | **0.421 to 0.789** | 0.725 | **97th** |
 <!-- /AUTOGEN:stability -->
 
@@ -878,22 +878,25 @@ sample is drawn, years pass, and the death certificate arrives later from a diff
     339 deaths from malignant neoplasm within 60 months of the blood draw
     1.00% event rate, stable across all eight cycles
 
+<!-- AUTOGEN:prospective_arms -->
 | Feature set | Features | AUC | Gain over age and sex | Wins |
 |---|---|---|---|---|
-| Age and sex | 2 | 0.816 | — | |
-| + BMI, smoking, alcohol | 5 | 0.827 | +0.011 | 5/5 |
-| **+ complete blood count** | 15 | **0.832** | **+0.016** | 5/5 |
-| + metabolic and liver panel | 16 | 0.825 | +0.010 | 5/5 |
-| Everything | 26 | 0.829 | +0.013 | 5/5 |
+| Age and sex | 2 | 0.836 | — | |
+| + BMI, smoking, alcohol | 5 | 0.854 | +0.017 | 5/5 |
+| + complete blood count | 15 | 0.859 | +0.023 | 5/5 |
+| + metabolic and liver panel | 16 | 0.859 | +0.023 | 5/5 |
+| Everything | 26 | 0.861 | +0.025 | 5/5 |
 
-Leave-one-cycle-out, training on seven NHANES cycles and testing on the eighth, gives a mean of
-0.837, so the model transfers between survey waves rather than fitting one of them.
+Every row is the better of logistic regression and the ensemble on each repeat, the age-and-sex row included.
 
-**The gain is real and it is too small to act on.** Every arm beats age and sex on 5 of 5 paired
-repeats, and the largest gain is 0.016. Set against the liver and pancreatic panels'
-gains in the baselines table above, this is the clearest statement in the project of where routine bloodwork carries
-signal and where it does not: it carries a great deal about organ-specific disease when the
-organ's chemistry is on the panel, and very little about undifferentiated cancer risk.
+Leave-one-cycle-out, training on seven NHANES cycles and testing on the eighth, gives a mean of 0.865.
+<!-- /AUTOGEN:prospective_arms -->
+
+<!-- AUTOGEN:prospective_verdict -->
+**Routine bloodwork carries prospective signal inside the survey.** The largest gain over age and sex is +0.025.
+<!-- /AUTOGEN:prospective_verdict -->
+
+Set against the liver and pancreatic panels' gains in the baselines table above, this is the clearest statement in the project of where routine bloodwork carries signal and where it does not.
 
 The outcome here is death from cancer, not detection of it. People who developed cancer and
 survived count as non-cases, because they did, and the endpoint is confounded by everything that
@@ -901,7 +904,7 @@ determines whether a cancer is survivable. It is a different question, honestly 
 design the other cohorts cannot offer. Reproduce with
 `python experiments/prospective_mortality.py`.
 
-### The gain did not survive a different decade, and that changed the conclusion
+### The gain survived a different decade, once the model that overfitted was replaced
 
 The prospective panel was then tested properly. NHANES III ran from 1988 to 1994 and is linked to
 the National Death Index by the same agency using the same method, so it gives a real external
@@ -910,27 +913,28 @@ cohort: different decade, different analysers, different field staff, higher smo
 Identical features on both sides. The test cohort is imputed with the TRAINING medians, never its
 own, so its distribution cannot leak into the fit.
 
+<!-- AUTOGEN:prospective_external -->
 | Feature set | Features | External AUC | 95% CI |
 |---|---|---|---|
-| Age and sex only | 2 | **0.852** | 0.831 to 0.873 |
-| Full blood work | 22 | 0.839 | 0.819 to 0.858 |
+| age and sex only, logistic | 2 | 0.861 | 0.841 to 0.88 |
+| age and sex only, ensemble | 2 | 0.852 | 0.831 to 0.872 |
+| full blood work, logistic | 22 | 0.872 | 0.852 to 0.89 |
+| full blood work, ensemble | 22 | 0.839 | 0.819 to 0.858 |
 
-**Transferred gain: -0.013. The internal gain was +0.013.** Adding twenty blood values makes the
-prediction *worse* on people measured in a different decade than using age and sex alone. Whatever
-those values contributed inside NHANES 1999-2014 belonged to that survey rather than to human
-physiology.
+**Transferred gain, best panel against best age-and-sex model: +0.011** (95% CI +0.002 to +0.020), against +0.025 inside the training survey for the full panel, which also includes BMI, smoking and alcohol. The gain survives a cohort measured in a different decade.
+<!-- /AUTOGEN:prospective_external -->
 
-The uncomfortable part is what this says about the leave-one-cycle-out result directly above it.
-Holding out a whole NHANES cycle and training on the other seven gave a mean of 0.837 with no fold
-below 0.808, which reads like solid evidence of generalisation. It was not. Cycles of one survey
-share a protocol, a laboratory contract, instrument calibration and an analytic pipeline;
-resampling across them varies the participants while holding the measurement process fixed.
+The first version of this section reported the opposite, under the heading "the gain did not
+survive a different decade". It had fitted a tree ensemble on both arms, and the ensemble on
+twenty-two blood values lost to age and sex on NHANES III. That was read as the signal belonging to
+one survey. It was the model: fitted as a logistic regression, the same features transfer, and the
+gain holds with an interval above zero.
 
-**Every internal validation strategy in this project, including the repeated paired
-cross-validation that is its arbiter everywhere else, would have reported this panel as working.**
-Only a genuinely external cohort caught it. The panels here that have no external cohort should be
-read with that in mind, and that caution is now the honest headline of this section rather than a
-footnote. Reproduce with `python experiments/prospective_external.py`.
+The caution that section drew still stands in part. Holding out a whole NHANES cycle gave a high mean
+AUC, and cycles of one survey share a protocol, a laboratory contract and an analytic pipeline, so
+resampling across them measures stability rather than generalisation. What changed is the second
+half of the lesson: **an external test validates a model, not a hypothesis**, and a transfer that
+fails can belong to the model. Reproduce with `python experiments/prospective_external.py`.
 
 ### Uploading a PDF gave one person both an ovarian and a prostate risk
 
@@ -1064,7 +1068,7 @@ the answer is no at every threshold. Its optimal operating point is to test ever
 |---|---|---|---|---|
 | Liver | +0.114 | send everyone | **0** | $0 |
 | Lung | +0.024 | send everyone | **0** | $0 |
-| Bowel | -0.011 | sens 0.947 | **46,551** | $64.5M |
+| Bowel | -0.011 | sens 0.965 | **36,129** | $55.3M |
 <!-- /AUTOGEN:cost_ranking -->
 
 Liver disease is common in this cohort at 4% and a FibroScan costs $500, so the scans a threshold
@@ -1088,9 +1092,8 @@ survive external validation, and it is the limit that no amount of extra accurac
 
 ### The rule-out promise was tested on another decade, and it held
 
-A threshold is a promise about a rate, and this project has already watched a rate estimated on one
-survey fail to transfer: the prospective mortality panel gained +0.013 inside NHANES, scored 0.837
-on leave-one-cycle-out, and lost 0.013 on a cohort from a different decade.
+A threshold is a promise about a rate, and a number estimated inside one survey is exactly the kind of quantity that can fail to
+transfer: the bowel panel's apparent external gain turned out to be a weak baseline.
 
 The consequence of that happening to a rule-out cut is worse than an inflated AUC. A cut sold as
 catching 95 cases in 100 that actually catches 80 sends one case in five home.
@@ -1149,7 +1152,7 @@ choosing the point that maximises net benefit *after* pricing every missed cance
 <!-- AUTOGEN:cost_best -->
 | Panel | Sensitivity | Specificity | Procedures avoided per 100,000 | Cases missed | Net benefit |
 |---|---|---|---|---|---|
-| Bowel | 0.947 | 0.467 | **46,551** | 21.2 | $64,492,872 |
+| Bowel | 0.965 | 0.363 | **36,129** | 14.2 | $55,285,735 |
 | Lung | 1.0 | 0.0 | **0** | 0.0 | $0 |
 | Liver | 1.0 | 0.0 | **0** | 0.0 | $0 |
 <!-- /AUTOGEN:cost_best -->
@@ -1339,7 +1342,7 @@ reconstructed the same way on both sides rather than a coincidence.
 | Age and sex only | 0.764 | **0.822** |
 | Full panel, 16 features | 0.792 | 0.822 |
 
-Comparing the two ensemble cells gives +0.029, with an interval of -0.013 to +0.072 that never excluded zero. The best panel against the best age-and-sex model gains **-0.000**, 95% CI -0.012 to +0.013. **On this evidence routine bloodwork adds nothing to age and sex for bowel cancer.** The contrast this section used to draw, an organ-specific gain surviving where the undifferentiated one reversed, does not exist.
+Comparing the two ensemble cells gives +0.029, with an interval of -0.013 to +0.072 that never excluded zero. The best panel against the best age-and-sex model gains **-0.000**, 95% CI -0.012 to +0.013. **On this evidence routine bloodwork adds nothing to age and sex for bowel cancer.** The contrast this section used to draw, an organ-specific gain that survived beside an undifferentiated one that reversed, does not hold in either direction: the bowel gain was a weak baseline, and the prospective reversal was an overfitted model.
 <!-- /AUTOGEN:bowel_external -->
 
 The first version fitted a calibrated tree ensemble on both rows. Given only age and a binary sex

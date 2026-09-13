@@ -168,6 +168,13 @@ def main():
         print(f"  rule-out promises that do not transfer: {broken}")
         print("  a cut sold as catching 95 in 100 that catches fewer is a different")
         print("  product, and the number on the card has to change")
+    elif not results:
+        # With the bowel and general panels withdrawn there is no population
+        # cut left for this file to test. "Every promise held" would be true of
+        # an empty set and misleading about everything else; the mammogram
+        # breast cut is tested on its own validation split instead.
+        print("  no shipped cut was tested here; the mammogram breast panel's cut is "
+              "tested in experiments/bcsc_validation.py")
     else:
         print(f"  every rule-out promise TESTED held on a cohort from another "
               f"decade ({len(results)} of {len(PANELS)} panels tested)")

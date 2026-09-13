@@ -1,0 +1,32 @@
+{
+  "panel_model": "logistic",
+  "baseline_model": "logistic",
+  "in_survey": {
+    "matched_sensitivity": 0.953,
+    "panel_excluded": 0.2267,
+    "age_sex_excluded": 0.2054,
+    "difference": 0.0213,
+    "difference_ci": [
+      -0.0305,
+      0.0427
+    ],
+    "panel_beats_age_sex": false,
+    "panel_auc": 0.768,
+    "age_sex_auc": 0.766
+  },
+  "external": {
+    "matched_sensitivity": 0.953,
+    "panel_excluded": 0.1541,
+    "age_sex_excluded": 0.1336,
+    "difference": 0.0205,
+    "difference_ci": [
+      -0.0557,
+      0.0862
+    ],
+    "panel_beats_age_sex": false,
+    "panel_auc": 0.746,
+    "age_sex_auc": 0.748
+  },
+  "material_threshold": 0.01,
+  "panel_beats_age_sex_in_both": false
+}

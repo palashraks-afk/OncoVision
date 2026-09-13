@@ -123,6 +123,7 @@ def main():
     lines.append(END)
 
     new = page[:start] + "\n".join(lines) + page[end:]
+    new = sync_stability(new)
     if new == page:
         print("FALLBACK_METRICS already matches backend/model_metrics.json")
         return 0
@@ -133,6 +134,46 @@ def main():
         m = metrics[name]
         print(f"  {name:<12} AUC {m.get('auc')}  {m.get('n_features')} features")
     return 0
+
+
+STAB = os.path.join(ROOT, "experiments/split_stability_result.json")
+STAB_START = "// AUTOGEN:split_stability"
+STAB_END = "// /AUTOGEN:split_stability"
+STAB_NAMES = {"general": "General", "liver": "Liver", "lung": "Lung",
+              "breast": "Breast, biopsy", "breast_screening": "Breast, mammogram",
+              "pancreatic": "Pancreatic", "ovarian": "Ovarian", "prostate": "Prostate",
+              "colorectal": "Bowel"}
+
+
+def sync_stability(page):
+    """The About page's split-stability table, written from the experiment.
+
+    It used to be typed by hand and went stale twice over: it kept a row for a
+    withdrawn panel, and its numbers came from a script that fitted the ensemble
+    while most panels ship logistic regression. A split outside the 10th to 90th
+    percentile of its own distribution is marked, because that held-out AUC is a
+    lucky or unlucky draw rather than an estimate.
+    """
+    if STAB_START not in page or not os.path.exists(STAB):
+        return page
+    panels = json.load(open(STAB, encoding="utf-8")).get("panels") or {}
+    shipped = json.load(open(METRICS, encoding="utf-8"))
+    rows = []
+    for k, v in sorted(panels.items(), key=lambda kv: -kv[1]["mean_auc"]):
+        if shipped.get(k, {}).get("shipped", True) is False:
+            continue
+        pct = v["shipped_split_percentile"]
+        ok = "true" if 10 < pct < 90 else "false"
+        rows.append(f'  {{ panel: "{STAB_NAMES.get(k, k)}", mean: {v["mean_auc"]}, '
+                    f'spread: "{v["min_auc"]} to {v["max_auc"]}", '
+                    f'shipped: {v["shipped_split_auc"]}, pct: {round(pct)}, ok: {ok} }},')
+    rows.append('  { panel: "Cervical, withdrawn", mean: 0.594, spread: "0.421 to 0.789", '
+                'shipped: 0.725, pct: 97, ok: false },')
+    s = page.index(STAB_START)
+    e = page.index(STAB_END, s)
+    head = page.index("const SPLIT_STABILITY = [", s)
+    block = page[s:head] + "const SPLIT_STABILITY = [\n" + "\n".join(rows) + "\n];\n"
+    return page[:s] + block + page[e:]
 
 
 if __name__ == "__main__":

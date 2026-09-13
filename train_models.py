@@ -88,6 +88,20 @@ WITHDRAWN = {
         "triage_on_age_alone.py. The DATASETS entry, cohorts and fetchers are kept so the panel "
         "is still trained and evaluated as evidence, and the cost model still reads it."
     ),
+    "general": (
+        "Withdrawn when its rule-out call failed the test that withdrew the bowel panel. At the "
+        "same share of cancers caught, its cut excluded 2.1 more adults per hundred than a cut on "
+        "age and sex alone inside its own survey (95% CI -3.0 to +4.3) and 2.1 more on NHANES III "
+        "(95% CI -5.6 to +8.6): no difference that can be told from zero. Its discrimination adds "
+        "about +0.002 AUC over the stronger age-and-sex model, and +0.005 on NHANES III with an "
+        "interval that includes zero. Applied unchanged to NHANES III its cut caught 90.5% of "
+        "cancers against the 95.1% it promised. And there is no confirmatory procedure for 'any "
+        "cancer within four years' to triage a person towards, so even a better version would have "
+        "nowhere to send the people it flagged. A panel that tells a quarter of its users they are "
+        "unlikely to have cancer has to know more than their age and sex; this one did not. See "
+        "experiments/general_rule_out_vs_age.py and external_baseline_strength.py. The DATASETS "
+        "entry and cohorts are kept, so it is still trained and evaluated as evidence."
+    ),
 }
 
 # What kind of question each panel answers, and what the user must already have.
@@ -216,12 +230,12 @@ COHORT_DESIGN = {
                "lifetime one. It adds 0.006 over knowing age and sex alone, measured on "
                "repeated paired folds rather than one split, which is small and is stated "
                "rather than hidden. Adding routine bloodwork was measured and made it worse, "
-               "so this panel reads risk factors and not the lab report. Treat even that "
-               "0.006 with suspicion: the same question asked prospectively, on 33,834 people "
-               "with death-certificate outcomes, gained 0.013 from bloodwork inside its own "
-               "survey and LOST 0.013 when tested on a cohort from a different decade. No "
-               "external cohort has confirmed that routine bloodwork predicts undifferentiated "
-               "cancer risk, and one careful attempt to confirm it failed.",
+               "so this panel reads risk factors and not the lab report. It was withdrawn "
+               "when its rule-out call did no better than age and sex. A related question "
+               "asked prospectively -- cancer death within five years, on 33,834 people with "
+               "death-certificate outcomes -- does carry a small bloodwork signal that held on a "
+               "cohort from a different decade; an earlier analysis reported it as reversing, "
+               "and the reversal belonged to an overfitted model.",
     "breast": "Case-control and post-biopsy. Precision is projected onto the roughly 25 percent "
               "malignancy rate among breast lesions taken to biopsy, not onto SEER population "
               "incidence, because nobody gets an aspirate without a lesion being found first. "
@@ -1320,6 +1334,23 @@ def load_temporal_validation() -> dict:
                 f"to say either way."
             ),
         }
+
+    # The withheld cycle held thirteen lung cancers. Holding out every cycle in
+    # turn uses all of them, which is stronger evidence than thirteen and still
+    # within one survey -- so it extends the lung verdict rather than replacing it.
+    loco = "experiments/lung_loco_gain_result.json"
+    if "lung" in out and os.path.isfile(loco):
+        with open(loco) as f:
+            lr = json.load(f)
+        llo, lhi = lr["gain_ci"]
+        out["lung"]["loco"] = lr
+        out["lung"]["verdict"] += (
+            f" Holding out each of the {lr['cycles']} survey cycles in turn, which uses all "
+            f"{lr['events']} cases, the advantage measured {lr['gain']:+.3f} with a range of "
+            f"{llo:+.3f} to {lhi:+.3f}"
+            + (": confirmed across cycles, though still within one survey."
+               if lr["gain_confirmed_within_survey"] else
+               ": probably real, but its range still reaches zero, so it is not yet shown."))
 
     # BCSC's own held-out split plays the same role for the breast panel that a
     # withheld survey cycle plays for liver and lung: data nothing was fitted

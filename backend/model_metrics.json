@@ -1,211 +1,9 @@
 {
   "general": {
     "label": "General Cancer Risk",
-    "shipped": true,
-    "features": [
-      "age",
-      "gender",
-      "bmi",
-      "smoking",
-      "alcohol_intake"
-    ],
-    "cohort_design": "23,923 US adults from NHANES 2005 to 2014, nationally representative. The target is a cancer diagnosis within four years of the blood draw, with long-ago survivors excluded, so this is a screening question rather than a lifetime one. It adds 0.006 over knowing age and sex alone, measured on repeated paired folds rather than one split, which is small and is stated rather than hidden. Adding routine bloodwork was measured and made it worse, so this panel reads risk factors and not the lab report. Treat even that 0.006 with suspicion: the same question asked prospectively, on 33,834 people with death-certificate outcomes, gained 0.013 from bloodwork inside its own survey and LOST 0.013 when tested on a cohort from a different decade. No external cohort has confirmed that routine bloodwork predicts undifferentiated cancer risk, and one careful attempt to confirm it failed.",
-    "auc": 0.767,
-    "auc_std": 0.016,
-    "accuracy": 0.747,
-    "sensitivity": 0.615,
-    "specificity": 0.751,
-    "n_samples": 28711,
-    "n_positive": 897,
-    "n_features": 5,
-    "cv_folds": 5,
-    "threshold": 0.0375,
-    "rule_out": {
-      "threshold": 0.007674951106746,
-      "sensitivity": 0.951,
-      "specificity": 0.228,
-      "share_ruled_out": 0.222,
-      "cases_missed_per_100": 4.9,
-      "target_sensitivity": 0.95
-    },
-    "no_rule_out_reason": "",
-    "model_selection": {
-      "ensemble": 0.766,
-      "logistic": 0.769
-    },
-    "chosen_model": "logistic",
-    "held_out": {
-      "n_test": 5743,
-      "auc": 0.781,
-      "auc_ci": [
-        0.749,
-        0.811
-      ],
-      "sensitivity": 0.67,
-      "sensitivity_ci": [
-        0.603,
-        0.736
-      ],
-      "specificity": 0.728,
-      "specificity_ci": [
-        0.716,
-        0.739
-      ],
-      "brier": 0.0292,
-      "calibration_slope": 0.914,
-      "ppv_at_population_prevalence": 0.07392,
-      "people_flagged_per_true_case": 13.5,
-      "population_prevalence": 0.0314,
-      "prevalence_source": "Cancer diagnosed within 4 years, US adults, NHANES 2005-2014",
-      "cohort_prevalence": 0.031,
-      "baseline_logistic_auc": 0.78,
-      "baseline_age_sex_auc": 0.779,
-      "subgroups": {
-        "sex: female": {
-          "n": 2912,
-          "positives": 78,
-          "auc": 0.758,
-          "auc_ci": [
-            0.7,
-            0.814
-          ]
-        },
-        "sex: male": {
-          "n": 2831,
-          "positives": 101,
-          "auc": 0.8,
-          "auc_ci": [
-            0.766,
-            0.833
-          ]
-        },
-        "age under 47": {
-          "n": 2810,
-          "positives": 16,
-          "auc": 0.562,
-          "auc_ci": [
-            0.399,
-            0.713
-          ]
-        },
-        "age 47 and over": {
-          "n": 2933,
-          "positives": 163,
-          "auc": 0.658,
-          "auc_ci": [
-            0.616,
-            0.698
-          ]
-        }
-      }
-    },
-    "stability": {
-      "stable_auc": 0.758,
-      "split_spread": [
-        0.735,
-        0.779
-      ],
-      "split_sd": 0.018,
-      "shipped_split_percentile": 100.0,
-      "n_splits": 5
-    },
-    "fairness": {
-      "overall_auc": 0.764,
-      "groups": {
-        "Mexican American": {
-          "n": 4885,
-          "events": 68,
-          "auc": 0.746,
-          "auc_ci": [
-            0.685,
-            0.802
-          ],
-          "gap_vs_overall": -0.018,
-          "materially_worse": false
-        },
-        "Non-Hispanic Asian": {
-          "n": 1841,
-          "events": 13,
-          "auc": 0.721,
-          "auc_ci": [
-            0.553,
-            0.874
-          ],
-          "gap_vs_overall": -0.043,
-          "materially_worse": false
-        },
-        "Non-Hispanic Black": {
-          "n": 6045,
-          "events": 146,
-          "auc": 0.747,
-          "auc_ci": [
-            0.711,
-            0.781
-          ],
-          "gap_vs_overall": -0.018,
-          "materially_worse": false
-        },
-        "Non-Hispanic White": {
-          "n": 11947,
-          "events": 591,
-          "auc": 0.754,
-          "auc_ci": [
-            0.735,
-            0.773
-          ],
-          "gap_vs_overall": -0.01,
-          "materially_worse": false
-        },
-        "Other Hispanic": {
-          "n": 2854,
-          "events": 59,
-          "auc": 0.696,
-          "auc_ci": [
-            0.626,
-            0.763
-          ],
-          "gap_vs_overall": -0.068,
-          "materially_worse": true
-        },
-        "Other or multiracial": {
-          "n": 459,
-          "events": 12,
-          "auc": 0.869,
-          "auc_ci": [
-            0.797,
-            0.931
-          ],
-          "gap_vs_overall": 0.104,
-          "materially_worse": false
-        }
-      },
-      "unmeasurable_groups": [],
-      "worst_group": "Other Hispanic",
-      "worst_auc": 0.696,
-      "spread": 0.173,
-      "materially_worse_groups": [
-        "Other Hispanic"
-      ]
-    },
-    "temporal_validation": null,
-    "rule_out_external": {
-      "cut": 0.007675,
-      "promised_catch_rate": 0.951,
-      "actual_catch_rate": 0.905,
-      "promised_share_excluded": 0.222,
-      "actual_share_excluded": 0.276,
-      "cases_in_test_cohort": 252,
-      "cases_ruled_out_wrongly": 24,
-      "promise_kept": true,
-      "tolerance": 0.05
-    },
-    "panel_kind": "screening",
-    "no_action_note": "There is no single test that confirms or rules out \u201cany cancer\u201d, so a raised score here does not point anywhere in particular. Read it as a reason to make sure your routine screening is up to date, not as something to act on by itself.",
-    "panel_kind_note": "Reads routine bloodwork and your history. Anyone can run it.",
-    "screening_viable": true,
-    "gain_over_age_sex": 0.002,
-    "barely_beats_demographics": true,
-    "flagged_per_true_case": 13.5
+    "shipped": false,
+    "withdrawn_reason": "Withdrawn when its rule-out call failed the test that withdrew the bowel panel. At the same share of cancers caught, its cut excluded 2.1 more adults per hundred than a cut on age and sex alone inside its own survey (95% CI -3.0 to +4.3) and 2.1 more on NHANES III (95% CI -5.6 to +8.6): no difference that can be told from zero. Its discrimination adds about +0.002 AUC over the stronger age-and-sex model, and +0.005 on NHANES III with an interval that includes zero. Applied unchanged to NHANES III its cut caught 90.5% of cancers against the 95.1% it promised. And there is no confirmatory procedure for 'any cancer within four years' to triage a person towards, so even a better version would have nowhere to send the people it flagged. A panel that tells a quarter of its users they are unlikely to have cancer has to know more than their age and sex; this one did not. See experiments/general_rule_out_vs_age.py and external_baseline_strength.py. The DATASETS entry and cohorts are kept, so it is still trained and evaluated as evidence.",
+    "cohort_design": "23,923 US adults from NHANES 2005 to 2014, nationally representative. The target is a cancer diagnosis within four years of the blood draw, with long-ago survivors excluded, so this is a screening question rather than a lifetime one. It adds 0.006 over knowing age and sex alone, measured on repeated paired folds rather than one split, which is small and is stated rather than hidden. Adding routine bloodwork was measured and made it worse, so this panel reads risk factors and not the lab report. It was withdrawn when its rule-out call did no better than age and sex. A related question asked prospectively -- cancer death within five years, on 33,834 people with death-certificate outcomes -- does carry a small bloodwork signal that held on a cohort from a different decade; an earlier analysis reported it as reversing, and the reversal belonged to an overfitted model."
   },
   "breast": {
     "label": "Breast Malignancy, from biopsy imaging",
@@ -296,13 +94,13 @@
       "subgroups": {}
     },
     "stability": {
-      "stable_auc": 0.992,
+      "stable_auc": 0.993,
       "split_spread": [
-        0.97,
+        0.972,
         1.0
       ],
-      "split_sd": 0.007,
-      "shipped_split_percentile": 76.7,
+      "split_sd": 0.008,
+      "shipped_split_percentile": 43.3,
       "n_splits": 30
     },
     "fairness": {},
@@ -403,7 +201,16 @@
         }
       }
     },
-    "stability": {},
+    "stability": {
+      "stable_auc": 0.616,
+      "split_spread": [
+        0.6,
+        0.633
+      ],
+      "split_sd": 0.012,
+      "shipped_split_percentile": 80.0,
+      "n_splits": 5
+    },
     "fairness": {},
     "temporal_validation": {
       "cycle": "BCSC validation split",
@@ -547,7 +354,82 @@
       "shipped_split_percentile": 100.0,
       "n_splits": 5
     },
-    "fairness": {},
+    "fairness": {
+      "overall_auc": 0.754,
+      "groups": {
+        "Mexican American": {
+          "n": 4988,
+          "events": 212,
+          "auc": 0.74,
+          "auc_ci": [
+            0.704,
+            0.774
+          ],
+          "gap_vs_overall": -0.014,
+          "materially_worse": false
+        },
+        "Non-Hispanic Asian": {
+          "n": 1884,
+          "events": 91,
+          "auc": 0.764,
+          "auc_ci": [
+            0.713,
+            0.814
+          ],
+          "gap_vs_overall": 0.01,
+          "materially_worse": false
+        },
+        "Non-Hispanic Black": {
+          "n": 6286,
+          "events": 145,
+          "auc": 0.81,
+          "auc_ci": [
+            0.77,
+            0.849
+          ],
+          "gap_vs_overall": 0.057,
+          "materially_worse": false
+        },
+        "Non-Hispanic White": {
+          "n": 13324,
+          "events": 498,
+          "auc": 0.743,
+          "auc_ci": [
+            0.72,
+            0.765
+          ],
+          "gap_vs_overall": -0.011,
+          "materially_worse": false
+        },
+        "Other Hispanic": {
+          "n": 2956,
+          "events": 170,
+          "auc": 0.746,
+          "auc_ci": [
+            0.707,
+            0.78
+          ],
+          "gap_vs_overall": -0.008,
+          "materially_worse": false
+        },
+        "Other or multiracial": {
+          "n": 481,
+          "events": 19,
+          "auc": 0.781,
+          "auc_ci": [
+            0.666,
+            0.882
+          ],
+          "gap_vs_overall": 0.027,
+          "materially_worse": false
+        }
+      },
+      "unmeasurable_groups": [],
+      "worst_group": "Mexican American",
+      "worst_auc": 0.74,
+      "spread": 0.07,
+      "materially_worse_groups": []
+    },
     "temporal_validation": {
       "cycle": "2017-2018",
       "n": 4887,
@@ -672,13 +554,13 @@
       }
     },
     "stability": {
-      "stable_auc": 0.969,
+      "stable_auc": 0.973,
       "split_spread": [
-        0.939,
-        0.995
+        0.938,
+        0.991
       ],
       "split_sd": 0.013,
-      "shipped_split_percentile": 50.0,
+      "shipped_split_percentile": 26.7,
       "n_splits": 30
     },
     "fairness": {},
@@ -927,16 +809,70 @@
       }
     },
     "stability": {
-      "stable_auc": 0.819,
+      "stable_auc": 0.827,
       "split_spread": [
-        0.715,
-        0.85
+        0.768,
+        0.869
       ],
-      "split_sd": 0.038,
-      "shipped_split_percentile": 30.0,
+      "split_sd": 0.031,
+      "shipped_split_percentile": 100.0,
       "n_splits": 10
     },
-    "fairness": {},
+    "fairness": {
+      "overall_auc": 0.832,
+      "groups": {
+        "Non-Hispanic Black": {
+          "n": 4301,
+          "events": 21,
+          "auc": 0.722,
+          "auc_ci": [
+            0.616,
+            0.816
+          ],
+          "gap_vs_overall": -0.111,
+          "materially_worse": true
+        },
+        "Non-Hispanic White": {
+          "n": 9685,
+          "events": 60,
+          "auc": 0.836,
+          "auc_ci": [
+            0.781,
+            0.885
+          ],
+          "gap_vs_overall": 0.004,
+          "materially_worse": false
+        }
+      },
+      "unmeasurable_groups": [
+        {
+          "group": "Mexican American",
+          "n": 3237,
+          "events": 1
+        },
+        {
+          "group": "Non-Hispanic Asian",
+          "n": 511,
+          "events": 2
+        },
+        {
+          "group": "Other Hispanic",
+          "n": 1430,
+          "events": 3
+        },
+        {
+          "group": "Other or multiracial",
+          "n": 702,
+          "events": 4
+        }
+      ],
+      "worst_group": "Non-Hispanic Black",
+      "worst_auc": 0.722,
+      "spread": 0.114,
+      "materially_worse_groups": [
+        "Non-Hispanic Black"
+      ]
+    },
     "temporal_validation": {
       "cycle": "2017-2018",
       "n": 2050,
@@ -948,7 +884,22 @@
         0.056
       ],
       "confirmed": false,
-      "verdict": "On the withheld 2017-2018 survey there were only 13 cases, and the panel's advantage over age and sex measured -0.022 with a range of -0.126 to +0.056. That is too little evidence to say either way."
+      "verdict": "On the withheld 2017-2018 survey there were only 13 cases, and the panel's advantage over age and sex measured -0.022 with a range of -0.126 to +0.056. That is too little evidence to say either way. Holding out each of the 10 survey cycles in turn, which uses all 104 cases, the advantage measured +0.030 with a range of -0.000 to +0.060: probably real, but its range still reaches zero, so it is not yet shown.",
+      "loco": {
+        "panel_model": "logistic",
+        "baseline_model": "logistic",
+        "cycles": 10,
+        "n": 21916,
+        "events": 104,
+        "panel_auc": 0.827,
+        "age_sex_auc": 0.797,
+        "gain": 0.03,
+        "gain_ci": [
+          -0.0,
+          0.06
+        ],
+        "gain_confirmed_within_survey": false
+      }
     },
     "rule_out_external": null,
     "panel_kind": "screening",
@@ -1043,13 +994,13 @@
       }
     },
     "stability": {
-      "stable_auc": 0.822,
+      "stable_auc": 0.832,
       "split_spread": [
-        0.732,
-        0.909
+        0.73,
+        0.928
       ],
-      "split_sd": 0.044,
-      "shipped_split_percentile": 70.0,
+      "split_sd": 0.047,
+      "shipped_split_percentile": 80.0,
       "n_splits": 30
     },
     "fairness": {},

@@ -94,17 +94,6 @@ const FALLBACK_METRICS: Record<string, any> = {
     baseline_logistic_auc: 0.867, baseline_age_sex_auc: 0.842,
     n_samples: 19866, n_test: 3974, n_features: 24,
   },
-  general: {
-    label: "General Cancer Risk", auc: 0.781, auc_ci: [0.749, 0.811],
-    threshold: 0.0375,
-    sensitivity: 0.67, specificity: 0.728,
-    brier: 0.0292, calibration_slope: 0.914,
-    ppv_at_population_prevalence: 0.07392,
-    people_flagged_per_true_case: 13.5,
-    population_prevalence: 0.0314, cohort_prevalence: 0.031,
-    baseline_logistic_auc: 0.78, baseline_age_sex_auc: 0.779,
-    n_samples: 28711, n_test: 5743, n_features: 5,
-  },
   liver: {
     label: "Liver Disease Risk", auc: 0.78, auc_ci: [0.748, 0.811],
     threshold: 0.0443,
@@ -150,20 +139,38 @@ const EXTERNAL_VALIDATION = [
 // One split is one draw. Repeating the whole 80/20 protocol with different
 // seeds shows where each shipped number actually sits in its own distribution.
 // This is what withdrew the cervical panel.
+// AUTOGEN:split_stability -- written by tools/sync_fallback_metrics.py from
+// experiments/split_stability_result.json. Do not edit by hand: the hand-typed
+// version went stale and described models that no longer shipped.
 const SPLIT_STABILITY = [
-  { panel: "Pancreatic", mean: 0.969, spread: "0.939 to 0.995", shipped: 0.969, pct: 50, ok: true },
-  { panel: "Breast", mean: 0.959, spread: "0.901 to 0.991", shipped: 0.972, pct: 73, ok: true },
+  { panel: "Breast, biopsy", mean: 0.993, spread: "0.972 to 1.0", shipped: 0.997, pct: 43, ok: true },
+  { panel: "Pancreatic", mean: 0.973, spread: "0.938 to 0.991", shipped: 0.966, pct: 27, ok: true },
   { panel: "Ovarian", mean: 0.928, spread: "0.852 to 0.969", shipped: 0.949, pct: 70, ok: true },
-  { panel: "Lung", mean: 0.839, spread: "0.822 to 0.86", shipped: 0.829, pct: 40, ok: true },
-  { panel: "Prostate", mean: 0.822, spread: "0.732 to 0.909", shipped: 0.84, pct: 70, ok: true },
-  { panel: "Liver", mean: 0.75, spread: "0.744 to 0.756", shipped: 0.753, pct: 60, ok: true },
-  { panel: "General", mean: 0.743, spread: "0.692 to 0.772", shipped: 0.732, pct: 20, ok: true },
+  { panel: "Prostate", mean: 0.832, spread: "0.73 to 0.928", shipped: 0.88, pct: 80, ok: true },
+  { panel: "Lung", mean: 0.827, spread: "0.768 to 0.869", shipped: 0.872, pct: 100, ok: false },
+  { panel: "Liver", mean: 0.759, spread: "0.74 to 0.776", shipped: 0.78, pct: 100, ok: false },
+  { panel: "Breast, mammogram", mean: 0.616, spread: "0.6 to 0.633", shipped: 0.628, pct: 80, ok: true },
   { panel: "Cervical, withdrawn", mean: 0.594, spread: "0.421 to 0.789", shipped: 0.725, pct: 97, ok: false },
 ];
+// /AUTOGEN:split_stability
 
 // Trained and measured, deliberately not served. Reported rather than deleted,
 // because a withdrawn panel is evidence about the method.
 const WITHDRAWN_PANELS = [
+  {
+    name: "General",
+    auc: 0.781, ci: [0.749, 0.811], logistic: 0.78,
+    specificity: 0.728, spec_ci: [0.716, 0.739],
+    n: 28711, n_test: 5743, features: 5,
+    reason:
+      "Withdrawn when its rule-out call failed the test that withdrew the bowel panel. At the same share " +
+      "of cancers caught, its cut excluded about two more adults per hundred than a cut on age and sex " +
+      "alone, with an interval that includes zero both inside its own survey and on a cohort measured " +
+      "fifteen years earlier. It added about 0.002 of AUC over age and sex, and on that older cohort its " +
+      "cut caught 90.5% of cancers against the 95.1% it promised. There is also no single test for any " +
+      "cancer within four years to send a flagged person to. A panel that tells a quarter of its users " +
+      "they are unlikely to have cancer has to know more than their age and sex, and this one did not.",
+  },
   {
     name: "Bowel",
     auc: 0.821, ci: [0.746, 0.89], logistic: 0.82,
@@ -1927,7 +1934,6 @@ export default function OncovisionDashboard() {
                     <tbody className="divide-y divide-[var(--rule)]">
                       {[
                         ["Liver", "NHANES 2005 to 2016, 30,624 US adults; 2017 to 2018 withheld as a test", "Told by a doctor they have a liver condition: liver disease, not liver cancer"],
-                        ["General", "NHANES 2005 to 2016, 28,711 US adults", "Any cancer diagnosed within four years of the exam"],
                         ["Lung", "NHANES 1999 to 2016, 19,866 adults with tobacco exposure; 2017 to 2018 withheld", "Lung cancer"],
                         ["Breast, mammogram", "Breast Cancer Surveillance Consortium, 400,000 mammograms sampled from 1.8 million", "Breast cancer within a year of the mammogram"],
                         ["Breast, biopsy", "Wisconsin Diagnostic Breast Cancer, 569 records", "A malignant fine needle aspirate"],
@@ -1951,12 +1957,12 @@ export default function OncovisionDashboard() {
                   <AlertTriangle className="text-[var(--warn)] w-5 h-5" /> Known limitations
                 </h3>
                 <ul className="space-y-3 text-sm text-[var(--ink-2)] leading-relaxed list-disc pl-5">
-                  <li><strong className="text-[var(--ink)]">Two kinds of cohort, and only one supports a screening claim.</strong> Liver, general, lung and the mammogram-report breast panel are trained on population cohorts at real prevalence. Pancreatic, ovarian, prostate and the biopsy breast panel are case-control: people who already had a reason to be tested, running far above real incidence. Their high AUCs describe separating cases from selected controls, not screening.</li>
+                  <li><strong className="text-[var(--ink)]">Two kinds of cohort, and only one supports a screening claim.</strong> Liver, lung and the mammogram-report breast panel are trained on population cohorts at real prevalence. Pancreatic, ovarian, prostate and the biopsy breast panel are case-control: people who already had a reason to be tested, running far above real incidence. Their high AUCs describe separating cases from selected controls, not screening.</li>
                   <li><strong className="text-[var(--ink)]">The biopsy breast panel interprets a biopsy.</strong> Its thirty inputs are nuclear measurements from a fine needle aspirate that has already been taken. The mammogram-report breast panel is the one that answers the screening question, and it scores far lower because that question is harder.</li>
-                  <li><strong className="text-[var(--ink)]">Lab values add nothing for general cancer risk, or for bowel cancer.</strong> The general panel reads risk factors and barely beats age and sex. A bowel panel built on sixteen blood values matched a logistic model on age and sex alone, inside its survey and on a cohort measured fifteen years earlier, and was withdrawn.</li>
-                  <li><strong className="text-[var(--ink)]">External validation is uneven.</strong> Liver was tested in India, in Germany, and on a withheld later survey cycle, and it scores below chance in Germany. Lung&apos;s advantage over age and sex was not confirmed on its withheld cycle, which held only thirteen cases. The general panel&apos;s rule-out call caught fewer cancers than promised on a 1988 to 1994 cohort. No public cohort exists to test the four case-control panels externally.</li>
+                  <li><strong className="text-[var(--ink)]">Two panels added nothing over age and sex, and both were withdrawn.</strong> A bowel panel built on sixteen blood values matched a logistic model on age and sex alone, inside its survey and on a cohort measured fifteen years earlier. A general cancer-risk panel barely beat age and sex, and its rule-out call excluded no more people than a cut on age and sex at the same sensitivity.</li>
+                  <li><strong className="text-[var(--ink)]">External validation is uneven.</strong> Liver was tested in India, in Germany, and on a withheld later survey cycle, and it scores below chance in Germany. Lung&apos;s advantage over age and sex was not confirmed on its withheld cycle, which held only thirteen cases. No public cohort exists to test the four case-control panels externally.</li>
                   <li><strong className="text-[var(--ink)]">No prospective test and no IRB.</strong> No real patient report has been run through this and followed to an outcome. There is no ethics approval, no registration, and no clinical validation of any kind.</li>
-                  <li><strong className="text-[var(--ink)]">Subgroup coverage is uneven.</strong> AUC by race and ethnicity is measured on the population cohorts, where the general panel works less well for Other Hispanic adults. The case-control cohorts record no race or ethnicity, so for those panels accuracy across groups is unmeasured rather than acceptable.</li>
+                  <li><strong className="text-[var(--ink)]">Subgroup coverage is uneven.</strong> AUC by race and ethnicity is measured on the population cohorts, and a card says so where one group does materially worse. The case-control cohorts record no race or ethnicity, so for those panels accuracy across groups is unmeasured rather than acceptable.</li>
                   <li>The source datasets do not share a schema, so each panel sees a different slice of what you enter. A model scores only when it receives at least one real value, and every card reports how many of its inputs you supplied.</li>
                 </ul>
               </section>

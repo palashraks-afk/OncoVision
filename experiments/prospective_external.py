@@ -71,8 +71,17 @@ ARMS = {
     "full blood work": DEMO + BLOOD,
 }
 
+# Both arms are fitted with both model kinds, and the gain is the better panel
+# against the better baseline. This file used to fit a tree ensemble on both
+# arms; given only age and a binary sex flag that baseline ranks age in coarse
+# steps, which is the artefact that made the bowel panel's external gain look
+# real. Here it can only have flattered bloodwork, so the correction can move
+# this result further down, not up.
+KINDS = ("logistic", "ensemble")
+BOOT = 2000
 
-def fit_and_transfer(tr, te, feats, seed=0):
+
+def fit_and_transfer(tr, te, feats, seed=0, kind="ensemble"):
     """Fit on the training cohort, score the test cohort. Medians from train."""
     Xtr = tr[feats].apply(pd.to_numeric, errors="coerce")
     med = Xtr.median()
@@ -86,7 +95,7 @@ def fit_and_transfer(tr, te, feats, seed=0):
     yte = te["cancer_death"].astype(int)
 
     model = CalibratedClassifierCV(
-        tm.build_ensemble(len(ytr), float(ytr.mean())),
+        tm.model_factory(kind, len(ytr), float(ytr.mean())),
         method="isotonic",
         cv=StratifiedKFold(5, shuffle=True, random_state=seed))
     model.fit(Xtr, ytr)
@@ -107,17 +116,37 @@ def main():
     print(f"test   NHANES III         n={len(te):,}  deaths="
           f"{int(te.cancer_death.sum())}  ({te.cancer_death.mean():.2%})\n")
 
-    results = {}
+    results, preds, y = {}, {}, None
     for name, feats in ARMS.items():
-        auc, y, p = fit_and_transfer(tr, te, feats)
-        ci = bootstrap_ci(y, p, roc_auc_score)
-        results[name] = {"n_features": len(feats), "external_auc": round(auc, 3),
-                         "external_auc_ci": ci}
-        print(f"  {name:<20} {len(feats):>2} features   external AUC {auc:.3f}  "
-              f"(95% CI {ci[0]} to {ci[1]})", flush=True)
+        for kind in KINDS:
+            auc, y, p = fit_and_transfer(tr, te, feats, kind=kind)
+            ci = bootstrap_ci(y, p, roc_auc_score)
+            label = f"{name}, {kind}"
+            results[label] = {"n_features": len(feats), "external_auc": round(auc, 3),
+                              "external_auc_ci": ci}
+            preds[label] = p
+            print(f"  {label:<30} {len(feats):>2} features   external AUC {auc:.3f}  "
+                  f"(95% CI {ci[0]} to {ci[1]})", flush=True)
 
-    gain = (results["full blood work"]["external_auc"]
-            - results["age and sex only"]["external_auc"])
+    def best(arm, sub=None):
+        keys = [f"{arm}, {k}" for k in KINDS]
+        if sub is None:
+            return max(results[k]["external_auc"] for k in keys)
+        return max(roc_auc_score(y[sub], preds[k][sub]) for k in keys)
+
+    gain = best("full blood work") - best("age and sex only")
+    old_gain = (results["full blood work, ensemble"]["external_auc"]
+                - results["age and sex only, ensemble"]["external_auc"])
+
+    rng = np.random.default_rng(0)
+    boots = []
+    for _ in range(BOOT):
+        i = rng.integers(0, len(y), len(y))
+        if y[i].sum() in (0, len(i)):
+            continue
+        boots.append(best("full blood work", i) - best("age and sex only", i))
+    gain_ci = [round(float(np.percentile(boots, 2.5)), 3),
+               round(float(np.percentile(boots, 97.5)), 3)]
 
     # How the same comparison looked inside the training survey, for reference.
     internal = None
@@ -132,7 +161,9 @@ def main():
     print(f"  gain over age and sex, transferred to a different decade: {gain:+.3f}")
     if internal is not None:
         print(f"  the same gain measured inside the training survey:       {internal:+.3f}")
-    survives = gain >= 0.01
+    print(f"  best panel against best baseline, 95% CI {gain_ci[0]:+.3f} to {gain_ci[1]:+.3f}"
+          f"  (ensemble against ensemble was {old_gain:+.3f})")
+    survives = gain_ci[0] > 0
     print(f"  -> {'the gain survives the transfer' if survives else 'the gain does NOT survive the transfer'}")
 
     with open(OUT, "w") as f:
@@ -140,6 +171,8 @@ def main():
                    "test_n": int(len(te)), "test_events": int(te.cancer_death.sum()),
                    "arms": results,
                    "external_gain_over_age_sex": round(float(gain), 3),
+                   "external_gain_ci": gain_ci,
+                   "old_gain_ensemble_vs_ensemble": round(float(old_gain), 3),
                    "internal_gain_for_reference": internal,
                    "gain_survives_transfer": bool(survives)}, f, indent=2)
     print(f"\nwrote {OUT}")

@@ -4,15 +4,31 @@
   "test_n": 14630,
   "test_events": 254,
   "arms": {
-    "age and sex only": {
+    "age and sex only, logistic": {
+      "n_features": 2,
+      "external_auc": 0.861,
+      "external_auc_ci": [
+        0.841,
+        0.88
+      ]
+    },
+    "age and sex only, ensemble": {
       "n_features": 2,
       "external_auc": 0.852,
       "external_auc_ci": [
         0.831,
-        0.873
+        0.872
       ]
     },
-    "full blood work": {
+    "full blood work, logistic": {
+      "n_features": 22,
+      "external_auc": 0.872,
+      "external_auc_ci": [
+        0.852,
+        0.89
+      ]
+    },
+    "full blood work, ensemble": {
       "n_features": 22,
       "external_auc": 0.839,
       "external_auc_ci": [
@@ -21,7 +37,12 @@
       ]
     }
   },
-  "external_gain_over_age_sex": -0.013,
-  "internal_gain_for_reference": 0.013,
-  "gain_survives_transfer": false
+  "external_gain_over_age_sex": 0.011,
+  "external_gain_ci": [
+    0.002,
+    0.02
+  ],
+  "old_gain_ensemble_vs_ensemble": -0.013,
+  "internal_gain_for_reference": 0.025,
+  "gain_survives_transfer": true
 }

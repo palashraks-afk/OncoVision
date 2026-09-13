@@ -80,13 +80,21 @@ def prep(df, feats):
     return X.fillna(X.median())
 
 
-def oof(X, y, seed):
+def oof(X, y, seed, kind):
     cv = StratifiedKFold(5, shuffle=True, random_state=seed)
-    p = cross_val_predict(
-        CalibratedClassifierCV(tm.build_ensemble(len(y), float(y.mean())),
+    return cross_val_predict(
+        CalibratedClassifierCV(tm.model_factory(kind, len(y), float(y.mean())),
                                method="isotonic", cv=cv),
         X, y, cv=cv, method="predict_proba")[:, 1]
-    return p
+
+
+# Every arm is fitted with BOTH model kinds and scored by the better one on each
+# repeat, baseline included. This file used to fit a calibrated tree ensemble on
+# every arm, and a tree ensemble given only age and a binary sex flag ranks age
+# in coarse steps -- the weak baseline that manufactured the bowel panel's gain.
+# The +0.013 this analysis reported for routine bloodwork was measured against
+# that same baseline.
+KINDS = ("logistic", "ensemble")
 
 
 def main():
@@ -97,16 +105,20 @@ def main():
     print(f"cycles: {df['cycle'].nunique()}, median follow-up "
           f"{df['followup_months'].median():.0f} months\n")
 
-    scores, last_pred = {}, {}
+    scores, last_pred, by_kind = {}, {}, {}
     for name, feats in ARMS.items():
         X = prep(df, feats)
-        aucs = []
+        per = {k: [] for k in KINDS}
+        first = {}
         for s in range(REPEATS):
-            p = oof(X, y, s)
-            aucs.append(roc_auc_score(y, p))
-            if s == 0:
-                last_pred[name] = p
-        arr = np.array(aucs)
+            for kind in KINDS:
+                p = oof(X, y, s, kind)
+                per[kind].append(roc_auc_score(y, p))
+                if s == 0:
+                    first[kind] = p
+        arr = np.maximum(per["logistic"], per["ensemble"])
+        last_pred[name] = first[max(first, key=lambda k: per[k][0])]
+        by_kind[name] = {k: round(float(np.mean(v)), 3) for k, v in per.items()}
         scores[name] = arr
         print(f"  {name:<20} {len(feats):>2} features   AUC {arr.mean():.3f}  "
               f"(range {arr.min():.3f} to {arr.max():.3f})", flush=True)
@@ -120,6 +132,7 @@ def main():
         results[name] = {
             "n_features": len(ARMS[name]),
             "auc": round(float(arr.mean()), 3),
+            "auc_by_model": by_kind[name],
             "auc_ci": ci,
             "gain_over_age_sex": round(float(d.mean()), 3),
             "wins": int((d > 0).sum()),
@@ -136,6 +149,7 @@ def main():
     # inside one survey.
     print("\nleave one cycle out, full feature set")
     X = prep(df, ARMS["E everything"])
+    loco_kind, _ = tm.select_model(X, y, float(y.mean()))
     cycles, loco = df["cycle"].reset_index(drop=True), {}
     for cyc in sorted(cycles.unique()):
         te = (cycles == cyc).values
@@ -143,7 +157,7 @@ def main():
         if y[te].sum() < 5:
             continue
         model = CalibratedClassifierCV(
-            tm.build_ensemble(int(tr.sum()), float(y[tr].mean())),
+            tm.model_factory(loco_kind, int(tr.sum()), float(y[tr].mean())),
             method="isotonic", cv=StratifiedKFold(5, shuffle=True, random_state=0))
         model.fit(X[tr], y[tr])
         p = model.predict_proba(X[te])[:, 1]
