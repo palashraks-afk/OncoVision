@@ -307,7 +307,7 @@ BIOLOGICAL_BOUNDS = {
     "plasma_ca19_9": (0.0, 50000.0), "radius_mean": (0.0, 40.0),
     "texture_mean": (0.0, 50.0), "perimeter_mean": (0.0, 250.0), "area_mean": (0.0, 2500.0),
     # History fields
-    "gender": (0, 1), "smoking": (0, 2), "hepatitis_b": (0, 1), "hepatitis_c": (0, 1), "diabetes": (0, 1),
+    "gender": (0, 1), "hepatitis_b": (0, 1), "hepatitis_c": (0, 1), "diabetes": (0, 1),
     # Red cell and platelet indices, GGT, and the pelvic-mass tumour markers.
     "hematocrit": (0.0, 70.0), "mcv": (0.0, 150.0), "mch": (0.0, 60.0),
     "rdw": (0.0, 40.0), "mpv": (0.0, 20.0), "neutrophil_pct": (0.0, 100.0),
@@ -317,7 +317,7 @@ BIOLOGICAL_BOUNDS = {
     # the reproductive and sexual history went when the cervical panel was
     # withdrawn: the service should not accept a sexual history that nothing
     # scores.
-    "menopause": (0, 1), "smoking_packyears": (0, 200),
+    "menopause": (0, 1),
     # The mammogram-report breast panel. Density is BI-RADS a to d as 1 to 4;
     # family history counts first-degree relatives and stops at "2 or more";
     # age at first birth is a band, not a number, because BCSC recorded it that
@@ -326,8 +326,7 @@ BIOLOGICAL_BOUNDS = {
     "prior_breast_biopsy": (0, 1), "age_at_first_birth": (0, 2),
     "last_mammogram_result": (0, 1), "surgical_menopause": (0, 1),
     "hormone_therapy": (0, 1),
-    # Tobacco exposure, inflammation, and the prostate work-up.
-    "cotinine": (0.0, 2000.0), "crp": (0.0, 500.0),
+    # The prostate work-up.
     "prostate_volume": (1.0, 300.0), "psa_density": (0.0, 50.0), "pi_rads": (1, 5),
     # The remaining Wisconsin aspirate measurements.
     "smoothness_mean": (0.0, 300.0),
@@ -371,7 +370,7 @@ REFERENCE_RANGES = {
     # CA125 above 35 U/mL is the conventional cut. HE4 is assay dependent and
     # 140 pmol/L is the common premenopausal cut used in the ROMA index.
     "ca125": 35.0, "he4": 140.0, "cea": 5.0,
-    "cotinine": 3.0, "crp": 3.0, "prostate_volume": 30.0, "psa_density": 0.15,
+    "prostate_volume": 30.0, "psa_density": 0.15,
     "pi_rads": 2.0,
 }
 
@@ -386,10 +385,10 @@ CLINICAL_THRESHOLDS = {
     "alkaline_phosphatase": ("Alkaline phosphatase", 120.0, ["liver", "pancreatic"]),
     "ast": ("AST", 40.0, ["liver"]),
     "alt": ("ALT", 40.0, ["liver"]),
-    # Pointed at the general panel until it was withdrawn. The lung panel reads
-    # both, so the flags stay visible where a live panel uses the value.
-    "wbc": ("WBC", 11.0, ["lung"]),
-    "calcium": ("Calcium", 10.3, ["lung"]),
+    # Pointed at general, then lung, until both were withdrawn. Calcium is read by
+    # the ovarian panel. No live panel reads WBC, so it raises no flag.
+    "wbc": ("WBC", 11.0, []),
+    "calcium": ("Calcium", 10.3, ["ovarian"]),
     "glucose": ("Glucose", 99.0, ["pancreatic"]),
     "radius_mean": ("Nuclear radius", 15.0, ["breast"]),
     "area_mean": ("Nuclear area", 600.0, ["breast"]),
@@ -398,8 +397,6 @@ CLINICAL_THRESHOLDS = {
     "he4": ("HE4", 140.0, ["ovarian"]),
     "cea": ("CEA", 5.0, ["ovarian"]),
     "ggt": ("GGT", 50.0, ["liver", "ovarian"]),
-    "cotinine": ("Serum cotinine", 3.0, ["lung"]),
-    "crp": ("CRP", 3.0, ["lung"]),
     "psa_density": ("PSA density", 0.15, ["prostate"]),
     "pi_rads": ("PI-RADS", 2.0, ["prostate"]),
 }
@@ -417,7 +414,6 @@ HISTORY_FLAGS = {
 # Coded history answers rendered back into words for the driver breakdown.
 CODED_VALUES = {
     "gender": {0: "Female", 1: "Male"},
-    "smoking": {0: "Never smoked", 1: "Former smoker", 2: "Current smoker"},
     "hepatitis_b": {0: "Negative", 1: "Positive"},
     "hepatitis_c": {0: "Negative", 1: "Positive"},
     "diabetes": {0: "No", 1: "Yes"},
@@ -443,8 +439,7 @@ UNITS = {
     "hematocrit": "%", "mcv": "fL", "mch": "pg", "rdw": "%", "mpv": "fL",
     "neutrophil_pct": "%", "ggt": "U/L",
     "ca125": "U/mL", "he4": "pmol/L", "cea": "ng/mL",
-    "smoking_packyears": "pack-years",
-    "cotinine": "ng/mL", "crp": "mg/L", "prostate_volume": "mL",
+    "prostate_volume": "mL",
     "psa_density": "ng/mL/mL", "pi_rads": "of 5",
 }
 
@@ -460,12 +455,11 @@ DISPLAY_NAMES = {
     "hematocrit": "Hematocrit", "mcv": "MCV", "mch": "MCH", "rdw": "RDW",
     "mpv": "MPV", "neutrophil_pct": "Neutrophils", "ggt": "GGT",
     "ca125": "CA 125", "he4": "HE4", "cea": "CEA",
-    "menopause": "Menopausal status", "smoking_packyears": "Pack-years",
+    "menopause": "Menopausal status",
     "breast_density": "Breast density", "family_history_breast": "Family history of breast cancer",
     "prior_breast_biopsy": "Previous breast biopsy", "age_at_first_birth": "Age at first birth",
     "last_mammogram_result": "Last mammogram result", "surgical_menopause": "Type of menopause",
     "hormone_therapy": "Hormone therapy",
-    "cotinine": "Serum cotinine", "crp": "CRP",
     "prostate_volume": "Prostate volume", "psa_density": "PSA density",
     "pi_rads": "PI-RADS score",
     "smoothness_mean": "Smoothness Mean",
@@ -737,8 +731,6 @@ class PatientData(BaseModel):
     alpha_fetoprotein_level: Optional[float] = None
     psa: Optional[float] = None
     plasma_ca19_9: Optional[float] = None
-    cotinine: Optional[float] = None
-    crp: Optional[float] = None
     prostate_volume: Optional[float] = None
     psa_density: Optional[float] = None
     pi_rads: Optional[float] = None
@@ -780,7 +772,6 @@ class PatientData(BaseModel):
 
     # Patient history
     gender: Optional[float] = None
-    smoking: Optional[float] = None
     hepatitis_b: Optional[float] = None
     hepatitis_c: Optional[float] = None
     diabetes: Optional[float] = None
@@ -788,7 +779,6 @@ class PatientData(BaseModel):
     # Menopausal status, read by the ovarian and mammogram-report breast panels.
     # Pack-years, read by lung.
     menopause: Optional[float] = None
-    smoking_packyears: Optional[float] = None
 
     # The mammogram-report breast panel. These were added to the form, the
     # training data, the ranges and the audit, and not here -- and because this
@@ -1343,8 +1333,6 @@ BIOMARKER_SYNONYMS = {
     "plasma_ca19_9": [r"ca[ \-_]?19[\-_]?9", r"carbohydrate antigen 19"],
     # Longest-match-wins keeps these away from calcium's bare "ca".
     "ca125": [r"cancer antigen 125", r"ca[ \-_]?125"],
-    "cotinine": [r"cotinine, serum", r"serum cotinine", r"cotinine"],
-    "crp": [r"c[- ]?reactive protein", r"hs[- ]?crp", r"crp"],
     "prostate_volume": [r"prostate volume", r"prostatic volume"],
     "psa_density": [r"psa density", r"psad"],
     "pi_rads": [r"pi[- ]?rads score", r"pi[- ]?rads", r"pirads"],

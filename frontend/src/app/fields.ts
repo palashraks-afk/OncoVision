@@ -79,14 +79,6 @@ export const LAB_GROUPS: LabGroup[] = [
     ],
   },
   {
-    group: "Tobacco exposure and inflammation",
-    blurb: "Two values that measure what a questionnaire only asks about. The lung panel reads these.",
-    items: [
-      { key: "cotinine", label: "Cotinine, serum", unit: "ng/mL", normal: "under 3 if you do not smoke", meaning: "The breakdown product of nicotine, and the objective measure of tobacco exposure. In this project it beat self reported pack years: cotinine added 0.016 to the lung panel where pack years added 0.001." },
-      { key: "crp", label: "CRP, C reactive protein", unit: "mg/L", normal: "under 3", meaning: "A general marker of inflammation in the body. It is not specific to cancer, but sustained inflammation accompanies both chronic lung disease and tumour biology." },
-    ],
-  },
-  {
     group: "Prostate work up",
     blurb: "Only relevant if a prostate MRI and ultrasound have already been done. The prostate panel needs all three.",
     items: [
@@ -165,15 +157,6 @@ export const HISTORY_FIELDS: HistoryField[] = [
     options: [{ value: 0, label: "Female" }, { value: 1, label: "Male" }],
   },
   {
-    key: "smoking", label: "Smoking", type: "select", group: "General",
-    meaning: "Tobacco exposure is a direct risk factor for liver and pancreatic cancer.",
-    options: [
-      { value: 0, label: "Never" },
-      { value: 1, label: "Former" },
-      { value: 2, label: "Current" },
-    ],
-  },
-  {
     key: "hepatitis_b", label: "Hepatitis B", type: "select", group: "General",
     meaning: "Chronic hepatitis B is one of the strongest liver cancer risk factors known.",
     options: [{ value: 0, label: "Negative" }, { value: 1, label: "Positive" }],
@@ -201,11 +184,6 @@ export const HISTORY_FIELDS: HistoryField[] = [
   //
   // Leaving them blank is fine. Anything missing is filled with the training
   // median, and the cervical panel reports reduced coverage when that happens.
-  {
-    key: "smoking_packyears", label: "Pack-years", type: "number", group: "General",
-    meaning: "Packs a day multiplied by years smoked. The standard measure of tobacco dose, read by the lung panel. If you have a cotinine result, that measures the same thing better.",
-    min: 0, max: 200, step: 0.5, suffix: "pack-yrs",
-  },
   {
     key: "menopause", label: "Menopausal status", type: "select",
     group: "Reproductive history",

@@ -548,7 +548,10 @@ def table_hero_cost(_, extra):
         if not bo:
             continue
         if not bo["pays_once_a_life_is_priced"]:
-            not_paying.append(NAME.get(k, k).lower())
+            # A withdrawn panel offers no rule-out call for any reason, so it
+            # does not belong in a sentence explaining why a live one does not.
+            if not _withdrawn(extra, k):
+                not_paying.append(NAME.get(k, k).lower())
             continue
         if _withdrawn(extra, k):
             withdrawn_paying.append((k, v, bo))
@@ -586,7 +589,9 @@ def table_hero_cost(_, extra):
             out.append(_age_alone_sentence(extra, k))
     if not_paying:
         out.append(f"For {' and '.join(not_paying)}, no threshold beats sending everyone once a "
-                   f"missed case is priced, so those panels offer no rule-out call.")
+                   f"missed case is priced, so "
+                   + ("those panels offer" if len(not_paying) > 1 else "that panel offers")
+                   + " no rule-out call.")
     return "\n".join(out)
 
 
@@ -647,7 +652,7 @@ def text_abstract_cost(_, extra):
                          f"{100_000 - bo['procedures_per_100k']:,} procedures per 100,000 while "
                          f"missing {bo['cancers_missed']} of {_cases(v):,} cases "
                          f"(+{_m(bo['net_benefit'])})")
-        else:
+        elif not _withdrawn(extra, k):
             none.append(NAME.get(k, k).lower())
     s += ("; ".join(parts) + "." if parts else "no panel's triage pays.")
     for k, v in _cost_panels(extra).items():
@@ -684,11 +689,12 @@ def text_operating_point(_, extra):
         if _age_alone_sentence(extra, "colorectal"):
             out.append(_age_alone_sentence(extra, "colorectal"))
     none = [NAME.get(k, k).lower() for k, v in _cost_panels(extra).items()
-            if k != "colorectal"
+            if k != "colorectal" and not _withdrawn(extra, k)
             and not (v.get("best_operating_point") or {}).get("pays_once_a_life_is_priced", True)]
     if none:
         out.append(f"For {' and '.join(none)}, no point on the curve beats sending everyone, "
-                   f"which is why those panels offer no rule-out call.")
+                   f"which is why " + ("those panels offer" if len(none) > 1 else "that panel offers")
+                   + " no rule-out call.")
     return "\n".join(out)
 
 
@@ -768,12 +774,25 @@ def text_lung_loco(_, extra):
         return head + (" That confirms the in-survey gain across cycles the model never saw. "
                        "It remains one survey, with one protocol and one laboratory contract, "
                        "and section 4.2 records why that is not the same as an external cohort.")
-    # Worded to match the lung card, which reads the same result. A point estimate
-    # that agrees with the in-survey gain, with an interval whose lower end sits
-    # at zero, is "not yet shown", not "absent".
-    return head + (" The estimate agrees with the in-survey gain, but its range still reaches "
-                   "zero, so the lung panel's advantage over age and sex is probably real and "
-                   "not yet shown.")
+    head += (" The estimate agreed with the in-survey gain, but its range reached zero, so it "
+             "was not shown.")
+    # The deciding test: two later cycles the model never saw, with the bar set
+    # before the second of them was looked at.
+    fr = (extra.get("fresh_2021") or {}).get("lung")
+    if not fr:
+        return head
+    p, e = fr["pooled"], fr["2021-2023"]
+    plo, phi = p["gain_ci"]
+    verdict = (f" Then NHANES 2021-2023 was released, a cohort nothing in this project had seen. "
+               f"Trained on 1999-2016 and scored unchanged on 2017-2018 and 2021-2023 together "
+               f"({p['n']:,} adults with tobacco exposure, {p['events']} lung cancers), the panel "
+               f"scored {p['auc']:.3f} against {p['age_sex_auc']:.3f} for age and sex, a gain of "
+               f"{p['gain']:+.3f} (95% CI {plo:+.3f} to {phi:+.3f}); the newest cycle alone gave "
+               f"{e['gain']:+.3f}.")
+    if fr.get("primary_confirmed"):
+        return head + verdict + " That meets the pre-set bar, and the gain is confirmed."
+    return head + verdict + (" **That fails the bar set before the numbers were seen, and the lung "
+                             "panel is withdrawn** by the rule that withdrew bowel and general.")
 
 
 def text_general_vs_age(_, extra):
@@ -1015,6 +1034,7 @@ def main():
         "metrics": load("backend/model_metrics.json", {}),
         "breast_vs_age": load("experiments/bcsc_rule_out_vs_age_result.json", {}),
         "lung_loco": load("experiments/lung_loco_gain_result.json", {}),
+        "fresh_2021": load("experiments/fresh_cycle_2021_result.json", {}),
         "general_vs_age": load("experiments/general_rule_out_vs_age_result.json", {}),
         "breast_mri": load("experiments/breast_mri_triage_cost_result.json", {}),
         "breast_subgroups": load("experiments/bcsc_subgroups_full_result.json", {}),

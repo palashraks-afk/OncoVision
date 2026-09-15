@@ -242,7 +242,7 @@ Reproduce with `python evaluate.py`.
 | Pancreatic cancer | 600 samples, 3 tissue banks | 0.966 | 0.933 to 0.99 | 76.4% | 0.769 | 0.979 | 200.0 |
 | Ovarian malignancy | 349 operated ovarian masses | 0.949 | 0.882 to 0.994 | 58.1% | 0.853 | 0.944 | 1.3 |
 | Prostate cancer | 212 biopsied men | 0.880 | 0.746 to 0.979 | 65.9% | 0.76 | 0.778 | 1.4 |
-| Lung cancer | 19,866 adults with tobacco exposure | 0.872 ⚠️<br>_a lucky draw, 100th pct;_<br>_stable mean 0.827_ | 0.801 to 0.925 | 1.0% | 0.5 | 0.882 | 50.3 |
+| ~~Lung cancer~~ withdrawn | 19,866 adults with tobacco exposure | 0.872 ⚠️<br>_a lucky draw, 100th pct;_<br>_stable mean 0.827_ | 0.801 to 0.925 | 1.0% | 0.5 | 0.882 | 50.3 |
 | ~~Bowel cancer~~ withdrawn | 28,527 NHANES adults | 0.821 | 0.746 to 0.89 | 1.0% | 0.522 | 0.894 | 559.8 |
 | ~~General cancer~~ withdrawn | 28,711 NHANES adults | 0.781 ⚠️<br>_a lucky draw, 100th pct;_<br>_stable mean 0.758_ | 0.749 to 0.811 | 3.5% | 0.67 | 0.728 | 13.5 |
 | Liver disease | 30,624 NHANES adults | 0.780 ⚠️<br>_a lucky draw, 100th pct;_<br>_stable mean 0.759_ | 0.748 to 0.811 | 4.3% | 0.588 | 0.828 | 8.0 |
@@ -259,7 +259,7 @@ Reproduce with `python evaluate.py`.
 | Pancreatic | 0.966 | 0.968 | 0.5 | +0.505 |
 | Ovarian | 0.949 | 0.911 | 0.813 | +0.174 |
 | Prostate | 0.880 | 0.876 | 0.661 | +0.222 |
-| Lung | 0.872 | 0.867 | 0.842 | +0.024 |
+| ~~Lung~~ withdrawn | 0.872 | 0.867 | 0.842 | +0.024 |
 | ~~Bowel~~ withdrawn | 0.821 | 0.82 | 0.843 | **-0.011** |
 | ~~General~~ withdrawn | 0.781 | 0.78 | 0.779 | **+0.002** |
 | Liver | 0.780 | 0.761 | 0.623 | +0.114 |

@@ -33,7 +33,7 @@ drove the answer, and what the number is worth at real-world incidence rather th
 **No lab-report panel's triage pays once a missed cancer is priced at a life.** The one decision that does is which women with dense breasts get a supplemental MRI, where the mammogram breast panel's triage beats both MRI for all and triage on age -- by a small amount at Medicare prices (see the paper, section 4.6).
 
 The lab-report panel that appeared to pay was bowel: at its best operating point it avoided 36,129 procedures per 100,000 and netted $55.3M. Triage on age and sex alone, with no lab values, avoided 42,863, missed 10.6 cancers instead of 14.2, and netted $79.5M, so the panel was withdrawn: the saving was the patient's age, not their lab report.
-For lung and liver, no threshold beats sending everyone once a missed case is priced, so those panels offer no rule-out call.
+For liver, no threshold beats sending everyone once a missed case is priced, so that panel offers no rule-out call.
 <!-- /AUTOGEN:hero_cost -->
 
 The full model, its assumptions and everything that would overturn it are in [the cost
@@ -43,12 +43,13 @@ the panels' *balanced* operating points, the answer is no.
 ### What it is honest about
 
 This is a research prototype, not a medical device: no regulatory clearance, no IRB, and no patient
-has ever been followed through it to an outcome. Five named cancers are covered. Only one, lung, is
-read from a lab report alone, and its advantage over age and sex is not yet confirmed on unseen data;
+has ever been followed through it to an outcome. Four named cancers are covered, and none is read
+from a lab report alone: the lung panel was, until two later survey cycles it never saw showed it added
+nothing over age and sex (+0.001, 95% CI −0.055 to +0.055). Liver disease is, and its gain held on both;
 breast is estimated from the mammogram report a screened woman already holds; the rest are triage
 and interpretation tools for someone already inside the diagnostic pathway, and every panel says on
 its own card which it is.
-Three panels were withdrawn when the evidence stopped supporting them, two of them after they turned out to add nothing to the patient's age and sex. Roughly half the experiments in
+Four panels were withdrawn when the evidence stopped supporting them, three of them after they turned out to add nothing to the patient's age and sex. Roughly half the experiments in
 this repository came back negative and are committed anyway.
 
 The two gaps no amount of analysis closes -- a screening population for ovarian and prostate, and any prospective test on real patients -- both need a named investigator. Drafts for each are in [docs/PLCO_CDAS_PROPOSAL.md](docs/PLCO_CDAS_PROPOSAL.md) and [docs/PROSPECTIVE_STUDY_PROTOCOL.md](docs/PROSPECTIVE_STUDY_PROTOCOL.md). Neither has been submitted.
@@ -60,36 +61,36 @@ The two gaps no amount of analysis closes -- a screening population for ovarian 
 Two inputs, read together:
 
 1. **Your lab reports.** 64 values across body metrics, complete blood count and red cell
-   indices, metabolic panel, liver panel, tumour markers, tobacco exposure and inflammation,
-   the prostate work-up, and breast mass morphology. Uploaded as PDFs and parsed automatically,
+   indices, metabolic panel, liver panel, tumour markers, the prostate work-up, and breast mass morphology. Uploaded as PDFs and parsed automatically,
    or typed in. The parser is tested on 28 of them at 100 percent across five different report
    layouts; see `test_parser.py`.
-2. **Information about you.** 14 items no lab report contains: sex, smoking, pack-years,
+2. **Information about you.** 12 items no lab report contains: sex,
    hepatitis B and C, diabetes and menopausal status, and for the mammogram-report breast panel,
    the density grading printed on the report, relatives with breast cancer, a previous breast
    biopsy, the last mammogram's result, age at first birth, type of menopause and hormone therapy. The 14 sexual-history questions went out
    with the cervical panel, and the exercise question went when it was measured and found to add
-   nothing, and the alcohol question went with the general panel, the only one that read it, because asking for what nothing uses is only friction.
+   nothing, the alcohol question went with the general panel, and smoking, pack-years, cotinine and CRP went with the lung panel, the only ones that read them, because asking for what nothing uses is only friction.
 
-Seven calibrated models score the combination, and the interface reports what drove each score,
+Six calibrated models score the combination, and the interface reports what drove each score,
 how accurate that model is, and what the score is worth at real prevalence.
 
 ### What "multi-cancer" means here, precisely
 
-Seven panels is not seven cancers you can screen for, and the difference is the most important
+Six panels is not six cancers you can screen for, and the difference is the most important
 thing on this page. Each panel carries its type on its own card, and the types are not
 interchangeable:
 
 | | Panels | What you need before running it |
 |---|---|---|
-| **Screening** | Lung | Nothing but a lab report |
+| **Screening** | None shipped | Lung, bowel and general were withdrawn |
 | **Triage** | Pancreatic, ovarian | A mass or a suspicion already found |
 | **Triage, from a mammogram** | Breast (mammogram report) | A screening mammogram already done |
 | **Interpretation** | Breast (biopsy), prostate | A biopsy or MRI already performed |
 | **Not a cancer panel** | Liver | It detects liver *disease*, not liver cancer |
 
-So: **five named cancers, of which one, lung, can be screened for from a lab report alone**, plus
-breast risk read from a mammogram report at real screening prevalence. The rest are triage and
+So: **four named cancers, none of which can yet be screened for from a lab report alone**, plus
+breast risk read from a mammogram report at real screening prevalence and liver disease read from
+routine chemistry. The rest are triage and
 interpretation tools for someone already inside the diagnostic pathway,
 which is a genuinely useful thing to be and a different thing from screening.
 
@@ -114,7 +115,7 @@ Seven panels ship. Three were withdrawn because the evidence did not support ser
 | Pancreatic cancer | 600 samples, 3 tissue banks | 0.966 | 0.933 to 0.99 | 76.4% | 0.769 | 0.979 | 200.0 |
 | Ovarian malignancy | 349 operated ovarian masses | 0.949 | 0.882 to 0.994 | 58.1% | 0.853 | 0.944 | 1.3 |
 | Prostate cancer | 212 biopsied men | 0.880 | 0.746 to 0.979 | 65.9% | 0.76 | 0.778 | 1.4 |
-| Lung cancer | 19,866 adults with tobacco exposure | 0.872 ⚠️<br>_a lucky draw, 100th pct;_<br>_stable mean 0.827_ | 0.801 to 0.925 | 1.0% | 0.5 | 0.882 | 50.3 |
+| ~~Lung cancer~~ withdrawn | 19,866 adults with tobacco exposure | 0.872 ⚠️<br>_a lucky draw, 100th pct;_<br>_stable mean 0.827_ | 0.801 to 0.925 | 1.0% | 0.5 | 0.882 | 50.3 |
 | ~~Bowel cancer~~ withdrawn | 28,527 NHANES adults | 0.821 | 0.746 to 0.89 | 1.0% | 0.522 | 0.894 | 559.8 |
 | ~~General cancer~~ withdrawn | 28,711 NHANES adults | 0.781 ⚠️<br>_a lucky draw, 100th pct;_<br>_stable mean 0.758_ | 0.749 to 0.811 | 3.5% | 0.67 | 0.728 | 13.5 |
 | Liver disease | 30,624 NHANES adults | 0.780 ⚠️<br>_a lucky draw, 100th pct;_<br>_stable mean 0.759_ | 0.748 to 0.811 | 4.3% | 0.588 | 0.828 | 8.0 |
@@ -131,7 +132,7 @@ Seven panels ship. Three were withdrawn because the evidence did not support ser
 | Pancreatic | 0.966 | 0.968 | 0.5 | +0.505 |
 | Ovarian | 0.949 | 0.911 | 0.813 | +0.174 |
 | Prostate | 0.880 | 0.876 | 0.661 | +0.222 |
-| Lung | 0.872 | 0.867 | 0.842 | +0.024 |
+| ~~Lung~~ withdrawn | 0.872 | 0.867 | 0.842 | +0.024 |
 | ~~Bowel~~ withdrawn | 0.821 | 0.82 | 0.843 | **-0.011** |
 | ~~General~~ withdrawn | 0.781 | 0.78 | 0.779 | **+0.002** |
 | Liver | 0.780 | 0.761 | 0.623 | +0.114 |

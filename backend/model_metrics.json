@@ -495,7 +495,25 @@
         0.125
       ],
       "confirmed": true,
-      "verdict": "Held up on 4,887 patients from the 2017-2018 survey, which the model never saw: it still beat age and sex by +0.091."
+      "verdict": "Held up on 4,887 patients from the 2017-2018 survey, which the model never saw: it still beat age and sex by +0.091. On the 2021-2023 survey, collected after the pandemic pause and also never seen, it scored 0.703 and beat age and sex by +0.067 (+0.034 to +0.099). Across both unseen cycles, 582 cases, the advantage is +0.064 (+0.042 to +0.087) and the AUC 0.704, which is the accuracy to expect on new patients.",
+      "fresh": {
+        "cycle": "2021-2023",
+        "n": 5416,
+        "events": 313,
+        "auc": 0.703,
+        "gain": 0.067,
+        "gain_ci": [
+          0.034,
+          0.099
+        ],
+        "pooled_auc": 0.704,
+        "pooled_gain": 0.064,
+        "pooled_gain_ci": [
+          0.042,
+          0.087
+        ],
+        "pooled_events": 582
+      }
     },
     "rule_out_external": null,
     "panel_kind": "screening",
@@ -761,208 +779,9 @@
   },
   "lung": {
     "label": "Lung Cancer Risk, with tobacco exposure",
-    "shipped": true,
-    "features": [
-      "age",
-      "gender",
-      "smoking",
-      "smoking_packyears",
-      "cotinine",
-      "crp",
-      "wbc",
-      "rbc",
-      "hemoglobin",
-      "platelets",
-      "hematocrit",
-      "mcv",
-      "rdw",
-      "mpv",
-      "glucose",
-      "calcium",
-      "bun",
-      "creatinine",
-      "protein_total",
-      "albumin",
-      "ast",
-      "alt",
-      "bilirubin",
-      "alkaline_phosphatase"
-    ],
-    "cohort_design": "21,916 US adults with tobacco exposure from NHANES 1999 to 2018, 104 with lung cancer. Controls are restricted to smokers on purpose: on the unrestricted cohort the smoking question alone reaches 0.836 and any lab model inherits the credit. On the restricted comparison the baseline is 0.792 and the lab report adds 0.029, winning every repeat. Serum cotinine alone adds 0.016 while self-reported pack-years adds 0.001, so the measured value beats the questionnaire it replaces. The target is a lifetime diagnosis, and lung cancer survival is poor, so the cases are survivor-biased. Spirometry helps far more but only 13 cases have it.",
-    "auc": 0.824,
-    "auc_std": 0.047,
-    "accuracy": 0.875,
-    "sensitivity": 0.5,
-    "specificity": 0.877,
-    "n_samples": 19866,
-    "n_positive": 91,
-    "n_features": 24,
-    "cv_folds": 5,
-    "threshold": 0.01,
-    "rule_out": null,
-    "no_rule_out_reason": "The cost analysis says everyone in this group should have the confirmatory test, so this panel is not offered as a way to skip it. It separates well, but the condition is common and the test is cheap, so the tests a threshold would save are worth less than the cases it would miss.",
-    "model_selection": {
-      "ensemble": 0.832,
-      "logistic": 0.832
-    },
-    "chosen_model": "logistic",
-    "held_out": {
-      "n_test": 3974,
-      "auc": 0.872,
-      "auc_ci": [
-        0.801,
-        0.925
-      ],
-      "sensitivity": 0.5,
-      "sensitivity_ci": [
-        0.25,
-        0.739
-      ],
-      "specificity": 0.882,
-      "specificity_ci": [
-        0.872,
-        0.892
-      ],
-      "brier": 0.0044,
-      "calibration_slope": 0.971,
-      "ppv_at_population_prevalence": 0.0199,
-      "people_flagged_per_true_case": 50.3,
-      "population_prevalence": 0.00475,
-      "prevalence_source": "Lung cancer among US adults with tobacco exposure, NHANES 1999-2018",
-      "cohort_prevalence": 0.005,
-      "baseline_logistic_auc": 0.867,
-      "baseline_age_sex_auc": 0.842,
-      "subgroups": {
-        "sex: female": {
-          "n": 1578,
-          "positives": 8,
-          "auc": 0.826,
-          "auc_ci": [
-            0.699,
-            0.914
-          ]
-        },
-        "sex: male": {
-          "n": 2396,
-          "positives": 10,
-          "auc": 0.906,
-          "auc_ci": [
-            0.837,
-            0.959
-          ]
-        },
-        "age 48 and over": {
-          "n": 2049,
-          "positives": 18,
-          "auc": 0.776,
-          "auc_ci": [
-            0.672,
-            0.862
-          ]
-        }
-      }
-    },
-    "stability": {
-      "stable_auc": 0.827,
-      "split_spread": [
-        0.768,
-        0.869
-      ],
-      "split_sd": 0.031,
-      "shipped_split_percentile": 100.0,
-      "n_splits": 10
-    },
-    "fairness": {
-      "overall_auc": 0.832,
-      "groups": {
-        "Non-Hispanic Black": {
-          "n": 4301,
-          "events": 21,
-          "auc": 0.722,
-          "auc_ci": [
-            0.616,
-            0.816
-          ],
-          "gap_vs_overall": -0.111,
-          "materially_worse": true
-        },
-        "Non-Hispanic White": {
-          "n": 9685,
-          "events": 60,
-          "auc": 0.836,
-          "auc_ci": [
-            0.781,
-            0.885
-          ],
-          "gap_vs_overall": 0.004,
-          "materially_worse": false
-        }
-      },
-      "unmeasurable_groups": [
-        {
-          "group": "Mexican American",
-          "n": 3237,
-          "events": 1
-        },
-        {
-          "group": "Non-Hispanic Asian",
-          "n": 511,
-          "events": 2
-        },
-        {
-          "group": "Other Hispanic",
-          "n": 1430,
-          "events": 3
-        },
-        {
-          "group": "Other or multiracial",
-          "n": 702,
-          "events": 4
-        }
-      ],
-      "worst_group": "Non-Hispanic Black",
-      "worst_auc": 0.722,
-      "spread": 0.114,
-      "materially_worse_groups": [
-        "Non-Hispanic Black"
-      ]
-    },
-    "temporal_validation": {
-      "cycle": "2017-2018",
-      "n": 2050,
-      "events": 13,
-      "auc": 0.824,
-      "gain": -0.022,
-      "gain_ci": [
-        -0.126,
-        0.056
-      ],
-      "confirmed": false,
-      "verdict": "On the withheld 2017-2018 survey there were only 13 cases, and the panel's advantage over age and sex measured -0.022 with a range of -0.126 to +0.056. That is too little evidence to say either way. Holding out each of the 10 survey cycles in turn, which uses all 104 cases, the advantage measured +0.030 with a range of -0.000 to +0.060: probably real, but its range still reaches zero, so it is not yet shown.",
-      "loco": {
-        "panel_model": "logistic",
-        "baseline_model": "logistic",
-        "cycles": 10,
-        "n": 21916,
-        "events": 104,
-        "panel_auc": 0.827,
-        "age_sex_auc": 0.797,
-        "gain": 0.03,
-        "gain_ci": [
-          -0.0,
-          0.06
-        ],
-        "gain_confirmed_within_survey": false
-      }
-    },
-    "rule_out_external": null,
-    "panel_kind": "screening",
-    "no_action_note": "",
-    "panel_kind_note": "Reads routine bloodwork. Offered to people with tobacco exposure, which is who lung screening is for.",
-    "screening_viable": false,
-    "gain_over_age_sex": 0.024,
-    "barely_beats_demographics": false,
-    "flagged_per_true_case": 50.3
+    "shipped": false,
+    "withdrawn_reason": "Withdrawn when two later survey cycles, neither of which it ever saw, showed its lab values add nothing over age and sex. Trained on 1999-2016 and scored unchanged on 2017-2018 and 2021-2023 pooled (4,243 adults with tobacco exposure, 32 lung cancers), it reached 0.786 against 0.785 for age and sex alone, a gain of +0.001 with a 95% interval of -0.055 to +0.055, and -0.002 against the smoking questionnaire. The bar, a lower bound above zero, was written into experiments/fresh_cycle_2021.py before the 2021-2023 numbers were seen. The +0.030 from leave-one-cycle-out had an interval touching zero and resampled one survey's measurement process, which section 4.2 of the paper already shows cannot detect this. The target was also a lifetime diagnosis in survivors, whose bloodwork follows treatment. The DATASETS entry and cohorts are kept, so it is still trained and evaluated as evidence.",
+    "cohort_design": "21,916 US adults with tobacco exposure from NHANES 1999 to 2018, 104 with lung cancer. Controls are restricted to smokers on purpose: on the unrestricted cohort the smoking question alone reaches 0.836 and any lab model inherits the credit. On the restricted comparison the baseline is 0.792 and the lab report adds 0.029, winning every repeat. Serum cotinine alone adds 0.016 while self-reported pack-years adds 0.001, so the measured value beats the questionnaire it replaces. The target is a lifetime diagnosis, and lung cancer survival is poor, so the cases are survivor-biased. Spirometry helps far more but only 13 cases have it."
   },
   "prostate": {
     "label": "Prostate Cancer Risk, with an MRI score",

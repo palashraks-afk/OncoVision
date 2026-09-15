@@ -30,8 +30,8 @@ required a stronger baseline than this work first used. Every gain below is meas
 better of a logistic and an ensemble model on age and sex alone, on identical folds. Where the
 organ's own chemistry is on the lab report, the combination adds a great deal: +0.114 AUC for liver
 disease, confirmed on a withheld later survey cycle (+0.091, 95% CI +0.057 to +0.125), and +0.505
-for pancreatic adenocarcinoma in a case-control cohort. Lung adds +0.026 inside its survey but was not
-confirmed on a withheld cycle holding thirteen cases. For the undifferentiated question — will this
+for pancreatic adenocarcinoma in a case-control cohort. Lung appeared to add +0.026 inside its survey and
+added +0.001 (95% CI −0.055 to +0.055) on two later survey cycles it never saw, and was withdrawn. For the undifferentiated question — will this
 person be diagnosed with any cancer — risk factors add +0.002. **A bowel panel built on sixteen blood
 values added nothing**: −0.010 inside its survey and −0.000 on 14,499 NHANES III adults (95% CI
 −0.012 to +0.013). An earlier analysis had reported that gain as surviving external transfer; it had
@@ -47,7 +47,7 @@ validation split (95% CI +0.021 to +0.035). Discrimination and usability diverge
 good AUCs flag dozens to hundreds of healthy people per true case at real incidence.
 
 <!-- AUTOGEN:abstract_cost -->
-**Cost.** Discrimination is not the outcome that matters for a tool whose purpose is to reduce spending on diagnostics, so we modelled it directly: per 100,000 people, sending everyone for the confirmatory procedure against sending only those a panel flags, charging missed cancers the difference between early and late-stage treatment. At the balanced operating point the bowel panel ships, triage appears to save $202M per 100,000 — by missing 191 of 400 cancers. Break-even is $1.13M per missed cancer against $2.25M for fifteen life-years at conventional willingness-to-pay, so the saving disappears once a life is priced. Choosing instead the point on each panel's ROC curve that maximises net benefit **after** charging a missed cancer at a life: bowel avoids 36,129 procedures per 100,000 while missing 14.2 of 400 cases (+$55.3M). **But the lab values are not what pays.** Triage on age and sex alone, with no lab values at all, avoids 42,863 procedures, misses 10.6 cancers and nets $79.5M, against $64.5M for the best version of the panel on the same folds. For lung and liver, no threshold beats sending everyone.
+**Cost.** Discrimination is not the outcome that matters for a tool whose purpose is to reduce spending on diagnostics, so we modelled it directly: per 100,000 people, sending everyone for the confirmatory procedure against sending only those a panel flags, charging missed cancers the difference between early and late-stage treatment. At the balanced operating point the bowel panel ships, triage appears to save $202M per 100,000 — by missing 191 of 400 cancers. Break-even is $1.13M per missed cancer against $2.25M for fifteen life-years at conventional willingness-to-pay, so the saving disappears once a life is priced. Choosing instead the point on each panel's ROC curve that maximises net benefit **after** charging a missed cancer at a life: bowel avoids 36,129 procedures per 100,000 while missing 14.2 of 400 cases (+$55.3M). **But the lab values are not what pays.** Triage on age and sex alone, with no lab values at all, avoids 42,863 procedures, misses 10.6 cancers and nets $79.5M, against $64.5M for the best version of the panel on the same folds. For liver, no threshold beats sending everyone.
 <!-- /AUTOGEN:abstract_cost -->
 
 **Conclusions.** Routine blood work carries usable signal about organ-specific disease when the
@@ -281,7 +281,7 @@ years beyond a single sensitivity figure, and no price on the harm of an unneces
 | Pancreatic | 0.966 | 0.968 | 0.5 | +0.505 |
 | Ovarian | 0.949 | 0.911 | 0.813 | +0.174 |
 | Prostate | 0.880 | 0.876 | 0.661 | +0.222 |
-| Lung | 0.872 | 0.867 | 0.842 | +0.024 |
+| ~~Lung~~ withdrawn | 0.872 | 0.867 | 0.842 | +0.024 |
 | ~~Bowel~~ withdrawn | 0.821 | 0.82 | 0.843 | **-0.011** |
 | ~~General~~ withdrawn | 0.781 | 0.78 | 0.779 | **+0.002** |
 | Liver | 0.780 | 0.761 | 0.623 | +0.114 |
@@ -419,7 +419,8 @@ with different laboratory runs, a different sample and a slowly moving populatio
 most recent cycle gives a test set that shares the protocol and shares nothing else — no rows, no
 calibration, no threshold. TRIPOD calls this temporal validation.
 
-The 2017–2018 cycle is withheld from the liver and lung panels. The general panel, and the since-withdrawn
+The 2017–2018 cycle is withheld from the liver and lung panels, and NHANES 2021–2023, released after
+both were built, is a second unseen cycle for each (section 3.9 below and experiments/fresh_cycle_2021.py). The general panel, and the since-withdrawn
 bowel panel, cannot join: CDC dropped the MCQ240 age-at-diagnosis series after 2015–2016, so their
 screening-window target cannot be constructed on later data at all. Those two keep NHANES III.
 
@@ -427,21 +428,29 @@ screening-window target cannot be constructed on later data at all. Those two ke
 |---|---|---|---|---|---|---|
 | Liver | 4,887 | 269 | 0.705 | 0.614 | **+0.091** | +0.057 to +0.125 |
 | Lung | 2,050 | 13 | 0.824 | 0.846 | −0.022 | −0.126 to +0.056 |
+| Liver, 2021–2023 | 5,416 | 313 | 0.703 | 0.636 | **+0.067** | +0.034 to +0.099 |
+| Lung, 2021–2023 | 2,193 | 19 | 0.759 | 0.736 | +0.023 | −0.047 to +0.095 |
+| Lung, both unseen cycles | 4,243 | 32 | 0.786 | 0.785 | +0.001 | −0.055 to +0.055 |
 
 **The two results say different things, and the difference is the point.** The liver panel keeps a
 gain over age and sex that a bootstrap interval separates from zero, on patients it has never seen,
 from a later period. That is the first confirmation in a US population that the panel is reading
 chemistry rather than demographics. Its AUC still falls, 0.780 to 0.705, so the number on the card
-is optimistic even where the effect is real.
+is optimistic even where the effect is real. The 2021–2023 cycle, collected after the pandemic pause
+on a new laboratory contract, repeats both halves: +0.067 over age and sex, and an AUC of 0.703. Across
+both unseen cycles the gain is +0.064 (+0.042 to +0.087) on 582 cases, and 0.704 replaces the
+in-survey figure as the accuracy the card quotes for new patients.
 
-The lung panel's gain does not reproduce. The withheld cycle holds thirteen events and the interval
-runs from −0.126 to +0.056, which refutes nothing and confirms nothing. **Unconfirmed is the honest
-word, and it is a different claim from the +0.047 that repeated resampling inside the training
-cycles reports.** The interface says so on the card rather than quoting only the resampled figure,
-because the resampled figure is the one that cannot fail.
+The lung panel's gain did not reproduce. The withheld cycle held thirteen events and an interval
+from −0.126 to +0.056, which refuted nothing and confirmed nothing, so the card said "unconfirmed".
+When 2021–2023 was released the bar was written down first: pooled over both unseen cycles, the lower
+95% bound on the gain over the stronger age-and-sex model had to clear zero. It did not. Nineteen new
+cases gave +0.023, and both cycles together +0.001 (−0.055 to +0.055), with −0.002 against the smoking
+questionnaire. **The lung panel is withdrawn**, and the +0.030 that leave-one-cycle-out reported below
+joins the prospective panel's in-survey gain as a number resampling one survey could not falsify.
 
 <!-- AUTOGEN:lung_loco -->
-Holding out every survey cycle in turn -- 10 cycles, 104 lung cancers, each scored by a model that never saw its cycle -- the lung panel scores 0.827 against 0.797 for the stronger age-and-sex model, a gain of +0.030 (95% CI -0.000 to +0.060). The estimate agrees with the in-survey gain, but its range still reaches zero, so the lung panel's advantage over age and sex is probably real and not yet shown.
+Holding out every survey cycle in turn -- 10 cycles, 104 lung cancers, each scored by a model that never saw its cycle -- the lung panel scores 0.827 against 0.797 for the stronger age-and-sex model, a gain of +0.030 (95% CI -0.000 to +0.060). The estimate agreed with the in-survey gain, but its range reached zero, so it was not shown. Then NHANES 2021-2023 was released, a cohort nothing in this project had seen. Trained on 1999-2016 and scored unchanged on 2017-2018 and 2021-2023 together (4,243 adults with tobacco exposure, 32 lung cancers), the panel scored 0.786 against 0.785 for age and sex, a gain of +0.001 (95% CI -0.055 to +0.055); the newest cycle alone gave +0.023. **That fails the bar set before the numbers were seen, and the lung panel is withdrawn** by the rule that withdrew bowel and general.
 <!-- /AUTOGEN:lung_loco -->
 
 This is the weaker kind of external validation and is not presented as anything else. A panel that
@@ -588,18 +597,18 @@ informative. Breast at 0.997 and pancreatic at 0.969 are case-control designs: t
 cases from selected controls, on cohorts of 569 and 600. Read as screening performance they are
 badly misleading, and the taxonomy exists to stop them being read that way.
 
-The tool ships seven panels. One screens for a named cancer from a lab report alone, lung. One
-estimates breast cancer risk from a mammogram report at real screening prevalence. Four require the
-patient to already be inside the diagnostic pathway, and one detects liver disease rather than liver
-cancer. A bowel panel and a general cancer-risk panel were withdrawn when neither could be shown to
-add anything to age and sex. That sentence is a more honest summary of the work than any table of
+The tool ships six panels. None screens for a named cancer from a lab report alone. One estimates
+breast cancer risk from a mammogram report at real screening prevalence. Four require the patient to
+already be inside the diagnostic pathway, and one detects liver disease rather than liver cancer, with
+a gain over age and sex that held on two later survey cycles. Bowel, general and lung panels were
+withdrawn when none could be shown to add anything to age and sex on data it had not seen. That sentence is a more honest summary of the work than any table of
 discrimination statistics.
 
 ### 4.4 Discrimination is not usability
 
 Panels with good discrimination can still have no usable operating point. Projected onto real
-incidence, the pancreatic panel flags roughly 200 people for every true case and lung about 50, and
-the withdrawn bowel panel flagged several hundred. A threshold sweep confirms that no operating point
+incidence, the pancreatic panel flags roughly 200 people for every true case, and the withdrawn lung and
+bowel panels flagged about 50 and several hundred. A threshold sweep confirms that no operating point
 brings them to a defensible ratio: raising specificity far enough to fix precision destroys
 sensitivity first.
 
@@ -623,7 +632,7 @@ The consequence is measurable. At Youden, the colorectal panel flags 10,766 peop
 
 Move along the same ROC curve — the same model, the same features, the same data — to the point that maximises net benefit once a missed cancer costs $2.25M, and the panel avoids 36,129 colonoscopies per 100,000 people while missing 14.2 of 400 cancers.
 **But the lab values are not what pays.** Triage on age and sex alone, with no lab values at all, avoids 42,863 procedures, misses 10.6 cancers and nets $79.5M, against $64.5M for the best version of the panel on the same folds.
-For lung and liver, no point on the curve beats sending everyone, which is why those panels offer no rule-out call.
+For liver, no point on the curve beats sending everyone, which is why that panel offers no rule-out call.
 <!-- /AUTOGEN:operating_point -->
 
 Nothing about the model changed. What changed was the question asked of it. **A panel too weak to
@@ -729,10 +738,10 @@ ovarian on 70, breast on 114. Prostate's confidence interval runs from 0.705 to 
 **External validation is uneven.** The liver panel is tested across three countries and transfers
 badly to one of them — 0.442 on the German cohort, below chance, because ALT and alkaline
 phosphatase run in opposite directions between a mild-disease population and an advanced-disease
-one. The general panel was tested on NHANES III, and liver and lung on a withheld 2017–2018 cycle; the
+one. The general panel was tested on NHANES III, and liver and lung on withheld 2017–2018 and 2021–2023 cycles; the
 bowel panel's apparent transfer to NHANES III was an artefact of a weak baseline (section 3.6).
 A withheld cycle of the same survey is a weaker test than another country and section 3.8
-does not claim otherwise. The lung result is uninformative either way on thirteen events. No
+does not claim otherwise. Lung, uninformative on thirteen events, failed on thirty-two and was withdrawn. No
 external cohort exists in public data for any of the four case-control panels, and none is likely
 to: they are assembled from cases and matched controls, and a screening population is the thing
 they lack by construction.
@@ -782,8 +791,8 @@ and tested at real screening prevalence on the consortium's own split, it promis
 exclude 11.0%, and delivered 95.3% and 11.6%. Section 4.6 tests whether it beats a cut on age alone, which is the question that
 withdrew the bowel panel. The four case-control panels
 (biopsy breast, ovarian, pancreatic, prostate) also ship cuts, and no public cohort exists to test
-those against. Liver and lung ship no cut at all: the cost model says
-everyone in those groups should have the confirmatory test regardless. Given section 4.2, the
+those against. Liver ships no cut at all: the cost model says everyone in that group should
+have the confirmatory test regardless. Given section 4.2, the
 untested case-control cuts should be read with the same suspicion the discrimination figures earn.
 
 **Clipping to the observed range does not make a panel right about an extreme patient.** It stops

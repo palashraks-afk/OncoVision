@@ -102,6 +102,18 @@ WITHDRAWN = {
         "experiments/general_rule_out_vs_age.py and external_baseline_strength.py. The DATASETS "
         "entry and cohorts are kept, so it is still trained and evaluated as evidence."
     ),
+    "lung": (
+        "Withdrawn when two later survey cycles, neither of which it ever saw, showed its lab values "
+        "add nothing over age and sex. Trained on 1999-2016 and scored unchanged on 2017-2018 and "
+        "2021-2023 pooled (4,243 adults with tobacco exposure, 32 lung cancers), it reached 0.786 "
+        "against 0.785 for age and sex alone, a gain of +0.001 with a 95% interval of -0.055 to "
+        "+0.055, and -0.002 against the smoking questionnaire. The bar, a lower bound above zero, "
+        "was written into experiments/fresh_cycle_2021.py before the 2021-2023 numbers were seen. "
+        "The +0.030 from leave-one-cycle-out had an interval touching zero and resampled one survey's "
+        "measurement process, which section 4.2 of the paper already shows cannot detect this. The "
+        "target was also a lifetime diagnosis in survivors, whose bloodwork follows treatment. The "
+        "DATASETS entry and cohorts are kept, so it is still trained and evaluated as evidence."
+    ),
 }
 
 # What kind of question each panel answers, and what the user must already have.
@@ -1387,6 +1399,32 @@ def load_temporal_validation() -> dict:
                 f"{hi:+.3f}, which does not separate it from age alone."
             ),
         }
+
+    # NHANES 2021-2023, collected after the pandemic pause on a new laboratory
+    # contract and seen by nothing here. It is the second unseen cycle, so it
+    # extends each verdict, and for liver it replaces the in-survey AUC as the
+    # figure to expect: that one sat at the top of its split distribution.
+    fresh = "experiments/fresh_cycle_2021_result.json"
+    if os.path.isfile(fresh):
+        with open(fresh) as f:
+            fr = json.load(f)
+        for name, r in fr.items():
+            if name not in out:
+                continue
+            e, p = r["2021-2023"], r["pooled"]
+            flo, fhi = e["gain_ci"]
+            plo, phi = p["gain_ci"]
+            out[name]["fresh"] = {"cycle": "2021-2023", "n": e["n"], "events": e["events"],
+                                  "auc": e["auc"], "gain": e["gain"], "gain_ci": [flo, fhi],
+                                  "pooled_auc": p["auc"], "pooled_gain": p["gain"],
+                                  "pooled_gain_ci": [plo, phi], "pooled_events": p["events"]}
+            out[name]["verdict"] += (
+                f" On the 2021-2023 survey, collected after the pandemic pause and also never "
+                f"seen, it scored {e['auc']:.3f} and beat age and sex by {e['gain']:+.3f} "
+                f"({flo:+.3f} to {fhi:+.3f}). Across both unseen cycles, {p['events']:,} cases, "
+                f"the advantage is {p['gain']:+.3f} ({plo:+.3f} to {phi:+.3f}) and the AUC "
+                f"{p['auc']:.3f}, which is the accuracy to expect on new patients.")
+            out[name]["confirmed"] = bool(plo > 0)
     return out
 
 

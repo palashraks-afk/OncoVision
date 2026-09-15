@@ -1,0 +1,151 @@
+{
+  "lung": {
+    "panel": "lung",
+    "model_kind": null,
+    "n_train": 19866,
+    "2017-2018": {
+      "cycle": "2017-2018",
+      "n": 2050,
+      "events": 13,
+      "auc": 0.824,
+      "auc_ci": [
+        0.724,
+        0.909
+      ],
+      "age_sex_baseline": "age_sex_ensemble",
+      "age_sex_auc": 0.851,
+      "gain": -0.027,
+      "gain_ci": [
+        -0.148,
+        0.068
+      ],
+      "questionnaire_auc": 0.85,
+      "gain_over_questionnaire": -0.026,
+      "gain_over_questionnaire_ci": [
+        -0.145,
+        0.052
+      ]
+    },
+    "2021-2023": {
+      "cycle": "2021-2023",
+      "n": 2193,
+      "events": 19,
+      "auc": 0.759,
+      "auc_ci": [
+        0.661,
+        0.849
+      ],
+      "age_sex_baseline": "age_sex_logistic",
+      "age_sex_auc": 0.736,
+      "gain": 0.023,
+      "gain_ci": [
+        -0.047,
+        0.095
+      ],
+      "questionnaire_auc": 0.744,
+      "gain_over_questionnaire": 0.015,
+      "gain_over_questionnaire_ci": [
+        -0.048,
+        0.079
+      ]
+    },
+    "pooled": {
+      "cycle": "pooled",
+      "n": 4243,
+      "events": 32,
+      "auc": 0.786,
+      "auc_ci": [
+        0.718,
+        0.848
+      ],
+      "age_sex_baseline": "age_sex_logistic",
+      "age_sex_auc": 0.785,
+      "gain": 0.001,
+      "gain_ci": [
+        -0.055,
+        0.055
+      ],
+      "questionnaire_auc": 0.788,
+      "gain_over_questionnaire": -0.002,
+      "gain_over_questionnaire_ci": [
+        -0.061,
+        0.049
+      ]
+    },
+    "split_distribution": {
+      "median": 0.829,
+      "range": [
+        0.774,
+        0.868
+      ],
+      "published_split": 0.872
+    },
+    "fresh_inside_split_range": false,
+    "primary_confirmed": false
+  },
+  "liver": {
+    "panel": "liver",
+    "model_kind": null,
+    "n_train": 30624,
+    "2017-2018": {
+      "cycle": "2017-2018",
+      "n": 4887,
+      "events": 269,
+      "auc": 0.705,
+      "auc_ci": [
+        0.674,
+        0.737
+      ],
+      "age_sex_baseline": "age_sex_ensemble",
+      "age_sex_auc": 0.644,
+      "gain": 0.061,
+      "gain_ci": [
+        0.03,
+        0.094
+      ]
+    },
+    "2021-2023": {
+      "cycle": "2021-2023",
+      "n": 5416,
+      "events": 313,
+      "auc": 0.703,
+      "auc_ci": [
+        0.672,
+        0.733
+      ],
+      "age_sex_baseline": "age_sex_ensemble",
+      "age_sex_auc": 0.636,
+      "gain": 0.067,
+      "gain_ci": [
+        0.034,
+        0.099
+      ]
+    },
+    "pooled": {
+      "cycle": "pooled",
+      "n": 10303,
+      "events": 582,
+      "auc": 0.704,
+      "auc_ci": [
+        0.681,
+        0.725
+      ],
+      "age_sex_baseline": "age_sex_ensemble",
+      "age_sex_auc": 0.64,
+      "gain": 0.064,
+      "gain_ci": [
+        0.042,
+        0.087
+      ]
+    },
+    "split_distribution": {
+      "median": 0.763,
+      "range": [
+        0.741,
+        0.776
+      ],
+      "published_split": 0.78
+    },
+    "fresh_inside_split_range": false
+  }
+}

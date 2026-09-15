@@ -320,9 +320,10 @@ def test_screening_panels_still_work_from_routine_bloodwork(client):
     payload = {"age": 58, "gender": 0, **FULL_BLOODS}
     body = client.post("/predict", json=payload).json()
     scored = " ".join(body["predictions"]).lower()
-    for panel in ("liver", "lung"):
-        assert panel in scored, f"the {panel} panel stopped scoring from routine bloodwork"
-    assert "bowel" not in scored, "the withdrawn bowel panel is still being served"
+    assert "liver" in scored, "the liver panel stopped scoring from routine bloodwork"
+    # Lung was withdrawn when two unseen survey cycles showed no gain over age and sex.
+    for panel in ("bowel", "lung"):
+        assert panel not in scored, f"the withdrawn {panel} panel is still being served"
 
 
 # --------------------------------------------------------------- exposure
