@@ -93,6 +93,38 @@ RATE_WINDOW_SECONDS = int(os.getenv("RATE_WINDOW_SECONDS", "60"))
 _hits: dict = {}
 
 
+def _liver_population_caveat(name, values) -> str:
+    """A warning when the liver panel is shown results it was never validated on.
+
+    The liver panel learned from US adults in the general population. On a
+    German cohort of hepatitis C clinic patients it scored 0.442, worse than
+    chance, because the enzyme pattern of advanced disease runs the opposite way
+    to the population it learned from. So when someone's results look like an
+    active hospital case, the card says the score is not for them.
+
+    The cut-offs are deliberately coarse and clinical: an enzyme at three times
+    the usual upper limit, a bilirubin that would be visible as jaundice, or an
+    albumin low enough to suggest the liver is failing to make it.
+    """
+    if name != "liver":
+        return ""
+    flags = []
+    if (values.get("alt") or 0) >= 120:
+        flags.append(f"ALT {values['alt']:g}")
+    if (values.get("ast") or 0) >= 120:
+        flags.append(f"AST {values['ast']:g}")
+    if (values.get("bilirubin") or 0) >= 3.0:
+        flags.append(f"bilirubin {values['bilirubin']:g}")
+    if values.get("albumin") is not None and values["albumin"] <= 3.0:
+        flags.append(f"albumin {values['albumin']:g}")
+    if not flags:
+        return ""
+    return ("Results like " + ", ".join(flags) + " are typical of someone already under care for "
+            "liver disease. This panel was built for adults in the general population, and on a "
+            "group of hepatitis C clinic patients it ranked people worse than chance, so this score "
+            "should not be relied on for you. The values themselves matter more; show them to a doctor.")
+
+
 def _transfer_sentence(bundle) -> str:
     """What this panel's own cut did on a cohort from another decade.
 
@@ -1140,6 +1172,7 @@ async def predict_risk(data: PatientData):
                   "than the percentage. Show it to a doctor."
                 if extreme else ""
             ),
+            "population_caveat": _liver_population_caveat(name, values),
             "threshold": round(threshold_pct, 1),
             "above_threshold": bool(proba >= threshold_pct),
             "contributors": contributors[:6],

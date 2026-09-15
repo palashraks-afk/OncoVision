@@ -1024,6 +1024,20 @@ export default function OncovisionDashboard() {
                               </p>
                             )}
                             {/*
+                              The panel was built on the general population and
+                              scored 0.442, worse than chance, on hepatitis C clinic
+                              patients. When someone's results look like an active
+                              hospital case, the card says the score is not for them
+                              rather than letting a number stand that was never
+                              validated on anyone like them.
+                            */}
+                            {d.population_caveat && (
+                              <p className="text-[11px] leading-relaxed mb-3 pl-3 border-l-2 border-[var(--flag)] text-[var(--ink-3)]">
+                                <span className="font-bold text-[var(--flag)]">Not built for results like these. </span>
+                                {d.population_caveat}
+                              </p>
+                            )}
+                            {/*
                               Values past the edge of what this panel was trained
                               on. Given the most prominence of any caveat here,
                               because it is the one where the percentage is least

@@ -287,6 +287,28 @@ def test_every_feature_a_shipped_panel_reads_is_accepted_by_the_api():
             f"those values are discarded before they reach the model")
 
 
+def test_liver_panel_warns_when_results_look_like_a_hospital_case(client):
+    """The liver panel failed on hepatitis C clinic patients (AUC 0.442).
+
+    A card for someone whose results look like that population has to say the
+    score is not for them, and a card for an ordinary adult must not.
+    """
+    base = {"age": 55, "gender": 1, **FULL_BLOODS}
+
+    def liver_card(payload):
+        body = client.post("/predict", json=payload).json()
+        cards = [v for k, v in body["predictions"].items() if "liver" in k.lower()]
+        assert cards, "the liver panel did not score"
+        return cards[0]
+
+    assert not liver_card(base).get("population_caveat"), \
+        "an ordinary adult's liver card carries the hospital-case warning"
+    sick = liver_card({**base, "alt": 310, "ast": 260, "bilirubin": 3.4})
+    assert sick.get("population_caveat"), \
+        "a hospital-pattern liver card carries no warning that the panel was not built for it"
+    assert "ALT 310" in sick["population_caveat"]
+
+
 def test_screening_panels_still_work_from_routine_bloodwork(client):
     """The gate must not catch the panels whose whole point is a lab report.
 

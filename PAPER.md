@@ -485,7 +485,7 @@ by count, intervals from a Poisson bootstrap over mammograms:
 | Gain over age | **+0.028** (+0.021 to +0.035) |
 | Rule-out cut, promised | catch 95.1%, exclude 11.0% |
 | Rule-out cut, delivered | catch 95.3%, exclude 11.6% |
-| Subgroups | White 0.625, Black 0.622, Asian or Pacific Islander 0.605; two groups under 50 cancers, not measured |
+| Subgroups | all five groups measured by cross-fitting; table below |
 
 **0.623 is the lowest AUC on the site and the best-evidenced number on it.** Published BCSC and
 Gail-type models land between 0.58 and 0.66; a screening model scoring 0.9 on this question would
@@ -494,6 +494,18 @@ tightest in the project, and it is measured on more held-out events than every o
 sets combined. Its rule-out cut is the only one here whose delivered rate matched the promised rate
 to within a point, which is what a cut tuned and tested on the same population at its real
 prevalence should do and what the enriched cohorts cannot.
+
+<!-- AUTOGEN:breast_subgroups -->
+| Group | Cancers | AUC | 95% CI |
+|---|---|---|---|
+| White | 8,698 | 0.625 | 0.619 to 0.631 |
+| Asian or Pacific Islander | 425 | 0.601 | 0.573 to 0.625 |
+| Black | 576 | 0.627 | 0.609 to 0.646 |
+| Native American | 82 | 0.625 | 0.568 to 0.692 |
+| Other or mixed | 102 | 0.598 | 0.546 to 0.646 |
+
+Scored by cross-fitting over all 2,392,998 mammograms, so every prediction comes from a model that did not see it; overall AUC 0.622. No group is more than 0.05 below the overall figure.
+<!-- /AUTOGEN:breast_subgroups -->
 
 Two alternatives were tried first and failed, and both are worth recording. Rebuilding prostate on
 NHANES PSA looked promising — 4,697 men with a measured PSA and 253 reported prostate cancers — until
@@ -656,6 +668,10 @@ be measured rather than assumed. For the breast panel's cut it has now been meas
 <!-- AUTOGEN:breast_vs_age -->
 At the same share of cancers caught, 95.3%, on the 597,859-mammogram validation split, the panel's cut excluded 11.6% of women and a cut on age alone 1.8%: a difference of +9.8%, 95% CI +8.3% to +10.0%. **Unlike the bowel panel, this one earns its extra questions**: the density grading and history exclude materially more women than their age does, without catching fewer cancers.
 <!-- /AUTOGEN:breast_vs_age -->
+
+<!-- AUTOGEN:breast_mri_cost -->
+Among 202,285 mammograms in women with dense breasts (1,081 cancers within a year), the question priced here is which of them should get a supplemental MRI. At the Medicare price of $366, sending every dense-breast woman costs less than sending none once a cancer found late is charged, and the panel's best threshold sends 98% of them while catching 100% of the cancers. It saves $164,174 per 100,000 women against the better simple policy, and $164,174 against triage on age alone. The saving grows with the price of the scan: at $1,000 per MRI it is $7,840,884 per 100,000 against the better simple policy and $785,071 against age. It beats both sending everyone and triage on age in every sweep of scan price, benefit and life-years. **That is the first decision in this project where a panel's triage pays and beats age**, and at Medicare prices it is a small amount: the honest reading is that supplemental MRI for dense breasts is worth doing broadly, and the panel mostly helps decide who can safely skip it when scans are expensive. Illustrative, like the other cost models: false-positive MRI work-ups, discounting and the difference between trial and US practice are not priced.
+<!-- /AUTOGEN:breast_mri_cost -->
 
  No threshold repairs a signal that is not there.
 

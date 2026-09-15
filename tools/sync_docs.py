@@ -559,12 +559,18 @@ def table_hero_cost(_, extra):
         rows.append(f"| {case} missed | 0 | {bo['cancers_missed']} of {_cases(v):,} | |")
         paying.append((k, bo))
     out = (["\n".join(rows), ""] if paying else
-           ["**No shipped panel's triage pays once a missed cancer is priced at a life.**", ""])
+           [("**No lab-report panel's triage pays once a missed cancer is priced at a life.** "
+             "The one decision that does is which women with dense breasts get a supplemental "
+             "MRI, where the mammogram breast panel's triage beats both MRI for all and triage on "
+             "age -- by a small amount at Medicare prices (see the paper, section 4.6)."
+             if (extra.get("breast_mri") or {}).get("beats_age_in_every_sweep") else
+             "**No shipped panel's triage pays once a missed cancer is priced at a life.**"), ""])
     for k, v, bo in withdrawn_paying:
         t = (extra.get("triage_age") or {}).get(k) or {}
         base = (t.get("arms") or {}).get(t.get("best_baseline_arm"), {})
         out.append(
-            f"The one that appeared to was {NAME.get(k, k).lower()}: at its best operating point it "
+            f"The lab-report panel that appeared to pay was {NAME.get(k, k).lower()}: at its best "
+            f"operating point it "
             f"avoided {100_000 - bo['procedures_per_100k']:,} procedures per 100,000 and netted "
             f"{_m(bo['net_benefit'])}."
             + (f" Triage on age and sex alone, with no lab values, avoided "
@@ -887,6 +893,67 @@ def text_prospective_short(_, extra):
                else " That gain survives the transfer."))
 
 
+def text_breast_mri_cost(_, extra):
+    """Supplemental MRI triage among women with dense breasts, priced and swept.
+
+    The first decision in this project where a panel's triage pays and beats age.
+    It is also a small effect at Medicare prices, and the wording says both.
+    """
+    r = extra.get("breast_mri")
+    if not r:
+        return "_Run experiments/breast_mri_triage_cost.py._"
+    b = r["base"]
+    bp = b["panel"]
+    mri = r["base_inputs"]["mri_cost"]
+    thousand = r["sweeps"].get("mri_cost", {}).get("1000.0", {})
+    parts = [
+        f"Among {r['dense_mammograms']:,} mammograms in women with dense breasts "
+        f"({r['dense_cancers']:,} cancers within a year), the question priced here is which of them "
+        f"should get a supplemental MRI. At the Medicare price of ${mri:,.0f}, sending every "
+        f"dense-breast woman costs less than sending none once a cancer found late is charged, "
+        f"and the panel's best threshold sends {bp['best_share_sent']:.0%} of them while catching "
+        f"{bp['best_share_caught']:.0%} of the cancers. It saves ${b['panel_saves_vs_simple']:,} "
+        f"per 100,000 women against the better simple policy, and ${b['panel_saves_vs_age']:,} "
+        f"against triage on age alone."]
+    if thousand:
+        parts.append(
+            f"The saving grows with the price of the scan: at $1,000 per MRI it is "
+            f"${thousand['vs_simple']:,} per 100,000 against the better simple policy and "
+            f"${thousand['vs_age']:,} against age.")
+    if r.get("beats_simple_in_every_sweep") and r.get("beats_age_in_every_sweep"):
+        parts.append("It beats both sending everyone and triage on age in every sweep of scan "
+                     "price, benefit and life-years. **That is the first decision in this project "
+                     "where a panel's triage pays and beats age**, and at Medicare prices it is a "
+                     "small amount: the honest reading is that supplemental MRI for dense breasts "
+                     "is worth doing broadly, and the panel mostly helps decide who can safely skip "
+                     "it when scans are expensive.")
+    else:
+        parts.append("It does not beat both alternatives in every sweep, so no saving is claimed.")
+    parts.append("Illustrative, like the other cost models: false-positive MRI work-ups, "
+                 "discounting and the difference between trial and US practice are not priced.")
+    return " ".join(parts)
+
+
+def table_breast_subgroups(_, extra):
+    """Breast panel accuracy by race and ethnicity across all 2.39M mammograms."""
+    r = extra.get("breast_subgroups")
+    if not r:
+        return "_Run experiments/bcsc_subgroups_full.py._"
+    rows = ["| Group | Cancers | AUC | 95% CI |", "|---|---|---|---|"]
+    for g, v in r["groups"].items():
+        if v.get("auc") is None:
+            rows.append(f"| {g} | {v['events']:,} | too few | |")
+        else:
+            ci = v.get("auc_ci") or ["", ""]
+            rows.append(f"| {g} | {v['events']:,} | {v['auc']:.3f} | {ci[0]} to {ci[1]} |")
+    worse = [g for g, v in r["groups"].items() if v.get("materially_worse")]
+    note = (f"Scored by cross-fitting over all {r['n_mammograms']:,} mammograms, so every prediction "
+            f"comes from a model that did not see it; overall AUC {r['overall_auc']:.3f}. "
+            + ("No group is more than 0.05 below the overall figure." if not worse else
+               f"More than 0.05 below the overall figure: {', '.join(worse)}."))
+    return "\n".join(rows) + "\n\n" + note
+
+
 def text_youden_sentence(_, extra):
     got = _bowel_base(extra)
     if not got:
@@ -925,6 +992,8 @@ TABLES = {
     "prospective_verdict": text_prospective_verdict,
     "prospective_external": table_prospective_external,
     "prospective_short": text_prospective_short,
+    "breast_mri_cost": text_breast_mri_cost,
+    "breast_subgroups": table_breast_subgroups,
 }
 
 
@@ -947,6 +1016,8 @@ def main():
         "breast_vs_age": load("experiments/bcsc_rule_out_vs_age_result.json", {}),
         "lung_loco": load("experiments/lung_loco_gain_result.json", {}),
         "general_vs_age": load("experiments/general_rule_out_vs_age_result.json", {}),
+        "breast_mri": load("experiments/breast_mri_triage_cost_result.json", {}),
+        "breast_subgroups": load("experiments/bcsc_subgroups_full_result.json", {}),
         "cost": load("experiments/cost_model_result.json", {}),
     }
 

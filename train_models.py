@@ -122,7 +122,10 @@ WITHDRAWN = {
 # is overselling four of them.
 PANEL_KIND = {
     "general":    ("screening", "Reads routine bloodwork and your history. Anyone can run it."),
-    "liver":      ("screening", "Reads routine bloodwork and your history. Anyone can run it."),
+    "liver":      ("screening", "Reads routine bloodwork and your history, for adults in the general "
+                                "population. It estimates liver disease, not liver cancer, and it is not "
+                                "for people already under care for liver disease: on a hepatitis C clinic "
+                                "cohort it ranked patients worse than chance."),
     "colorectal": ("screening", "Reads a routine blood count. Anyone can run it."),
     "lung":       ("screening", "Reads routine bloodwork. Offered to people with tobacco exposure, "
                                 "which is who lung screening is for."),
@@ -244,10 +247,15 @@ COHORT_DESIGN = {
               "Rebuilding it on blood markers was tried and failed: see "
               "experiments/blood_breast_panel.py, external AUC 0.495 with a 95% CI of 0.377 "
               "to 0.607, which contains chance.",
-    "liver": "35,511 US adults from NHANES 2005 to 2018, chemistry plus diabetes and "
-             "hepatitis serology. Externally validated against 583 patients in India and "
-             "589 in Germany, and temporally against later cycles. Detects liver disease, "
-             "not liver cancer.",
+    "liver": "30,624 US adults from NHANES 2005 to 2016, chemistry plus diabetes and "
+             "hepatitis serology; the 2017-2018 cycle is withheld as a later-survey test, "
+             "where the panel kept a gain of +0.091 over age and sex. The label is a doctor "
+             "having told the person they have a liver condition, so it detects liver "
+             "disease, not liver cancer. It transfers to a clinic cohort in India and fails "
+             "on one in Germany, AUC 0.442: hepatitis C patients against blood donors, where "
+             "the enzyme pattern of advanced disease runs the opposite way to the population "
+             "it learned from. It is for the general population, not for patients already "
+             "under hospital care for liver disease.",
     "pancreatic": "Case-control across three independent tissue banks. Cases are confirmed "
                   "adenocarcinoma, controls include benign hepatobiliary disease. Validated by "
                   "leave-one-site-out: mean AUC 0.962 with every site's interval excluding "
@@ -1411,6 +1419,27 @@ def load_fairness() -> dict:
             "worst_auc": r.get("worst_auc"),
             "spread": r.get("spread"),
             "materially_worse_groups": worse,
+        }
+
+    # The mammogram breast panel's subgroups come from cross-fitting over all
+    # 2,392,998 BCSC mammograms rather than from NHANES. Measured on the
+    # validation split alone, two groups had too few cancers to report; across
+    # every mammogram all five are measurable.
+    bcsc = "experiments/bcsc_subgroups_full_result.json"
+    if os.path.isfile(bcsc):
+        with open(bcsc) as f:
+            r = json.load(f)
+        groups = r.get("groups", {})
+        scored = {g: v["auc"] for g, v in groups.items() if v.get("auc") is not None}
+        worst = min(scored, key=scored.get) if scored else None
+        out["breast_screening"] = {
+            "overall_auc": r.get("overall_auc"),
+            "groups": groups,
+            "unmeasurable_groups": [g for g, v in groups.items() if v.get("auc") is None],
+            "worst_group": worst,
+            "worst_auc": scored.get(worst) if worst else None,
+            "spread": (round(max(scored.values()) - min(scored.values()), 3) if scored else None),
+            "materially_worse_groups": [g for g, v in groups.items() if v.get("materially_worse")],
         }
     return out
 

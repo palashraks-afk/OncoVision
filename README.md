@@ -30,9 +30,9 @@ drove the answer, and what the number is worth at real-world incidence rather th
 **And it tells you what the answer is for.** The measured case, per 100,000 people:
 
 <!-- AUTOGEN:hero_cost -->
-**No shipped panel's triage pays once a missed cancer is priced at a life.**
+**No lab-report panel's triage pays once a missed cancer is priced at a life.** The one decision that does is which women with dense breasts get a supplemental MRI, where the mammogram breast panel's triage beats both MRI for all and triage on age -- by a small amount at Medicare prices (see the paper, section 4.6).
 
-The one that appeared to was bowel: at its best operating point it avoided 36,129 procedures per 100,000 and netted $55.3M. Triage on age and sex alone, with no lab values, avoided 42,863, missed 10.6 cancers instead of 14.2, and netted $79.5M, so the panel was withdrawn: the saving was the patient's age, not their lab report.
+The lab-report panel that appeared to pay was bowel: at its best operating point it avoided 36,129 procedures per 100,000 and netted $55.3M. Triage on age and sex alone, with no lab values, avoided 42,863, missed 10.6 cancers instead of 14.2, and netted $79.5M, so the panel was withdrawn: the saving was the patient's age, not their lab report.
 For lung and liver, no threshold beats sending everyone once a missed case is priced, so those panels offer no rule-out call.
 <!-- /AUTOGEN:hero_cost -->
 

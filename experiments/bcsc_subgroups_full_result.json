@@ -1,0 +1,54 @@
+{
+  "n_mammograms": 2392998,
+  "n_cancers": 11638,
+  "overall_auc": 0.622,
+  "groups": {
+    "White": {
+      "events": 8698,
+      "auc": 0.625,
+      "auc_ci": [
+        0.619,
+        0.631
+      ],
+      "materially_worse": false
+    },
+    "Asian or Pacific Islander": {
+      "events": 425,
+      "auc": 0.601,
+      "auc_ci": [
+        0.573,
+        0.625
+      ],
+      "materially_worse": false
+    },
+    "Black": {
+      "events": 576,
+      "auc": 0.627,
+      "auc_ci": [
+        0.609,
+        0.646
+      ],
+      "materially_worse": false
+    },
+    "Native American": {
+      "events": 82,
+      "auc": 0.625,
+      "auc_ci": [
+        0.568,
+        0.692
+      ],
+      "materially_worse": false
+    },
+    "Other or mixed": {
+      "events": 102,
+      "auc": 0.598,
+      "auc_ci": [
+        0.546,
+        0.646
+      ],
+      "materially_worse": false
+    }
+  },
+  "min_events": 50,
+  "method": "5-fold cross-fitting over the full BCSC risk estimation table"
+}

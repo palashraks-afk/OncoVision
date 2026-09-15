@@ -1,0 +1,96 @@
+{
+  "dense_mammograms": 202285,
+  "dense_cancers": 1081,
+  "prevalence": 0.00534,
+  "base_inputs": {
+    "mri_cost": 366.0,
+    "early_cost": 82121.0,
+    "late_cost": 129387.0,
+    "benefit_fraction": 0.5,
+    "life_years_lost": 3.0
+  },
+  "base": {
+    "panel": {
+      "cost_none": 132868118.24900512,
+      "cost_all": 36600000.0,
+      "best_cost": 36435826.18582692,
+      "best_share_sent": 0.9787230887114714,
+      "best_share_caught": 0.9953746530989824
+    },
+    "age": {
+      "cost_none": 132868118.24900512,
+      "cost_all": 36600000.0,
+      "best_cost": 36600000.0,
+      "best_share_sent": 1.0,
+      "best_share_caught": 1.0
+    },
+    "best_simple_policy": "all",
+    "panel_saves_vs_simple": 164174,
+    "panel_saves_vs_age": 164174
+  },
+  "sweeps": {
+    "mri_cost": {
+      "366.0": {
+        "vs_simple": 164174,
+        "vs_age": 164174,
+        "simple": "all"
+      },
+      "700.0": {
+        "vs_simple": 1736188,
+        "vs_age": 538818,
+        "simple": "all"
+      },
+      "1000.0": {
+        "vs_simple": 7840884,
+        "vs_age": 785071,
+        "simple": "all"
+      },
+      "1500.0": {
+        "vs_simple": 16021641,
+        "vs_age": 140944,
+        "simple": "none"
+      }
+    },
+    "benefit_fraction": {
+      "0.25": {
+        "vs_simple": 1058990,
+        "vs_age": 168851,
+        "simple": "all"
+      },
+      "0.5": {
+        "vs_simple": 164174,
+        "vs_age": 164174,
+        "simple": "all"
+      },
+      "0.75": {
+        "vs_simple": 58260,
+        "vs_age": 58260,
+        "simple": "all"
+      }
+    },
+    "life_years_lost": {
+      "1.0": {
+        "vs_simple": 2238597,
+        "vs_age": 154969,
+        "simple": "all"
+      },
+      "3.0": {
+        "vs_simple": 164174,
+        "vs_age": 164174,
+        "simple": "all"
+      },
+      "5.0": {
+        "vs_simple": 58260,
+        "vs_age": 58260,
+        "simple": "all"
+      }
+    }
+  },
+  "beats_simple_in_every_sweep": true,
+  "beats_age_in_every_sweep": true,
+  "sources": {
+    "mri_cost": "Medicare HCPCS C8906",
+    "treatment_cost": "Blumen et al., Am Health Drug Benefits 2016",
+    "benefit_fraction": "DENSE trial, Bakker et al., NEJM 2019"
+  }
+}

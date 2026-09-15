@@ -211,7 +211,61 @@
       "shipped_split_percentile": 80.0,
       "n_splits": 5
     },
-    "fairness": {},
+    "fairness": {
+      "overall_auc": 0.622,
+      "groups": {
+        "White": {
+          "events": 8698,
+          "auc": 0.625,
+          "auc_ci": [
+            0.619,
+            0.631
+          ],
+          "materially_worse": false
+        },
+        "Asian or Pacific Islander": {
+          "events": 425,
+          "auc": 0.601,
+          "auc_ci": [
+            0.573,
+            0.625
+          ],
+          "materially_worse": false
+        },
+        "Black": {
+          "events": 576,
+          "auc": 0.627,
+          "auc_ci": [
+            0.609,
+            0.646
+          ],
+          "materially_worse": false
+        },
+        "Native American": {
+          "events": 82,
+          "auc": 0.625,
+          "auc_ci": [
+            0.568,
+            0.692
+          ],
+          "materially_worse": false
+        },
+        "Other or mixed": {
+          "events": 102,
+          "auc": 0.598,
+          "auc_ci": [
+            0.546,
+            0.646
+          ],
+          "materially_worse": false
+        }
+      },
+      "unmeasurable_groups": [],
+      "worst_group": "Other or mixed",
+      "worst_auc": 0.598,
+      "spread": 0.029,
+      "materially_worse_groups": []
+    },
     "temporal_validation": {
       "cycle": "BCSC validation split",
       "n": 597859,
@@ -261,7 +315,7 @@
       "hepatitis_b",
       "hepatitis_c"
     ],
-    "cohort_design": "35,511 US adults from NHANES 2005 to 2018, chemistry plus diabetes and hepatitis serology. Externally validated against 583 patients in India and 589 in Germany, and temporally against later cycles. Detects liver disease, not liver cancer.",
+    "cohort_design": "30,624 US adults from NHANES 2005 to 2016, chemistry plus diabetes and hepatitis serology; the 2017-2018 cycle is withheld as a later-survey test, where the panel kept a gain of +0.091 over age and sex. The label is a doctor having told the person they have a liver condition, so it detects liver disease, not liver cancer. It transfers to a clinic cohort in India and fails on one in Germany, AUC 0.442: hepatitis C patients against blood donors, where the enzyme pattern of advanced disease runs the opposite way to the population it learned from. It is for the general population, not for patients already under hospital care for liver disease.",
     "auc": 0.753,
     "auc_std": 0.015,
     "accuracy": 0.82,
@@ -446,7 +500,7 @@
     "rule_out_external": null,
     "panel_kind": "screening",
     "no_action_note": "",
-    "panel_kind_note": "Reads routine bloodwork and your history. Anyone can run it.",
+    "panel_kind_note": "Reads routine bloodwork and your history, for adults in the general population. It estimates liver disease, not liver cancer, and it is not for people already under care for liver disease: on a hepatitis C clinic cohort it ranked patients worse than chance.",
     "screening_viable": true,
     "gain_over_age_sex": 0.114,
     "barely_beats_demographics": false,
