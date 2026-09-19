@@ -43,7 +43,10 @@ On the prospective cohort of 33,834 adults with NDI-confirmed outcomes, the full
 
  A breast panel fitted on
 2,392,998 screening mammograms adds +0.028 over age on the consortium's own 597,859-mammogram
-validation split (95% CI +0.021 to +0.035). Discrimination and usability diverge sharply: panels with
+validation split (95% CI +0.021 to +0.035), and +0.014 (95% CI +0.007 to +0.020) over age together with
+the density grading already printed on the mammogram report. The prostate panel, fitted on 212 biopsied
+men at one centre, transfers to 1,500 men at three hospitals in another country: 0.857 against 0.583 for
+reading the PSA number alone. Discrimination and usability diverge sharply: panels with
 good AUCs flag dozens to hundreds of healthy people per true case at real incidence.
 
 <!-- AUTOGEN:abstract_cost -->
@@ -453,6 +456,12 @@ joins the prospective panel's in-survey gain as a number resampling one survey c
 Holding out every survey cycle in turn -- 10 cycles, 104 lung cancers, each scored by a model that never saw its cycle -- the lung panel scores 0.827 against 0.797 for the stronger age-and-sex model, a gain of +0.030 (95% CI -0.000 to +0.060). The estimate agreed with the in-survey gain, but its range reached zero, so it was not shown. Then NHANES 2021-2023 was released, a cohort nothing in this project had seen. Trained on 1999-2016 and scored unchanged on 2017-2018 and 2021-2023 together (4,243 adults with tobacco exposure, 32 lung cancers), the panel scored 0.786 against 0.785 for age and sex, a gain of +0.001 (95% CI -0.055 to +0.055); the newest cycle alone gave +0.023. **That fails the bar set before the numbers were seen, and the lung panel is withdrawn** by the rule that withdrew bowel and general.
 <!-- /AUTOGEN:lung_loco -->
 
+#### A case-control panel meets an external cohort
+
+<!-- AUTOGEN:prostate_external -->
+The prostate panel was fitted on 212 men, one centre, China. Scored unchanged on PI-CAI -- 1,500 men worked up at three Dutch hospitals, 653 with cancer on histopathology -- it reaches 0.857 against 0.583 for reading the PSA number alone, a gain of +0.274 (95% CI +0.245 to +0.304), and 0.858 for clinically significant cancer. It holds at every centre (0.758 to 0.894). BMI is not recorded there and is filled with the training median, as the service does for any missing value. The cohort's 468 unbiopsied men are recorded as cancer-free on the strength of a clear MRI, and PI-RADS is what decided who was biopsied, so the panel is also scored on the 1,032 men with an actual biopsy result: 0.764 against 0.542, +0.221 (+0.180 to +0.262). **This is the first external validation of any case-control panel in this project, and the panel passed it**, on a bar written down before the cohort was scored. What it does not change is the population: these are men already referred with a raised PSA and an MRI, not men off the street. Priced, it still does not pay: with a missed significant cancer charged at fifteen life-years, the cheapest rule is to biopsy every referred man, and current practice -- biopsy at PI-RADS 3 or above -- costs more than that in every one of the 20 price combinations swept, because it misses 5.3 significant cancers per 1,000 men. The panel's own best cut does not beat biopsying everyone either.
+<!-- /AUTOGEN:prostate_external -->
+
 This is the weaker kind of external validation and is not presented as anything else. A panel that
 passes here has survived a change of laboratory run and two years of drift. It has not survived a
 change of country, and the liver panel is the standing proof that those are different questions: it
@@ -678,6 +687,21 @@ be measured rather than assumed. For the breast panel's cut it has now been meas
 At the same share of cancers caught, 95.3%, on the 597,859-mammogram validation split, the panel's cut excluded 11.6% of women and a cut on age alone 1.8%: a difference of +9.8%, 95% CI +8.3% to +10.0%. **Unlike the bowel panel, this one earns its extra questions**: the density grading and history exclude materially more women than their age does, without catching fewer cancers.
 <!-- /AUTOGEN:breast_vs_age -->
 
+<!-- AUTOGEN:breast_vs_clinic -->
+An AUC of 0.623 reads as modest, and the comparison that decides whether it is worth anything is not chance but what the clinic already holds. On the same 597,859 unseen mammograms, age alone scores 0.595 and age together with the BI-RADS density grading printed on the report scores 0.609. The panel's eight other inputs -- BMI, relatives with breast cancer, a previous biopsy, the last mammogram's result, age at first birth, menopause, how it happened and hormone therapy -- add +0.014 on top of that (95% CI +0.007 to +0.020). **So the panel earns its questions**: it is not re-reading the density line in a longer form.
+<!-- /AUTOGEN:breast_vs_clinic -->
+
+<!-- AUTOGEN:banding_cost -->
+| Cohort | Model | Exact | Banded | Cost of banding |
+|---|---|---|---|---|
+| general (37,564) | logistic | 0.7810 | 0.7775 | +0.0035 |
+| general (37,564) | ensemble | 0.7790 | 0.7776 | +0.0014 |
+| colorectal (28,527) | logistic | 0.8332 | 0.8355 | -0.0023 |
+| colorectal (28,527) | ensemble | 0.7897 | 0.8223 | -0.0326 |
+
+BCSC publishes age in five-year groups and BMI in four categories, so the breast panel cannot tell a 40-year-old from a 44-year-old, and asking the consortium for the research file with exact values is a months-long request. Banding cohorts that do carry exact values, the same way, costs at most +0.0035 AUC and -0.0004 typically. **So the request is not worth making for resolution alone** -- the ceiling it would lift is smaller than the interval on the panel's own AUC.
+<!-- /AUTOGEN:banding_cost -->
+
 <!-- AUTOGEN:breast_mri_cost -->
 Among 202,285 mammograms in women with dense breasts (1,081 cancers within a year), the question priced here is which of them should get a supplemental MRI. At the Medicare price of $366, sending every dense-breast woman costs less than sending none once a cancer found late is charged, and the panel's best threshold sends 98% of them while catching 100% of the cancers. It saves $164,174 per 100,000 women against the better simple policy, and $164,174 against triage on age alone. The saving grows with the price of the scan: at $1,000 per MRI it is $7,840,884 per 100,000 against the better simple policy and $785,071 against age. It beats both sending everyone and triage on age in every sweep of scan price, benefit and life-years. **That is the first decision in this project where a panel's triage pays and beats age**, and at Medicare prices it is a small amount: the honest reading is that supplemental MRI for dense breasts is worth doing broadly, and the panel mostly helps decide who can safely skip it when scans are expensive. Illustrative, like the other cost models: false-positive MRI work-ups, discounting and the difference between trial and US practice are not priced.
 <!-- /AUTOGEN:breast_mri_cost -->
@@ -741,10 +765,13 @@ phosphatase run in opposite directions between a mild-disease population and an 
 one. The general panel was tested on NHANES III, and liver and lung on withheld 2017–2018 and 2021–2023 cycles; the
 bowel panel's apparent transfer to NHANES III was an artefact of a weak baseline (section 3.6).
 A withheld cycle of the same survey is a weaker test than another country and section 3.8
-does not claim otherwise. Lung, uninformative on thirteen events, failed on thirty-two and was withdrawn. No
-external cohort exists in public data for any of the four case-control panels, and none is likely
-to: they are assembled from cases and matched controls, and a screening population is the thing
-they lack by construction.
+does not claim otherwise. Lung, uninformative on thirteen events, failed on thirty-two and was withdrawn.
+Of the four case-control panels, one now has an external cohort: the prostate panel was scored unchanged
+on 1,500 men at three Dutch hospitals and beat the PSA number alone there (section 3.9). The other three
+have none in public data and are unlikely to: they are assembled from cases and matched controls, and a
+screening population is the thing they lack by construction. An external cohort of referred patients is
+also not a screening population — it tests whether the model transfers, not whether the panel could be
+used earlier.
 
 **Fairness is measured where it can be and unmeasured where it cannot.** Subgroup performance by
 race and ethnicity is reported for the NHANES panels. Reweighting was tested and did not close the

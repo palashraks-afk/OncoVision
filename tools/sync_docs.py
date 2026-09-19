@@ -988,6 +988,95 @@ def text_youden_sentence(_, extra):
               "an argument.**")
 
 
+def text_prostate_external(_, extra):
+    """The prostate panel on PI-CAI: the first external test of a case-control panel."""
+    r = extra.get("prostate_external")
+    if not r:
+        return "_Run experiments/prostate_external.py._"
+    t = r["targets"]["prostate_cancer"]
+    cs = r["targets"]["significant_cancer"]
+    bx = t.get("biopsied_only") or {}
+    lo, hi = t["gain_ci"]
+    aucs = [v["auc"] for v in t["centres"].values() if v.get("auc")]
+    s = (f"The prostate panel was fitted on {r['trained_on']}. Scored unchanged on PI-CAI -- "
+         f"{r['n']:,} men worked up at three Dutch hospitals, {t['events']} with cancer on "
+         f"histopathology -- it reaches {t['panel_auc']:.3f} against {t['psa_auc']:.3f} for "
+         f"reading the PSA number alone, a gain of {t['gain_over_psa']:+.3f} (95% CI {lo:+.3f} "
+         f"to {hi:+.3f}), and {cs['panel_auc']:.3f} for clinically significant cancer. It holds "
+         f"at every centre ({min(aucs):.3f} to {max(aucs):.3f}). BMI is not recorded there and "
+         f"is filled with the training median, as the service does for any missing value.")
+    if bx:
+        s += (f" The cohort's 468 unbiopsied men are recorded as cancer-free on the strength of "
+              f"a clear MRI, and PI-RADS is what decided who was biopsied, so the panel is also "
+              f"scored on the {bx['n']:,} men with an actual biopsy result: "
+              f"{bx['panel_auc']:.3f} against {bx['psa_auc']:.3f}, {bx['gain_over_psa']:+.3f} "
+              f"({bx['gain_ci'][0]:+.3f} to {bx['gain_ci'][1]:+.3f}).")
+    if r.get("primary_confirmed"):
+        s += (" **This is the first external validation of any case-control panel in this "
+              "project, and the panel passed it**, on a bar written down before the cohort was "
+              "scored. What it does not change is the population: these are men already referred "
+              "with a raised PSA and an MRI, not men off the street.")
+    else:
+        s += (" The pre-registered bar was to beat PSA alone on both, and it was not met, so "
+              "nothing is claimed about transfer.")
+    ns = (extra.get("prostate_cost") or {}).get("populations", {}).get("all_referred")
+    if ns and not ns["saving_claimed"]:
+        s += (f" Priced, it still does not pay: with a missed significant cancer charged at "
+              f"fifteen life-years, the cheapest rule is to biopsy every referred man, and "
+              f"current practice -- biopsy at PI-RADS 3 or above -- costs more than that in "
+              f"every one of the {len(ns['sweeps'])} price combinations swept, because it misses "
+              f"{ns['base']['pi_rads_3_or_above']['missed']:.1f} significant cancers per 1,000 "
+              f"men. The panel's own best cut does not beat biopsying everyone either.")
+    return s
+
+
+def text_breast_vs_clinic(_, extra):
+    """Whether the breast panel beats age plus the density already on the report."""
+    r = extra.get("breast_vs_clinic")
+    if not r:
+        return "_Run experiments/breast_vs_clinic.py._"
+    c = r["comparators"]
+    age, dens = c["age"], c["age_density"]
+    lo, hi = dens["gain_ci"]
+    s = (f"An AUC of {r['panel_auc']:.3f} reads as modest, and the comparison that decides "
+         f"whether it is worth anything is not chance but what the clinic already holds. On the "
+         f"same {r['n_mammograms']:,} unseen mammograms, age alone scores {age['auc']:.3f} and "
+         f"age together with the BI-RADS density grading printed on the report scores "
+         f"{dens['auc']:.3f}. The panel's eight other inputs -- BMI, relatives with breast "
+         f"cancer, a previous biopsy, the last mammogram's result, age at first birth, "
+         f"menopause, how it happened and hormone therapy -- add {dens['gain']:+.3f} on top of "
+         f"that (95% CI {lo:+.3f} to {hi:+.3f}).")
+    return s + (" **So the panel earns its questions**: it is not re-reading the density line in "
+                "a longer form." if r.get("earns_its_questions") else
+                " That does not separate it from the report a woman already has, so the extra "
+                "questions are not earning their place.")
+
+
+def text_banding_cost(_, extra):
+    """What BCSC's banded age and BMI cost, measured where exact values exist."""
+    r = extra.get("banding_cost")
+    if not r:
+        return "_Run experiments/banding_cost.py._"
+    s = r["summary"]
+    rows = ["| Cohort | Model | Exact | Banded | Cost of banding |", "|---|---|---|---|---|"]
+    for name, v in r.items():
+        if name == "summary":
+            continue
+        for kind, k in v["kinds"].items():
+            rows.append(f"| {name} ({v['n']:,}) | {kind} | {k['exact_auc']:.4f} | "
+                        f"{k['banded_auc']:.4f} | {k['cost']:+.4f} |")
+    note = (f"BCSC publishes age in five-year groups and BMI in four categories, so the breast "
+            f"panel cannot tell a 40-year-old from a 44-year-old, and asking the consortium for "
+            f"the research file with exact values is a months-long request. Banding cohorts that "
+            f"do carry exact values, the same way, costs at most {s['worst_case_cost']:+.4f} AUC "
+            f"and {s['typical_cost']:+.4f} typically. ")
+    note += ("**So the request is not worth making for resolution alone** -- the ceiling it "
+             "would lift is smaller than the interval on the panel's own AUC."
+             if s["worst_case_cost"] < 0.01 else
+             "**So exact values are worth requesting.**")
+    return "\n".join(rows) + "\n\n" + note
+
+
 TABLES = {
     "cv_vs_heldout": table_cv_vs_heldout,
     "shipped": table_shipped,
@@ -1013,6 +1102,9 @@ TABLES = {
     "prospective_short": text_prospective_short,
     "breast_mri_cost": text_breast_mri_cost,
     "breast_subgroups": table_breast_subgroups,
+    "prostate_external": text_prostate_external,
+    "breast_vs_clinic": text_breast_vs_clinic,
+    "banding_cost": text_banding_cost,
 }
 
 
@@ -1039,6 +1131,10 @@ def main():
         "breast_mri": load("experiments/breast_mri_triage_cost_result.json", {}),
         "breast_subgroups": load("experiments/bcsc_subgroups_full_result.json", {}),
         "cost": load("experiments/cost_model_result.json", {}),
+        "prostate_external": load("experiments/prostate_external_result.json", {}),
+        "prostate_cost": load("experiments/prostate_biopsy_cost_result.json", {}),
+        "breast_vs_clinic": load("experiments/breast_vs_clinic_result.json", {}),
+        "banding_cost": load("experiments/banding_cost_result.json", {}),
     }
 
     stale, written = [], []

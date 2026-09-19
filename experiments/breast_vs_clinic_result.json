@@ -1,0 +1,54 @@
+{
+  "n_mammograms": 597859,
+  "n_cancers": 2871,
+  "panel_auc": 0.623,
+  "panel_auc_ci": [
+    0.613,
+    0.633
+  ],
+  "comparators": {
+    "age": {
+      "features": [
+        "age"
+      ],
+      "model_kind": "logistic",
+      "auc": 0.595,
+      "gain": 0.028,
+      "gain_ci": [
+        0.021,
+        0.035
+      ],
+      "panel_beats": true
+    },
+    "age_density": {
+      "features": [
+        "age",
+        "breast_density"
+      ],
+      "model_kind": "ensemble",
+      "auc": 0.609,
+      "gain": 0.014,
+      "gain_ci": [
+        0.007,
+        0.02
+      ],
+      "panel_beats": true
+    },
+    "age_density_bmi": {
+      "features": [
+        "age",
+        "breast_density",
+        "bmi"
+      ],
+      "model_kind": "logistic",
+      "auc": 0.603,
+      "gain": 0.019,
+      "gain_ci": [
+        0.014,
+        0.025
+      ],
+      "panel_beats": true
+    }
+  },
+  "earns_its_questions": true
+}

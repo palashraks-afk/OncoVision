@@ -1,0 +1,126 @@
+{
+  "cohort": "PI-CAI, 3 Dutch centres",
+  "n": 1500,
+  "features_missing_entirely": [
+    "bmi"
+  ],
+  "trained_on": "212 men, one centre, China",
+  "targets": {
+    "prostate_cancer": {
+      "label": "adenocarcinoma, ISUP 1+",
+      "events": 653,
+      "prevalence": 0.435,
+      "panel_auc": 0.857,
+      "panel_auc_ci": [
+        0.837,
+        0.876
+      ],
+      "psa_auc": 0.583,
+      "gain_over_psa": 0.274,
+      "gain_ci": [
+        0.245,
+        0.304
+      ],
+      "shipped_auc": 0.835,
+      "beats_psa": true,
+      "reduced_auc": 0.641,
+      "reduced_gain_over_psa": 0.058,
+      "reduced_gain_ci": [
+        0.032,
+        0.084
+      ],
+      "reduced_beats_psa": true,
+      "centres": {
+        "PCNN": {
+          "n": 350,
+          "events": 189,
+          "auc": 0.758,
+          "psa_auc": 0.528
+        },
+        "RUMC": {
+          "n": 800,
+          "events": 325,
+          "auc": 0.884,
+          "psa_auc": 0.589
+        },
+        "ZGT": {
+          "n": 350,
+          "events": 139,
+          "auc": 0.894,
+          "psa_auc": 0.617
+        }
+      },
+      "biopsied_only": {
+        "n": 1032,
+        "events": 653,
+        "panel_auc": 0.764,
+        "psa_auc": 0.542,
+        "gain_over_psa": 0.221,
+        "gain_ci": [
+          0.18,
+          0.262
+        ],
+        "beats_psa": true
+      }
+    },
+    "significant_cancer": {
+      "label": "clinically significant, ISUP 2+",
+      "events": 425,
+      "prevalence": 0.283,
+      "panel_auc": 0.858,
+      "panel_auc_ci": [
+        0.837,
+        0.877
+      ],
+      "psa_auc": 0.625,
+      "gain_over_psa": 0.232,
+      "gain_ci": [
+        0.2,
+        0.265
+      ],
+      "shipped_auc": 0.835,
+      "beats_psa": true,
+      "reduced_auc": 0.646,
+      "reduced_gain_over_psa": 0.021,
+      "reduced_gain_ci": [
+        -0.009,
+        0.049
+      ],
+      "reduced_beats_psa": false,
+      "centres": {
+        "PCNN": {
+          "n": 350,
+          "events": 109,
+          "auc": 0.793,
+          "psa_auc": 0.562
+        },
+        "RUMC": {
+          "n": 800,
+          "events": 236,
+          "auc": 0.863,
+          "psa_auc": 0.62
+        },
+        "ZGT": {
+          "n": 350,
+          "events": 80,
+          "auc": 0.907,
+          "psa_auc": 0.682
+        }
+      },
+      "biopsied_only": {
+        "n": 1032,
+        "events": 425,
+        "panel_auc": 0.772,
+        "psa_auc": 0.601,
+        "gain_over_psa": 0.172,
+        "gain_ci": [
+          0.132,
+          0.211
+        ],
+        "beats_psa": true
+      }
+    }
+  },
+  "primary_confirmed": true,
+  "survives_verification_bias": true
+}

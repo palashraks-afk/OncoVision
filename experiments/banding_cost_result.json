@@ -1,0 +1,66 @@
+{
+  "general": {
+    "n": 37564,
+    "events": 3536,
+    "features": [
+      "age",
+      "bmi"
+    ],
+    "kinds": {
+      "logistic": {
+        "exact_auc": 0.781,
+        "banded_auc": 0.7775,
+        "cost": 0.0035,
+        "cost_ci": [
+          0.001,
+          0.0054
+        ],
+        "banded_loses_in": "25/25"
+      },
+      "ensemble": {
+        "exact_auc": 0.779,
+        "banded_auc": 0.7776,
+        "cost": 0.0014,
+        "cost_ci": [
+          -0.004,
+          0.0051
+        ],
+        "banded_loses_in": "19/25"
+      }
+    }
+  },
+  "colorectal": {
+    "n": 28527,
+    "events": 113,
+    "features": [
+      "age"
+    ],
+    "kinds": {
+      "logistic": {
+        "exact_auc": 0.8332,
+        "banded_auc": 0.8355,
+        "cost": -0.0023,
+        "cost_ci": [
+          -0.0113,
+          0.0059
+        ],
+        "banded_loses_in": "9/25"
+      },
+      "ensemble": {
+        "exact_auc": 0.7897,
+        "banded_auc": 0.8223,
+        "cost": -0.0326,
+        "cost_ci": [
+          -0.0812,
+          0.006
+        ],
+        "banded_loses_in": "3/25"
+      }
+    }
+  },
+  "summary": {
+    "worst_case_cost": 0.0035,
+    "typical_cost": -0.0004,
+    "verdict": "Banding costs less than 0.01 AUC in every cohort and model tested"
+  }
+}

@@ -1,0 +1,237 @@
+{
+  "cohort": "PI-CAI, 3 Dutch centres",
+  "n": 1500,
+  "base_inputs": {
+    "biopsy_cost": 1000.0,
+    "missed_cost": 2250000.0,
+    "per": 1000
+  },
+  "populations": {
+    "all_referred": {
+      "n": 1500,
+      "events": 425,
+      "base": {
+        "biopsy_everyone": {
+          "biopsies": 1000.0,
+          "missed": 0.0,
+          "caught": 283.33,
+          "cost": 1000000.0
+        },
+        "pi_rads_3_or_above": {
+          "biopsies": 589.3,
+          "missed": 5.33,
+          "caught": 278.0,
+          "cost": 12589333.0
+        },
+        "panel": {
+          "biopsies": 1000.0,
+          "missed": 0.0,
+          "caught": 283.33,
+          "cost": 1000000.0,
+          "threshold": 0.0
+        }
+      },
+      "panel_saves_vs_everyone": 0.0,
+      "panel_saves_vs_practice": 11589333.0,
+      "panel_saves_vs_better_simple": 0.0,
+      "sweeps": {
+        "biopsy 300 / missed 500000": {
+          "vs_everyone": 0.0,
+          "vs_practice": 2543467.0
+        },
+        "biopsy 300 / missed 1000000": {
+          "vs_everyone": 0.0,
+          "vs_practice": 5210133.0
+        },
+        "biopsy 300 / missed 2250000": {
+          "vs_everyone": 0.0,
+          "vs_practice": 11876800.0
+        },
+        "biopsy 300 / missed 5000000": {
+          "vs_everyone": 0.0,
+          "vs_practice": 26543467.0
+        },
+        "biopsy 600 / missed 500000": {
+          "vs_everyone": 0.0,
+          "vs_practice": 2420267.0
+        },
+        "biopsy 600 / missed 1000000": {
+          "vs_everyone": 0.0,
+          "vs_practice": 5086933.0
+        },
+        "biopsy 600 / missed 2250000": {
+          "vs_everyone": 0.0,
+          "vs_practice": 11753600.0
+        },
+        "biopsy 600 / missed 5000000": {
+          "vs_everyone": 0.0,
+          "vs_practice": 26420267.0
+        },
+        "biopsy 1000 / missed 500000": {
+          "vs_everyone": 0.0,
+          "vs_practice": 2256000.0
+        },
+        "biopsy 1000 / missed 1000000": {
+          "vs_everyone": 0.0,
+          "vs_practice": 4922667.0
+        },
+        "biopsy 1000 / missed 2250000": {
+          "vs_everyone": 0.0,
+          "vs_practice": 11589333.0
+        },
+        "biopsy 1000 / missed 5000000": {
+          "vs_everyone": 0.0,
+          "vs_practice": 26256000.0
+        },
+        "biopsy 2000 / missed 500000": {
+          "vs_everyone": 0.0,
+          "vs_practice": 1845333.0
+        },
+        "biopsy 2000 / missed 1000000": {
+          "vs_everyone": 0.0,
+          "vs_practice": 4512000.0
+        },
+        "biopsy 2000 / missed 2250000": {
+          "vs_everyone": 0.0,
+          "vs_practice": 11178667.0
+        },
+        "biopsy 2000 / missed 5000000": {
+          "vs_everyone": 0.0,
+          "vs_practice": 25845333.0
+        },
+        "biopsy 3000 / missed 500000": {
+          "vs_everyone": 0.0,
+          "vs_practice": 1434667.0
+        },
+        "biopsy 3000 / missed 1000000": {
+          "vs_everyone": 0.0,
+          "vs_practice": 4101333.0
+        },
+        "biopsy 3000 / missed 2250000": {
+          "vs_everyone": 0.0,
+          "vs_practice": 10768000.0
+        },
+        "biopsy 3000 / missed 5000000": {
+          "vs_everyone": 0.0,
+          "vs_practice": 25434667.0
+        }
+      },
+      "beats_everyone_in_every_sweep": false,
+      "beats_practice_in_every_sweep": true,
+      "saving_claimed": false
+    },
+    "biopsied_only": {
+      "n": 1032,
+      "events": 425,
+      "base": {
+        "biopsy_everyone": {
+          "biopsies": 1000.0,
+          "missed": 0.0,
+          "caught": 411.82,
+          "cost": 1000000.0
+        },
+        "pi_rads_3_or_above": {
+          "biopsies": 856.6,
+          "missed": 7.75,
+          "caught": 404.07,
+          "cost": 18298450.0
+        },
+        "panel": {
+          "biopsies": 1000.0,
+          "missed": 0.0,
+          "caught": 411.82,
+          "cost": 1000000.0,
+          "threshold": 0.0
+        }
+      },
+      "panel_saves_vs_everyone": 0.0,
+      "panel_saves_vs_practice": 17298450.0,
+      "panel_saves_vs_better_simple": 0.0,
+      "sweeps": {
+        "biopsy 300 / missed 500000": {
+          "vs_everyone": 0.0,
+          "vs_practice": 3832946.0
+        },
+        "biopsy 300 / missed 1000000": {
+          "vs_everyone": 0.0,
+          "vs_practice": 7708915.0
+        },
+        "biopsy 300 / missed 2250000": {
+          "vs_everyone": 0.0,
+          "vs_practice": 17398837.0
+        },
+        "biopsy 300 / missed 5000000": {
+          "vs_everyone": 0.0,
+          "vs_practice": 38716667.0
+        },
+        "biopsy 600 / missed 500000": {
+          "vs_everyone": 0.0,
+          "vs_practice": 3789922.0
+        },
+        "biopsy 600 / missed 1000000": {
+          "vs_everyone": 0.0,
+          "vs_practice": 7665891.0
+        },
+        "biopsy 600 / missed 2250000": {
+          "vs_everyone": 0.0,
+          "vs_practice": 17355814.0
+        },
+        "biopsy 600 / missed 5000000": {
+          "vs_everyone": 0.0,
+          "vs_practice": 38673643.0
+        },
+        "biopsy 1000 / missed 500000": {
+          "vs_everyone": 0.0,
+          "vs_practice": 3732558.0
+        },
+        "biopsy 1000 / missed 1000000": {
+          "vs_everyone": 0.0,
+          "vs_practice": 7608527.0
+        },
+        "biopsy 1000 / missed 2250000": {
+          "vs_everyone": 0.0,
+          "vs_practice": 17298450.0
+        },
+        "biopsy 1000 / missed 5000000": {
+          "vs_everyone": 0.0,
+          "vs_practice": 38616279.0
+        },
+        "biopsy 2000 / missed 500000": {
+          "vs_everyone": 0.0,
+          "vs_practice": 3589147.0
+        },
+        "biopsy 2000 / missed 1000000": {
+          "vs_everyone": 0.0,
+          "vs_practice": 7465116.0
+        },
+        "biopsy 2000 / missed 2250000": {
+          "vs_everyone": 0.0,
+          "vs_practice": 17155039.0
+        },
+        "biopsy 2000 / missed 5000000": {
+          "vs_everyone": 0.0,
+          "vs_practice": 38472868.0
+        },
+        "biopsy 3000 / missed 500000": {
+          "vs_everyone": 0.0,
+          "vs_practice": 3445736.0
+        },
+        "biopsy 3000 / missed 1000000": {
+          "vs_everyone": 0.0,
+          "vs_practice": 7321705.0
+        },
+        "biopsy 3000 / missed 2250000": {
+          "vs_everyone": 0.0,
+          "vs_practice": 17011628.0
+        },
+        "biopsy 3000 / missed 5000000": {
+          "vs_everyone": 0.0,
+          "vs_practice": 38329457.0
+        }
+      },
+      "beats_everyone_in_every_sweep": false,
+      "beats_practice_in_every_sweep": true,
+      "saving_claimed": false
+    }
+  }
+}

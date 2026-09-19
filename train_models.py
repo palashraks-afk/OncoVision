@@ -294,7 +294,12 @@ COHORT_DESIGN = {
                 "came back benign, mostly BPH. This is an INTERPRETATION panel: it needs a "
                 "PI-RADS score from an MRI, because blood and ultrasound alone tie PSA rather "
                 "than beat it (0.668 against 0.670), while adding PI-RADS reaches 0.826 and "
-                "wins every repeat. Single centre, no external cohort. Precision is projected "
+                "wins every repeat. It is the only case-control panel here with an external "
+                "cohort: on 1,500 men at three hospitals in the Netherlands it scores 0.857 "
+                "against 0.583 for the PSA number alone, holds at all three (0.758 to 0.894), "
+                "and still beats PSA among the 1,032 whose biopsy result is known, where a "
+                "clear MRI cannot stand in for an answer. See experiments/prostate_external.py. "
+                "Precision is projected "
                 "onto the roughly 40 percent malignancy rate among men taken to biopsy, not "
                 "onto SEER, because this runs after referral.",
     "ovarian": "349 women operated on at one Chinese hospital between 2011 and 2018. The "
@@ -1425,6 +1430,41 @@ def load_temporal_validation() -> dict:
                 f"the advantage is {p['gain']:+.3f} ({plo:+.3f} to {phi:+.3f}) and the AUC "
                 f"{p['auc']:.3f}, which is the accuracy to expect on new patients.")
             out[name]["confirmed"] = bool(plo > 0)
+
+    # The prostate panel's external cohort. This is not a survey cycle and not
+    # the same survey: it is 1,500 men at three hospitals in the Netherlands,
+    # scored by a model fitted on 212 men at one centre in China. It rides in
+    # the same slot because it answers the same question the card asks -- does
+    # this hold up on people it has never seen -- and it is the first case-
+    # control panel in this project that can answer it at all.
+    ext = "experiments/prostate_external_result.json"
+    if os.path.isfile(ext):
+        with open(ext) as f:
+            r = json.load(f)
+        t = r["targets"]["prostate_cancer"]
+        bx = t.get("biopsied_only") or {}
+        lo, hi = t["gain_ci"]
+        centres = [v["auc"] for v in t["centres"].values() if v.get("auc")]
+        out["prostate"] = {
+            "cycle": r["cohort"], "n": r["n"], "events": t["events"],
+            "auc": t["panel_auc"], "gain": t["gain_over_psa"], "gain_ci": [lo, hi],
+            "confirmed": bool(r.get("primary_confirmed")),
+            "verdict": (
+                f"Tested on {r['n']:,} men at three hospitals in another country, none of "
+                f"whom it had seen: it scored {t['panel_auc']:.3f} against {t['psa_auc']:.3f} "
+                f"for reading the PSA number alone, a difference of {t['gain_over_psa']:+.3f} "
+                f"({lo:+.3f} to {hi:+.3f}), and held at every one of the three hospitals "
+                f"({min(centres):.3f} to {max(centres):.3f})."
+                + (f" Among the {bx['n']:,} of them whose biopsy result is known, where a "
+                   f"clear MRI cannot stand in for an answer, it still beat PSA by "
+                   f"{bx['gain_over_psa']:+.3f}." if bx.get("beats_psa") else
+                   " Among the men whose biopsy result is known it no longer beat PSA, so the "
+                   "advantage may belong to the referral pattern rather than the model.")
+                if r.get("primary_confirmed") else
+                f"On {r['n']:,} men in another country it scored {t['panel_auc']:.3f} against "
+                f"{t['psa_auc']:.3f} for the PSA number alone, which does not separate it from "
+                f"reading the PSA."),
+        }
     return out
 
 

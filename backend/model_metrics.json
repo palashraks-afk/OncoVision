@@ -794,7 +794,7 @@
       "bmi",
       "pi_rads"
     ],
-    "cohort_design": "212 men with suspected prostate cancer, all biopsied transperineally at one centre in 2022 to 2023, 121 with adenocarcinoma. Controls are men whose biopsy came back benign, mostly BPH. This is an INTERPRETATION panel: it needs a PI-RADS score from an MRI, because blood and ultrasound alone tie PSA rather than beat it (0.668 against 0.670), while adding PI-RADS reaches 0.826 and wins every repeat. Single centre, no external cohort. Precision is projected onto the roughly 40 percent malignancy rate among men taken to biopsy, not onto SEER, because this runs after referral.",
+    "cohort_design": "212 men with suspected prostate cancer, all biopsied transperineally at one centre in 2022 to 2023, 121 with adenocarcinoma. Controls are men whose biopsy came back benign, mostly BPH. This is an INTERPRETATION panel: it needs a PI-RADS score from an MRI, because blood and ultrasound alone tie PSA rather than beat it (0.668 against 0.670), while adding PI-RADS reaches 0.826 and wins every repeat. It is the only case-control panel here with an external cohort: on 1,500 men at three hospitals in the Netherlands it scores 0.857 against 0.583 for the PSA number alone, holds at all three (0.758 to 0.894), and still beats PSA among the 1,032 whose biopsy result is known, where a clear MRI cannot stand in for an answer. See experiments/prostate_external.py. Precision is projected onto the roughly 40 percent malignancy rate among men taken to biopsy, not onto SEER, because this runs after referral.",
     "auc": 0.835,
     "auc_std": 0.033,
     "accuracy": 0.837,
@@ -877,7 +877,19 @@
       "n_splits": 30
     },
     "fairness": {},
-    "temporal_validation": null,
+    "temporal_validation": {
+      "cycle": "PI-CAI, 3 Dutch centres",
+      "n": 1500,
+      "events": 653,
+      "auc": 0.857,
+      "gain": 0.274,
+      "gain_ci": [
+        0.245,
+        0.304
+      ],
+      "confirmed": true,
+      "verdict": "Tested on 1,500 men at three hospitals in another country, none of whom it had seen: it scored 0.857 against 0.583 for reading the PSA number alone, a difference of +0.274 (+0.245 to +0.304), and held at every one of the three hospitals (0.758 to 0.894). Among the 1,032 of them whose biopsy result is known, where a clear MRI cannot stand in for an answer, it still beat PSA by +0.221."
+    },
     "rule_out_external": null,
     "panel_kind": "interpretation",
     "no_action_note": "",
