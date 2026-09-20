@@ -988,6 +988,49 @@ def text_youden_sentence(_, extra):
               "an argument.**")
 
 
+def text_checkup(_, extra):
+    """Whether the rest of a routine checkup revives either withdrawn panel."""
+    r = extra.get("checkup")
+    x = extra.get("checkup_external")
+    if not r:
+        return "_Run experiments/checkup_panels.py._"
+    bowel, gen = r.get("bowel") or {}, r.get("general") or {}
+    bc, gc = bowel["arms"]["checkup"], gen["arms"]["checkup"]
+    s = (f"Every panel here reads two tests, a blood count and a metabolic panel, and two "
+         f"panels were withdrawn because those added nothing to age and sex. A routine "
+         f"checkup produces more paper than that: an HbA1c, a lipid panel, a urine albumin, "
+         f"a blood pressure, a waist measurement. None of it had been pulled. Adding all of "
+         f"it, on the same rows and the same targets, changes the bowel panel by "
+         f"{bc['gain_over_age_sex']:+.4f} against age and sex "
+         f"({bc['gain_ci'][0]:+.4f} to {bc['gain_ci'][1]:+.4f}) on {bowel['events']} cancers, "
+         f"and the general panel by {gc['gain_over_age_sex']:+.4f} "
+         f"({gc['gain_ci'][0]:+.4f} to {gc['gain_ci'][1]:+.4f}) on {gen['events']}.")
+    if gc.get("revived"):
+        s += (f" On the second panel that clears both internal bars: its rule-out cut also "
+              f"excludes {gc['extra_share_ruled_out_at_matched_catch']:+.1%} more adults than "
+              f"a cut on age and sex at the same share of cancers caught "
+              f"({gc['extra_share_ci'][0]:+.1%} to {gc['extra_share_ci'][1]:+.1%}).")
+    if x:
+        xc = x["arms"]["checkup"]
+        s += (f" **Then it was tested on NHANES III**, 1988-1994, {x['n_test']:,} adults and "
+              f"{x['events_test']} cancers, a cohort sharing no protocol, laboratory contract "
+              f"or pipeline with the training survey. The internal gain reverses: "
+              f"{xc['external_gain_over_age_sex']:+.4f} against age and sex "
+              f"({xc['external_gain_ci'][0]:+.4f} to {xc['external_gain_ci'][1]:+.4f}), with "
+              f"the rule-out excluding {xc['external_extra_share_ruled_out']:+.1%} more adults "
+              f"rather than fewer.")
+        if x.get("revived"):
+            s += " Both bars cleared on both cohorts, so the panel returns."
+        else:
+            s += (" **Both panels stay withdrawn.** This is the third time in this project "
+                  "that a gain measured inside one survey has failed to survive a change of "
+                  "decade, and the first where the extra information was not a cleverer model "
+                  "but more of the patient's own report. Routine checkup values beyond the "
+                  "blood count carry nothing about these cancers that the patient's age does "
+                  "not already carry.")
+    return s
+
+
 def text_prostate_external(_, extra):
     """The prostate panel on PI-CAI: the first external test of a case-control panel."""
     r = extra.get("prostate_external")
@@ -1103,6 +1146,7 @@ TABLES = {
     "breast_mri_cost": text_breast_mri_cost,
     "breast_subgroups": table_breast_subgroups,
     "prostate_external": text_prostate_external,
+    "checkup": text_checkup,
     "breast_vs_clinic": text_breast_vs_clinic,
     "banding_cost": text_banding_cost,
 }
@@ -1134,6 +1178,8 @@ def main():
         "prostate_external": load("experiments/prostate_external_result.json", {}),
         "prostate_cost": load("experiments/prostate_biopsy_cost_result.json", {}),
         "breast_vs_clinic": load("experiments/breast_vs_clinic_result.json", {}),
+        "checkup": load("experiments/checkup_panels_result.json", {}),
+        "checkup_external": load("experiments/checkup_external_result.json", {}),
         "banding_cost": load("experiments/banding_cost_result.json", {}),
     }
 

@@ -1,0 +1,117 @@
+{
+  "bowel": {
+    "label": "colon or rectal cancer within 8 years",
+    "n": 28527,
+    "events": 113,
+    "prevalence": 0.004,
+    "arms": {
+      "age_sex": {
+        "features": 2,
+        "model_kind": "logistic",
+        "auc": 0.8288
+      },
+      "blood_only": {
+        "features": 22,
+        "model_kind": "logistic",
+        "auc": 0.8042,
+        "gain_over_age_sex": -0.0246,
+        "gain_ci": [
+          -0.0363,
+          -0.0119
+        ],
+        "beats_age_sex": false,
+        "extra_share_ruled_out_at_matched_catch": -0.1255,
+        "extra_share_ci": [
+          -0.263,
+          -0.0104
+        ],
+        "rule_out_beats_age": false,
+        "revived": false
+      },
+      "checkup": {
+        "features": 32,
+        "model_kind": "ensemble",
+        "auc": 0.7974,
+        "gain_over_age_sex": -0.0314,
+        "gain_ci": [
+          -0.0369,
+          -0.0254
+        ],
+        "beats_age_sex": false,
+        "extra_share_ruled_out_at_matched_catch": -0.0863,
+        "extra_share_ci": [
+          -0.2145,
+          0.0721
+        ],
+        "rule_out_beats_age": false,
+        "revived": false
+      }
+    },
+    "ferritin_subset": {
+      "events": 2,
+      "too_few": true
+    },
+    "revived": false
+  },
+  "general": {
+    "label": "any cancer within 4 years",
+    "n": 29334,
+    "events": 920,
+    "prevalence": 0.0314,
+    "arms": {
+      "age_sex": {
+        "features": 2,
+        "model_kind": "logistic",
+        "auc": 0.7664
+      },
+      "blood_only": {
+        "features": 22,
+        "model_kind": "logistic",
+        "auc": 0.778,
+        "gain_over_age_sex": 0.0115,
+        "gain_ci": [
+          0.0105,
+          0.0129
+        ],
+        "beats_age_sex": true,
+        "extra_share_ruled_out_at_matched_catch": 0.0458,
+        "extra_share_ci": [
+          -0.0003,
+          0.0907
+        ],
+        "rule_out_beats_age": false,
+        "revived": false
+      },
+      "checkup": {
+        "features": 32,
+        "model_kind": "logistic",
+        "auc": 0.7819,
+        "gain_over_age_sex": 0.0155,
+        "gain_ci": [
+          0.0126,
+          0.0174
+        ],
+        "beats_age_sex": true,
+        "extra_share_ruled_out_at_matched_catch": 0.0488,
+        "extra_share_ci": [
+          0.0012,
+          0.0942
+        ],
+        "rule_out_beats_age": true,
+        "revived": true
+      }
+    },
+    "ferritin_subset": {
+      "n": 5493,
+      "events": 70,
+      "gain": 0.0242,
+      "gain_ci": [
+        -0.0278,
+        0.058
+      ],
+      "beats_age_sex": false
+    },
+    "revived": true
+  },
+  "any_revived": true
+}

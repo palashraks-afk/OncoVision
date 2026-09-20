@@ -49,7 +49,7 @@ nothing over age and sex (+0.001, 95% CI −0.055 to +0.055). Liver disease is, 
 breast is estimated from the mammogram report a screened woman already holds; the rest are triage
 and interpretation tools for someone already inside the diagnostic pathway, and every panel says on
 its own card which it is.
-Four panels were withdrawn when the evidence stopped supporting them, three of them after they turned out to add nothing to the patient's age and sex. Roughly half the experiments in
+Four panels were withdrawn when the evidence stopped supporting them, three of them after they turned out to add nothing to the patient's age and sex. Two of those were retried on the rest of a routine checkup -- HbA1c, lipids, urine albumin, blood pressure, waist, none of which had ever been read -- and stayed withdrawn: see the paper, section 3.9. Roughly half the experiments in
 this repository came back negative and are committed anyway.
 
 The prostate panel has since been tested on 1,500 men at three hospitals in the Netherlands, the first external cohort any case-control panel here has had, and it held. The two gaps no amount of analysis closes -- a screening population rather than referred patients, and any prospective test on real patients -- both still need a named investigator. Drafts for each are in [docs/PLCO_CDAS_PROPOSAL.md](docs/PLCO_CDAS_PROPOSAL.md) and [docs/PROSPECTIVE_STUDY_PROTOCOL.md](docs/PROSPECTIVE_STUDY_PROTOCOL.md). Neither has been submitted.
