@@ -1,0 +1,11 @@
+{
+  "n": 25,
+  "events": 4,
+  "min_events": 96,
+  "arms": {
+    "age_sex": 2,
+    "snapshot": 11,
+    "trajectory": 92
+  },
+  "verdict": "4 cases is below the 96 event floor, so no comparison is run. This is the pipeline, not a result."
+}

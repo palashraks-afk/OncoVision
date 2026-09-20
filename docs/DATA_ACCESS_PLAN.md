@@ -23,6 +23,14 @@ sources below.
 | No lab-report panel screens for a named cancer (lung withdrawn 2026-09, bowel and general before it) | Routine blood work drawn BEFORE diagnosis, with site-specific cancers recorded afterwards, so the target stops being a lifetime diagnosis in survivors | **HRS 2016 Venous Blood Study**: about 9,900 US adults over 50, with a complete blood count and metabolic panel (albumin, ALT, alkaline phosphatase and more), followed for new cancers in the 2018, 2020 and 2022 waves. **CHARLS** (China, adults 45+): complete blood count, glucose, BUN, creatinine, CRP and lipids in 2011 and 2015, with new cancer diagnoses self-reported in every later wave | HRS: Sensitive Health Data order form through the HRS Data Portal. CHARLS: request through the study's own site. Neither needs a consortium proposal | Weeks |
 | Pancreatic has no screening population | People at raised risk followed with blood tests | **High-risk surveillance consortia** (familial pancreatic cancer and new-onset diabetes cohorts) | Research collaboration, not a download | Long term |
 
+| Every panel reads ONE blood draw, so none can see a value moving | Repeat blood counts per person, with a later first cancer diagnosis. The level of a value carries little; the change from a person's own baseline is how the one deployed model of this kind (ColonFlag, AUC 0.74-0.82) works | **MIMIC-IV** (~300,000 patients, every lab result timestamped, diagnosis codes per admission) | PhysioNet credentialed account plus CITI "Data or Specimens Only Research" training. Free. Hours of training, then days for approval | Days |
+
+The pipeline for that last row is already written and tested end to end on the
+openly downloadable 100-patient demo: `fetch_mimic_trajectory.py` and
+`experiments/trajectory_vs_snapshot.py`. It drops survivors, refuses labs drawn
+within 90 days of the diagnosis, and refuses to report anything below the event
+floor. On the full cohort it runs unchanged.
+
 ## Suggested order
 
 1. **HRS 2016 venous blood first.** It is the only request here that could restore what the
