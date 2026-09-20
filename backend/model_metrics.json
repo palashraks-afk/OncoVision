@@ -898,5 +898,139 @@
     "gain_over_age_sex": 0.222,
     "barely_beats_demographics": false,
     "flagged_per_true_case": 1.4
+  },
+  "cancer_mortality": {
+    "label": "Cancer Mortality Risk, next five years",
+    "shipped": true,
+    "features": [
+      "age",
+      "gender",
+      "wbc",
+      "rbc",
+      "hemoglobin",
+      "platelets",
+      "hematocrit",
+      "mcv",
+      "mch",
+      "rdw",
+      "mpv",
+      "glucose",
+      "calcium",
+      "bun",
+      "creatinine",
+      "protein_total",
+      "albumin",
+      "ast",
+      "alt",
+      "bilirubin",
+      "alkaline_phosphatase",
+      "ggt"
+    ],
+    "cohort_design": "33,834 US adults from NHANES 1999 to 2014 with no cancer diagnosis when their blood was drawn, linked by NCHS to the National Death Index; 339 died of cancer within five years. It is the only cohort here where the blood and the answer are separated in time, which is what the three withdrawn bloodwork panels lacked. Validated on 14,630 adults from NHANES III, 1988 to 1994: 0.875 against 0.861 for age and sex alone, a gain of +0.014 (95% CI +0.005 to +0.022). The outcome is death from cancer, not a diagnosis, so a person diagnosed early and cured counts as a negative, and the panel ships with no rule-out cut because that cut was no better than age.",
+    "auc": 0.853,
+    "auc_std": 0.008,
+    "accuracy": 0.788,
+    "sensitivity": 0.779,
+    "specificity": 0.788,
+    "n_samples": 33834,
+    "n_positive": 339,
+    "n_features": 22,
+    "cv_folds": 5,
+    "threshold": 0.0125,
+    "rule_out": null,
+    "no_rule_out_reason": "This panel will not tell anyone they are safe. Tested on a cohort from another decade, a cut set to catch 95 of every 100 cancer deaths excluded only 1.2 percent more adults than a cut on age and sex alone, with a range from -8.0 to +13.2: no better than knowing how old someone is. Its score is a reason to keep your screening up to date, never a reason to skip it. See experiments/prospective_panel_ship.py.",
+    "model_selection": {
+      "ensemble": 0.816,
+      "logistic": 0.857
+    },
+    "chosen_model": "logistic",
+    "held_out": {
+      "n_test": 6767,
+      "auc": 0.86,
+      "auc_ci": [
+        0.826,
+        0.89
+      ],
+      "sensitivity": 0.794,
+      "sensitivity_ci": [
+        0.695,
+        0.883
+      ],
+      "specificity": 0.76,
+      "specificity_ci": [
+        0.75,
+        0.771
+      ],
+      "brier": 0.0097,
+      "calibration_slope": 0.955,
+      "ppv_at_population_prevalence": 0.03244,
+      "people_flagged_per_true_case": 30.8,
+      "population_prevalence": 0.01002,
+      "prevalence_source": "Death from cancer within 5 years, US adults with no cancer diagnosis at the blood draw, NHANES 1999-2014 linked to the National Death Index",
+      "cohort_prevalence": 0.01,
+      "baseline_logistic_auc": 0.859,
+      "baseline_age_sex_auc": 0.844,
+      "subgroups": {
+        "sex: female": {
+          "n": 3541,
+          "positives": 25,
+          "auc": 0.836,
+          "auc_ci": [
+            0.784,
+            0.882
+          ]
+        },
+        "sex: male": {
+          "n": 3226,
+          "positives": 43,
+          "auc": 0.868,
+          "auc_ci": [
+            0.823,
+            0.908
+          ]
+        },
+        "age under 45": {
+          "n": 3299,
+          "positives": 1,
+          "auc": 0.769,
+          "auc_ci": [
+            0.756,
+            0.782
+          ]
+        },
+        "age 45 and over": {
+          "n": 3468,
+          "positives": 67,
+          "auc": 0.743,
+          "auc_ci": [
+            0.687,
+            0.8
+          ]
+        }
+      }
+    },
+    "stability": {},
+    "fairness": {},
+    "temporal_validation": {
+      "cycle": "NHANES III, 1988-1994",
+      "n": 14630,
+      "events": 254,
+      "auc": 0.875,
+      "gain": 0.0138,
+      "gain_ci": [
+        0.0052,
+        0.0222
+      ],
+      "confirmed": true,
+      "verdict": "Tested on 14,630 adults from a survey run twenty years earlier, whose blood was also drawn before anyone knew the answer: it scored 0.875 against 0.861 for age and sex alone, a difference of +0.014 (+0.005 to +0.022). Catching half the deaths there meant flagging 9.5 people for each one."
+    },
+    "rule_out_external": null,
+    "panel_kind": "screening",
+    "no_action_note": "There is no test that confirms this, because it is not a diagnosis. The score says this person's bloodwork resembles that of people who later died of a cancer nobody had found yet. The only thing to do with it is the screening you are already eligible for -- bowel, breast, cervical or lung, by your age and history -- and a conversation with your doctor about anything in the report that is flagged.",
+    "panel_kind_note": "Reads routine bloodwork, and anyone can run it. What it estimates is the risk of DYING of a cancer within five years, not of being diagnosed with one: it was built on people whose blood was drawn years before a death certificate arrived, and someone diagnosed and cured counts as a negative. Treat a high score as a reason to be up to date on the screening you are eligible for, not as a finding about a tumour.",
+    "screening_viable": true,
+    "gain_over_age_sex": null,
+    "barely_beats_demographics": false,
+    "flagged_per_true_case": 30.8
   }
 }

@@ -136,6 +136,7 @@ means, so it is stated on every panel rather than kept in a methods section.
 | Ovarian | Case-control | 349 | 171 | 49.00% | operated ovarian masses, malignant vs benign |
 | Prostate | Case-control | 212 | 121 | 57.10% | biopsied men, adenocarcinoma vs benign biopsy |
 | Lung | Population | 19,866 | 99 | 0.50% | NHANES, adults with measurable tobacco exposure |
+| Cancer mortality | Population, prospective | 33,834 | 338 | 1.00% | NHANES linked to the National Death Index, cancer death within 5 years |
 | Bowel | Population | 28,527 | 114 | 0.40% | NHANES 2005-2016, colon or rectal cancer within 8 years |
 | General | Population | 28,711 | 890 | 3.10% | NHANES 2005-2016, cancer diagnosed within 4 years |
 | Liver | Population | 30,624 | 1,164 | 3.80% | NHANES, 7 cycles, clinical liver disease |
@@ -285,6 +286,7 @@ years beyond a single sensitivity figure, and no price on the harm of an unneces
 | Ovarian | 0.949 | 0.911 | 0.813 | +0.174 |
 | Prostate | 0.880 | 0.876 | 0.661 | +0.222 |
 | ~~Lung~~ withdrawn | 0.872 | 0.867 | 0.842 | +0.024 |
+| Cancer mortality | 0.860 | 0.859 | 0.844 | not measurable |
 | ~~Bowel~~ withdrawn | 0.821 | 0.82 | 0.843 | **-0.011** |
 | ~~General~~ withdrawn | 0.781 | 0.78 | 0.779 | **+0.002** |
 | Liver | 0.780 | 0.761 | 0.623 | +0.114 |
@@ -301,6 +303,7 @@ The gain column is measured by repeated paired cross-validation on identical fol
 | Ovarian | 0.949 | 79.33% | 1.3 | not a screening panel |
 | Prostate | 0.880 | 69.51% | 1.4 | not a screening panel |
 | Lung | 0.872 | 1.99% | 50.3 | no |
+| Cancer mortality | 0.860 | 3.24% | 30.8 | yes, with caveats |
 | Bowel | 0.821 | 0.18% | 559.8 | no |
 | General | 0.781 | 7.39% | 13.5 | yes, with caveats |
 | Liver | 0.780 | 12.47% | 8.0 | yes, with caveats |
@@ -612,7 +615,10 @@ informative. Breast at 0.997 and pancreatic at 0.969 are case-control designs: t
 cases from selected controls, on cohorts of 569 and 600. Read as screening performance they are
 badly misleading, and the taxonomy exists to stop them being read that way.
 
-The tool ships six panels. None screens for a named cancer from a lab report alone. One estimates
+The tool ships seven panels. None screens for a named CANCER from a lab report alone; one reads
+routine chemistry for the risk of dying of any cancer within five years, which is a different and
+weaker claim, and is the only panel here validated on a second cohort whose blood was also drawn
+before anyone knew the answer. One estimates
 breast cancer risk from a mammogram report at real screening prevalence. Four require the patient to
 already be inside the diagnostic pathway, and one detects liver disease rather than liver cancer, with
 a gain over age and sex that held on two later survey cycles. Bowel, general and lung panels were
@@ -714,7 +720,25 @@ Among 202,285 mammograms in women with dense breasts (1,081 cancers within a yea
 
  No threshold repairs a signal that is not there.
 
-### 4.7 Methodological findings
+### 4.7 Matching a report against patterns, instead of fitting a model
+
+<!-- AUTOGEN:pattern_matching -->
+| Method | AUC alone | As an extra input to the panel |
+|---|---|---|
+| the shipped panel | **0.875** | |
+| centroid match with age and sex | 0.844 | 0.874 |
+| centroid match | 0.762 | 0.875 |
+| neighbours with age and sex, 50 | 0.751 | 0.875 |
+| unusualness, isolation forest | 0.663 | 0.875 |
+| neighbours, 50 nearest | 0.619 | 0.874 |
+| unusualness, distance | 0.419 | 0.859 |
+
+A reasonable instinct about this application is that it should hold a library of what cancer patients' bloodwork looked like and check a new report against it, rather than fit a model. Three forms of that were built and scored on the external cohort: how many of the 33,834 nearest reports belonged to people who later died of cancer, how much closer a report sits to the cancer profile than to the healthy one, and how unusual the COMBINATION of values is measured against healthy people alone -- the last one being this project's founding sentence tested directly, and it never looks at a cancer patient at all.
+
+None of them replaces the panel. The best scores 0.844 against 0.875, and matching on lab values alone falls to 0.619. One version -- unusualness by isolation forest -- adds a gain that clears zero as an extra input, and at +0.0008 it falls below the 0.005 margin this project already uses to refuse a more complicated model, so it is recorded and not adopted. The reading is that pattern matching finds the same signal the model already reads, and reads it less precisely: a boundary fitted to the data beats a library of examples, because the signal is weak and spread thin rather than clustered into recognisable shapes.
+<!-- /AUTOGEN:pattern_matching -->
+
+### 4.8 Methodological findings
 
 Three results here are about method rather than about cancer, and generalise beyond this project.
 

@@ -1,0 +1,166 @@
+{
+  "n_train": 33834,
+  "n_test": 14630,
+  "events_test": 254,
+  "features": [
+    "age",
+    "gender",
+    "wbc",
+    "rbc",
+    "hemoglobin",
+    "platelets",
+    "hematocrit",
+    "mcv",
+    "mch",
+    "rdw",
+    "mpv",
+    "glucose",
+    "calcium",
+    "bun",
+    "creatinine",
+    "protein_total",
+    "albumin",
+    "ast",
+    "alt",
+    "bilirubin",
+    "alkaline_phosphatase",
+    "ggt"
+  ],
+  "shipped_auc": 0.8746,
+  "methods": {
+    "neighbours, 50 nearest": {
+      "auc_alone": 0.6187,
+      "gain_alone": -0.2563,
+      "gain_ci": [
+        -0.293,
+        -0.2198
+      ],
+      "replaces_shipped": false,
+      "auc_as_extra_input": 0.8742,
+      "gain_as_extra": -0.0005,
+      "gain_as_extra_ci": [
+        -0.0017,
+        0.0007
+      ],
+      "adds_to_shipped": false,
+      "auc_ci_alone": [
+        0.584,
+        0.654
+      ],
+      "material": false,
+      "adopted": false
+    },
+    "neighbours with age and sex, 50": {
+      "auc_alone": 0.7508,
+      "gain_alone": -0.1239,
+      "gain_ci": [
+        -0.1517,
+        -0.097
+      ],
+      "replaces_shipped": false,
+      "auc_as_extra_input": 0.8746,
+      "gain_as_extra": -0.0,
+      "gain_as_extra_ci": [
+        -0.0001,
+        0.0
+      ],
+      "adds_to_shipped": false,
+      "auc_ci_alone": [
+        0.721,
+        0.78
+      ],
+      "material": false,
+      "adopted": false
+    },
+    "centroid match with age and sex": {
+      "auc_alone": 0.8437,
+      "gain_alone": -0.0308,
+      "gain_ci": [
+        -0.0455,
+        -0.0158
+      ],
+      "replaces_shipped": false,
+      "auc_as_extra_input": 0.874,
+      "gain_as_extra": -0.0006,
+      "gain_as_extra_ci": [
+        -0.0038,
+        0.0023
+      ],
+      "adds_to_shipped": false,
+      "auc_ci_alone": [
+        0.821,
+        0.866
+      ],
+      "material": false,
+      "adopted": false
+    },
+    "centroid match": {
+      "auc_alone": 0.7625,
+      "gain_alone": -0.1119,
+      "gain_ci": [
+        -0.1382,
+        -0.0853
+      ],
+      "replaces_shipped": false,
+      "auc_as_extra_input": 0.8746,
+      "gain_as_extra": -0.0001,
+      "gain_as_extra_ci": [
+        -0.0022,
+        0.0019
+      ],
+      "adds_to_shipped": false,
+      "auc_ci_alone": [
+        0.733,
+        0.791
+      ],
+      "material": false,
+      "adopted": false
+    },
+    "unusualness, distance": {
+      "auc_alone": 0.4191,
+      "gain_alone": -0.4558,
+      "gain_ci": [
+        -0.4961,
+        -0.4137
+      ],
+      "replaces_shipped": false,
+      "auc_as_extra_input": 0.8586,
+      "gain_as_extra": -0.016,
+      "gain_as_extra_ci": [
+        -0.0293,
+        -0.0054
+      ],
+      "adds_to_shipped": false,
+      "auc_ci_alone": [
+        0.382,
+        0.457
+      ],
+      "material": false,
+      "adopted": false
+    },
+    "unusualness, isolation forest": {
+      "auc_alone": 0.6631,
+      "gain_alone": -0.2115,
+      "gain_ci": [
+        -0.2461,
+        -0.1776
+      ],
+      "replaces_shipped": false,
+      "auc_as_extra_input": 0.8755,
+      "gain_as_extra": 0.0008,
+      "gain_as_extra_ci": [
+        0.0002,
+        0.0015
+      ],
+      "adds_to_shipped": true,
+      "auc_ci_alone": [
+        0.628,
+        0.697
+      ],
+      "material": false,
+      "adopted": false
+    }
+  },
+  "materiality_margin": 0.005,
+  "adopt": []
+}

@@ -133,6 +133,14 @@ WITHDRAWN = {
 # Shown on every card, because a demo that implies all eight work the same way
 # is overselling four of them.
 PANEL_KIND = {
+    "cancer_mortality": ("screening", "Reads routine bloodwork, and anyone can run it. What it "
+                                      "estimates is the risk of DYING of a cancer within five "
+                                      "years, not of being diagnosed with one: it was built on "
+                                      "people whose blood was drawn years before a death "
+                                      "certificate arrived, and someone diagnosed and cured "
+                                      "counts as a negative. Treat a high score as a reason to "
+                                      "be up to date on the screening you are eligible for, not "
+                                      "as a finding about a tumour."),
     "general":    ("screening", "Reads routine bloodwork and your history. Anyone can run it."),
     "liver":      ("screening", "Reads routine bloodwork and your history, for adults in the general "
                                 "population. It estimates liver disease, not liver cancer, and it is not "
@@ -191,6 +199,28 @@ NO_ACTION = {
                 "anywhere in particular. Read it as a reason to make sure your "
                 "routine screening is up to date, not as something to act on by "
                 "itself."),
+    "cancer_mortality": (
+        "There is no test that confirms this, because it is not a diagnosis. The "
+        "score says this person's bloodwork resembles that of people who later died "
+        "of a cancer nobody had found yet. The only thing to do with it is the "
+        "screening you are already eligible for -- bowel, breast, cervical or lung, "
+        "by your age and history -- and a conversation with your doctor about "
+        "anything in the report that is flagged."),
+}
+
+# Panels that ship no rule-out cut, for a reason the cost model cannot express.
+# A cut says "you can skip the test". A panel that has not earned that sentence
+# must not say it, and silence here is a deliberate product decision rather than
+# an oversight, so it is written down with its evidence.
+NO_RULE_OUT = {
+    "cancer_mortality": (
+        "This panel will not tell anyone they are safe. Tested on a cohort from "
+        "another decade, a cut set to catch 95 of every 100 cancer deaths excluded "
+        "only 1.2 percent more adults than a cut on age and sex alone, with a range "
+        "from -8.0 to +13.2: no better than knowing how old someone is. Its score is "
+        "a reason to keep your screening up to date, never a reason to skip it. "
+        "See experiments/prospective_panel_ship.py."
+    ),
 }
 
 REDUCED_INPUTS = {
@@ -289,6 +319,16 @@ COHORT_DESIGN = {
             "pack-years adds 0.001, so the measured value beats the questionnaire it replaces. "
             "The target is a lifetime diagnosis, and lung cancer survival is poor, so the cases "
             "are survivor-biased. Spirometry helps far more but only 13 cases have it.",
+    "cancer_mortality": "33,834 US adults from NHANES 1999 to 2014 with no cancer diagnosis "
+                        "when their blood was drawn, linked by NCHS to the National Death Index; "
+                        "339 died of cancer within five years. It is the only cohort here where "
+                        "the blood and the answer are separated in time, which is what the three "
+                        "withdrawn bloodwork panels lacked. Validated on 14,630 adults from "
+                        "NHANES III, 1988 to 1994: 0.875 against 0.861 for age and sex alone, a "
+                        "gain of +0.014 (95% CI +0.005 to +0.022). The outcome is death from "
+                        "cancer, not a diagnosis, so a person diagnosed early and cured counts "
+                        "as a negative, and the panel ships with no rule-out cut because that "
+                        "cut was no better than age.",
     "prostate": "212 men with suspected prostate cancer, all biopsied transperineally at one "
                 "centre in 2022 to 2023, 121 with adenocarcinoma. Controls are men whose biopsy "
                 "came back benign, mostly BPH. This is an INTERPRETATION panel: it needs a "
@@ -852,6 +892,70 @@ DATASETS = [
         "positive_means": ("adenocarcinoma on biopsy, separated from a benign biopsy result "
                            "rather than from an unbiopsied man"),
     },
+    {
+        "name": "cancer_mortality",
+        # 33,834 US adults, NHANES 1999-2014, WITH NO CANCER DIAGNOSIS when the
+        # blood was drawn, linked by NCHS to the National Death Index. 339 of
+        # them died of cancer within the next five years.
+        #
+        # This is the only cohort in the project where the blood and the answer
+        # are separated in time. Everywhere else the two were recorded at the
+        # same visit, and the "answer" was a survivor being asked whether they
+        # had ever had cancer -- which is why bowel, general and lung were all
+        # withdrawn, each after its lab values turned out to add nothing to age
+        # and sex on data it had not seen.
+        #
+        # Here they do add something, and it was tested the hard way. The same
+        # 22 values in NHANES III, 1988-1994, a different decade with different
+        # instruments and a different laboratory contract: 0.875 against 0.861
+        # for the stronger age-and-sex model, a gain of +0.014 with a 95%
+        # interval of +0.005 to +0.022. Catching half the deaths flags 9.5
+        # people per death. No subgroup with enough events scores materially
+        # worse than the whole.
+        #
+        # THE OUTCOME IS DEATH, NOT DIAGNOSIS, and that governs everything the
+        # panel is allowed to say. Someone diagnosed early and cured is a
+        # negative here. So this is not an early-detection test: it is a signal
+        # that a person's routine bloodwork looks like that of people who went
+        # on to die of an undetected cancer. It ships with no rule-out cut
+        # (NO_RULE_OUT) because that cut was no better than age.
+        #
+        # The features are exactly the 22 that both cohorts carry, so the model
+        # that ships is the model that was externally validated, not a larger
+        # one sharing its name. BMI, smoking and alcohol raise the internal gain
+        # to +0.025 and are deliberately left out: NHANES III does not carry
+        # them here, and an untested panel is not what this project ships.
+        # See experiments/prospective_panel_ship.py and prospective_external.py.
+        "file": "nhanes_cancer_mortality.csv",
+        "label": "Cancer Mortality Risk, next five years",
+        "features": {
+            "age": lambda d: d["age"],
+            "gender": lambda d: d["gender"],
+            "wbc": lambda d: d["wbc"],
+            "rbc": lambda d: d["rbc"],
+            "hemoglobin": lambda d: d["hemoglobin"],
+            "platelets": lambda d: d["platelets"],
+            "hematocrit": lambda d: d["hematocrit"],
+            "mcv": lambda d: d["mcv"],
+            "mch": lambda d: d["mch"],
+            "rdw": lambda d: d["rdw"],
+            "mpv": lambda d: d["mpv"],
+            "glucose": lambda d: d["glucose"],
+            "calcium": lambda d: d["calcium"],
+            "bun": lambda d: d["bun"],
+            "creatinine": lambda d: d["creatinine"],
+            "protein_total": lambda d: d["protein_total"],
+            "albumin": lambda d: d["albumin"],
+            "ast": lambda d: d["ast"],
+            "alt": lambda d: d["alt"],
+            "bilirubin": lambda d: d["bilirubin"],
+            "alkaline_phosphatase": lambda d: d["alkaline_phosphatase"],
+            "ggt": lambda d: d["ggt"],
+        },
+        "target": lambda d: d["cancer_death"].astype(int),
+        "positive_means": ("death from any cancer within five years of the blood draw, "
+                           "among adults who had no cancer diagnosis when it was taken"),
+    },
 ]
 
 
@@ -1070,7 +1174,10 @@ def evaluate(clf_factory, X: pd.DataFrame, y: pd.Series,
     # predictions, so the target is capped just below.
     target = opt.get("sensitivity") or RULE_OUT_SENSITIVITY
     target = min(float(target), 0.99)
-    if opt and not opt.get("worth_triaging", True):
+    if panel in NO_RULE_OUT:
+        rule_out = None
+        no_rule_out_reason = NO_RULE_OUT[panel]
+    elif opt and not opt.get("worth_triaging", True):
         rule_out = None
         no_rule_out_reason = (
             "The cost analysis says everyone in this group should have the "
@@ -1464,6 +1571,32 @@ def load_temporal_validation() -> dict:
                 f"On {r['n']:,} men in another country it scored {t['panel_auc']:.3f} against "
                 f"{t['psa_auc']:.3f} for the PSA number alone, which does not separate it from "
                 f"reading the PSA."),
+        }
+
+    # The prospective panel's own external cohort: the same design, a different
+    # decade. It is the only panel here whose test cohort had its blood drawn
+    # before anyone knew the answer.
+    ship = "experiments/prospective_panel_ship_result.json"
+    if os.path.isfile(ship):
+        with open(ship) as f:
+            r = json.load(f)
+        lo, hi = r["external_gain_ci"]
+        out["cancer_mortality"] = {
+            "cycle": "NHANES III, 1988-1994",
+            "n": r["n_test"], "events": r["events_test"],
+            "auc": r["external_auc"], "gain": r["external_gain"], "gain_ci": [lo, hi],
+            "confirmed": bool(r.get("ship_the_panel")),
+            "verdict": (
+                f"Tested on {r['n_test']:,} adults from a survey run twenty years earlier, "
+                f"whose blood was also drawn before anyone knew the answer: it scored "
+                f"{r['external_auc']:.3f} against {r['age_sex_external_auc']:.3f} for age and "
+                f"sex alone, a difference of {r['external_gain']:+.3f} ({lo:+.3f} to {hi:+.3f}). "
+                f"Catching half the deaths there meant flagging "
+                f"{r['people_flagged_per_death_at_half_caught']} people for each one."
+                if r.get("ship_the_panel") else
+                f"On {r['n_test']:,} adults from another decade its advantage over age and sex "
+                f"measured {r['external_gain']:+.3f} ({lo:+.3f} to {hi:+.3f}), which does not "
+                f"separate it from knowing someone's age."),
         }
     return out
 

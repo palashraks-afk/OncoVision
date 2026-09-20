@@ -35,6 +35,7 @@ Run:  python evaluate.py
 """
 
 import json
+import sys
 import os
 import warnings
 
@@ -99,6 +100,14 @@ SEER_INCIDENCE = {
     # cervical at population incidence flags about 7,383 women per true case,
     # which is precisely why neither panel is offered as a population screen.
     "ovarian":    (20000.0, "Malignancy among women taken to surgery for an adnexal mass"),
+    # The prospective panel predicts DEATH from cancer within five years, not a
+    # diagnosis, so no SEER incidence figure is the right prior: the population
+    # it would run on is the one it was measured in. NHANES itself gives that
+    # rate directly, 339 deaths among 33,834 adults with no cancer diagnosis
+    # when their blood was drawn.
+    "cancer_mortality": (1002.0, "Death from cancer within 5 years, US adults with no cancer "
+                                 "diagnosis at the blood draw, NHANES 1999-2014 linked to the "
+                                 "National Death Index"),
     "cervical":   (6400.0, "Positive biopsy among women assessed for colposcopy, this cohort"),
 }
 
@@ -112,6 +121,7 @@ COHORT_DESIGN = {
     "colorectal": "23,794 US adults, NHANES 2005-2014. Diagnosed within 8 years; longer-ago survivors excluded.",
     "lung":       "19,866 US adults with tobacco exposure, NHANES 1999-2016, 2017-2018 withheld. Controls are smokers, not the general population.",
     "ovarian":    "349 women operated on at one Chinese hospital. Controls are benign ovarian tumours, not healthy women.",
+    "cancer_mortality": "33,834 US adults, NHANES 1999-2014, none with a cancer diagnosis when their blood was drawn, linked by NCHS to the National Death Index. The only cohort here where the blood and the answer are separated in time. Validated on 14,630 adults from NHANES III.",
     "cervical":   "858 women assessed for colposcopy in Caracas, 55 biopsy-positive. Prior-diagnosis columns dropped as leakage.",
 }
 
@@ -365,8 +375,20 @@ def evaluate_domain(config):
 
 
 def main():
+    # Naming panels on the command line re-evaluates only those and merges them
+    # into the existing evaluation.json. A full pass takes over an hour, and
+    # re-running every panel to add one was the reason a new panel's held-out
+    # numbers went missing from its card for a whole cycle.
+    wanted = [a for a in sys.argv[1:] if not a.startswith("-")]
     results = {}
+    if wanted and os.path.exists("evaluation.json"):
+        with open("evaluation.json") as f:
+            results = json.load(f)
+        print(f"merging into existing evaluation.json, re-evaluating: {', '.join(wanted)}")
+
     for config in tm.DATASETS:
+        if wanted and config["name"] not in wanted:
+            continue
         print(f"evaluating {config['name']} ...", flush=True)
         results[config["name"]] = evaluate_domain(config)
 

@@ -1,0 +1,81 @@
+{
+  "n_train": 33834,
+  "events_train": 339,
+  "n_test": 14630,
+  "events_test": 254,
+  "features": [
+    "age",
+    "gender",
+    "wbc",
+    "rbc",
+    "hemoglobin",
+    "platelets",
+    "hematocrit",
+    "mcv",
+    "mch",
+    "rdw",
+    "mpv",
+    "glucose",
+    "calcium",
+    "bun",
+    "creatinine",
+    "protein_total",
+    "albumin",
+    "ast",
+    "alt",
+    "bilirubin",
+    "alkaline_phosphatase",
+    "ggt"
+  ],
+  "model_kind": "logistic",
+  "internal_cv_auc": 0.854,
+  "external_auc": 0.875,
+  "external_auc_ci": [
+    0.856,
+    0.893
+  ],
+  "age_sex_external_auc": 0.861,
+  "external_gain": 0.0138,
+  "external_gain_ci": [
+    0.0052,
+    0.0222
+  ],
+  "ship_the_panel": true,
+  "rule_out_extra_share": 0.0124,
+  "rule_out_extra_share_ci": [
+    -0.0798,
+    0.132
+  ],
+  "ship_a_cut": false,
+  "people_flagged_per_death_at_half_caught": 9.5,
+  "fairness_groups": {
+    "Mexican American": {
+      "events": 41,
+      "auc": 0.816,
+      "materially_worse": false
+    },
+    "Non-Hispanic Asian": {
+      "events": 5,
+      "auc": null
+    },
+    "Non-Hispanic Black": {
+      "events": 72,
+      "auc": 0.875,
+      "materially_worse": false
+    },
+    "Non-Hispanic White": {
+      "events": 197,
+      "auc": 0.842,
+      "materially_worse": false
+    },
+    "Other Hispanic": {
+      "events": 17,
+      "auc": null
+    },
+    "Other or multiracial": {
+      "events": 3,
+      "auc": null
+    }
+  },
+  "outcome": "death from any cancer within 60 months, in adults with no cancer diagnosis when the blood was drawn"
+}

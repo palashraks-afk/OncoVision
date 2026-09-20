@@ -16,6 +16,7 @@ before any model was fitted and was not used for training, model selection, or c
 | ovarian | 0.949 | 0.882 to 0.994 | 0.911 | 0.813 | yes |
 | lung | 0.872 | 0.801 to 0.925 | 0.867 | 0.842 | marginal |
 | prostate | 0.88 | 0.746 to 0.979 | 0.876 | 0.661 | marginal |
+| cancer_mortality | 0.86 | 0.826 to 0.89 | 0.859 | 0.844 | marginal |
 
 ## Precision at real population prevalence
 
@@ -34,6 +35,7 @@ whether a screening tool is usable.
 | ovarian | 20.0000% | 0.853 | 0.944 | **79.33%** | 1.3 |
 | lung | 0.4750% | 0.5 | 0.882 | **1.99%** | 50.3 |
 | prostate | 40.0000% | 0.76 | 0.778 | **69.51%** | 1.4 |
+| cancer_mortality | 1.0020% | 0.794 | 0.76 | **3.24%** | 30.8 |
 
 ## Calibration
 
@@ -50,6 +52,7 @@ Slope 1.0 and intercept 0.0 is perfect. Slope below 1 means the model is over-co
 | ovarian | 0.0851 | 0.0797 | 0.455 | 0.918 |
 | lung | 0.1495 | 0.0044 | 0.971 | 1.144 |
 | prostate | 0.1386 | 0.1509 | 0.602 | -1.403 |
+| cancer_mortality | 0.157 | 0.0097 | 0.955 | 2.064 |
 
 ## Per panel detail
 
@@ -287,3 +290,30 @@ Slope 1.0 and intercept 0.0 is perfect. Slope below 1 means the model is over-co
   | 0.2 to 0.4 | 2 | 0.33 | 0.0 |
   | 0.4 to 0.6 | 9 | 0.505 | 0.556 |
   | 0.8 to 1.0 | 23 | 0.936 | 0.826 |
+
+### cancer_mortality
+
+- **Cohort design**: 33,834 US adults, NHANES 1999-2014, none with a cancer diagnosis when their blood was drawn, linked by NCHS to the National Death Index. The only cohort here where the blood and the answer are separated in time. Validated on 14,630 adults from NHANES III.
+- **Records**: 33834 total, 27067 train, 6767 held-out test
+- **Features** (22): age, gender, wbc, rbc, hemoglobin, platelets, hematocrit, mcv, mch, rdw, mpv, glucose, calcium, bun, creatinine, protein_total, albumin, ast, alt, bilirubin, alkaline_phosphatase, ggt
+- **Cohort prevalence**: 1.0% vs population 1.0020%
+- **Test AUC**: 0.86 (95% CI 0.826 to 0.89)
+- **Sensitivity**: 0.794 (95% CI 0.695 to 0.883)
+- **Specificity**: 0.76 (95% CI 0.75 to 0.771)
+- **PPV at SEER prevalence**: 3.24%, about 30.8 people flagged per true case
+
+  Subgroups:
+
+  | Group | n | positives | AUC | 95% CI |
+  |---|---|---|---|---|
+  | sex: female | 3541 | 25 | 0.836 | 0.784 to 0.882 |
+  | sex: male | 3226 | 43 | 0.868 | 0.823 to 0.908 |
+  | age under 45 | 3299 | 1 | 0.769 | 0.756 to 0.782 |
+  | age 45 and over | 3468 | 67 | 0.743 | 0.687 to 0.8 |
+
+  Reliability (calibrated):
+
+  | Predicted bin | n | mean predicted | observed rate |
+  |---|---|---|---|
+  | 0.0 to 0.2 | 6762 | 0.01 | 0.01 |
+  | 0.2 to 0.4 | 5 | 0.276 | 0.2 |

@@ -83,6 +83,17 @@ const FALLBACK_METRICS: Record<string, any> = {
     baseline_logistic_auc: 0.876, baseline_age_sex_auc: 0.661,
     n_samples: 212, n_test: 43, n_features: 6,
   },
+  cancer_mortality: {
+    label: "Cancer Mortality Risk, next five years", auc: 0.86, auc_ci: [0.826, 0.89],
+    threshold: 0.0125,
+    sensitivity: 0.794, specificity: 0.76,
+    brier: 0.0097, calibration_slope: 0.955,
+    ppv_at_population_prevalence: 0.03244,
+    people_flagged_per_true_case: 30.8,
+    population_prevalence: 0.01002, cohort_prevalence: 0.01,
+    baseline_logistic_auc: 0.859, baseline_age_sex_auc: 0.844,
+    n_samples: 33834, n_test: 6767, n_features: 22,
+  },
   liver: {
     label: "Liver Disease Risk", auc: 0.78, auc_ci: [0.748, 0.811],
     threshold: 0.0443,
@@ -1326,7 +1337,7 @@ export default function OncovisionDashboard() {
                     { icon: UploadCloud, title: "Get your data in", body: "Upload the PDF of your lab report and let the parser fill the panel, or type the values yourself. Both routes feed the same models, and you can upload a PDF and then correct anything it misread. Nothing is required, so the models work with whatever you give them." },
                     { icon: ClipboardList, title: "Answer the history questions", body: "Sex, smoking, alcohol, exercise, family history, hepatitis status, cirrhosis and diabetes. This is the information about you that no lab report contains, and it carries real weight in the scoring, so filling it in is worth the minute it takes." },
                     { icon: Scan, title: "Run the analysis", body: "Values are checked against the range a living patient can have, then scored by each model that has enough to work with. Anything impossible, such as a typo with an extra zero, is dropped and reported back rather than quietly changing your score." },
-                    { icon: Layers, title: "Read the report", body: "Six cards come back sorted highest first: five cancer panels and a healthy baseline. Each one expands to show which inputs the model leaned on, how your values compare to their reference limits, and how accurate that model is." },
+                    { icon: Layers, title: "Read the report", body: "Cards come back sorted highest first: the cancer panels you have inputs for, and a healthy baseline. Each one expands to show which inputs the model leaned on, how your values compare to their reference limits, and how accurate that model is." },
                   ].map(({ icon: Icon, title, body }) => (
                     <div key={title} className="bg-[var(--surface)] border border-[var(--rule)] rounded-none p-6">
                       <div className="flex items-center gap-3 mb-3">
@@ -1440,7 +1451,7 @@ export default function OncovisionDashboard() {
 
               <section className="bg-[var(--surface)] border border-[var(--stamp-line)] rounded-none p-8">
                 <h3 className="text-2xl font-bold text-[var(--ink)] mb-2">Reading your results</h3>
-                <p className="text-[var(--ink-2)] text-sm mb-6">Six cards come back, sorted from highest score to lowest.</p>
+                <p className="text-[var(--ink-2)] text-sm mb-6">Cards come back sorted from highest score to lowest.</p>
 
                 <div className="space-y-4">
                   <div className="bg-[var(--paper-2)] border border-[var(--ok-line)] rounded-none p-5">
@@ -1954,6 +1965,7 @@ export default function OncovisionDashboard() {
                     <tbody className="divide-y divide-[var(--rule)]">
                       {[
                         ["Liver", "NHANES 2005 to 2016, 30,624 US adults; 2017 to 2018 withheld as a test", "Told by a doctor they have a liver condition: liver disease, not liver cancer"],
+                        ["Cancer mortality", "NHANES 1999 to 2014, 33,834 US adults with no cancer diagnosis when their blood was drawn, linked to the National Death Index; validated on 14,630 adults from NHANES III", "Death from any cancer within five years of the blood draw"],
                         ["Breast, mammogram", "Breast Cancer Surveillance Consortium, 400,000 mammograms sampled from 1.8 million", "Breast cancer within a year of the mammogram"],
                         ["Breast, biopsy", "Wisconsin Diagnostic Breast Cancer, 569 records", "A malignant fine needle aspirate"],
                         ["Pancreatic", "Pancreatic biomarker cohort, 600 records from three tissue banks", "Confirmed adenocarcinoma, separated from both healthy controls and benign hepatobiliary disease"],
@@ -1978,6 +1990,7 @@ export default function OncovisionDashboard() {
                 <ul className="space-y-3 text-sm text-[var(--ink-2)] leading-relaxed list-disc pl-5">
                   <li><strong className="text-[var(--ink)]">Two kinds of cohort, and only one supports a screening claim.</strong> Liver and the mammogram-report breast panel are trained on population cohorts at real prevalence. Pancreatic, ovarian, prostate and the biopsy breast panel are case-control: people who already had a reason to be tested, running far above real incidence. Their high AUCs describe separating cases from selected controls, not screening.</li>
                   <li><strong className="text-[var(--ink)]">The biopsy breast panel interprets a biopsy.</strong> Its thirty inputs are nuclear measurements from a fine needle aspirate that has already been taken. The mammogram-report breast panel is the one that answers the screening question, and it scores far lower because that question is harder.</li>
+                  <li><strong className="text-[var(--ink)]">One panel reads routine bloodwork and was validated twice, and it does not predict a diagnosis.</strong> The cancer-mortality panel was built on adults whose blood was drawn years before a death certificate arrived, and tested on a second survey of the same design from twenty years earlier: 0.875 against 0.861 for age and sex alone. Its outcome is death from cancer within five years, so someone diagnosed early and cured counts as a negative. It ships with no rule-out call, because at the same share of deaths caught it excluded no more people than a cut on age.</li>
                   <li><strong className="text-[var(--ink)]">Two panels added nothing over age and sex, and both were withdrawn.</strong> A bowel panel built on sixteen blood values matched a logistic model on age and sex alone, inside its survey and on a cohort measured fifteen years earlier. A general cancer-risk panel barely beat age and sex, and its rule-out call excluded no more people than a cut on age and sex at the same sensitivity.</li>
                   <li><strong className="text-[var(--ink)]">External validation is uneven.</strong> Liver was tested in India, in Germany, and on two later survey cycles it never saw; its gain over age and sex held on both, and it scores below chance in Germany. The lung panel was withdrawn when the same two cycles showed no gain over age and sex. The prostate panel, trained on 212 men at one centre in China, was scored unchanged on 1,500 men at three hospitals in the Netherlands and beat reading the PSA number alone there, holding at every centre — the first external test of a case-control panel here. No public cohort exists for the other three. The two panels withdrawn for adding nothing to age and sex were retried on the rest of a routine checkup — HbA1c, lipids, urine albumin, blood pressure, waist — and stayed withdrawn: the general panel&apos;s small gain there reversed on a cohort from the 1990s.</li>
                   <li><strong className="text-[var(--ink)]">No prospective test and no IRB.</strong> No real patient report has been run through this and followed to an outcome. There is no ethics approval, no registration, and no clinical validation of any kind.</li>

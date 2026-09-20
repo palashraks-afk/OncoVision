@@ -1634,5 +1634,202 @@
         ]
       }
     }
+  },
+  "cancer_mortality": {
+    "domain": "cancer_mortality",
+    "cohort_design": "33,834 US adults, NHANES 1999-2014, none with a cancer diagnosis when their blood was drawn, linked by NCHS to the National Death Index. The only cohort here where the blood and the answer are separated in time. Validated on 14,630 adults from NHANES III.",
+    "n_total": 33834,
+    "n_train": 27067,
+    "n_test": 6767,
+    "n_features": 22,
+    "features": [
+      "age",
+      "gender",
+      "wbc",
+      "rbc",
+      "hemoglobin",
+      "platelets",
+      "hematocrit",
+      "mcv",
+      "mch",
+      "rdw",
+      "mpv",
+      "glucose",
+      "calcium",
+      "bun",
+      "creatinine",
+      "protein_total",
+      "albumin",
+      "ast",
+      "alt",
+      "bilirubin",
+      "alkaline_phosphatase",
+      "ggt"
+    ],
+    "cohort_prevalence": 0.01,
+    "cv_auc_train_only": 0.855,
+    "uncalibrated": {
+      "variant": "uncalibrated",
+      "threshold": 0.4401,
+      "auc": 0.859,
+      "auc_ci": [
+        0.825,
+        0.892
+      ],
+      "sensitivity": 0.868,
+      "sensitivity_ci": [
+        0.779,
+        0.944
+      ],
+      "specificity": 0.719,
+      "specificity_ci": [
+        0.708,
+        0.729
+      ],
+      "ppv_in_cohort": 0.03,
+      "brier": 0.157,
+      "calibration_slope": 0.774,
+      "calibration_intercept": -3.312,
+      "reliability": [
+        {
+          "bin": "0.0 to 0.2",
+          "n": 3413,
+          "predicted": 0.081,
+          "observed": 0.001
+        },
+        {
+          "bin": "0.2 to 0.4",
+          "n": 1235,
+          "predicted": 0.295,
+          "observed": 0.005
+        },
+        {
+          "bin": "0.4 to 0.6",
+          "n": 889,
+          "predicted": 0.497,
+          "observed": 0.017
+        },
+        {
+          "bin": "0.6 to 0.8",
+          "n": 781,
+          "predicted": 0.698,
+          "observed": 0.026
+        },
+        {
+          "bin": "0.8 to 1.0",
+          "n": 449,
+          "predicted": 0.868,
+          "observed": 0.056
+        }
+      ],
+      "ppv_at_population_prevalence": 0.03034,
+      "npv_at_population_prevalence": 0.99814,
+      "people_flagged_per_true_case": 33.0,
+      "population_prevalence": 0.01002,
+      "prevalence_source": "Death from cancer within 5 years, US adults with no cancer diagnosis at the blood draw, NHANES 1999-2014 linked to the National Death Index"
+    },
+    "calibrated": {
+      "variant": "isotonic calibrated",
+      "threshold": 0.0114,
+      "auc": 0.86,
+      "auc_ci": [
+        0.826,
+        0.89
+      ],
+      "sensitivity": 0.794,
+      "sensitivity_ci": [
+        0.695,
+        0.883
+      ],
+      "specificity": 0.76,
+      "specificity_ci": [
+        0.75,
+        0.771
+      ],
+      "ppv_in_cohort": 0.033,
+      "brier": 0.0097,
+      "calibration_slope": 0.955,
+      "calibration_intercept": 2.064,
+      "reliability": [
+        {
+          "bin": "0.0 to 0.2",
+          "n": 6762,
+          "predicted": 0.01,
+          "observed": 0.01
+        },
+        {
+          "bin": "0.2 to 0.4",
+          "n": 5,
+          "predicted": 0.276,
+          "observed": 0.2
+        }
+      ],
+      "ppv_at_population_prevalence": 0.03244,
+      "npv_at_population_prevalence": 0.99727,
+      "people_flagged_per_true_case": 30.8,
+      "population_prevalence": 0.01002,
+      "prevalence_source": "Death from cancer within 5 years, US adults with no cancer diagnosis at the blood draw, NHANES 1999-2014 linked to the National Death Index"
+    },
+    "baselines": {
+      "prevalence_only": {
+        "auc": 0.5
+      },
+      "logistic_regression": {
+        "auc": 0.859,
+        "auc_ci": [
+          0.822,
+          0.89
+        ]
+      },
+      "age_sex_only": {
+        "features": [
+          "age",
+          "gender"
+        ],
+        "auc": 0.844,
+        "auc_ci": [
+          0.81,
+          0.876
+        ]
+      }
+    },
+    "subgroups": {
+      "sex: female": {
+        "n": 3541,
+        "positives": 25,
+        "auc": 0.836,
+        "auc_ci": [
+          0.784,
+          0.882
+        ]
+      },
+      "sex: male": {
+        "n": 3226,
+        "positives": 43,
+        "auc": 0.868,
+        "auc_ci": [
+          0.823,
+          0.908
+        ]
+      },
+      "age under 45": {
+        "n": 3299,
+        "positives": 1,
+        "auc": 0.769,
+        "auc_ci": [
+          0.756,
+          0.782
+        ]
+      },
+      "age 45 and over": {
+        "n": 3468,
+        "positives": 67,
+        "auc": 0.743,
+        "auc_ci": [
+          0.687,
+          0.8
+        ]
+      }
+    }
   }
 }

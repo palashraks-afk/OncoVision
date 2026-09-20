@@ -119,6 +119,11 @@ SETTINGS = {
 # validation. It is that even a good version of it would have nowhere to send
 # the person it flagged.
 NO_CONFIRMATORY_TEST = {
+    "cancer_mortality": ("predicts death from any cancer within five years, not a "
+                         "diagnosis and not a site, so there is no procedure to send "
+                         "anyone for and nothing for a threshold to save. Its use is "
+                         "prioritising the screening a person is already eligible for, "
+                         "which this cost model has no way to price"),
     "general": ("predicts a diagnosis of any cancer within four years, and no "
                 "single procedure confirms or excludes that, so there is no test "
                 "for it to save"),

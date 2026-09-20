@@ -44,7 +44,7 @@ DOCS = ["README.md", "PROJECT.md", "PAPER.md"]
 NAME = {
     "colorectal": "Bowel", "general": "General", "liver": "Liver",
     "breast": "Breast (biopsy)", "breast_screening": "Breast (mammogram)",
-    "ovarian": "Ovarian", "lung": "Lung",
+    "ovarian": "Ovarian", "lung": "Lung", "cancer_mortality": "Cancer mortality",
     "prostate": "Prostate", "pancreatic": "Pancreatic",
 }
 COHORT = {
@@ -54,6 +54,7 @@ COHORT = {
     "ovarian": "349 operated ovarian masses",
     "prostate": "212 biopsied men",
     "lung": "19,866 adults with tobacco exposure",
+    "cancer_mortality": "33,834 NHANES adults, death certificates",
     "colorectal": "28,527 NHANES adults",
     "liver": "30,624 NHANES adults",
     "general": "28,711 NHANES adults",
@@ -63,6 +64,7 @@ LABEL = {
     "pancreatic": "Pancreatic cancer",
     "ovarian": "Ovarian malignancy", "prostate": "Prostate cancer",
     "lung": "Lung cancer", "colorectal": "Bowel cancer",
+    "cancer_mortality": "Cancer death within 5 years",
     "liver": "Liver disease", "general": "General cancer",
 }
 
@@ -162,6 +164,8 @@ DESIGN = {
     "liver": ("Population", "NHANES, 7 cycles, clinical liver disease"),
     "colorectal": ("Population", "NHANES 2005-2016, colon or rectal cancer within 8 years"),
     "lung": ("Population", "NHANES, adults with measurable tobacco exposure"),
+    "cancer_mortality": ("Population, prospective",
+                         "NHANES linked to the National Death Index, cancer death within 5 years"),
     "pancreatic": ("Case-control", "3 tissue banks, adenocarcinoma vs benign hepatobiliary"),
     "ovarian": ("Case-control", "operated ovarian masses, malignant vs benign"),
     "breast": ("Case-control", "Wisconsin fine needle aspirates, post-biopsy"),
@@ -988,6 +992,85 @@ def text_youden_sentence(_, extra):
               "an argument.**")
 
 
+def text_pattern_matching(_, extra):
+    """Whether matching a report against cancer patients' patterns beats a model."""
+    r = extra.get("pattern_matching")
+    if not r:
+        return "_Run experiments/pattern_matching.py._"
+    m = r["methods"]
+    rows = ["| Method | AUC alone | As an extra input to the panel |", "|---|---|---|"]
+    rows.append(f"| the shipped panel | **{r['shipped_auc']:.3f}** | |")
+    for name, v in sorted(m.items(), key=lambda kv: -kv[1]["auc_alone"]):
+        rows.append(f"| {name} | {v['auc_alone']:.3f} | {v['auc_as_extra_input']:.3f} |")
+    best_alone = max(v["auc_alone"] for v in m.values())
+    note = (f"A reasonable instinct about this application is that it should hold a library of "
+            f"what cancer patients' bloodwork looked like and check a new report against it, "
+            f"rather than fit a model. Three forms of that were built and scored on the external "
+            f"cohort: how many of the {r['n_train']:,} nearest reports belonged to people who "
+            f"later died of cancer, how much closer a report sits to the cancer profile than to "
+            f"the healthy one, and how unusual the COMBINATION of values is measured against "
+            f"healthy people alone -- the last one being this project's founding sentence tested "
+            f"directly, and it never looks at a cancer patient at all.\n\n"
+            f"None of them replaces the panel. The best scores {best_alone:.3f} against "
+            f"{r['shipped_auc']:.3f}, and matching on lab values alone falls to "
+            f"{m.get('neighbours, 50 nearest', {}).get('auc_alone', 0):.3f}. ")
+    adopted = r.get("adopt") or []
+    if adopted:
+        note += f"Adopted: {', '.join(adopted)}."
+    else:
+        note += (f"One version -- unusualness by isolation forest -- adds a gain that clears zero "
+                 f"as an extra input, and at {m['unusualness, isolation forest']['gain_as_extra']:+.4f} "
+                 f"it falls below the {r.get('materiality_margin')} margin this project already "
+                 f"uses to refuse a more complicated model, so it is recorded and not adopted. "
+                 f"The reading is that pattern matching finds the same signal the model already "
+                 f"reads, and reads it less precisely: a boundary fitted to the data beats a "
+                 f"library of examples, because the signal is weak and spread thin rather than "
+                 f"clustered into recognisable shapes.")
+    return "\n".join(rows) + "\n\n" + note
+
+
+def text_mortality_panel(_, extra):
+    """The one bloodwork panel that ships, and the design that let it."""
+    r = extra.get("mortality_panel")
+    if not r:
+        return "_Run experiments/prospective_panel_ship.py._"
+    lo, hi = r["external_gain_ci"]
+    slo, shi = r["rule_out_extra_share_ci"]
+    worse = [g for g, v in (r.get("fairness_groups") or {}).items() if v.get("materially_worse")]
+    s = (f"Three panels that read routine bloodwork for a named cancer were withdrawn, each after "
+         f"its lab values added nothing to age and sex on data it had not seen. All three shared a "
+         f"design: the blood and the answer came from the same visit, and the answer was a survivor "
+         f"being asked whether they had ever had cancer. The NHANES-NDI linkage does not. "
+         f"{r['n_train']:,} adults with no cancer diagnosis when the blood was drawn, "
+         f"{r['events_train']} dead of cancer within five years, the death certificate arriving "
+         f"later from a different agency.\n\n"
+         f"On {r['n_test']:,} adults from NHANES III, 1988-1994 -- the same design, a different "
+         f"decade, different instruments -- the panel scores {r['external_auc']:.3f} against "
+         f"{r['age_sex_external_auc']:.3f} for the stronger age-and-sex model, a gain of "
+         f"{r['external_gain']:+.3f} (95% CI {lo:+.3f} to {hi:+.3f}). Catching half the deaths "
+         f"flags {r['people_flagged_per_death_at_half_caught']} people per death, which is the "
+         f"best precision of any population panel here. "
+         + ("No subgroup with enough events scores materially worse than the whole. "
+            if not worse else f"Materially worse: {', '.join(worse)}. "))
+    if r.get("ship_the_panel") and not r.get("ship_a_cut"):
+        s += (f"**It ships, and it ships with no rule-out cut.** At 95% of deaths caught, that cut "
+              f"excluded {r['rule_out_extra_share']:+.1%} more adults than a cut on age and sex "
+              f"({slo:+.1%} to {shi:+.1%}), which is the test that withdrew bowel and general. A "
+              f"panel that cannot beat a birthday at excluding people may not tell anyone they are "
+              f"safe, so this one never does.")
+    elif r.get("ship_the_panel"):
+        s += "It ships, and its rule-out cut beat a cut on age and sex externally."
+    else:
+        s += "It does not ship: the gain did not survive the external cohort."
+    s += (" The limit is the outcome. Death from cancer is not a diagnosis, and a person diagnosed "
+          "early and cured counts here as a negative, so this is not an early-detection test. It "
+          "is the honest form of the claim this project set out to make: routine bloodwork, read "
+          "together, carries something about cancer that a birthday does not -- about a tenth of "
+          "the discrimination a reader would assume from the headline AUC, measured twice, twenty "
+          "years apart.")
+    return s
+
+
 def text_checkup(_, extra):
     """Whether the rest of a routine checkup revives either withdrawn panel."""
     r = extra.get("checkup")
@@ -1147,6 +1230,8 @@ TABLES = {
     "breast_subgroups": table_breast_subgroups,
     "prostate_external": text_prostate_external,
     "checkup": text_checkup,
+    "mortality_panel": text_mortality_panel,
+    "pattern_matching": text_pattern_matching,
     "breast_vs_clinic": text_breast_vs_clinic,
     "banding_cost": text_banding_cost,
 }
@@ -1179,6 +1264,8 @@ def main():
         "prostate_cost": load("experiments/prostate_biopsy_cost_result.json", {}),
         "breast_vs_clinic": load("experiments/breast_vs_clinic_result.json", {}),
         "checkup": load("experiments/checkup_panels_result.json", {}),
+        "mortality_panel": load("experiments/prospective_panel_ship_result.json", {}),
+        "pattern_matching": load("experiments/pattern_matching_result.json", {}),
         "checkup_external": load("experiments/checkup_external_result.json", {}),
         "banding_cost": load("experiments/banding_cost_result.json", {}),
     }

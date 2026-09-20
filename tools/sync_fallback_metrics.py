@@ -140,6 +140,7 @@ STAB = os.path.join(ROOT, "experiments/split_stability_result.json")
 STAB_START = "// AUTOGEN:split_stability"
 STAB_END = "// /AUTOGEN:split_stability"
 STAB_NAMES = {"general": "General", "liver": "Liver", "lung": "Lung",
+              "cancer_mortality": "Cancer mortality",
               "breast": "Breast, biopsy", "breast_screening": "Breast, mammogram",
               "pancreatic": "Pancreatic", "ovarian": "Ovarian", "prostate": "Prostate",
               "colorectal": "Bowel"}

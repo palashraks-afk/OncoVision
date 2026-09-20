@@ -385,10 +385,13 @@ CLINICAL_THRESHOLDS = {
     "alkaline_phosphatase": ("Alkaline phosphatase", 120.0, ["liver", "pancreatic"]),
     "ast": ("AST", 40.0, ["liver"]),
     "alt": ("ALT", 40.0, ["liver"]),
-    # Pointed at general, then lung, until both were withdrawn. Calcium is read by
-    # the ovarian panel. No live panel reads WBC, so it raises no flag.
-    "wbc": ("WBC", 11.0, []),
-    "calcium": ("Calcium", 10.3, ["ovarian"]),
+    # Pointed at general, then lung, until both were withdrawn, and left with no
+    # reader at all. The cancer-mortality panel reads both: a raised white count
+    # and a raised calcium are the two classic blood findings of an undiagnosed
+    # malignancy, and that panel is the one built on blood drawn before the
+    # diagnosis existed.
+    "wbc": ("WBC", 11.0, ["cancer_mortality"]),
+    "calcium": ("Calcium", 10.3, ["ovarian", "cancer_mortality"]),
     "glucose": ("Glucose", 99.0, ["pancreatic"]),
     "radius_mean": ("Nuclear radius", 15.0, ["breast"]),
     "area_mean": ("Nuclear area", 600.0, ["breast"]),

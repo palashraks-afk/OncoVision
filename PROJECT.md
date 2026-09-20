@@ -243,6 +243,7 @@ Reproduce with `python evaluate.py`.
 | Ovarian malignancy | 349 operated ovarian masses | 0.949 | 0.882 to 0.994 | 58.1% | 0.853 | 0.944 | 1.3 |
 | Prostate cancer | 212 biopsied men | 0.880 | 0.746 to 0.979 | 65.9% | 0.76 | 0.778 | 1.4 |
 | ~~Lung cancer~~ withdrawn | 19,866 adults with tobacco exposure | 0.872 ⚠️<br>_a lucky draw, 100th pct;_<br>_stable mean 0.827_ | 0.801 to 0.925 | 1.0% | 0.5 | 0.882 | 50.3 |
+| Cancer death within 5 years | 33,834 NHANES adults, death certificates | 0.860 | 0.826 to 0.89 | 1.1% | 0.794 | 0.76 | 30.8 |
 | ~~Bowel cancer~~ withdrawn | 28,527 NHANES adults | 0.821 | 0.746 to 0.89 | 1.0% | 0.522 | 0.894 | 559.8 |
 | ~~General cancer~~ withdrawn | 28,711 NHANES adults | 0.781 ⚠️<br>_a lucky draw, 100th pct;_<br>_stable mean 0.758_ | 0.749 to 0.811 | 3.5% | 0.67 | 0.728 | 13.5 |
 | Liver disease | 30,624 NHANES adults | 0.780 ⚠️<br>_a lucky draw, 100th pct;_<br>_stable mean 0.759_ | 0.748 to 0.811 | 4.3% | 0.588 | 0.828 | 8.0 |
@@ -260,6 +261,7 @@ Reproduce with `python evaluate.py`.
 | Ovarian | 0.949 | 0.911 | 0.813 | +0.174 |
 | Prostate | 0.880 | 0.876 | 0.661 | +0.222 |
 | ~~Lung~~ withdrawn | 0.872 | 0.867 | 0.842 | +0.024 |
+| Cancer mortality | 0.860 | 0.859 | 0.844 | not measurable |
 | ~~Bowel~~ withdrawn | 0.821 | 0.82 | 0.843 | **-0.011** |
 | ~~General~~ withdrawn | 0.781 | 0.78 | 0.779 | **+0.002** |
 | Liver | 0.780 | 0.761 | 0.623 | +0.114 |
@@ -290,6 +292,7 @@ someone's age and sex, which is a real limitation rather than a rounding error.
 | Ovarian | 0.942 | 0.949 | +0.007 |
 | Prostate | 0.818 | 0.880 | +0.062 |
 | Lung | 0.812 | 0.872 | +0.060 |
+| Cancer mortality | 0.855 | 0.860 | +0.005 |
 | Bowel | 0.807 | 0.821 | +0.014 |
 | General | 0.766 | 0.781 | +0.015 |
 | Liver | 0.749 | 0.780 | +0.031 |
