@@ -1150,6 +1150,98 @@ def text_signal_search(_, extra):
     return s
 
 
+def text_whole_picture(_, extra):
+    """Whether the whole picture of a person says more about cancer than their labs do."""
+    r = extra.get("whole_picture")
+    if not r:
+        return "_Run experiments/whole_picture.py._"
+    h, d = r["outcomes"]["honest"], r["outcomes"]["decedents"]
+    names = {"age_sex": "age and sex", "labs": "20 routine lab values",
+             "picture_no_labs": "whole picture, no lab values", "picture": "whole picture"}
+    rows = ["| Inputs | Count | Cancer death against everyone else, AUC | Among those who died, AUC | "
+            "Gain over age and sex among those who died (95% CI) |", "|---|---|---|---|---|"]
+    for arm, label in names.items():
+        ah, ad = h["arms"][arm], d["arms"][arm]
+        gain = ("" if arm == "age_sex" else
+                f"{ad['gain_over_age_sex']:+.3f} ({ad['gain_ci'][0]:+.3f} to {ad['gain_ci'][1]:+.3f})")
+        rows.append(f"| {label} | {r['inputs'][arm]} | {ah['auc']:.3f} | {ad['auc']:.3f} | {gain} |")
+    cond = r.get("conditions") or {}
+    ho = r.get("cycle_holdout_decedents") or {}
+    pic, nol = d["arms"]["picture"], d["arms"]["picture_no_labs"]
+    text = (f"Every earlier test gave a model a few dozen blood values. The clinical way of thinking is "
+            f"different: a result means something different in a person who has lost weight, smokes and "
+            f"is short of breath than in one who is well, so the unit is the overall picture and the "
+            f"thing to match is a pattern across many kinds of information. This builds that picture "
+            f"for {r['n']:,} NHANES adults from every laboratory, examination and questionnaire "
+            f"component the survey carries, taken generically so that nothing is chosen because it "
+            f"looks like it should work, with race, income and education left out and nobody dropped "
+            f"for how they died. It is scored against {d['events']} cancer deaths among "
+            f"{d['n']:,} people who died within ten years, where age and sex cannot separate the "
+            f"causes and a model that has merely learned \"unwell\" cannot either.\n\n"
+            f"The whole picture reaches {pic['auc']:.3f} among those who died against "
+            f"{d['arms']['age_sex']['auc']:.3f} for age and sex and {d['arms']['labs']['auc']:.3f} for "
+            f"the routine labs, and without a single lab value it reaches {nol['auc']:.3f}. ")
+    pm = d.get("pattern_match_auc")
+    if pm is not None:
+        text += (f"Matching a person against their nearest neighbours in the whole picture, the literal "
+                 f"version of the idea, reaches {pm:.3f}. ")
+    if r.get("promising"):
+        text += ("**It clears the bar set beforehand**: it beats age and sex and the routine labs on "
+                 "both outcomes and on a held-out set of cycles, which makes it a lead for an external "
+                 "cohort and not a result.")
+    else:
+        hh = h["arms"]["picture"]
+        if cond.get("decedents_beats_age_and_labs") and not cond.get("honest_beats_age_and_labs"):
+            text += (f"**It does not clear the bar, and the reason is informative.** Among people who "
+                     f"died it beats age and sex and the routine labs"
+                     + (" and holds on cycles it was not trained on" if cond.get("cycle_holdout_beats_age") else "")
+                     + f". For cancer death against everyone else, which is the question a screening "
+                     f"tool answers, it adds {hh['gain_over_age_sex']:+.3f} to age and sex (95% CI "
+                     f"{hh['gain_ci'][0]:+.3f} to {hh['gain_ci'][1]:+.3f}) and does worse than the "
+                     f"labs. Breadth helps with telling which kind of death a dying person will have. "
+                     f"It does nothing for telling who will die of cancer.")
+        else:
+            text += ("**It does not clear the bar.** It failed "
+                     + "; ".join(label for key, label in (
+                         ("decedents_beats_age_and_labs", "beating age and sex and the routine labs among people who died"),
+                         ("honest_beats_age_and_labs", "the same on cancer death against everyone else"),
+                         ("cycle_holdout_beats_age", "holding up on cycles it was not trained on"))
+                         if not cond.get(key)) + ".")
+    dr = extra.get("picture_drivers") or {}
+    wl = extra.get("weight_loss") or {}
+    if dr:
+        toward = {x["input"] for x in dr.get("toward_cancer", [])}
+        away = {x["input"] for x in dr.get("away_from_cancer", [])}
+        absent = [lab for code, lab in (("DIQ010", "diabetes"), ("MCQ160B", "heart failure"),
+                                        ("MCQ160F", "a stroke")) if code in toward]
+        high = [lab for codes, lab in ((("LBXSBU", "LBDSBUSI"), "a high BUN"),
+                                       (("LBXGH",), "a high HbA1c")) if any(c in away for c in codes)]
+        text += ("\n\nWhat the gain among people who died is made of matters more than its size. The "
+                 "variables whose sign holds across 150 bootstrap refits and across earlier and later "
+                 "cycles pushing toward a cancer death include the ABSENCE of "
+                 + (", ".join(absent) if absent else "the heart and metabolic conditions")
+                 + " (on those questions a \"no\" pushes toward cancer), and those pushing away include "
+                 + (" and ".join(high) if high else "markers of kidney disease and diabetes")
+                 + ". So the picture is better than the labs at saying which way a death will go mostly "
+                 "because it records the heart, kidney and metabolic disease that cause the other "
+                 "deaths, and a cancer death is what is left when they are absent. That is information "
+                 "about the cause of a death. It is not a tumour's pattern, and it is why the same "
+                 "picture adds nothing for cancer death against everyone.")
+    if wl and wl.get("outcomes"):
+        wh, wd = wl["outcomes"]["honest"], wl["outcomes"]["decedents"]
+        text += (f"\n\nThe best-known warning sign that no lab contains, unintended weight loss, was "
+                 f"built explicitly, from current weight against weight a year ago and whether the "
+                 f"person was trying to lose it: {wh['n_lost']:,} adults. "
+                 f"{wh['cancer_share_if_unintended_loss']:.1%} of them died of cancer within ten years "
+                 f"against {wh['cancer_share_otherwise']:.1%} of the rest, a real raw difference. It adds "
+                 f"{wh['gain']:+.4f} to age and sex for cancer death (95% CI {wh['gain_ci'][0]:+.4f} to "
+                 f"{wh['gain_ci'][1]:+.4f}) and {wd['gain']:+.4f} among people who died, where it "
+                 f"points the wrong way ({wd['cancer_share_if_unintended_loss']:.1%} against "
+                 f"{wd['cancer_share_otherwise']:.1%}), because weight loss goes with every serious "
+                 f"illness and not with cancer in particular.")
+    return "\n".join(rows) + "\n\n" + text
+
+
 def text_checkup(_, extra):
     """Whether the rest of a routine checkup revives either withdrawn panel."""
     r = extra.get("checkup")
@@ -1311,6 +1403,7 @@ TABLES = {
     "checkup": text_checkup,
     "mortality_panel": text_mortality_panel,
     "signal_search": text_signal_search,
+    "whole_picture": text_whole_picture,
     "pattern_matching": text_pattern_matching,
     "breast_vs_clinic": text_breast_vs_clinic,
     "banding_cost": text_banding_cost,
@@ -1347,6 +1440,9 @@ def main():
         "mortality_panel": load("experiments/prospective_panel_ship_result.json", {}),
         "cause_specificity": load("experiments/mortality_cause_specificity_result.json", {}),
         "signal_search": load("experiments/cancer_specific_signal_search_result.json", {}),
+        "whole_picture": load("experiments/whole_picture_result.json", {}),
+        "picture_drivers": load("experiments/picture_drivers_result.json", {}),
+        "weight_loss": load("experiments/weight_loss_signal_result.json", {}),
         "signal_drivers": load("experiments/decedent_signal_drivers_result.json", {}),
         "pattern_matching": load("experiments/pattern_matching_result.json", {}),
         "checkup_external": load("experiments/checkup_external_result.json", {}),

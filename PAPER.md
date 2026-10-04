@@ -572,6 +572,25 @@ With the people who died of other causes put back, the question left is whether 
 What the lead is made of matters more than its size. The values that are stable across 200 bootstrap refits and keep their sign on NHANES III point AWAY from cancer: bun, glucose, the markers of kidney disease and diabetes, which are what the other deaths die of. Only albumin points toward it, and haemoglobin, the classic cancer-associated value, changes sign between the two cohorts. So what is being measured is that people who die of kidney or metabolic disease look like it, and the cancer deaths are what is left over. That is real information about which way a death will go. It is not evidence that routine blood carries a tumour's own pattern, and it is not a basis for a cancer panel.
 <!-- /AUTOGEN:signal_search -->
 
+#### The whole picture, not the labs alone
+
+<!-- AUTOGEN:whole_picture -->
+| Inputs | Count | Cancer death against everyone else, AUC | Among those who died, AUC | Gain over age and sex among those who died (95% CI) |
+|---|---|---|---|---|
+| age and sex | 2 | 0.808 | 0.604 |  |
+| 20 routine lab values | 22 | 0.819 | 0.647 | +0.044 (+0.018 to +0.069) |
+| whole picture, no lab values | 203 | 0.808 | 0.678 | +0.074 (+0.048 to +0.100) |
+| whole picture | 337 | 0.811 | 0.685 | +0.082 (+0.054 to +0.109) |
+
+Every earlier test gave a model a few dozen blood values. The clinical way of thinking is different: a result means something different in a person who has lost weight, smokes and is short of breath than in one who is well, so the unit is the overall picture and the thing to match is a pattern across many kinds of information. This builds that picture for 23,842 NHANES adults from every laboratory, examination and questionnaire component the survey carries, taken generically so that nothing is chosen because it looks like it should work, with race, income and education left out and nobody dropped for how they died. It is scored against 569 cancer deaths among 2,957 people who died within ten years, where age and sex cannot separate the causes and a model that has merely learned "unwell" cannot either.
+
+The whole picture reaches 0.685 among those who died against 0.604 for age and sex and 0.647 for the routine labs, and without a single lab value it reaches 0.678. Matching a person against their nearest neighbours in the whole picture, the literal version of the idea, reaches 0.655. **It does not clear the bar, and the reason is informative.** Among people who died it beats age and sex and the routine labs and holds on cycles it was not trained on. For cancer death against everyone else, which is the question a screening tool answers, it adds +0.003 to age and sex (95% CI -0.006 to +0.013) and does worse than the labs. Breadth helps with telling which kind of death a dying person will have. It does nothing for telling who will die of cancer.
+
+What the gain among people who died is made of matters more than its size. The variables whose sign holds across 150 bootstrap refits and across earlier and later cycles pushing toward a cancer death include the ABSENCE of diabetes, heart failure, a stroke (on those questions a "no" pushes toward cancer), and those pushing away include a high BUN and a high HbA1c. So the picture is better than the labs at saying which way a death will go mostly because it records the heart, kidney and metabolic disease that cause the other deaths, and a cancer death is what is left when they are absent. That is information about the cause of a death. It is not a tumour's pattern, and it is why the same picture adds nothing for cancer death against everyone.
+
+The best-known warning sign that no lab contains, unintended weight loss, was built explicitly, from current weight against weight a year ago and whether the person was trying to lose it: 1,386 adults. 4.3% of them died of cancer within ten years against 2.4% of the rest, a real raw difference. It adds +0.0003 to age and sex for cancer death (95% CI -0.0010 to +0.0015) and -0.0021 among people who died, where it points the wrong way (15.5% against 20.1%), because weight loss goes with every serious illness and not with cancer in particular.
+<!-- /AUTOGEN:whole_picture -->
+
 ---
 
 ## 4. Discussion

@@ -1,0 +1,37 @@
+{
+  "reporting": 23179,
+  "lost5": 4111,
+  "outcomes": {
+    "honest": {
+      "n": 21878,
+      "events": 556,
+      "age_sex_auc": 0.807,
+      "with_weight_change_auc": 0.8073,
+      "gain": 0.0003,
+      "gain_ci": [
+        -0.001,
+        0.0015
+      ],
+      "beats_age_sex": false,
+      "cancer_share_if_unintended_loss": 0.043,
+      "cancer_share_otherwise": 0.024,
+      "n_lost": 1386
+    },
+    "decedents": {
+      "n": 2858,
+      "events": 556,
+      "age_sex_auc": 0.6059,
+      "with_weight_change_auc": 0.6038,
+      "gain": -0.0021,
+      "gain_ci": [
+        -0.0109,
+        0.0068
+      ],
+      "beats_age_sex": false,
+      "cancer_share_if_unintended_loss": 0.155,
+      "cancer_share_otherwise": 0.201,
+      "n_lost": 381
+    }
+  },
+  "is_a_cancer_signal": false
+}

@@ -1,0 +1,458 @@
+{
+  "n": 2957,
+  "cancer": 569,
+  "toward_cancer": [
+    {
+      "input": "PFQ090",
+      "meaning": "",
+      "coef": 0.109,
+      "sign_agreement": 1.0,
+      "same_sign_early_vs_late": true
+    },
+    {
+      "input": "LBXSCLSI",
+      "meaning": "",
+      "coef": 0.077,
+      "sign_agreement": 1.0,
+      "same_sign_early_vs_late": true
+    },
+    {
+      "input": "DIQ010",
+      "meaning": "told had diabetes",
+      "coef": 0.066,
+      "sign_agreement": 0.99,
+      "same_sign_early_vs_late": true
+    },
+    {
+      "input": "BPACSZ",
+      "meaning": "",
+      "coef": 0.065,
+      "sign_agreement": 0.98,
+      "same_sign_early_vs_late": true
+    },
+    {
+      "input": "MCQ160B",
+      "meaning": "told had congestive heart failure",
+      "coef": 0.065,
+      "sign_agreement": 0.99,
+      "same_sign_early_vs_late": true
+    },
+    {
+      "input": "MCQ160F",
+      "meaning": "told had stroke",
+      "coef": 0.064,
+      "sign_agreement": 1.0,
+      "same_sign_early_vs_late": true
+    },
+    {
+      "input": "LBXLYPCT",
+      "meaning": "",
+      "coef": 0.063,
+      "sign_agreement": 1.0,
+      "same_sign_early_vs_late": true
+    },
+    {
+      "input": "MCQ092",
+      "meaning": "",
+      "coef": 0.062,
+      "sign_agreement": 0.99,
+      "same_sign_early_vs_late": true
+    },
+    {
+      "input": "BMXSUB",
+      "meaning": "",
+      "coef": 0.057,
+      "sign_agreement": 1.0,
+      "same_sign_early_vs_late": true
+    },
+    {
+      "input": "BPQ040A",
+      "meaning": "",
+      "coef": 0.052,
+      "sign_agreement": 0.97,
+      "same_sign_early_vs_late": true
+    },
+    {
+      "input": "PEASCTM1",
+      "meaning": "",
+      "coef": 0.048,
+      "sign_agreement": 0.98,
+      "same_sign_early_vs_late": true
+    },
+    {
+      "input": "BMXHT",
+      "meaning": "",
+      "coef": 0.047,
+      "sign_agreement": 1.0,
+      "same_sign_early_vs_late": true
+    }
+  ],
+  "away_from_cancer": [
+    {
+      "input": "WHQ030",
+      "meaning": "how they see their weight",
+      "coef": -0.101,
+      "sign_agreement": 1.0,
+      "same_sign_early_vs_late": true
+    },
+    {
+      "input": "BPQ150C",
+      "meaning": "",
+      "coef": -0.073,
+      "sign_agreement": 0.99,
+      "same_sign_early_vs_late": true
+    },
+    {
+      "input": "LBXSBU",
+      "meaning": "",
+      "coef": -0.072,
+      "sign_agreement": 1.0,
+      "same_sign_early_vs_late": true
+    },
+    {
+      "input": "LBDSBUSI",
+      "meaning": "",
+      "coef": -0.072,
+      "sign_agreement": 1.0,
+      "same_sign_early_vs_late": true
+    },
+    {
+      "input": "CDQ010__missing",
+      "meaning": "",
+      "coef": -0.07,
+      "sign_agreement": 1.0,
+      "same_sign_early_vs_late": true
+    },
+    {
+      "input": "BPXDI3__missing",
+      "meaning": "",
+      "coef": -0.062,
+      "sign_agreement": 1.0,
+      "same_sign_early_vs_late": true
+    },
+    {
+      "input": "BPXSY3__missing",
+      "meaning": "",
+      "coef": -0.06,
+      "sign_agreement": 1.0,
+      "same_sign_early_vs_late": true
+    },
+    {
+      "input": "WHD130__missing",
+      "meaning": "",
+      "coef": -0.05,
+      "sign_agreement": 0.97,
+      "same_sign_early_vs_late": true
+    },
+    {
+      "input": "LBXGH",
+      "meaning": "",
+      "coef": -0.048,
+      "sign_agreement": 0.99,
+      "same_sign_early_vs_late": true
+    },
+    {
+      "input": "LBXNEPCT",
+      "meaning": "",
+      "coef": -0.046,
+      "sign_agreement": 0.99,
+      "same_sign_early_vs_late": true
+    },
+    {
+      "input": "WHQ040",
+      "meaning": "want to weigh more or less",
+      "coef": -0.046,
+      "sign_agreement": 0.99,
+      "same_sign_early_vs_late": true
+    },
+    {
+      "input": "LBXEOPCT",
+      "meaning": "",
+      "coef": -0.044,
+      "sign_agreement": 0.97,
+      "same_sign_early_vs_late": true
+    }
+  ],
+  "all": [
+    {
+      "input": "PFQ090",
+      "meaning": "",
+      "coef": 0.109,
+      "sign_agreement": 1.0,
+      "same_sign_early_vs_late": true
+    },
+    {
+      "input": "WHQ030",
+      "meaning": "how they see their weight",
+      "coef": -0.101,
+      "sign_agreement": 1.0,
+      "same_sign_early_vs_late": true
+    },
+    {
+      "input": "LBXSCLSI",
+      "meaning": "",
+      "coef": 0.077,
+      "sign_agreement": 1.0,
+      "same_sign_early_vs_late": true
+    },
+    {
+      "input": "BPQ150C",
+      "meaning": "",
+      "coef": -0.073,
+      "sign_agreement": 0.99,
+      "same_sign_early_vs_late": true
+    },
+    {
+      "input": "LBXSBU",
+      "meaning": "",
+      "coef": -0.072,
+      "sign_agreement": 1.0,
+      "same_sign_early_vs_late": true
+    },
+    {
+      "input": "LBDSBUSI",
+      "meaning": "",
+      "coef": -0.072,
+      "sign_agreement": 1.0,
+      "same_sign_early_vs_late": true
+    },
+    {
+      "input": "CDQ010__missing",
+      "meaning": "",
+      "coef": -0.07,
+      "sign_agreement": 1.0,
+      "same_sign_early_vs_late": true
+    },
+    {
+      "input": "DIQ010",
+      "meaning": "told had diabetes",
+      "coef": 0.066,
+      "sign_agreement": 0.99,
+      "same_sign_early_vs_late": true
+    },
+    {
+      "input": "BPACSZ",
+      "meaning": "",
+      "coef": 0.065,
+      "sign_agreement": 0.98,
+      "same_sign_early_vs_late": true
+    },
+    {
+      "input": "MCQ160B",
+      "meaning": "told had congestive heart failure",
+      "coef": 0.065,
+      "sign_agreement": 0.99,
+      "same_sign_early_vs_late": true
+    },
+    {
+      "input": "MCQ160F",
+      "meaning": "told had stroke",
+      "coef": 0.064,
+      "sign_agreement": 1.0,
+      "same_sign_early_vs_late": true
+    },
+    {
+      "input": "RDQ050__missing",
+      "meaning": "coughing most days",
+      "coef": -0.064,
+      "sign_agreement": 1.0,
+      "same_sign_early_vs_late": false
+    },
+    {
+      "input": "LBXLYPCT",
+      "meaning": "",
+      "coef": 0.063,
+      "sign_agreement": 1.0,
+      "same_sign_early_vs_late": true
+    },
+    {
+      "input": "MCQ092",
+      "meaning": "",
+      "coef": 0.062,
+      "sign_agreement": 0.99,
+      "same_sign_early_vs_late": true
+    },
+    {
+      "input": "BPXDI3__missing",
+      "meaning": "",
+      "coef": -0.062,
+      "sign_agreement": 1.0,
+      "same_sign_early_vs_late": true
+    },
+    {
+      "input": "BPXSY3__missing",
+      "meaning": "",
+      "coef": -0.06,
+      "sign_agreement": 1.0,
+      "same_sign_early_vs_late": true
+    },
+    {
+      "input": "age",
+      "meaning": "",
+      "coef": -0.059,
+      "sign_agreement": 1.0,
+      "same_sign_early_vs_late": true
+    },
+    {
+      "input": "BMXSUB",
+      "meaning": "",
+      "coef": 0.057,
+      "sign_agreement": 1.0,
+      "same_sign_early_vs_late": true
+    },
+    {
+      "input": "BPQ040A",
+      "meaning": "",
+      "coef": 0.052,
+      "sign_agreement": 0.97,
+      "same_sign_early_vs_late": true
+    },
+    {
+      "input": "WHD130__missing",
+      "meaning": "",
+      "coef": -0.05,
+      "sign_agreement": 0.97,
+      "same_sign_early_vs_late": true
+    },
+    {
+      "input": "LBXGH",
+      "meaning": "",
+      "coef": -0.048,
+      "sign_agreement": 0.99,
+      "same_sign_early_vs_late": true
+    },
+    {
+      "input": "PEASCTM1",
+      "meaning": "",
+      "coef": 0.048,
+      "sign_agreement": 0.98,
+      "same_sign_early_vs_late": true
+    },
+    {
+      "input": "BMXHT",
+      "meaning": "",
+      "coef": 0.047,
+      "sign_agreement": 1.0,
+      "same_sign_early_vs_late": true
+    },
+    {
+      "input": "WHD050",
+      "meaning": "weight a year ago (lb)",
+      "coef": -0.047,
+      "sign_agreement": 1.0,
+      "same_sign_early_vs_late": false
+    },
+    {
+      "input": "WHD140",
+      "meaning": "",
+      "coef": -0.047,
+      "sign_agreement": 1.0,
+      "same_sign_early_vs_late": false
+    },
+    {
+      "input": "gender",
+      "meaning": "",
+      "coef": 0.046,
+      "sign_agreement": 0.98,
+      "same_sign_early_vs_late": true
+    },
+    {
+      "input": "LBXNEPCT",
+      "meaning": "",
+      "coef": -0.046,
+      "sign_agreement": 0.99,
+      "same_sign_early_vs_late": true
+    },
+    {
+      "input": "WHQ040",
+      "meaning": "want to weigh more or less",
+      "coef": -0.046,
+      "sign_agreement": 0.99,
+      "same_sign_early_vs_late": true
+    },
+    {
+      "input": "LBXPLTSI",
+      "meaning": "",
+      "coef": 0.045,
+      "sign_agreement": 0.93,
+      "same_sign_early_vs_late": true
+    },
+    {
+      "input": "LBXEOPCT",
+      "meaning": "",
+      "coef": -0.044,
+      "sign_agreement": 0.97,
+      "same_sign_early_vs_late": true
+    },
+    {
+      "input": "BMXTRI",
+      "meaning": "",
+      "coef": 0.044,
+      "sign_agreement": 0.97,
+      "same_sign_early_vs_late": false
+    },
+    {
+      "input": "LBXSOSSI",
+      "meaning": "",
+      "coef": -0.043,
+      "sign_agreement": 1.0,
+      "same_sign_early_vs_late": true
+    },
+    {
+      "input": "HIQ210__missing",
+      "meaning": "",
+      "coef": -0.043,
+      "sign_agreement": 0.95,
+      "same_sign_early_vs_late": false
+    },
+    {
+      "input": "BMXTHICR",
+      "meaning": "",
+      "coef": 0.041,
+      "sign_agreement": 0.99,
+      "same_sign_early_vs_late": true
+    },
+    {
+      "input": "HUQ050",
+      "meaning": "",
+      "coef": -0.041,
+      "sign_agreement": 0.95,
+      "same_sign_early_vs_late": true
+    },
+    {
+      "input": "MCQ160A",
+      "meaning": "",
+      "coef": -0.04,
+      "sign_agreement": 0.94,
+      "same_sign_early_vs_late": true
+    },
+    {
+      "input": "BPXSY3",
+      "meaning": "",
+      "coef": -0.039,
+      "sign_agreement": 0.99,
+      "same_sign_early_vs_late": true
+    },
+    {
+      "input": "MCQ160G",
+      "meaning": "told had emphysema",
+      "coef": 0.039,
+      "sign_agreement": 0.91,
+      "same_sign_early_vs_late": false
+    },
+    {
+      "input": "ALQ130",
+      "meaning": "",
+      "coef": 0.037,
+      "sign_agreement": 0.67,
+      "same_sign_early_vs_late": false
+    },
+    {
+      "input": "DIQ050",
+      "meaning": "",
+      "coef": 0.037,
+      "sign_agreement": 0.93,
+      "same_sign_early_vs_late": false
+    }
+  ]
+}

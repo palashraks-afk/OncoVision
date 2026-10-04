@@ -85,6 +85,9 @@ Needed: blood drawn BEFORE anyone knew, with a later diagnosis date.
 | 4 | Keep the people the cohort dropped (fix the target) | **WORKED**, as a diagnosis | It is what exposed the panel. |
 | 5 | Search for cancer-specific signal among decedents, 5/10/15 years | **A LEAD, NOT A FINDING** | 6 pairs; positive inside the survey in all 6; on NHANES III positive in 5 of 6, interval excluding zero in 1 (10 years vs other deaths, +0.035, CI +0.007 to +0.062). One of six is a lead to confirm. |
 | 6 | What that lead is made of | **FAILED**, as a cancer signal | Stable, replicated drivers point AWAY from cancer: BUN and glucose, i.e. kidney disease and diabetes. Haemoglobin flips sign between cohorts. It is "headed for a kidney or metabolic death", with cancer left over. |
+| 6a | **The whole picture**: every lab, exam finding, symptom, habit and history item NHANES holds (337 inputs), plus nearest-neighbour pattern matching | **FAILED as a screening signal, WORKED as a cause-of-death signal** | Among people who died: 0.685, against 0.647 for the routine labs and 0.604 for age and sex, and 0.678 with every lab value removed; it holds on later cycles. For cancer death against everyone else it adds +0.003 (CI −0.006 to +0.013). Nearest-neighbour matching reached 0.655. |
+| 6b | What drives 6a | **FAILED**, as a cancer signal | Stable drivers toward cancer are ABSENCES (no diabetes, heart failure or stroke); away: high BUN and HbA1c. It identifies the heart, kidney and metabolic disease that cause the other deaths, and cancer is what is left. |
+| 6c | Unintended weight loss, built explicitly | **FAILED** | 4.3% of the 1,386 with unintended loss of 5% or more died of cancer within ten years, against 2.4% of the rest, but it adds +0.0003 to age and sex, and among people who died it points the wrong way (15.5% against 20.1%). Weight loss goes with every serious illness. |
 | 7 | Add BMI, smoking, alcohol | **PARTIAL** | Larger internal gains, but NHANES III lacks them, so it cannot be confirmed. |
 | 8 | Site-specific outcomes | **NOT POSSIBLE** with public files | The public linked-mortality file has one "malignant neoplasms" code. Site needs restricted files. |
 | 9 | Trajectory features | **READY** | Section 3. |
@@ -175,6 +178,9 @@ before diagnosis in real patients without recruiting anyone.
 3. Searched for cancer-specific signal in routine labs and found a lead whose
    makeup argues against it.
 4. Found CHARLS, the cheapest route to the trajectory test.
+5. Tested the "overall picture" idea properly, with every kind of information NHANES holds
+   and pattern matching included. It tells which way a death will go and not who will die
+   of cancer, for the same reason the labs did.
 
 The next step with the largest payoff is the same as before and still belongs to a
 person: **register for CHARLS and take the CITI course.**

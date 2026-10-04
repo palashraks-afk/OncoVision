@@ -1,0 +1,194 @@
+{
+  "n": 23842,
+  "inputs": {
+    "age_sex": 2,
+    "labs": 22,
+    "picture_no_labs": 203,
+    "picture": 337
+  },
+  "outcomes": {
+    "honest": {
+      "n": 22475,
+      "events": 569,
+      "arms": {
+        "age_sex": {
+          "best_model": "logistic",
+          "auc": 0.8077,
+          "all_models": {
+            "logistic": 0.8077,
+            "ensemble": 0.7943
+          }
+        },
+        "labs": {
+          "best_model": "logistic",
+          "auc": 0.8187,
+          "all_models": {
+            "logistic": 0.8187,
+            "ensemble": 0.7947
+          },
+          "gain_over_age_sex": 0.011,
+          "gain_ci": [
+            0.0051,
+            0.0167
+          ],
+          "beats_age_sex": true
+        },
+        "picture_no_labs": {
+          "best_model": "logistic_wide",
+          "auc": 0.808,
+          "all_models": {
+            "logistic_wide": 0.808,
+            "ensemble": 0.8054,
+            "pattern_match": 0.7676
+          },
+          "gain_over_age_sex": 0.0003,
+          "gain_ci": [
+            -0.0082,
+            0.0089
+          ],
+          "beats_age_sex": false,
+          "gain_over_labs": -0.0106,
+          "gain_over_labs_ci": [
+            -0.0196,
+            -0.002
+          ],
+          "beats_labs": false
+        },
+        "picture": {
+          "best_model": "logistic_wide",
+          "auc": 0.8111,
+          "all_models": {
+            "logistic_wide": 0.8111,
+            "ensemble": 0.8074,
+            "pattern_match": 0.7607
+          },
+          "gain_over_age_sex": 0.0034,
+          "gain_ci": [
+            -0.0057,
+            0.0128
+          ],
+          "beats_age_sex": false,
+          "gain_over_labs": -0.0075,
+          "gain_over_labs_ci": [
+            -0.0153,
+            0.0007
+          ],
+          "beats_labs": false
+        }
+      },
+      "pattern_match_auc": 0.7607
+    },
+    "decedents": {
+      "n": 2957,
+      "events": 569,
+      "arms": {
+        "age_sex": {
+          "best_model": "logistic",
+          "auc": 0.6035,
+          "all_models": {
+            "logistic": 0.6035,
+            "ensemble": 0.5969
+          }
+        },
+        "labs": {
+          "best_model": "ensemble",
+          "auc": 0.6474,
+          "all_models": {
+            "logistic": 0.6218,
+            "ensemble": 0.6474
+          },
+          "gain_over_age_sex": 0.0439,
+          "gain_ci": [
+            0.0181,
+            0.0685
+          ],
+          "beats_age_sex": true
+        },
+        "picture_no_labs": {
+          "best_model": "ensemble",
+          "auc": 0.6776,
+          "all_models": {
+            "logistic_wide": 0.6675,
+            "ensemble": 0.6776,
+            "pattern_match": 0.6554
+          },
+          "gain_over_age_sex": 0.0741,
+          "gain_ci": [
+            0.0476,
+            0.1001
+          ],
+          "beats_age_sex": true,
+          "gain_over_labs": 0.0302,
+          "gain_over_labs_ci": [
+            0.0046,
+            0.0549
+          ],
+          "beats_labs": true
+        },
+        "picture": {
+          "best_model": "ensemble",
+          "auc": 0.6852,
+          "all_models": {
+            "logistic_wide": 0.6799,
+            "ensemble": 0.6852,
+            "pattern_match": 0.6548
+          },
+          "gain_over_age_sex": 0.0817,
+          "gain_ci": [
+            0.0542,
+            0.1087
+          ],
+          "beats_age_sex": true,
+          "gain_over_labs": 0.0378,
+          "gain_over_labs_ci": [
+            0.0173,
+            0.0589
+          ],
+          "beats_labs": true
+        }
+      },
+      "pattern_match_auc": 0.6548
+    }
+  },
+  "cycle_holdout_decedents": {
+    "train_n": 1780,
+    "test_n": 1177,
+    "test_events": 222,
+    "arms": {
+      "labs": {
+        "auc": 0.6145,
+        "gain": 0.0051,
+        "gain_ci": [
+          -0.0421,
+          0.0487
+        ],
+        "beats_age_sex": false
+      },
+      "picture_no_labs": {
+        "auc": 0.6488,
+        "gain": 0.0394,
+        "gain_ci": [
+          -0.0048,
+          0.085
+        ],
+        "beats_age_sex": false
+      },
+      "picture": {
+        "auc": 0.67,
+        "gain": 0.0607,
+        "gain_ci": [
+          0.0142,
+          0.1079
+        ],
+        "beats_age_sex": true
+      }
+    },
+    "age_sex_auc": 0.6094
+  },
+  "conditions": {
+    "decedents_beats_age_and_labs": true,
+    "honest_beats_age_and_labs": false,
+    "cycle_holdout_beats_age": true
+  },
+  "promising": false
+}
