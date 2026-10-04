@@ -69,6 +69,7 @@ Run:  python fetch_nhanes_mortality.py
 import io
 import os
 import ssl
+import sys
 import urllib.request
 
 import numpy as np
@@ -183,7 +184,18 @@ def grab_mortality(a, b):
     return m
 
 
-def build_cycle(year, suffix, a, b):
+def build_cycle(year, suffix, a, b, full=False):
+    """One cycle. With full=True nobody is dropped for how they died.
+
+    The default keeps only people who died of cancer inside the window or lived
+    past it. Anyone who died of something else inside the window is dropped,
+    which means every person who dies early in that file died of cancer, and a
+    model can score well just by recognising who looks about to die. The full
+    build keeps those people, with how they died, so that confound can be
+    measured instead of assumed away. It writes a different file with extra
+    columns, never the default one: an extra numeric column in the default file
+    would silently become a model input.
+    """
     mort = grab_mortality(a, b)
     demo = take(grab_xpt(year, suffix, "DEMO"),
                 ["SEQN", "RIAGENDR", "RIDAGEYR", "RIDRETH1", "RIDRETH3"])
@@ -220,6 +232,8 @@ def build_cycle(year, suffix, a, b):
     # Followed long enough for "no cancer death by the horizon" to be a fact.
     followed = months >= HORIZON_MONTHS
     keep = positive | followed
+    if full:
+        keep = pd.Series(True, index=df.index)
 
     smoking = pd.Series(np.nan, index=df.index)
     if "SMQ020" in df.columns:
@@ -259,6 +273,9 @@ def build_cycle(year, suffix, a, b):
         "followup_months": months,
         "cancer_death": positive.astype(int),
     })
+    if full:
+        out["died"] = died.astype(int).values
+        out["ucod_leading"] = df["UCOD_LEADING"].values
     out = out[keep.values]
 
     need = ["age", "gender", "albumin", "ast", "alt", "cancer_death"]
@@ -266,12 +283,14 @@ def build_cycle(year, suffix, a, b):
 
 
 def main():
+    full = "--full" in sys.argv
     print(f"Prospective cancer-mortality cohort, NHANES linked to the National "
           f"Death Index\nOutcome: death from malignant neoplasm within "
-          f"{HORIZON_MONTHS} months of the blood draw\n")
+          f"{HORIZON_MONTHS} months of the blood draw"
+          + ("\nFULL build: nobody dropped for dying of something else\n" if full else "\n"))
     frames = []
     for year, suffix, a, b in CYCLES:
-        part = build_cycle(year, suffix, a, b)
+        part = build_cycle(year, suffix, a, b, full=full)
         if part is None or part.empty:
             print(f"  {a}-{b}  unavailable")
             continue
@@ -285,7 +304,8 @@ def main():
 
     pooled = pd.concat(frames, ignore_index=True)
     os.makedirs(DATA_DIR, exist_ok=True)
-    path = os.path.join(DATA_DIR, "nhanes_cancer_mortality.csv")
+    path = os.path.join(DATA_DIR, "nhanes_mortality_full.csv" if full
+                        else "nhanes_cancer_mortality.csv")
     pooled.to_csv(path, index=False)
 
     print(f"\n  POOLED n={len(pooled):,}  cancer deaths={int(pooled.cancer_death.sum()):,} "

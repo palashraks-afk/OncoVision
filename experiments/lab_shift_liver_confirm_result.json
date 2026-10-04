@@ -1,0 +1,78 @@
+{
+  "cohort": "NHANES 2017-2018, withheld from liver training",
+  "n_test": 4887,
+  "events": 269,
+  "arms": {
+    "plain": {
+      "0%": {
+        "mean": 0.7032,
+        "worst_decile": 0.7032,
+        "worst": 0.7032
+      },
+      "5%": {
+        "mean": 0.7004,
+        "worst_decile": 0.6939,
+        "worst": 0.6905
+      },
+      "10%": {
+        "mean": 0.6972,
+        "worst_decile": 0.6875,
+        "worst": 0.6856
+      },
+      "20%": {
+        "mean": 0.7017,
+        "worst_decile": 0.6857,
+        "worst": 0.6724
+      }
+    },
+    "plain x4 copies (control)": {
+      "0%": {
+        "mean": 0.6971,
+        "worst_decile": 0.6971,
+        "worst": 0.6971
+      },
+      "5%": {
+        "mean": 0.6945,
+        "worst_decile": 0.6889,
+        "worst": 0.6844
+      },
+      "10%": {
+        "mean": 0.6925,
+        "worst_decile": 0.6835,
+        "worst": 0.6775
+      },
+      "20%": {
+        "mean": 0.6945,
+        "worst_decile": 0.6795,
+        "worst": 0.6648
+      }
+    },
+    "augmented": {
+      "0%": {
+        "mean": 0.7106,
+        "worst_decile": 0.7106,
+        "worst": 0.7106
+      },
+      "5%": {
+        "mean": 0.7111,
+        "worst_decile": 0.704,
+        "worst": 0.6994
+      },
+      "10%": {
+        "mean": 0.7077,
+        "worst_decile": 0.6994,
+        "worst": 0.6965
+      },
+      "20%": {
+        "mean": 0.7071,
+        "worst_decile": 0.6963,
+        "worst": 0.6877
+      }
+    }
+  },
+  "worst_decile_gain_at_10pct": 0.0119,
+  "worst_decile_gain_vs_control": 0.0159,
+  "clean_auc_cost": -0.0074,
+  "clean_auc_vs_control": 0.0135,
+  "meets_bar": true
+}

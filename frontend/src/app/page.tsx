@@ -83,17 +83,6 @@ const FALLBACK_METRICS: Record<string, any> = {
     baseline_logistic_auc: 0.876, baseline_age_sex_auc: 0.661,
     n_samples: 212, n_test: 43, n_features: 6,
   },
-  cancer_mortality: {
-    label: "Cancer Mortality Risk, next five years", auc: 0.86, auc_ci: [0.826, 0.89],
-    threshold: 0.0125,
-    sensitivity: 0.794, specificity: 0.76,
-    brier: 0.0097, calibration_slope: 0.955,
-    ppv_at_population_prevalence: 0.03244,
-    people_flagged_per_true_case: 30.8,
-    population_prevalence: 0.01002, cohort_prevalence: 0.01,
-    baseline_logistic_auc: 0.859, baseline_age_sex_auc: 0.844,
-    n_samples: 33834, n_test: 6767, n_features: 22,
-  },
   liver: {
     label: "Liver Disease Risk", auc: 0.78, auc_ci: [0.748, 0.811],
     threshold: 0.0443,
@@ -161,6 +150,22 @@ const SPLIT_STABILITY = [
 // Trained and measured, deliberately not served. Reported rather than deleted,
 // because a withdrawn panel is evidence about the method.
 const WITHDRAWN_PANELS = [
+  {
+    name: "Cancer mortality, five years",
+    auc: 0.86, ci: [0.826, 0.89], logistic: 0.859,
+    specificity: 0.76, spec_ci: [0.75, 0.771],
+    n: 33834, n_test: 6767, features: 22,
+    reason:
+      "Withdrawn when it was shown to measure how unwell someone is rather than anything about " +
+      "cancer. It was built on adults whose blood was drawn years before a death certificate arrived, " +
+      "and it beat age and sex on a cohort from twenty years earlier. But that cohort kept only people " +
+      "who died of cancer or lived past five years, so every early death in it was a cancer death. With " +
+      "the people who died of other causes put back, it scores 0.873 against their deaths and 0.875 " +
+      "against cancer deaths on that older cohort, and among people who died it could not tell cancer " +
+      "from anything else (0.574 against 0.553 for age and sex, range -0.023 to +0.068 on the " +
+      "difference). What it does predict is death from any cause, which is real and is not what this " +
+      "project is for.",
+  },
   {
     name: "Lung",
     auc: 0.872, ci: [0.801, 0.925], logistic: 0.867,
@@ -1965,7 +1970,6 @@ export default function OncovisionDashboard() {
                     <tbody className="divide-y divide-[var(--rule)]">
                       {[
                         ["Liver", "NHANES 2005 to 2016, 30,624 US adults; 2017 to 2018 withheld as a test", "Told by a doctor they have a liver condition: liver disease, not liver cancer"],
-                        ["Cancer mortality", "NHANES 1999 to 2014, 33,834 US adults with no cancer diagnosis when their blood was drawn, linked to the National Death Index; validated on 14,630 adults from NHANES III", "Death from any cancer within five years of the blood draw"],
                         ["Breast, mammogram", "Breast Cancer Surveillance Consortium, 400,000 mammograms sampled from 1.8 million", "Breast cancer within a year of the mammogram"],
                         ["Breast, biopsy", "Wisconsin Diagnostic Breast Cancer, 569 records", "A malignant fine needle aspirate"],
                         ["Pancreatic", "Pancreatic biomarker cohort, 600 records from three tissue banks", "Confirmed adenocarcinoma, separated from both healthy controls and benign hepatobiliary disease"],
@@ -1990,7 +1994,7 @@ export default function OncovisionDashboard() {
                 <ul className="space-y-3 text-sm text-[var(--ink-2)] leading-relaxed list-disc pl-5">
                   <li><strong className="text-[var(--ink)]">Two kinds of cohort, and only one supports a screening claim.</strong> Liver and the mammogram-report breast panel are trained on population cohorts at real prevalence. Pancreatic, ovarian, prostate and the biopsy breast panel are case-control: people who already had a reason to be tested, running far above real incidence. Their high AUCs describe separating cases from selected controls, not screening.</li>
                   <li><strong className="text-[var(--ink)]">The biopsy breast panel interprets a biopsy.</strong> Its thirty inputs are nuclear measurements from a fine needle aspirate that has already been taken. The mammogram-report breast panel is the one that answers the screening question, and it scores far lower because that question is harder.</li>
-                  <li><strong className="text-[var(--ink)]">One panel reads routine bloodwork and was validated twice, and it does not predict a diagnosis.</strong> The cancer-mortality panel was built on adults whose blood was drawn years before a death certificate arrived, and tested on a second survey of the same design from twenty years earlier: 0.875 against 0.861 for age and sex alone. Its outcome is death from cancer within five years, so someone diagnosed early and cured counts as a negative. It ships with no rule-out call, because at the same share of deaths caught it excluded no more people than a cut on age.</li>
+                  <li><strong className="text-[var(--ink)]">A fifth panel was withdrawn for measuring something other than cancer.</strong> A five-year cancer-death panel built on blood drawn years before the outcome beat age and sex on a survey from twenty years earlier. Then the people who died of other causes, whom the data had left out, were put back: it predicted their deaths just as well (0.873 against 0.875), and among people who died it could not tell cancer from anything else. It was reading how unwell someone is.</li>
                   <li><strong className="text-[var(--ink)]">Two panels added nothing over age and sex, and both were withdrawn.</strong> A bowel panel built on sixteen blood values matched a logistic model on age and sex alone, inside its survey and on a cohort measured fifteen years earlier. A general cancer-risk panel barely beat age and sex, and its rule-out call excluded no more people than a cut on age and sex at the same sensitivity.</li>
                   <li><strong className="text-[var(--ink)]">External validation is uneven.</strong> Liver was tested in India, in Germany, and on two later survey cycles it never saw; its gain over age and sex held on both, and it scores below chance in Germany. The lung panel was withdrawn when the same two cycles showed no gain over age and sex. The prostate panel, trained on 212 men at one centre in China, was scored unchanged on 1,500 men at three hospitals in the Netherlands and beat reading the PSA number alone there, holding at every centre — the first external test of a case-control panel here. No public cohort exists for the other three. The two panels withdrawn for adding nothing to age and sex were retried on the rest of a routine checkup — HbA1c, lipids, urine albumin, blood pressure, waist — and stayed withdrawn: the general panel&apos;s small gain there reversed on a cohort from the 1990s.</li>
                   <li><strong className="text-[var(--ink)]">No prospective test and no IRB.</strong> No real patient report has been run through this and followed to an outcome. There is no ethics approval, no registration, and no clinical validation of any kind.</li>

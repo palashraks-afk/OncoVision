@@ -896,7 +896,7 @@ def table_prospective_external(_, extra):
     text += ("Whatever the blood values contributed inside NHANES 1999-2014 belonged to that survey "
              "rather than to human physiology." if not ex.get("gain_survives_transfer") else
              "The gain survives a cohort measured in a different decade.")
-    return "\n".join(rows) + "\n\n" + text
+    return "\n".join(rows) + "\n\n" + text + _flaw_note(extra)
 
 
 def text_prospective_short(_, extra):
@@ -913,7 +913,7 @@ def text_prospective_short(_, extra):
             f"within five years inside its survey; blood work alone gains "
             f"{ex['external_gain_over_age_sex']:+.3f}{ci} on NHANES III."
             + (" That gain does not survive the transfer." if not ex.get("gain_survives_transfer")
-               else " That gain survives the transfer."))
+               else " That gain survives the transfer.") + _flaw_note(extra))
 
 
 def text_breast_mri_cost(_, extra):
@@ -1029,14 +1029,30 @@ def text_pattern_matching(_, extra):
     return "\n".join(rows) + "\n\n" + note
 
 
+def _flaw_note(extra):
+    """The caveat every statement about the prospective signal has to carry.
+
+    The prospective cohort kept people who died of cancer inside five years or
+    lived past them and dropped everyone who died of something else, so every
+    early death in it was a cancer death. A gain measured on it, inside the
+    survey or on NHANES III, which was built the same way, cannot tell cancer
+    from being unwell. Appended wherever such a gain is quoted.
+    """
+    c = extra.get("cause_specificity") or {}
+    if not c or c.get("stays_a_cancer_panel"):
+        return ""
+    return (" Both figures rest on a cohort that dropped everyone who died of another cause, and "
+            "the same blood work predicts non-cancer death as well as cancer death (section "
+            "3.10), so this is a general mortality signal and not evidence about cancer.")
+
+
 def text_mortality_panel(_, extra):
-    """The one bloodwork panel that ships, and the design that let it."""
+    """The bloodwork panel that shipped for a while, and why it was withdrawn."""
     r = extra.get("mortality_panel")
+    c = extra.get("cause_specificity") or {}
     if not r:
         return "_Run experiments/prospective_panel_ship.py._"
     lo, hi = r["external_gain_ci"]
-    slo, shi = r["rule_out_extra_share_ci"]
-    worse = [g for g, v in (r.get("fairness_groups") or {}).items() if v.get("materially_worse")]
     s = (f"Three panels that read routine bloodwork for a named cancer were withdrawn, each after "
          f"its lab values added nothing to age and sex on data it had not seen. All three shared a "
          f"design: the blood and the answer came from the same visit, and the answer was a survivor "
@@ -1044,30 +1060,93 @@ def text_mortality_panel(_, extra):
          f"{r['n_train']:,} adults with no cancer diagnosis when the blood was drawn, "
          f"{r['events_train']} dead of cancer within five years, the death certificate arriving "
          f"later from a different agency.\n\n"
-         f"On {r['n_test']:,} adults from NHANES III, 1988-1994 -- the same design, a different "
-         f"decade, different instruments -- the panel scores {r['external_auc']:.3f} against "
-         f"{r['age_sex_external_auc']:.3f} for the stronger age-and-sex model, a gain of "
-         f"{r['external_gain']:+.3f} (95% CI {lo:+.3f} to {hi:+.3f}). Catching half the deaths "
-         f"flags {r['people_flagged_per_death_at_half_caught']} people per death, which is the "
-         f"best precision of any population panel here. "
-         + ("No subgroup with enough events scores materially worse than the whole. "
-            if not worse else f"Materially worse: {', '.join(worse)}. "))
-    if r.get("ship_the_panel") and not r.get("ship_a_cut"):
-        s += (f"**It ships, and it ships with no rule-out cut.** At 95% of deaths caught, that cut "
-              f"excluded {r['rule_out_extra_share']:+.1%} more adults than a cut on age and sex "
-              f"({slo:+.1%} to {shi:+.1%}), which is the test that withdrew bowel and general. A "
-              f"panel that cannot beat a birthday at excluding people may not tell anyone they are "
-              f"safe, so this one never does.")
-    elif r.get("ship_the_panel"):
-        s += "It ships, and its rule-out cut beat a cut on age and sex externally."
-    else:
-        s += "It does not ship: the gain did not survive the external cohort."
-    s += (" The limit is the outcome. Death from cancer is not a diagnosis, and a person diagnosed "
-          "early and cured counts here as a negative, so this is not an early-detection test. It "
-          "is the honest form of the claim this project set out to make: routine bloodwork, read "
-          "together, carries something about cancer that a birthday does not -- about a tenth of "
-          "the discrimination a reader would assume from the headline AUC, measured twice, twenty "
-          "years apart.")
+         f"A panel built on it scored {r['external_auc']:.3f} against "
+         f"{r['age_sex_external_auc']:.3f} for the stronger age-and-sex model on {r['n_test']:,} "
+         f"adults from NHANES III, 1988-1994, a gain of {r['external_gain']:+.3f} (95% CI "
+         f"{lo:+.3f} to {hi:+.3f}). It cleared the bar set for shipping it, and it shipped for a "
+         f"time as a cancer panel.")
+    if not c:
+        return s + " _Run experiments/mortality_cause_specificity.py._"
+    o = c["outcomes"]
+    cross = c.get("shipped_model_cross_outcome") or {}
+    # The original file also lacked a few people still alive with under five years of
+    # follow-up, so the difference in total rows overstates it. The honest cohort
+    # minus the original is exactly the people who died of something else.
+    dropped = o["honest"]["train_n"] - o["original"]["train_n"]
+    s += (f"\n\n**It was not a cancer panel.** The cohort kept only people who died of cancer "
+          f"inside five years or lived past them, and dropped everyone who died of something else "
+          f"in the window: {dropped:,} adults in the continuous survey. Every early death left in "
+          f"the file was therefore a cancer death, and a model could score well by recognising "
+          f"who looked close to dying. NHANES III was built the same way, so the external test "
+          f"shared the flaw and could not catch it.")
+    if cross:
+        s += (f" With those people kept, the shipped model scores "
+              f"{cross['original']['auc']:.3f} against cancer deaths on NHANES III and "
+              f"{cross['other_cause_only']['auc']:.3f} against deaths from other causes: it does "
+              f"not tell them apart.")
+    d = o.get("decedents") or {}
+    if d.get("panel_auc") is not None:
+        s += (f" Among only the {d['test_n']:,} adults who died within five years, where age and "
+              f"sex cannot separate a cancer death from another, it reaches {d['panel_auc']:.3f} "
+              f"against {d['age_sex_auc']:.3f} for age and sex, a gain of {d['gain']:+.3f} (95% CI "
+              f"{d['gain_ci'][0]:+.3f} to {d['gain_ci'][1]:+.3f}).")
+    h = o.get("honest") or {}
+    s += (f"\n\nThe bar was written before the full cohorts finished downloading: the panel stays "
+          f"a cancer panel only if it beats age and sex both on cancer death against everyone else "
+          f"({h.get('gain', 0):+.3f}, 95% CI {h.get('gain_ci', [0, 0])[0]:+.3f} to "
+          f"{h.get('gain_ci', [0, 0])[1]:+.3f}: "
+          f"{'held' if c.get('honest_passes') else 'failed'}) and among decedents "
+          f"({'held' if c.get('decedents_pass') else 'failed'}). "
+          + ("**Both held, and the panel stays.**" if c.get("stays_a_cancer_panel") else
+             "**It failed the second, so the panel is withdrawn**, not relabelled."))
+    a = o.get("all_cause") or {}
+    if a.get("gain") is not None:
+        s += (f" What the blood work does predict is death from any cause: {a['gain']:+.3f} over "
+              f"age and sex on NHANES III (95% CI {a['gain_ci'][0]:+.3f} to {a['gain_ci'][1]:+.3f}). "
+              f"That is a mortality signal and a real one, and it is not a cancer finding and not "
+              f"what this project set out to build.")
+    return s
+
+
+def text_signal_search(_, extra):
+    """Whether routine labs carry ANY cancer-specific information, and what the lead is."""
+    r = extra.get("signal_search")
+    d = extra.get("signal_drivers") or {}
+    if not r:
+        return "_Run experiments/cancer_specific_signal_search.py._"
+    rows = [x for x in r["rows"] if x.get("inputs") == "labs"]
+    ext = [x for x in rows if "external_gain" in x]
+    passed = [x for x in ext if x.get("found")]
+    pos = sum(1 for x in ext if x["external_gain"] > 0)
+    internal = [x["internal_gain"] for x in rows]
+    s = (f"With the people who died of other causes put back, the question left is whether routine "
+         f"labs carry ANY cancer-specific information. The place to look is among people who died, "
+         f"where age and sex cannot separate the causes. Across {len(rows)} horizon-and-comparison "
+         f"pairs (5, 10 and 15 years; cancer against all other deaths and against heart disease "
+         f"alone) the labs beat age and sex inside the continuous survey in "
+         f"{sum(1 for x in rows if x['internal_ok'])} of them, by {min(internal):+.3f} to "
+         f"{max(internal):+.3f}. Applied unchanged to NHANES III the gain was positive in {pos} of "
+         f"{len(ext)} and its interval excluded zero in {len(passed)}"
+         + (": " + ", ".join(f"{x['horizon']} years against {'other deaths' if x['versus'] == 'other' else 'heart disease'} "
+                            f"({x['external_gain']:+.3f}, 95% CI {x['external_gain_ci'][0]:+.3f} to "
+                            f"{x['external_gain_ci'][1]:+.3f})" for x in passed) if passed else "")
+         + f". Making {len(ext)} external comparisons, one clearing zero is a lead to confirm and "
+         f"not a finding.")
+    if d:
+        away, toward = d.get("away_from_cancer") or [], d.get("toward_cancer") or []
+        hb = next((x for x in d.get("drivers", []) if x["input"] == "hemoglobin"), None)
+        s += (f"\n\nWhat the lead is made of matters more than its size. The values that are stable "
+              f"across 200 bootstrap refits and keep their sign on NHANES III point "
+              f"{'AWAY from' if away else 'at'} cancer: {', '.join(away) or 'none'}"
+              + (", the markers of kidney disease and diabetes, which are what the other deaths die "
+                 "of" if away else "")
+              + f". {'Only ' + ', '.join(toward) + ' points toward it' if toward else 'Nothing points toward it'}"
+              + (", and haemoglobin, the classic cancer-associated value, changes sign between the two "
+                 "cohorts" if hb and not hb.get("same_sign_externally") else "")
+              + ". So what is being measured is that people who die of kidney or metabolic disease "
+              "look like it, and the cancer deaths are what is left over. That is real information "
+              "about which way a death will go. It is not evidence that routine blood carries a "
+              "tumour's own pattern, and it is not a basis for a cancer panel.")
     return s
 
 
@@ -1231,6 +1310,7 @@ TABLES = {
     "prostate_external": text_prostate_external,
     "checkup": text_checkup,
     "mortality_panel": text_mortality_panel,
+    "signal_search": text_signal_search,
     "pattern_matching": text_pattern_matching,
     "breast_vs_clinic": text_breast_vs_clinic,
     "banding_cost": text_banding_cost,
@@ -1265,6 +1345,9 @@ def main():
         "breast_vs_clinic": load("experiments/breast_vs_clinic_result.json", {}),
         "checkup": load("experiments/checkup_panels_result.json", {}),
         "mortality_panel": load("experiments/prospective_panel_ship_result.json", {}),
+        "cause_specificity": load("experiments/mortality_cause_specificity_result.json", {}),
+        "signal_search": load("experiments/cancer_specific_signal_search_result.json", {}),
+        "signal_drivers": load("experiments/decedent_signal_drivers_result.json", {}),
         "pattern_matching": load("experiments/pattern_matching_result.json", {}),
         "checkup_external": load("experiments/checkup_external_result.json", {}),
         "banding_cost": load("experiments/banding_cost_result.json", {}),

@@ -46,6 +46,7 @@ Run:  python fetch_nhanes3_external.py
 
 import io
 import os
+import sys
 import ssl
 import urllib.request
 
@@ -138,6 +139,12 @@ def main():
     cancer_death = (df["MORTSTAT"] == 1) & (df["UCOD_LEADING"] == CANCER)
     positive = cancer_death & (months <= HORIZON_MONTHS)
     keep = positive | (months >= HORIZON_MONTHS)
+    # --full keeps people who died of something else inside the window, with how
+    # they died. The default file drops them, which makes every early death in
+    # it a cancer death. See fetch_nhanes_mortality.build_cycle.
+    full = "--full" in sys.argv
+    if full:
+        keep = pd.Series(True, index=df.index)
 
     out = pd.DataFrame({
         "age": pd.to_numeric(df["HSAGEIR"], errors="coerce"),
@@ -149,11 +156,15 @@ def main():
         "followup_months": months,
         "cancer_death": positive.astype(int),
     })
+    if full:
+        out["died"] = (df["MORTSTAT"] == 1).astype(int).values
+        out["ucod_leading"] = df["UCOD_LEADING"].values
     out = out[keep.values]
     out = out.dropna(subset=["age", "gender", "albumin", "ast", "alt", "cancer_death"])
 
     os.makedirs(DATA_DIR, exist_ok=True)
-    path = os.path.join(DATA_DIR, "nhanes3_cancer_mortality.csv")
+    path = os.path.join(DATA_DIR, "nhanes3_mortality_full.csv" if full
+                        else "nhanes3_cancer_mortality.csv")
     out.to_csv(path, index=False)
 
     print(f"\n  n={len(out):,}  cancer deaths within {HORIZON_MONTHS} months="

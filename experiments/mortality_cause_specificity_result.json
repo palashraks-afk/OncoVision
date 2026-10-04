@@ -1,0 +1,145 @@
+{
+  "n_train": 35375,
+  "n_test": 15819,
+  "features": [
+    "age",
+    "gender",
+    "wbc",
+    "rbc",
+    "hemoglobin",
+    "platelets",
+    "hematocrit",
+    "mcv",
+    "mch",
+    "rdw",
+    "mpv",
+    "glucose",
+    "calcium",
+    "bun",
+    "creatinine",
+    "protein_total",
+    "albumin",
+    "ast",
+    "alt",
+    "bilirubin",
+    "alkaline_phosphatase",
+    "ggt"
+  ],
+  "outcomes": {
+    "original": {
+      "train_n": 33834,
+      "train_events": 339,
+      "test_n": 14630,
+      "test_events": 254,
+      "panel_kind": "logistic",
+      "panel_auc": 0.8746,
+      "panel_auc_ci": [
+        0.856,
+        0.893
+      ],
+      "age_sex_auc": 0.861,
+      "gain": 0.0138,
+      "gain_ci": [
+        0.0052,
+        0.0222
+      ],
+      "beats_age_sex": true
+    },
+    "honest": {
+      "train_n": 35344,
+      "train_events": 339,
+      "test_n": 15495,
+      "test_events": 254,
+      "panel_kind": "logistic",
+      "panel_auc": 0.8507,
+      "panel_auc_ci": [
+        0.831,
+        0.868
+      ],
+      "age_sex_auc": 0.8386,
+      "gain": 0.012,
+      "gain_ci": [
+        0.0037,
+        0.0201
+      ],
+      "beats_age_sex": true
+    },
+    "all_cause": {
+      "train_n": 35344,
+      "train_events": 1880,
+      "test_n": 15495,
+      "test_events": 1136,
+      "panel_kind": "ensemble",
+      "panel_auc": 0.8828,
+      "panel_auc_ci": [
+        0.873,
+        0.892
+      ],
+      "age_sex_auc": 0.8573,
+      "gain": 0.0255,
+      "gain_ci": [
+        0.0205,
+        0.0308
+      ],
+      "beats_age_sex": true
+    },
+    "decedents": {
+      "train_n": 1880,
+      "train_events": 339,
+      "test_n": 1136,
+      "test_events": 254,
+      "panel_kind": "ensemble",
+      "panel_auc": 0.5741,
+      "panel_auc_ci": [
+        0.538,
+        0.612
+      ],
+      "age_sex_auc": 0.5528,
+      "gain": 0.0217,
+      "gain_ci": [
+        -0.0232,
+        0.0677
+      ],
+      "beats_age_sex": false
+    }
+  },
+  "shipped_model_cross_outcome": {
+    "original": {
+      "auc": 0.8746,
+      "auc_ci": [
+        0.856,
+        0.893
+      ],
+      "events": 254
+    },
+    "honest": {
+      "auc": 0.8516,
+      "auc_ci": [
+        0.831,
+        0.868
+      ],
+      "events": 254
+    },
+    "all_cause": {
+      "auc": 0.8736,
+      "auc_ci": [
+        0.863,
+        0.884
+      ],
+      "events": 1136
+    },
+    "other_cause_only": {
+      "auc": 0.8732,
+      "auc_ci": [
+        0.861,
+        0.885
+      ],
+      "events": 882
+    }
+  },
+  "shipped_model_kind": "logistic",
+  "honest_passes": true,
+  "decedents_pass": false,
+  "stays_a_cancer_panel": false,
+  "auc_lost_when_other_deaths_are_kept": 0.0239
+}

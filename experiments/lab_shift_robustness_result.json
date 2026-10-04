@@ -1,0 +1,192 @@
+{
+  "levels": [
+    0.0,
+    0.05,
+    0.1,
+    0.2
+  ],
+  "draws": 50,
+  "aug_sd": 0.1,
+  "cohorts": {
+    "cancer_mortality": {
+      "kind": "logistic",
+      "n_test": 14630,
+      "events": 254,
+      "shipped": {
+        "0%": {
+          "mean": 0.8764,
+          "worst_decile": 0.8764,
+          "worst": 0.8764
+        },
+        "5%": {
+          "mean": 0.8756,
+          "worst_decile": 0.8743,
+          "worst": 0.8729
+        },
+        "10%": {
+          "mean": 0.8739,
+          "worst_decile": 0.8718,
+          "worst": 0.8647
+        },
+        "20%": {
+          "mean": 0.8671,
+          "worst_decile": 0.857,
+          "worst": 0.8471
+        }
+      },
+      "single_analyte_20pct_worst_drop": {
+        "mcv": 0.0091,
+        "hemoglobin": 0.0066,
+        "rdw": 0.0043,
+        "albumin": 0.0034,
+        "hematocrit": 0.0024,
+        "platelets": 0.0017,
+        "wbc": 0.0013,
+        "rbc": 0.0013,
+        "mpv": 0.001,
+        "calcium": 0.0009,
+        "protein_total": 0.0009,
+        "alt": 0.0008,
+        "ast": 0.0004,
+        "alkaline_phosphatase": 0.0004,
+        "mch": 0.0003,
+        "glucose": 0.0002,
+        "bun": 0.0002,
+        "creatinine": 0.0002,
+        "bilirubin": 0.0002,
+        "ggt": 0.0002
+      },
+      "plain": {
+        "0%": {
+          "mean": 0.8746,
+          "worst_decile": 0.8746,
+          "worst": 0.8746
+        },
+        "5%": {
+          "mean": 0.8746,
+          "worst_decile": 0.8739,
+          "worst": 0.8732
+        },
+        "10%": {
+          "mean": 0.8742,
+          "worst_decile": 0.873,
+          "worst": 0.8716
+        },
+        "20%": {
+          "mean": 0.8731,
+          "worst_decile": 0.8703,
+          "worst": 0.8688
+        }
+      },
+      "augmented": {
+        "0%": {
+          "mean": 0.8699,
+          "worst_decile": 0.8699,
+          "worst": 0.8699
+        },
+        "5%": {
+          "mean": 0.8698,
+          "worst_decile": 0.8693,
+          "worst": 0.8687
+        },
+        "10%": {
+          "mean": 0.8699,
+          "worst_decile": 0.8691,
+          "worst": 0.8684
+        },
+        "20%": {
+          "mean": 0.8692,
+          "worst_decile": 0.8677,
+          "worst": 0.8623
+        }
+      },
+      "worst_decile_gain_at_10pct": -0.0039,
+      "clean_auc_cost": 0.0047,
+      "meets_bar": false
+    },
+    "liver": {
+      "kind": "ensemble",
+      "n_test": 5416,
+      "events": 313,
+      "shipped": {
+        "0%": {
+          "mean": 0.7025,
+          "worst_decile": 0.7025,
+          "worst": 0.7025
+        },
+        "5%": {
+          "mean": 0.6972,
+          "worst_decile": 0.6908,
+          "worst": 0.6887
+        },
+        "10%": {
+          "mean": 0.6953,
+          "worst_decile": 0.6872,
+          "worst": 0.6769
+        },
+        "20%": {
+          "mean": 0.6848,
+          "worst_decile": 0.6714,
+          "worst": 0.6504
+        }
+      },
+      "single_analyte_20pct_worst_drop": {
+        "ast": 0.0255,
+        "albumin": 0.0114,
+        "alt": 0.0085,
+        "ggt": 0.0055,
+        "protein_total": 0.0053,
+        "alkaline_phosphatase": 0.0037,
+        "bilirubin": 0.0021
+      },
+      "plain": {
+        "0%": {
+          "mean": 0.7018,
+          "worst_decile": 0.7018,
+          "worst": 0.7018
+        },
+        "5%": {
+          "mean": 0.6981,
+          "worst_decile": 0.6934,
+          "worst": 0.6871
+        },
+        "10%": {
+          "mean": 0.6921,
+          "worst_decile": 0.6812,
+          "worst": 0.6751
+        },
+        "20%": {
+          "mean": 0.6889,
+          "worst_decile": 0.6716,
+          "worst": 0.6574
+        }
+      },
+      "augmented": {
+        "0%": {
+          "mean": 0.7127,
+          "worst_decile": 0.7127,
+          "worst": 0.7127
+        },
+        "5%": {
+          "mean": 0.7112,
+          "worst_decile": 0.7083,
+          "worst": 0.7048
+        },
+        "10%": {
+          "mean": 0.7081,
+          "worst_decile": 0.7025,
+          "worst": 0.6962
+        },
+        "20%": {
+          "mean": 0.7005,
+          "worst_decile": 0.6899,
+          "worst": 0.6755
+        }
+      },
+      "worst_decile_gain_at_10pct": 0.0213,
+      "clean_auc_cost": -0.0109,
+      "meets_bar": true
+    }
+  },
+  "adopt_augmented_training": false
+}

@@ -38,7 +38,7 @@ values added nothing**: −0.010 inside its survey and −0.000 on 14,499 NHANES
 been measured against a tree ensemble given only age and sex, which cannot use age smoothly. 
 
 <!-- AUTOGEN:prospective_short -->
-On the prospective cohort of 33,834 adults with NDI-confirmed outcomes, the full panel, which adds BMI, smoking and alcohol to routine blood work, gains +0.025 over the stronger age-and-sex model for cancer death within five years inside its survey; blood work alone gains +0.011 (95% CI +0.002 to +0.020) on NHANES III. That gain survives the transfer.
+On the prospective cohort of 33,834 adults with NDI-confirmed outcomes, the full panel, which adds BMI, smoking and alcohol to routine blood work, gains +0.025 over the stronger age-and-sex model for cancer death within five years inside its survey; blood work alone gains +0.011 (95% CI +0.002 to +0.020) on NHANES III. That gain survives the transfer. Both figures rest on a cohort that dropped everyone who died of another cause, and the same blood work predicts non-cancer death as well as cancer death (section 3.10), so this is a general mortality signal and not evidence about cancer.
 <!-- /AUTOGEN:prospective_short -->
 
  A breast panel fitted on
@@ -54,19 +54,23 @@ good AUCs flag dozens to hundreds of healthy people per true case at real incide
 <!-- /AUTOGEN:abstract_cost -->
 
 **Conclusions.** Routine blood work carries usable signal about organ-specific disease when the
-organ's own chemistry is on the panel — liver most clearly — and a small signal about cancer death
-within five years that held on a cohort measured in a different decade. It carried none we could
+organ's own chemistry is on the panel — liver most clearly — and a small signal about death within
+five years that held on a cohort measured in a different decade but proved to predict death from other
+causes as well as from cancer, so it is a mortality signal and not a cancer one. It carried none we could
 confirm about a diagnosis of any cancer, or about bowel cancer, and both of those panels were
 withdrawn: the one whose triage appeared to save money owed that saving to age. Serum cotinine,
 C-reactive protein, the complete blood count, the full metabolic panel, waist circumference and
-physical activity were each tested against the diagnosis panel and each rejected. Three
+physical activity were each tested against the diagnosis panel and each rejected. Four
 methodological cautions follow, and all concern what a result is compared against. Resampling within
 one survey — including leave-one-cycle-out — measures stability and not generalisation. **An
 external test validates a model, not a hypothesis**: the prospective blood-work signal first appeared
 to reverse on the external cohort, and the reversal belonged to an overfitted tree ensemble rather
 than to the signal. And **a baseline is a claim too**: an age-and-sex model that cannot use age
 smoothly flatters every panel measured against it, and here it manufactured the bowel panel's
-apparent external gain. For the panels that remain, the operating point matters more than the model,
+apparent external gain. And **a cohort's selection rule is a claim too**: the prospective cohort
+dropped everyone who died of another cause, so every early death in it was a cancer death, and the
+panel built on it predicts non-cancer death as well as cancer death. An external cohort built the same
+way shared the flaw and could not reveal it. For the panels that remain, the operating point matters more than the model,
 and the number of healthy people flagged per true case matters more than AUC, with which it
 frequently disagrees.
 
@@ -209,6 +213,10 @@ the sample is drawn, years pass, and the death certificate arrives later from a 
   because their status at the horizon is genuinely unknown. Cycles that could not complete the
   horizon (2015–2018) are excluded entirely: they can contribute deaths but never survivors, and
   pooling them lets cross-cycle assay drift masquerade as cancer signal.
+- **Other deaths.** As built, participants who died of something other than cancer inside the 60
+  months were excluded rather than counted as negatives. That was a mistake, found later: it makes
+  every early death in the file a cancer death, so a model can score well by recognising who looks
+  close to dying. Section 3.10 measures how much of the result that explains.
 
 The outcome is death from cancer, not detection of it. This is a later and harsher endpoint, it
 counts survivors as non-cases because they are, and it is confounded by everything determining
@@ -286,7 +294,7 @@ years beyond a single sensitivity figure, and no price on the harm of an unneces
 | Ovarian | 0.949 | 0.911 | 0.813 | +0.174 |
 | Prostate | 0.880 | 0.876 | 0.661 | +0.222 |
 | ~~Lung~~ withdrawn | 0.872 | 0.867 | 0.842 | +0.024 |
-| Cancer mortality | 0.860 | 0.859 | 0.844 | not measurable |
+| ~~Cancer mortality~~ withdrawn | 0.860 | 0.859 | 0.844 | not measurable |
 | ~~Bowel~~ withdrawn | 0.821 | 0.82 | 0.843 | **-0.011** |
 | ~~General~~ withdrawn | 0.781 | 0.78 | 0.779 | **+0.002** |
 | Liver | 0.780 | 0.761 | 0.623 | +0.114 |
@@ -546,6 +554,26 @@ project proposal with a named investigator.
 
 ---
 
+### 3.10 A panel that was not about cancer
+
+<!-- AUTOGEN:mortality_panel -->
+Three panels that read routine bloodwork for a named cancer were withdrawn, each after its lab values added nothing to age and sex on data it had not seen. All three shared a design: the blood and the answer came from the same visit, and the answer was a survivor being asked whether they had ever had cancer. The NHANES-NDI linkage does not. 33,834 adults with no cancer diagnosis when the blood was drawn, 339 dead of cancer within five years, the death certificate arriving later from a different agency.
+
+A panel built on it scored 0.875 against 0.861 for the stronger age-and-sex model on 14,630 adults from NHANES III, 1988-1994, a gain of +0.014 (95% CI +0.005 to +0.022). It cleared the bar set for shipping it, and it shipped for a time as a cancer panel.
+
+**It was not a cancer panel.** The cohort kept only people who died of cancer inside five years or lived past them, and dropped everyone who died of something else in the window: 1,510 adults in the continuous survey. Every early death left in the file was therefore a cancer death, and a model could score well by recognising who looked close to dying. NHANES III was built the same way, so the external test shared the flaw and could not catch it. With those people kept, the shipped model scores 0.875 against cancer deaths on NHANES III and 0.873 against deaths from other causes: it does not tell them apart. Among only the 1,136 adults who died within five years, where age and sex cannot separate a cancer death from another, it reaches 0.574 against 0.553 for age and sex, a gain of +0.022 (95% CI -0.023 to +0.068).
+
+The bar was written before the full cohorts finished downloading: the panel stays a cancer panel only if it beats age and sex both on cancer death against everyone else (+0.012, 95% CI +0.004 to +0.020: held) and among decedents (failed). **It failed the second, so the panel is withdrawn**, not relabelled. What the blood work does predict is death from any cause: +0.025 over age and sex on NHANES III (95% CI +0.021 to +0.031). That is a mortality signal and a real one, and it is not a cancer finding and not what this project set out to build.
+<!-- /AUTOGEN:mortality_panel -->
+
+<!-- AUTOGEN:signal_search -->
+With the people who died of other causes put back, the question left is whether routine labs carry ANY cancer-specific information. The place to look is among people who died, where age and sex cannot separate the causes. Across 6 horizon-and-comparison pairs (5, 10 and 15 years; cancer against all other deaths and against heart disease alone) the labs beat age and sex inside the continuous survey in 6 of them, by +0.012 to +0.059. Applied unchanged to NHANES III the gain was positive in 5 of 6 and its interval excluded zero in 1: 10 years against other deaths (+0.035, 95% CI +0.007 to +0.062). Making 6 external comparisons, one clearing zero is a lead to confirm and not a finding.
+
+What the lead is made of matters more than its size. The values that are stable across 200 bootstrap refits and keep their sign on NHANES III point AWAY from cancer: bun, glucose, the markers of kidney disease and diabetes, which are what the other deaths die of. Only albumin points toward it, and haemoglobin, the classic cancer-associated value, changes sign between the two cohorts. So what is being measured is that people who die of kidney or metabolic disease look like it, and the cancer deaths are what is left over. That is real information about which way a death will go. It is not evidence that routine blood carries a tumour's own pattern, and it is not a basis for a cancer panel.
+<!-- /AUTOGEN:signal_search -->
+
+---
+
 ## 4. Discussion
 
 ### 4.1 The answer is not the same for every question
@@ -568,7 +596,7 @@ activity were each measured against that panel and each rejected. Asked prospect
 person will die of cancer within five years:
 
 <!-- AUTOGEN:prospective_short -->
-On the prospective cohort of 33,834 adults with NDI-confirmed outcomes, the full panel, which adds BMI, smoking and alcohol to routine blood work, gains +0.025 over the stronger age-and-sex model for cancer death within five years inside its survey; blood work alone gains +0.011 (95% CI +0.002 to +0.020) on NHANES III. That gain survives the transfer.
+On the prospective cohort of 33,834 adults with NDI-confirmed outcomes, the full panel, which adds BMI, smoking and alcohol to routine blood work, gains +0.025 over the stronger age-and-sex model for cancer death within five years inside its survey; blood work alone gains +0.011 (95% CI +0.002 to +0.020) on NHANES III. That gain survives the transfer. Both figures rest on a cohort that dropped everyone who died of another cause, and the same blood work predicts non-cancer death as well as cancer death (section 3.10), so this is a general mortality signal and not evidence about cancer.
 <!-- /AUTOGEN:prospective_short -->
 
 That is a real signal and a small one. It sits on a death endpoint rather than a diagnosis, which the
@@ -615,14 +643,13 @@ informative. Breast at 0.997 and pancreatic at 0.969 are case-control designs: t
 cases from selected controls, on cohorts of 569 and 600. Read as screening performance they are
 badly misleading, and the taxonomy exists to stop them being read that way.
 
-The tool ships seven panels. None screens for a named CANCER from a lab report alone; one reads
-routine chemistry for the risk of dying of any cancer within five years, which is a different and
-weaker claim, and is the only panel here validated on a second cohort whose blood was also drawn
-before anyone knew the answer. One estimates
+The tool ships six panels. None screens for a named cancer from a lab report alone. One estimates
 breast cancer risk from a mammogram report at real screening prevalence. Four require the patient to
 already be inside the diagnostic pathway, and one detects liver disease rather than liver cancer, with
 a gain over age and sex that held on two later survey cycles. Bowel, general and lung panels were
-withdrawn when none could be shown to add anything to age and sex on data it had not seen. That sentence is a more honest summary of the work than any table of
+withdrawn when none could be shown to add anything to age and sex on data it had not seen, and a
+fifth, built on blood drawn before the outcome, when it proved to predict death from other causes as
+well as from cancer. That sentence is a more honest summary of the work than any table of
 discrimination statistics.
 
 ### 4.4 Discrimination is not usability

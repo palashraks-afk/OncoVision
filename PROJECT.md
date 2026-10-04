@@ -243,7 +243,7 @@ Reproduce with `python evaluate.py`.
 | Ovarian malignancy | 349 operated ovarian masses | 0.949 | 0.882 to 0.994 | 58.1% | 0.853 | 0.944 | 1.3 |
 | Prostate cancer | 212 biopsied men | 0.880 | 0.746 to 0.979 | 65.9% | 0.76 | 0.778 | 1.4 |
 | ~~Lung cancer~~ withdrawn | 19,866 adults with tobacco exposure | 0.872 ⚠️<br>_a lucky draw, 100th pct;_<br>_stable mean 0.827_ | 0.801 to 0.925 | 1.0% | 0.5 | 0.882 | 50.3 |
-| Cancer death within 5 years | 33,834 NHANES adults, death certificates | 0.860 | 0.826 to 0.89 | 1.1% | 0.794 | 0.76 | 30.8 |
+| ~~Cancer death within 5 years~~ withdrawn | 33,834 NHANES adults, death certificates | 0.860 | 0.826 to 0.89 | 1.1% | 0.794 | 0.76 | 30.8 |
 | ~~Bowel cancer~~ withdrawn | 28,527 NHANES adults | 0.821 | 0.746 to 0.89 | 1.0% | 0.522 | 0.894 | 559.8 |
 | ~~General cancer~~ withdrawn | 28,711 NHANES adults | 0.781 ⚠️<br>_a lucky draw, 100th pct;_<br>_stable mean 0.758_ | 0.749 to 0.811 | 3.5% | 0.67 | 0.728 | 13.5 |
 | Liver disease | 30,624 NHANES adults | 0.780 ⚠️<br>_a lucky draw, 100th pct;_<br>_stable mean 0.759_ | 0.748 to 0.811 | 4.3% | 0.588 | 0.828 | 8.0 |
@@ -261,7 +261,7 @@ Reproduce with `python evaluate.py`.
 | Ovarian | 0.949 | 0.911 | 0.813 | +0.174 |
 | Prostate | 0.880 | 0.876 | 0.661 | +0.222 |
 | ~~Lung~~ withdrawn | 0.872 | 0.867 | 0.842 | +0.024 |
-| Cancer mortality | 0.860 | 0.859 | 0.844 | not measurable |
+| ~~Cancer mortality~~ withdrawn | 0.860 | 0.859 | 0.844 | not measurable |
 | ~~Bowel~~ withdrawn | 0.821 | 0.82 | 0.843 | **-0.011** |
 | ~~General~~ withdrawn | 0.781 | 0.78 | 0.779 | **+0.002** |
 | Liver | 0.780 | 0.761 | 0.623 | +0.114 |
@@ -907,6 +907,8 @@ determines whether a cancer is survivable. It is a different question, honestly 
 design the other cohorts cannot offer. Reproduce with
 `python experiments/prospective_mortality.py`.
 
+**This cohort has a flaw, found later.** It kept only people who died of cancer within five years or lived past them, and dropped everyone who died of something else, so every early death in it was a cancer death and a model could score well just by recognising who looked close to dying. The same blood work predicts non-cancer death as well as cancer death, so what this section measures is a general mortality signal, not a cancer one. See `experiments/mortality_cause_specificity.py`.
+
 ### The gain survived a different decade, once the model that overfitted was replaced
 
 The prospective panel was then tested properly. NHANES III ran from 1988 to 1994 and is linked to
@@ -924,7 +926,7 @@ own, so its distribution cannot leak into the fit.
 | full blood work, logistic | 22 | 0.872 | 0.852 to 0.89 |
 | full blood work, ensemble | 22 | 0.839 | 0.819 to 0.858 |
 
-**Transferred gain, best panel against best age-and-sex model: +0.011** (95% CI +0.002 to +0.020), against +0.025 inside the training survey for the full panel, which also includes BMI, smoking and alcohol. The gain survives a cohort measured in a different decade.
+**Transferred gain, best panel against best age-and-sex model: +0.011** (95% CI +0.002 to +0.020), against +0.025 inside the training survey for the full panel, which also includes BMI, smoking and alcohol. The gain survives a cohort measured in a different decade. Both figures rest on a cohort that dropped everyone who died of another cause, and the same blood work predicts non-cancer death as well as cancer death (section 3.10), so this is a general mortality signal and not evidence about cancer.
 <!-- /AUTOGEN:prospective_external -->
 
 The first version of this section reported the opposite, under the heading "the gain did not

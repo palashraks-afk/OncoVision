@@ -1,0 +1,190 @@
+{
+  "horizon_years": 10,
+  "n": 2683,
+  "cancer": 527,
+  "drivers": [
+    {
+      "input": "bun",
+      "coef": -0.373,
+      "sign_agreement": 1.0,
+      "external_coef": -0.368,
+      "same_sign_externally": true,
+      "meaning": "high runs with kidney disease and dehydration"
+    },
+    {
+      "input": "rbc",
+      "coef": -0.319,
+      "sign_agreement": 0.79,
+      "external_coef": 0.213,
+      "same_sign_externally": false,
+      "meaning": ""
+    },
+    {
+      "input": "hemoglobin",
+      "coef": 0.245,
+      "sign_agreement": 0.84,
+      "external_coef": -0.803,
+      "same_sign_externally": false,
+      "meaning": "low runs with anaemia, chronic disease, bleeding"
+    },
+    {
+      "input": "mcv",
+      "coef": -0.207,
+      "sign_agreement": 0.84,
+      "external_coef": -0.233,
+      "same_sign_externally": true,
+      "meaning": "high runs with alcohol and B12 deficiency"
+    },
+    {
+      "input": "gender",
+      "coef": 0.187,
+      "sign_agreement": 1.0,
+      "external_coef": 0.179,
+      "same_sign_externally": true,
+      "meaning": ""
+    },
+    {
+      "input": "glucose",
+      "coef": -0.167,
+      "sign_agreement": 1.0,
+      "external_coef": -0.093,
+      "same_sign_externally": true,
+      "meaning": "high runs with diabetes, a heart and kidney risk"
+    },
+    {
+      "input": "age",
+      "coef": -0.149,
+      "sign_agreement": 1.0,
+      "external_coef": -0.136,
+      "same_sign_externally": true,
+      "meaning": ""
+    },
+    {
+      "input": "hematocrit",
+      "coef": 0.133,
+      "sign_agreement": 0.8,
+      "external_coef": 0.454,
+      "same_sign_externally": true,
+      "meaning": ""
+    },
+    {
+      "input": "albumin",
+      "coef": 0.129,
+      "sign_agreement": 0.99,
+      "external_coef": 0.007,
+      "same_sign_externally": true,
+      "meaning": "low runs with chronic illness of every kind"
+    },
+    {
+      "input": "alkaline_phosphatase",
+      "coef": -0.09,
+      "sign_agreement": 0.88,
+      "external_coef": 0.042,
+      "same_sign_externally": false,
+      "meaning": "high runs with liver and bone disease and some cancers"
+    },
+    {
+      "input": "ast",
+      "coef": 0.072,
+      "sign_agreement": 0.61,
+      "external_coef": -0.349,
+      "same_sign_externally": false,
+      "meaning": ""
+    },
+    {
+      "input": "platelets",
+      "coef": 0.07,
+      "sign_agreement": 0.89,
+      "external_coef": 0.013,
+      "same_sign_externally": true,
+      "meaning": "high is a known cancer-associated finding"
+    },
+    {
+      "input": "protein_total",
+      "coef": -0.066,
+      "sign_agreement": 0.88,
+      "external_coef": 0.001,
+      "same_sign_externally": false,
+      "meaning": ""
+    },
+    {
+      "input": "mpv",
+      "coef": 0.056,
+      "sign_agreement": 0.85,
+      "external_coef": -0.025,
+      "same_sign_externally": false,
+      "meaning": ""
+    },
+    {
+      "input": "mch",
+      "coef": -0.055,
+      "sign_agreement": 0.77,
+      "external_coef": 0.447,
+      "same_sign_externally": false,
+      "meaning": ""
+    },
+    {
+      "input": "rdw",
+      "coef": -0.048,
+      "sign_agreement": 0.81,
+      "external_coef": 0.045,
+      "same_sign_externally": false,
+      "meaning": "high runs with nutritional deficiency and chronic disease"
+    },
+    {
+      "input": "creatinine",
+      "coef": -0.015,
+      "sign_agreement": 0.56,
+      "external_coef": -0.106,
+      "same_sign_externally": true,
+      "meaning": "high runs with kidney disease"
+    },
+    {
+      "input": "ggt",
+      "coef": -0.013,
+      "sign_agreement": 0.58,
+      "external_coef": -0.067,
+      "same_sign_externally": true,
+      "meaning": "high runs with liver disease and alcohol"
+    },
+    {
+      "input": "bilirubin",
+      "coef": -0.01,
+      "sign_agreement": 0.56,
+      "external_coef": -0.102,
+      "same_sign_externally": true,
+      "meaning": ""
+    },
+    {
+      "input": "calcium",
+      "coef": -0.005,
+      "sign_agreement": 0.57,
+      "external_coef": 0.022,
+      "same_sign_externally": false,
+      "meaning": "high is a known cancer-associated finding"
+    },
+    {
+      "input": "wbc",
+      "coef": 0.004,
+      "sign_agreement": 0.53,
+      "external_coef": -0.065,
+      "same_sign_externally": false,
+      "meaning": "high runs with infection and inflammation"
+    },
+    {
+      "input": "alt",
+      "coef": -0.002,
+      "sign_agreement": 0.54,
+      "external_coef": 0.183,
+      "same_sign_externally": false,
+      "meaning": ""
+    }
+  ],
+  "toward_cancer": [
+    "albumin"
+  ],
+  "away_from_cancer": [
+    "bun",
+    "glucose"
+  ]
+}

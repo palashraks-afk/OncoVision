@@ -33,7 +33,11 @@ floor. On the full cohort it runs unchanged.
 
 ## Suggested order
 
-1. **HRS 2016 venous blood first.** It is the only request here that could restore what the
+0. **CHARLS before anything else.** Registration only, and it holds blood from the same
+   people in 2011 and 2015 with cancer asked in every later wave: the two-draw "change
+   over time" test, free. See `docs/NEXT_STEPS_FOR_RAHUL.md`. The cohort is deliberately
+   not built until the real files are in hand.
+1. **HRS 2016 venous blood next.** It is the only request here that could restore what the
    project lost when the lung panel was withdrawn: a lab-report panel that screens for a
    named cancer, built on blood drawn before the diagnosis rather than after it. Weeks, one
    form, no consortium proposal.

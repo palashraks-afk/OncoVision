@@ -24,7 +24,7 @@ Built as a mentored research project under the guidance of a clinical oncologist
 your patient portal happens to use, at 100% accuracy across five different report formats. Or type
 them in. Blanks are fine and expected.
 
-**Seven panels score what you gave them**, each saying how confident it is, which of your values
+**Six panels score what you gave them**, each saying how confident it is, which of your values
 drove the answer, and what the number is worth at real-world incidence rather than in a study.
 
 **And it tells you what the answer is for.** The measured case, per 100,000 people:
@@ -49,7 +49,7 @@ nothing over age and sex (+0.001, 95% CI −0.055 to +0.055). Liver disease is, 
 breast is estimated from the mammogram report a screened woman already holds; the rest are triage
 and interpretation tools for someone already inside the diagnostic pathway, and every panel says on
 its own card which it is.
-Four panels were withdrawn when the evidence stopped supporting them, three of them after they turned out to add nothing to the patient's age and sex. Two of those were retried on the rest of a routine checkup -- HbA1c, lipids, urine albumin, blood pressure, waist, none of which had ever been read -- and stayed withdrawn: see the paper, section 3.9. Roughly half the experiments in
+Five panels were withdrawn when the evidence stopped supporting them: three after they turned out to add nothing to the patient's age and sex, and a fourth, a five-year cancer-death panel built on blood drawn before the outcome, after it proved to predict death from other causes as well as from cancer. Two of the first three were retried on the rest of a routine checkup -- HbA1c, lipids, urine albumin, blood pressure, waist, none of which had ever been read -- and stayed withdrawn: see the paper, section 3.9. Roughly half the experiments in
 this repository came back negative and are committed anyway.
 
 The prostate panel has since been tested on 1,500 men at three hospitals in the Netherlands, the first external cohort any case-control panel here has had, and it held. The two gaps no amount of analysis closes -- a screening population rather than referred patients, and any prospective test on real patients -- both still need a named investigator. Drafts for each are in [docs/PLCO_CDAS_PROPOSAL.md](docs/PLCO_CDAS_PROPOSAL.md) and [docs/PROSPECTIVE_STUDY_PROTOCOL.md](docs/PROSPECTIVE_STUDY_PROTOCOL.md). Neither has been submitted.
@@ -71,30 +71,27 @@ Two inputs, read together:
    with the cervical panel, and the exercise question went when it was measured and found to add
    nothing, the alcohol question went with the general panel, and smoking, pack-years, cotinine and CRP went with the lung panel, the only ones that read them, because asking for what nothing uses is only friction.
 
-Seven calibrated models score the combination, and the interface reports what drove each score,
+Six calibrated models score the combination, and the interface reports what drove each score,
 how accurate that model is, and what the score is worth at real prevalence.
 
 ### What "multi-cancer" means here, precisely
 
-Seven panels is not seven cancers you can screen for, and the difference is the most important
+Six panels is not six cancers you can screen for, and the difference is the most important
 thing on this page. Each panel carries its type on its own card, and the types are not
 interchangeable:
 
 | | Panels | What you need before running it |
 |---|---|---|
-| **Screening** | Cancer mortality, five years | Nothing but a lab report |
+| **Screening** | None shipped | Lung, bowel, general and a five-year cancer-death panel were withdrawn |
 | **Triage** | Pancreatic, ovarian | A mass or a suspicion already found |
 | **Triage, from a mammogram** | Breast (mammogram report) | A screening mammogram already done |
 | **Interpretation** | Breast (biopsy), prostate | A biopsy or MRI already performed |
 | **Not a cancer panel** | Liver | It detects liver *disease*, not liver cancer |
 
 So: **four named cancers, none of which can yet be screened for from a lab report alone**, plus
-breast risk read from a mammogram report at real screening prevalence, liver disease read from
-routine chemistry, and one panel that reads routine chemistry for a five-year risk of dying of a
-cancer nobody has found yet -- the only panel here whose cohort had its blood drawn before anyone
-knew the answer, and the only one validated on a second cohort of the same design. The rest are triage and
-interpretation tools for someone already inside the diagnostic pathway,
-which is a genuinely useful thing to be and a different thing from screening.
+breast risk read from a mammogram report at real screening prevalence and liver disease read from
+routine chemistry. The rest are triage and interpretation tools for someone already inside the
+diagnostic pathway, which is a genuinely useful thing to be and a different thing from screening.
 
 The screening panels then run into the precision problem below, which is measured rather than
 argued about. That is the honest headline, and everything underneath it is the evidence.
@@ -108,7 +105,7 @@ presented as if it were complete.
 
 ## What ships
 
-Seven panels ship. Three were withdrawn because the evidence did not support serving them.
+Six panels ship. Five were withdrawn because the evidence did not support serving them.
 
 <!-- AUTOGEN:shipped -->
 | Panel | Trained on | Test AUC | 95% CI | Threshold | Sens | Spec | Flagged per true case |
@@ -118,7 +115,7 @@ Seven panels ship. Three were withdrawn because the evidence did not support ser
 | Ovarian malignancy | 349 operated ovarian masses | 0.949 | 0.882 to 0.994 | 58.1% | 0.853 | 0.944 | 1.3 |
 | Prostate cancer | 212 biopsied men | 0.880 | 0.746 to 0.979 | 65.9% | 0.76 | 0.778 | 1.4 |
 | ~~Lung cancer~~ withdrawn | 19,866 adults with tobacco exposure | 0.872 ⚠️<br>_a lucky draw, 100th pct;_<br>_stable mean 0.827_ | 0.801 to 0.925 | 1.0% | 0.5 | 0.882 | 50.3 |
-| Cancer death within 5 years | 33,834 NHANES adults, death certificates | 0.860 | 0.826 to 0.89 | 1.1% | 0.794 | 0.76 | 30.8 |
+| ~~Cancer death within 5 years~~ withdrawn | 33,834 NHANES adults, death certificates | 0.860 | 0.826 to 0.89 | 1.1% | 0.794 | 0.76 | 30.8 |
 | ~~Bowel cancer~~ withdrawn | 28,527 NHANES adults | 0.821 | 0.746 to 0.89 | 1.0% | 0.522 | 0.894 | 559.8 |
 | ~~General cancer~~ withdrawn | 28,711 NHANES adults | 0.781 ⚠️<br>_a lucky draw, 100th pct;_<br>_stable mean 0.758_ | 0.749 to 0.811 | 3.5% | 0.67 | 0.728 | 13.5 |
 | Liver disease | 30,624 NHANES adults | 0.780 ⚠️<br>_a lucky draw, 100th pct;_<br>_stable mean 0.759_ | 0.748 to 0.811 | 4.3% | 0.588 | 0.828 | 8.0 |
@@ -136,7 +133,7 @@ Seven panels ship. Three were withdrawn because the evidence did not support ser
 | Ovarian | 0.949 | 0.911 | 0.813 | +0.174 |
 | Prostate | 0.880 | 0.876 | 0.661 | +0.222 |
 | ~~Lung~~ withdrawn | 0.872 | 0.867 | 0.842 | +0.024 |
-| Cancer mortality | 0.860 | 0.859 | 0.844 | not measurable |
+| ~~Cancer mortality~~ withdrawn | 0.860 | 0.859 | 0.844 | not measurable |
 | ~~Bowel~~ withdrawn | 0.821 | 0.82 | 0.843 | **-0.011** |
 | ~~General~~ withdrawn | 0.781 | 0.78 | 0.779 | **+0.002** |
 | Liver | 0.780 | 0.761 | 0.623 | +0.114 |
@@ -840,6 +837,8 @@ determines whether a cancer is survivable. It is a different question, honestly 
 design the other cohorts cannot offer. Reproduce with
 `python experiments/prospective_mortality.py`.
 
+**This cohort has a flaw, found later.** It kept only people who died of cancer within five years or lived past them, and dropped everyone who died of something else, so every early death in it was a cancer death and a model could score well just by recognising who looked close to dying. The same blood work predicts non-cancer death as well as cancer death, so what this section measures is a general mortality signal, not a cancer one. See `experiments/mortality_cause_specificity.py`.
+
 ### The gain survived a different decade, once the model that overfitted was replaced
 
 The prospective panel was then tested properly. NHANES III ran from 1988 to 1994 and is linked to
@@ -857,7 +856,7 @@ own, so its distribution cannot leak into the fit.
 | full blood work, logistic | 22 | 0.872 | 0.852 to 0.89 |
 | full blood work, ensemble | 22 | 0.839 | 0.819 to 0.858 |
 
-**Transferred gain, best panel against best age-and-sex model: +0.011** (95% CI +0.002 to +0.020), against +0.025 inside the training survey for the full panel, which also includes BMI, smoking and alcohol. The gain survives a cohort measured in a different decade.
+**Transferred gain, best panel against best age-and-sex model: +0.011** (95% CI +0.002 to +0.020), against +0.025 inside the training survey for the full panel, which also includes BMI, smoking and alcohol. The gain survives a cohort measured in a different decade. Both figures rest on a cohort that dropped everyone who died of another cause, and the same blood work predicts non-cancer death as well as cancer death (section 3.10), so this is a general mortality signal and not evidence about cancer.
 <!-- /AUTOGEN:prospective_external -->
 
 The first version of this section reported the opposite, under the heading "the gain did not

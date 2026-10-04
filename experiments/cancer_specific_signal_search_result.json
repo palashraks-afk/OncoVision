@@ -1,0 +1,262 @@
+{
+  "labs": [
+    "wbc",
+    "rbc",
+    "hemoglobin",
+    "platelets",
+    "hematocrit",
+    "mcv",
+    "mch",
+    "rdw",
+    "mpv",
+    "glucose",
+    "calcium",
+    "bun",
+    "creatinine",
+    "protein_total",
+    "albumin",
+    "ast",
+    "alt",
+    "bilirubin",
+    "alkaline_phosphatase",
+    "ggt"
+  ],
+  "rows": [
+    {
+      "horizon": 5,
+      "versus": "other",
+      "inputs": "labs",
+      "n_train": 1880,
+      "events_train": 339,
+      "internal_gain": 0.059,
+      "internal_gain_ci": [
+        0.0444,
+        0.0668
+      ],
+      "internal_ok": true,
+      "n_test": 1136,
+      "events_test": 254,
+      "external_auc": 0.5761,
+      "external_age_sex_auc": 0.5528,
+      "external_gain": 0.0233,
+      "external_gain_ci": [
+        -0.0219,
+        0.0714
+      ],
+      "external_ok": false,
+      "found": false
+    },
+    {
+      "horizon": 5,
+      "versus": "other",
+      "inputs": "labs_and_lifestyle",
+      "n_train": 1880,
+      "events_train": 339,
+      "internal_gain": 0.0666,
+      "internal_gain_ci": [
+        0.0595,
+        0.0751
+      ],
+      "internal_ok": true,
+      "found": false
+    },
+    {
+      "horizon": 5,
+      "versus": "heart",
+      "inputs": "labs",
+      "n_train": 911,
+      "events_train": 339,
+      "internal_gain": 0.0231,
+      "internal_gain_ci": [
+        0.0167,
+        0.0295
+      ],
+      "internal_ok": true,
+      "n_test": 671,
+      "events_test": 254,
+      "external_auc": 0.6119,
+      "external_age_sex_auc": 0.5867,
+      "external_gain": 0.0252,
+      "external_gain_ci": [
+        -0.0177,
+        0.0692
+      ],
+      "external_ok": false,
+      "found": false
+    },
+    {
+      "horizon": 5,
+      "versus": "heart",
+      "inputs": "labs_and_lifestyle",
+      "n_train": 911,
+      "events_train": 339,
+      "internal_gain": 0.0296,
+      "internal_gain_ci": [
+        0.0244,
+        0.0373
+      ],
+      "internal_ok": true,
+      "found": false
+    },
+    {
+      "horizon": 10,
+      "versus": "other",
+      "inputs": "labs",
+      "n_train": 2683,
+      "events_train": 527,
+      "internal_gain": 0.029,
+      "internal_gain_ci": [
+        0.0197,
+        0.0371
+      ],
+      "internal_ok": true,
+      "n_test": 2480,
+      "events_test": 555,
+      "external_auc": 0.6448,
+      "external_age_sex_auc": 0.6101,
+      "external_gain": 0.0346,
+      "external_gain_ci": [
+        0.0073,
+        0.0622
+      ],
+      "external_ok": true,
+      "found": true
+    },
+    {
+      "horizon": 10,
+      "versus": "other",
+      "inputs": "labs_and_lifestyle",
+      "n_train": 2683,
+      "events_train": 527,
+      "internal_gain": 0.046,
+      "internal_gain_ci": [
+        0.0388,
+        0.0526
+      ],
+      "internal_ok": true,
+      "found": false
+    },
+    {
+      "horizon": 10,
+      "versus": "heart",
+      "inputs": "labs",
+      "n_train": 1268,
+      "events_train": 527,
+      "internal_gain": 0.012,
+      "internal_gain_ci": [
+        0.0058,
+        0.0202
+      ],
+      "internal_ok": true,
+      "n_test": 1420,
+      "events_test": 555,
+      "external_auc": 0.6518,
+      "external_age_sex_auc": 0.6405,
+      "external_gain": 0.0113,
+      "external_gain_ci": [
+        -0.0148,
+        0.0374
+      ],
+      "external_ok": false,
+      "found": false
+    },
+    {
+      "horizon": 10,
+      "versus": "heart",
+      "inputs": "labs_and_lifestyle",
+      "n_train": 1268,
+      "events_train": 527,
+      "internal_gain": 0.0136,
+      "internal_gain_ci": [
+        0.0009,
+        0.0273
+      ],
+      "internal_ok": true,
+      "found": false
+    },
+    {
+      "horizon": 15,
+      "versus": "other",
+      "inputs": "labs",
+      "n_train": 2527,
+      "events_train": 492,
+      "internal_gain": 0.0255,
+      "internal_gain_ci": [
+        0.0115,
+        0.0368
+      ],
+      "internal_ok": true,
+      "n_test": 3780,
+      "events_test": 833,
+      "external_auc": 0.621,
+      "external_age_sex_auc": 0.6049,
+      "external_gain": 0.0161,
+      "external_gain_ci": [
+        -0.0062,
+        0.0371
+      ],
+      "external_ok": false,
+      "found": false
+    },
+    {
+      "horizon": 15,
+      "versus": "other",
+      "inputs": "labs_and_lifestyle",
+      "n_train": 2527,
+      "events_train": 492,
+      "internal_gain": 0.0298,
+      "internal_gain_ci": [
+        0.02,
+        0.0386
+      ],
+      "internal_ok": true,
+      "found": false
+    },
+    {
+      "horizon": 15,
+      "versus": "heart",
+      "inputs": "labs",
+      "n_train": 1205,
+      "events_train": 492,
+      "internal_gain": 0.0127,
+      "internal_gain_ci": [
+        0.0107,
+        0.0149
+      ],
+      "internal_ok": true,
+      "n_test": 2104,
+      "events_test": 833,
+      "external_auc": 0.6329,
+      "external_age_sex_auc": 0.6422,
+      "external_gain": -0.0093,
+      "external_gain_ci": [
+        -0.0329,
+        0.0126
+      ],
+      "external_ok": false,
+      "found": false
+    },
+    {
+      "horizon": 15,
+      "versus": "heart",
+      "inputs": "labs_and_lifestyle",
+      "n_train": 1205,
+      "events_train": 492,
+      "internal_gain": 0.0099,
+      "internal_gain_ci": [
+        0.0072,
+        0.0151
+      ],
+      "internal_ok": true,
+      "found": false
+    }
+  ],
+  "found": [
+    {
+      "horizon": 10,
+      "versus": "other"
+    }
+  ],
+  "comparisons": 12,
+  "any_found": true
+}
