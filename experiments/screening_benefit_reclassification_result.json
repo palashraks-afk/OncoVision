@@ -1,0 +1,51 @@
+{
+  "train_n": 20963,
+  "test_n": 15495,
+  "discrimination": {
+    "age_sex_auc": 0.8789,
+    "with_labs_auc": 0.9009,
+    "gain": 0.022,
+    "gain_ci": [
+      0.0188,
+      0.0253
+    ],
+    "passes": true,
+    "mean_predicted": 0.362,
+    "observed": 0.1601
+  },
+  "decision_zone": {
+    "ages": [
+      65,
+      84
+    ],
+    "n": 3410,
+    "flag_share": 0.3,
+    "zone_auc_age_sex": 0.7002,
+    "zone_auc_labs": 0.7618,
+    "zone_auc_gain": 0.0615,
+    "zone_auc_gain_ci": [
+      0.0482,
+      0.0739
+    ],
+    "observed_mortality": 0.4463,
+    "classified_differently": 0.1431,
+    "flagged_mortality_age_sex": 0.6931,
+    "flagged_mortality_labs": 0.7165,
+    "flagged_difference_ci": [
+      0.0029,
+      0.044
+    ],
+    "unflagged_mortality_age_sex": 0.3406,
+    "unflagged_mortality_labs": 0.3305,
+    "unflagged_difference_ci": [
+      -0.0201,
+      -0.0002
+    ],
+    "only_labs_n": 244,
+    "only_labs_mortality": 0.6598,
+    "only_age_n": 244,
+    "only_age_mortality": 0.5615,
+    "passes": true
+  },
+  "useful_for_screening_benefit": true
+}

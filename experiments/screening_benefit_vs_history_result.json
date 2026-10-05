@@ -1,0 +1,63 @@
+{
+  "n": 4579,
+  "events": 1731,
+  "ages": [
+    65,
+    84
+  ],
+  "arms": {
+    "age_sex": {
+      "inputs": 2,
+      "model": "logistic",
+      "auc": 0.7125
+    },
+    "history_function": {
+      "inputs": 203,
+      "model": "ensemble",
+      "auc": 0.7959
+    },
+    "labs": {
+      "inputs": 22,
+      "model": "logistic",
+      "auc": 0.7693
+    },
+    "history_and_labs": {
+      "inputs": 337,
+      "model": "ensemble",
+      "auc": 0.8135
+    }
+  },
+  "history_function_over_age_sex": {
+    "gain": 0.0834,
+    "ci": [
+      0.0693,
+      0.0975
+    ],
+    "excludes_zero": true
+  },
+  "labs_over_age_sex": {
+    "gain": 0.0567,
+    "ci": [
+      0.0466,
+      0.0677
+    ],
+    "excludes_zero": true
+  },
+  "history_and_labs_over_history_function": {
+    "gain": 0.0176,
+    "ci": [
+      0.0122,
+      0.0234
+    ],
+    "excludes_zero": true
+  },
+  "history_and_labs_over_labs": {
+    "gain": 0.0443,
+    "ci": [
+      0.0334,
+      0.0549
+    ],
+    "excludes_zero": true
+  },
+  "labs_worth_adding": true
+}
