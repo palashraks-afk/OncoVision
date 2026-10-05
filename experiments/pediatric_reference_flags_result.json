@@ -1,0 +1,71 @@
+{
+  "n": 21346,
+  "bands": {
+    "1-2": {
+      "n": 2602,
+      "any_flag": 0.8436,
+      "hemoglobin": 0.618,
+      "wbc": 0.1879,
+      "platelets": 0.1157,
+      "mcv": 0.5703
+    },
+    "3-5": {
+      "n": 3034,
+      "any_flag": 0.7109,
+      "hemoglobin": 0.5623,
+      "wbc": 0.1163,
+      "platelets": 0.0659,
+      "mcv": 0.3141
+    },
+    "6-8": {
+      "n": 3384,
+      "any_flag": 0.5898,
+      "hemoglobin": 0.4415,
+      "wbc": 0.1144,
+      "platelets": 0.0372,
+      "mcv": 0.2113
+    },
+    "9-11": {
+      "n": 3546,
+      "any_flag": 0.4772,
+      "hemoglobin": 0.3283,
+      "wbc": 0.1187,
+      "platelets": 0.0189,
+      "mcv": 0.1557
+    },
+    "12-14": {
+      "n": 3309,
+      "any_flag": 0.3503,
+      "hemoglobin": 0.1928,
+      "wbc": 0.126,
+      "platelets": 0.0206,
+      "mcv": 0.1306
+    },
+    "15-17": {
+      "n": 3359,
+      "any_flag": 0.2596,
+      "hemoglobin": 0.1048,
+      "wbc": 0.117,
+      "platelets": 0.0202,
+      "mcv": 0.0881
+    },
+    "18-19": {
+      "n": 2112,
+      "any_flag": 0.2609,
+      "hemoglobin": 0.1009,
+      "wbc": 0.1165,
+      "platelets": 0.026,
+      "mcv": 0.0895
+    }
+  },
+  "overall_adult_flag_rate": 0.4976,
+  "own_age_flag_rate_any_of_four": 0.1642,
+  "multilineage_two_or_more": 0.00249,
+  "multilineage_all_three": 5e-05,
+  "multilineage_n": 21325,
+  "children_per_leukaemia_case_per_year": 20833,
+  "false_alarms_per_case": {
+    "any adult-limit flag": 10366.9,
+    "two-or-more lineage pattern": 51.8
+  }
+}
