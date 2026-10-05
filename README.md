@@ -18,6 +18,36 @@ Built as a mentored research project under the guidance of a clinical oncologist
 
 ---
 
+## New: the symptom-and-lab navigator (research prototype, at `/navigator`)
+
+The measurements below show that blood work alone does not find cancer in people with no
+other reason to be tested. The navigator keeps the original idea, reading a lab report together
+with everything else about the person, and applies it where the evidence supports it: people who
+already have a symptom.
+
+You enter age, symptoms, a few facts and any lab results. It reports whether the combination
+meets a published referral threshold, explains why in plain language, and asks for any missing
+fact instead of assuming it. It never says "you have cancer", and it says so when nothing is met.
+
+- **It is a rule engine, not a trained model.** [`backend/navigator_rules.json`](backend/navigator_rules.json)
+  holds about 34 rules transcribed from the **2015** NICE suspected-cancer guideline (NG12),
+  each with its source page. A clinician can read and review the file directly.
+- **Not clinician-reviewed yet.** The file and the page both say so. The rules are UK guidance
+  from 2015 and have been revised since.
+- **Alert burden measured** on 13,295 NHANES adults 40 and over with labs only: 3.8% to 17.2%
+  alerted depending on age, 0.7% told to talk to a doctor soon.
+  [`experiments/navigator_lab_trigger_burden.py`](experiments/navigator_lab_trigger_burden.py)
+- **Readability measured** against a bar set in advance: patient-facing lines average US grade
+  6.9, none above 10. [`experiments/navigator_readability.py`](experiments/navigator_readability.py)
+- **Next:** clinician sign-off and a vignette-agreement study.
+  [Validation protocol](docs/NAVIGATOR_VALIDATION_PROTOCOL.md) · [Mentor's role](docs/DR_CHAVAN_ROLE.md) ·
+  [Paper angle](docs/PAPER_ANGLE.md) · [Symptom-pattern path](docs/SYMPTOM_PATTERN_PATH.md)
+
+Not medical advice. Tests: [`tests/test_navigator.py`](tests/test_navigator.py),
+[`tests/test_navigator_api.py`](tests/test_navigator_api.py).
+
+---
+
 ## What you get
 
 **Upload your lab report as a PDF and it reads it.** 64 biomarkers, parsed out of whatever layout

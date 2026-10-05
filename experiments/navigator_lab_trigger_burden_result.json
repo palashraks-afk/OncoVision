@@ -1,0 +1,215 @@
+{
+  "n": 13295,
+  "bands": {
+    "40-49": {
+      "n": 3773,
+      "talk_soon": {
+        "n": 0,
+        "share": 0.0,
+        "ci": [
+          0.0,
+          0.001
+        ]
+      },
+      "worth_raising": {
+        "n": 144,
+        "share": 0.0382,
+        "ci": [
+          0.0325,
+          0.0448
+        ]
+      },
+      "mention": {
+        "n": 0,
+        "share": 0.0,
+        "ci": [
+          0.0,
+          0.001
+        ]
+      },
+      "any_alert": {
+        "n": 144,
+        "share": 0.0382,
+        "ci": [
+          0.0325,
+          0.0448
+        ]
+      }
+    },
+    "50-59": {
+      "n": 2923,
+      "talk_soon": {
+        "n": 0,
+        "share": 0.0,
+        "ci": [
+          0.0,
+          0.0013
+        ]
+      },
+      "worth_raising": {
+        "n": 42,
+        "share": 0.0144,
+        "ci": [
+          0.0106,
+          0.0194
+        ]
+      },
+      "mention": {
+        "n": 0,
+        "share": 0.0,
+        "ci": [
+          0.0,
+          0.0013
+        ]
+      },
+      "any_alert": {
+        "n": 42,
+        "share": 0.0144,
+        "ci": [
+          0.0106,
+          0.0194
+        ]
+      }
+    },
+    "60-69": {
+      "n": 3168,
+      "talk_soon": {
+        "n": 53,
+        "share": 0.0167,
+        "ci": [
+          0.0128,
+          0.0218
+        ]
+      },
+      "worth_raising": {
+        "n": 187,
+        "share": 0.059,
+        "ci": [
+          0.0513,
+          0.0678
+        ]
+      },
+      "mention": {
+        "n": 0,
+        "share": 0.0,
+        "ci": [
+          0.0,
+          0.0012
+        ]
+      },
+      "any_alert": {
+        "n": 240,
+        "share": 0.0758,
+        "ci": [
+          0.067,
+          0.0855
+        ]
+      }
+    },
+    "70-79": {
+      "n": 2097,
+      "talk_soon": {
+        "n": 32,
+        "share": 0.0153,
+        "ci": [
+          0.0108,
+          0.0215
+        ]
+      },
+      "worth_raising": {
+        "n": 220,
+        "share": 0.1049,
+        "ci": [
+          0.0925,
+          0.1188
+        ]
+      },
+      "mention": {
+        "n": 0,
+        "share": 0.0,
+        "ci": [
+          0.0,
+          0.0018
+        ]
+      },
+      "any_alert": {
+        "n": 252,
+        "share": 0.1202,
+        "ci": [
+          0.1069,
+          0.1348
+        ]
+      }
+    },
+    "80-+": {
+      "n": 1334,
+      "talk_soon": {
+        "n": 12,
+        "share": 0.009,
+        "ci": [
+          0.0052,
+          0.0157
+        ]
+      },
+      "worth_raising": {
+        "n": 217,
+        "share": 0.1627,
+        "ci": [
+          0.1438,
+          0.1834
+        ]
+      },
+      "mention": {
+        "n": 0,
+        "share": 0.0,
+        "ci": [
+          0.0,
+          0.0029
+        ]
+      },
+      "any_alert": {
+        "n": 229,
+        "share": 0.1717,
+        "ci": [
+          0.1524,
+          0.1928
+        ]
+      }
+    }
+  },
+  "assumption": "iron deficiency inferred from MCV < 80 (no ferritin in cohort)",
+  "rule_counts": {
+    "colorectal_stool_test": 907,
+    "colorectal_urgent": 97
+  },
+  "context_ten_year_cancer_death": {
+    "talk soon": {
+      "n": 97,
+      "cancer_deaths": 8,
+      "share": 0.0825,
+      "ci": [
+        0.0424,
+        0.1544
+      ]
+    },
+    "worth raising or mention": {
+      "n": 810,
+      "cancer_deaths": 43,
+      "share": 0.0531,
+      "ci": [
+        0.0396,
+        0.0707
+      ]
+    },
+    "no alert": {
+      "n": 12388,
+      "cancer_deaths": 468,
+      "share": 0.0378,
+      "ci": [
+        0.0346,
+        0.0413
+      ]
+    }
+  },
+  "note": "Descriptive. NHANES has no symptoms and records death rather than diagnosis, so this does not validate any rule."
+}

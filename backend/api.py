@@ -37,6 +37,8 @@ except ImportError:  # per-patient attribution degrades to global importance
 # without redeploying code. Everything else keeps working.
 ENABLE_SHAP = os.getenv("ENABLE_SHAP", "1").strip().lower() not in ("0", "false", "no")
 
+import navigator  # symptom-and-lab pattern navigator, rules in navigator_rules.json
+
 app = FastAPI(title="Oncovision AI")
 
 # Who may call this service.
@@ -1445,6 +1447,45 @@ def parse_report_text(text: str) -> dict:
 
     return found
 
+
+
+# ----------------------------------------------------------------- navigator
+class NavigatorSymptom(BaseModel):
+    model_config = ConfigDict(extra="ignore")
+    key: str
+    explained: Optional[bool] = False
+    times_per_month: Optional[float] = None
+
+
+class NavigatorRequest(BaseModel):
+    """What a person has noticed, a few facts about them, and the labs they hold.
+
+    Everything is optional. The engine reports what it still needs rather than assuming.
+    """
+    model_config = ConfigDict(extra="ignore")
+    age: Optional[float] = None
+    sex: Optional[str] = None
+    ever_smoked: Optional[bool] = None
+    asbestos: Optional[bool] = None
+    symptoms: Optional[List[NavigatorSymptom]] = None
+    findings: Optional[List[str]] = None
+    labs: Optional[dict] = None
+    skin_lesion: Optional[dict] = None
+
+
+@app.get("/navigator/vocabulary")
+async def navigator_vocabulary():
+    """The symptoms, findings and labs the navigator can read, grouped for a form."""
+    return {"status": "success", **navigator.vocabulary()}
+
+
+@app.post("/navigator")
+async def navigator_evaluate(data: NavigatorRequest):
+    """Apply the guideline rules to one person. A research prototype, not medical advice."""
+    try:
+        return {"status": "success", **navigator.evaluate(data.model_dump())}
+    except ValueError as e:
+        return JSONResponse(status_code=422, content={"status": "error", "message": str(e)})
 
 @app.post("/parse-pdf")
 async def parse_pdf(files: List[UploadFile] = File(...)):

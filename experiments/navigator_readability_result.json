@@ -1,0 +1,39 @@
+{
+  "target_each": 10.0,
+  "target_mean": 8.0,
+  "kinds": {
+    "action": {
+      "n": 34,
+      "mean": 7.1,
+      "worst": 9.1,
+      "over_target": 0
+    },
+    "symptom": {
+      "n": 53,
+      "mean": 4.8,
+      "worst": 32.0,
+      "over_target": 5
+    },
+    "safety": {
+      "n": 2,
+      "mean": 4.8,
+      "worst": 5.3,
+      "over_target": 0
+    },
+    "disclaimer": {
+      "n": 1,
+      "mean": 7.6,
+      "worst": 7.6,
+      "over_target": 0
+    },
+    "headline": {
+      "n": 2,
+      "mean": 4.4,
+      "worst": 5.8,
+      "over_target": 0
+    }
+  },
+  "patient_facing_action_mean": 6.9,
+  "actions_over_target": [],
+  "meets_target": true
+}

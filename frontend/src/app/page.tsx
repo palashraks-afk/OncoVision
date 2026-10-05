@@ -447,6 +447,18 @@ export default function OncovisionDashboard() {
           ))}
         </nav>
 
+        {/* The symptom-and-lab navigator is a separate research prototype with its own page
+            and its own backend route. It is linked here rather than folded into the panels
+            because it applies published guideline rules and is not one of the trained models. */}
+        <a
+          href="/navigator"
+          className="mx-4 px-4 py-3 border border-[var(--stamp-line)] bg-[var(--stamp-bg)] hover:border-[var(--stamp)] transition-colors duration-300 text-left block"
+        >
+          <p className="text-[10px] text-[var(--stamp)] font-bold uppercase tracking-widest mb-1">Research prototype</p>
+          <p className="text-[var(--ink)] display text-sm">Symptom and lab navigator</p>
+          <p className="text-[10px] text-[var(--ink-3)] mt-1">Reads symptoms and labs together</p>
+        </a>
+
         <button
           onClick={() => setCurrentPage("developer")}
           className="p-4 m-4 bg-[var(--paper-2)] border border-[var(--rule)] rounded-none hover:border-[var(--stamp-line)] transition-colors duration-300 text-left"
