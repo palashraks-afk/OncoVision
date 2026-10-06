@@ -56,3 +56,37 @@ split, the features or the bar.
 That a score is useful for screening. The outcome is death, not diagnosis; people whose cancer
 was found and cured are non-cases; the sample is a US survey; and the score has never been
 used to decide anything.
+
+## Addendum, written before running the three follow-up analyses
+
+The first run missed R1 and R3 for the 380-variable model and suggested why (missing-value
+flags that encode the survey cycle). Three follow-ups are fixed here, before they are run.
+
+### F1. A curated, cycle-stable feature set (S4)
+
+Not "everything", but variables a clinician would plausibly think relevant AND that were
+recorded in all eight cycles for at least 80% of people (checked on the file, before fitting):
+age, sex, smoking, body mass index, waist circumference, weight now, weight change over the
+past year (computed as (weight a year ago minus weight now) / weight a year ago), HbA1c,
+albumin, cholesterol, GGT, uric acid, haemoglobin, MCV, platelets, white count, told they have
+diabetes, high blood pressure, asthma, congestive heart failure, coronary heart disease,
+angina, heart attack, stroke, emphysema, chronic bronchitis, liver condition, and a
+self-rated health item. No missing-value indicators. Ridge logistic regression, C = 0.05, median
+imputation, same split (fit 1999-2006, test 2007-2014).
+
+Bars: AUC gain over S1 of at least 0.01 with a bootstrap 95% interval above 0, AND
+calibration slope between 0.8 and 1.2, AND a decedent-only AUC gain over S1 with an interval
+above 0.
+
+### F2. Is the failure a survey-cycle artefact?
+
+(a) Predict era (1999-2006 versus 2007-2014) from the missing-value flags alone, five-fold
+cross-validated. (b) Fit the 380-variable model on a random half of ALL cycles pooled and test
+it on the other half. If the era-split failure is an artefact the flags alone will identify the
+era well (AUC above 0.9) and the random split will score far higher than the era split (0.629).
+No bar; this is a diagnostic of an explanation already given.
+
+### F3. Is the pooled cancer-specificity result different from NHANES III?
+
+A z-test on the difference of the two log odds ratios (1999-2014 labs-only, NHANES III
+labs-only), reported with its p-value. No bar.
