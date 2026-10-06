@@ -334,3 +334,11 @@ def test_one_site_shows_only_its_highest_tier():
     out = nav.evaluate({"age": 66, "sex": "male", "labs": {"hemoglobin": 10.8, "mcv": 74, "ferritin": 9, "platelets": 310}})
     bowel = [m for m in out["matches"] if m["site"] == "bowel cancer"]
     assert bowel and all(m["tier"] == "talk_soon" for m in bowel)
+
+
+def test_young_woman_with_low_iron_gets_a_periods_note_and_bowel_matches_get_a_version_note():
+    out = nav.evaluate({"age": 44, "sex": "female", "labs": {"hemoglobin": 10.5, "ferritin": 6, "mcv": 76, "platelets": 300}})
+    assert any("periods" in n for n in out["lab_notes"])
+    assert any("2015" in n and "FIT" in n for n in out["guideline_notes"])
+    out = nav.evaluate({"age": 44, "sex": "female", "symptoms": [{"key": "cough"}]})
+    assert out["guideline_notes"] == []

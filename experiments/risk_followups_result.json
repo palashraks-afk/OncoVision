@@ -1,0 +1,74 @@
+{
+  "n_train": 11041,
+  "n_test": 13139,
+  "s4_variables": 29,
+  "s4_list": [
+    "age",
+    "male",
+    "smoked",
+    "BMXBMI",
+    "LBXGH",
+    "LBXSAL",
+    "LBXSCH",
+    "LBXSGTSI",
+    "LBXSUA",
+    "LBXHGB",
+    "LBXMCVSI",
+    "LBXPLTSI",
+    "LBXWBCSI",
+    "BMXWAIST",
+    "BMXWT",
+    "DIQ010",
+    "BPQ020",
+    "MCQ010",
+    "MCQ053",
+    "MCQ160B",
+    "MCQ160C",
+    "MCQ160D",
+    "MCQ160E",
+    "MCQ160F",
+    "MCQ160G",
+    "MCQ160K",
+    "MCQ160L",
+    "HUQ010",
+    "weight_change"
+  ],
+  "F1": {
+    "auc_S1": 0.7432,
+    "auc_S4": 0.7523,
+    "cv_auc_S4_train_era": 0.7479,
+    "gain": 0.0091,
+    "gain_ci": [
+      -0.007,
+      0.0265
+    ],
+    "slope": 0.987,
+    "decedent_gain": 0.0036,
+    "decedent_gain_ci": [
+      -0.0234,
+      0.0299
+    ],
+    "decedent_auc_S4": 0.4719,
+    "decedent_auc_S1": 0.4683,
+    "passes": false,
+    "parts": {
+      "gain_bar": false,
+      "calibration_bar": true,
+      "decedent_bar": false
+    }
+  },
+  "F2": {
+    "era_from_flags_auc": 0.9266,
+    "n_flags": 174,
+    "whole_picture_random_split_auc": 0.7549,
+    "whole_picture_era_split_auc": 0.6288,
+    "no_flags_random_split_auc": 0.7406,
+    "reading": "artefact consistent"
+  },
+  "F3": {
+    "or_1999_2014": 0.628,
+    "or_nhanes3": 1.184,
+    "z": -3.473,
+    "p": 0.00052
+  }
+}

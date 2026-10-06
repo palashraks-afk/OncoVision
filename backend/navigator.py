@@ -456,6 +456,18 @@ def evaluate(request: dict) -> dict:
             "from diet, kidney disease or heart disease. In a US survey, these lab findings did not help tell who would "
             "later die of cancer once age and sex were known. Take it to a doctor as a question, not as a warning.")
 
+    if (sex == "female" and age is not None and age < 50 and derived["flags"].get("iron_deficiency_anaemia")
+            and any(m["site"] == "bowel cancer" for m in matches)):
+        lab_notes.append(
+            "Low iron is very common in women who still have periods. The guideline still says to look for other causes, so "
+            "mention it to a doctor, who can weigh up your periods and your diet.")
+
+    guideline_notes = []
+    if any(m["site"] == "bowel cancer" for m in matches):
+        guideline_notes.append(
+            "These bowel rules are from the 2015 edition of the guideline. NICE changed its bowel cancer advice in 2023 to use a "
+            "stool test called FIT as an early step. Your doctor will follow the current version.")
+
     headline = {
         "talk_soon": "This combination meets a guideline threshold for a prompt check. Most people who meet it do not have cancer, but it is worth seeing a doctor soon.",
         "worth_raising": "Nothing here is urgent by the guideline, but some of it is worth raising with a doctor.",
@@ -471,6 +483,7 @@ def evaluate(request: dict) -> dict:
         "could_apply_if": could_apply,
         "melanoma_score": mel_score,
         "lab_notes": lab_notes,
+        "guideline_notes": guideline_notes,
         "lab_findings": {k: v for k, v in derived["flags"].items() if v is not None},
         "ignored_symptoms": ignored,
         "context": context_for(age, sex, x.ever_smoked),

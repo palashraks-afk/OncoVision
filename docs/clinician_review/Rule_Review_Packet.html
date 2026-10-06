@@ -1,0 +1,197 @@
+<!doctype html><html><head><meta charset="utf-8"><title>Clinician review packet</title><style>
+@page { size: Letter; margin: 18mm; @bottom-center { content: counter(page); font: 9pt Georgia; color:#666; } }
+body { font-family: Georgia, serif; font-size: 10pt; line-height: 1.4; color: #1b1f24; }
+h1 { font-size: 18pt; margin: 0 0 4pt; } h2 { font-size: 12.5pt; border-bottom: 1.5px solid #1b1f24; padding-bottom: 2pt; margin: 16pt 0 6pt; }
+.rule { border: 1px solid #c9ced4; padding: 6pt 8pt; margin: 6pt 0; break-inside: avoid; }
+.rh { margin-bottom: 3pt; } .id { font-family: Consolas, monospace; font-weight: bold; } .site { text-transform: capitalize; font-weight: bold; margin-left: 6pt; }
+.tier { color: #5b6672; font-size: 9pt; margin-left: 8pt; } .crit, .act, .src { margin: 2pt 0; font-size: 9.4pt; } .tick { margin-top: 5pt; font-size: 9.4pt; }
+.box { border: 1.5px solid #b3261e; background: #fdf1f0; padding: 7pt 10pt; margin: 8pt 0; font-size: 9.6pt; }
+table { border-collapse: collapse; width: 100%; font-size: 8.8pt; } td, th { border: 1px solid #c9ced4; padding: 3pt 5pt; vertical-align: top; text-align: left; }
+ol li { margin-bottom: 4pt; }
+</style></head><body>
+<h1>Clinician review packet: cancer symptom and lab navigator</h1>
+<p>Prepared by Palash Rakshit, Oncovision project (github.com/palashraks-afk/OncoVision). Live prototype: oncovisionai.vercel.app/navigator. Estimated time: about one hour.</p>
+<div class="box"><b>What this is.</b> A patient-facing prototype that applies published referral criteria to a person's symptoms and lab results and explains why. It has no clinical content of its own: every rule below was transcribed from a guideline by a student with the help of an AI assistant, and <b>no clinician has reviewed any of it</b>. The tool says so to every user. Your review is what would let it be called reviewed.</div>
+<h2>What is being asked</h2>
+<ol><li>Tick one box per rule: matches the current guideline, needs a change, or remove.</li>
+<li>Give a view on the eight design questions below.</li>
+<li>Check the five screening items against the current US Preventive Services Task Force text.</li>
+<li>Say whether you are willing to be named as reviewer, and whether you wish to be an author. Neither is assumed.</li></ol>
+<h2>Eight questions for you</h2><ol><li><b>Version.</b> The rules are transcribed from the 2015 edition of NICE NG12. NICE has since updated it (secondary sources report August and October 2023, including a quantitative faecal immunochemical test, FIT, as an early step in the bowel pathway). Please compare each rule with the current version.<br>Your view: ____________________________________________________________</li><li><b>US relevance.</b> The audience is likely to include US users. Should the symptom rules be shown alongside, replaced by, or reconciled with US guidance?<br>Your view: ____________________________________________________________</li><li><b>Platelet gating (lung).</b> NG12 lists a high platelet count as a trigger for considering a chest X-ray. Applied literally to symptom-free adults over 40 it alerted 3.7% of a US sample. The rule file requires at least one symptom as well. Do you agree?<br>Your view: ____________________________________________________________</li><li><b>Lab-only alerts.</b> With no symptoms, the anaemia and iron-deficiency rules alone alert 16 to 27% of people aged 80+ and about 14% of women aged 40 to 49 (likely menstrual iron loss). Should lab-only alerts be shown to symptom-free people at all, or only with a symptom?<br>Your view: ____________________________________________________________</li><li><b>Wording.</b> Is every action sentence safe, accurate and appropriately cautious? The tool never says a person has cancer.<br>Your view: ____________________________________________________________</li><li><b>Tiers.</b> Are the three levels (see a doctor soon, worth raising, mention) a fair translation of the guideline&#x27;s timeframes and its &#x27;recommend&#x27; versus &#x27;consider&#x27;?<br>Your view: ____________________________________________________________</li><li><b>Missing rules.</b> Are any commonly important presentations missing, for example for children, for thyroid, or for head and neck?<br>Your view: ____________________________________________________________</li><li><b>Safety text.</b> Is the emergency wording adequate? &quot;Seek urgent care now if you cough up or vomit a lot of blood. Do the same for severe chest pain, trouble breathing, or black or bloody stools with faintness.&quot;<br>Your view: ____________________________________________________________</li></ol>
+<h2>The 34 navigator rules</h2><div class="rule"><div class="rh"><span class="id">lung_haemoptysis</span> <span class="site">lung cancer</span>
+<span class="tier">See a doctor soon · within 2 weeks · guideline strength: recommended</span></div>
+<div class="crit"><b>Criteria in the file:</b><br><b></b>aged 40 or over AND coughing up blood<br><b>OR </b>a chest x-ray report that suggests lung cancer</div>
+<div class="act"><b>What the tool tells the person:</b> Ask your doctor for a specialist appointment within about 2 weeks to check for lung cancer.</div>
+<div class="src"><b>Source page cited:</b> NG12 2015, lung and pleural cancers, p.45</div>
+<div class="tick">☐ matches the current guideline &nbsp;&nbsp; ☐ needs a change &nbsp;&nbsp; ☐ remove &nbsp;&nbsp; Comment: ______________________________________________</div></div><div class="rule"><div class="rh"><span class="id">lung_xray_symptoms</span> <span class="site">lung cancer</span>
+<span class="tier">See a doctor soon · within 2 weeks · guideline strength: recommended</span></div>
+<div class="crit"><b>Criteria in the file:</b><br><b></b>aged 40 or over AND 2 or more of: a cough that has no known cause; shortness of breath with no known cause; chest pain with no known cause; weight loss with no known reason; loss of appetite with no known reason; tiredness or fatigue with no known cause<br><b>OR </b>aged 40 or over AND have ever smoked AND any one of: a cough that has no known cause; shortness of breath with no known cause; chest pain with no known cause; weight loss with no known reason; loss of appetite with no known reason; tiredness or fatigue with no known cause</div>
+<div class="act"><b>What the tool tells the person:</b> Ask for a chest X-ray within about 2 weeks to check for lung cancer.</div>
+<div class="src"><b>Source page cited:</b> NG12 2015, lung and pleural cancers, p.45</div>
+<div class="tick">☐ matches the current guideline &nbsp;&nbsp; ☐ needs a change &nbsp;&nbsp; ☐ remove &nbsp;&nbsp; Comment: ______________________________________________</div></div><div class="rule"><div class="rh"><span class="id">lung_xray_consider</span> <span class="site">lung cancer</span>
+<span class="tier">Worth raising · within 2 weeks · guideline strength: consider</span></div>
+<div class="crit"><b>Criteria in the file:</b><br><b></b>aged 40 or over AND chest infections that keep coming back or will not clear<br><b>OR </b>aged 40 or over AND fingertips that have become wider and rounded, nails curving over<br><b>OR </b>aged 40 or over AND swollen glands above the collarbone, or in the neck that do not go away<br><b>OR </b>aged 40 or over AND a high platelet count AND at least one symptom with no known cause</div>
+<div class="act"><b>What the tool tells the person:</b> Ask your doctor if a chest X-ray within about 2 weeks is worth doing.</div>
+<div class="src"><b>Source page cited:</b> NG12 2015, lung and pleural cancers, p.45</div>
+<div class="tick">☐ matches the current guideline &nbsp;&nbsp; ☐ needs a change &nbsp;&nbsp; ☐ remove &nbsp;&nbsp; Comment: ______________________________________________</div></div><div class="rule"><div class="rh"><span class="id">meso_xray_symptoms</span> <span class="site">mesothelioma</span>
+<span class="tier">See a doctor soon · within 2 weeks · guideline strength: recommended</span></div>
+<div class="crit"><b>Criteria in the file:</b><br><b></b>aged 40 or over AND exposed to asbestos AND any one of: a cough that has no known cause; shortness of breath with no known cause; chest pain with no known cause; weight loss with no known reason; loss of appetite with no known reason; tiredness or fatigue with no known cause<br><b>OR </b>a chest x-ray report that suggests mesothelioma</div>
+<div class="act"><b>What the tool tells the person:</b> Ask for a chest X-ray within about 2 weeks. Doctors check for mesothelioma when these symptoms come with asbestos exposure.</div>
+<div class="src"><b>Source page cited:</b> NG12 2015, lung and pleural cancers, p.49</div>
+<div class="tick">☐ matches the current guideline &nbsp;&nbsp; ☐ needs a change &nbsp;&nbsp; ☐ remove &nbsp;&nbsp; Comment: ______________________________________________</div></div><div class="rule"><div class="rh"><span class="id">upper_gi_urgent</span> <span class="site">oesophageal or stomach cancer</span>
+<span class="tier">See a doctor soon · within 2 weeks · guideline strength: recommended</span></div>
+<div class="crit"><b>Criteria in the file:</b><br><b></b>trouble swallowing<br><b>OR </b>aged 55 or over AND weight loss with no known reason AND any one of: pain in the upper tummy; heartburn or acid reflux; indigestion</div>
+<div class="act"><b>What the tool tells the person:</b> Ask for a camera test of the gullet and stomach (an endoscopy) within about 2 weeks.</div>
+<div class="src"><b>Source page cited:</b> NG12 2015, oesophageal and stomach cancers, pp.62 and 84</div>
+<div class="tick">☐ matches the current guideline &nbsp;&nbsp; ☐ needs a change &nbsp;&nbsp; ☐ remove &nbsp;&nbsp; Comment: ______________________________________________</div></div><div class="rule"><div class="rh"><span class="id">upper_gi_haematemesis</span> <span class="site">oesophageal or stomach cancer</span>
+<span class="tier">Mention at a routine visit · routine / non-urgent · guideline strength: consider</span></div>
+<div class="crit"><b>Criteria in the file:</b><br><b></b>vomiting blood</div>
+<div class="act"><b>What the tool tells the person:</b> Tell a doctor. A non-urgent endoscopy may be considered. Vomiting a lot of blood is an emergency: seek care now.</div>
+<div class="src"><b>Source page cited:</b> NG12 2015, oesophageal and stomach cancers, pp.62 and 84</div>
+<div class="tick">☐ matches the current guideline &nbsp;&nbsp; ☐ needs a change &nbsp;&nbsp; ☐ remove &nbsp;&nbsp; Comment: ______________________________________________</div></div><div class="rule"><div class="rh"><span class="id">upper_gi_consider</span> <span class="site">oesophageal or stomach cancer</span>
+<span class="tier">Mention at a routine visit · routine / non-urgent · guideline strength: consider</span></div>
+<div class="crit"><b>Criteria in the file:</b><br><b></b>aged 55 or over AND indigestion that does not improve with treatment<br><b>OR </b>aged 55 or over AND pain in the upper tummy AND low haemoglobin (anaemia)<br><b>OR </b>aged 55 or over AND a high platelet count AND any one of: nausea with no known cause; vomiting with no known cause; weight loss with no known reason; heartburn or acid reflux; indigestion; pain in the upper tummy<br><b>OR </b>aged 55 or over AND any one of: nausea with no known cause; vomiting with no known cause AND any one of: weight loss with no known reason; heartburn or acid reflux; indigestion; pain in the upper tummy</div>
+<div class="act"><b>What the tool tells the person:</b> Ask whether a non-urgent endoscopy is worth doing.</div>
+<div class="src"><b>Source page cited:</b> NG12 2015, oesophageal and stomach cancers, pp.62 and 84</div>
+<div class="tick">☐ matches the current guideline &nbsp;&nbsp; ☐ needs a change &nbsp;&nbsp; ☐ remove &nbsp;&nbsp; Comment: ______________________________________________</div></div><div class="rule"><div class="rh"><span class="id">pancreas_jaundice</span> <span class="site">pancreatic cancer</span>
+<span class="tier">See a doctor soon · within 2 weeks · guideline strength: recommended</span></div>
+<div class="crit"><b>Criteria in the file:</b><br><b></b>aged 40 or over AND yellow skin or yellow whites of the eyes</div>
+<div class="act"><b>What the tool tells the person:</b> Ask your doctor for a specialist appointment within about 2 weeks.</div>
+<div class="src"><b>Source page cited:</b> NG12 2015, pancreatic cancer, p.71</div>
+<div class="tick">☐ matches the current guideline &nbsp;&nbsp; ☐ needs a change &nbsp;&nbsp; ☐ remove &nbsp;&nbsp; Comment: ______________________________________________</div></div><div class="rule"><div class="rh"><span class="id">pancreas_scan</span> <span class="site">pancreatic cancer</span>
+<span class="tier">Worth raising · within 2 weeks · guideline strength: consider</span></div>
+<div class="crit"><b>Criteria in the file:</b><br><b></b>aged 60 or over AND weight loss with no known reason AND any one of: diarrhoea with no known cause; back pain with no known cause; tummy pain with no known cause; nausea with no known cause; vomiting with no known cause; constipation with no known cause; diabetes diagnosed recently</div>
+<div class="act"><b>What the tool tells the person:</b> Ask whether an urgent scan (CT, or ultrasound if CT is not available) is worth doing.</div>
+<div class="src"><b>Source page cited:</b> NG12 2015, pancreatic cancer, p.71</div>
+<div class="tick">☐ matches the current guideline &nbsp;&nbsp; ☐ needs a change &nbsp;&nbsp; ☐ remove &nbsp;&nbsp; Comment: ______________________________________________</div></div><div class="rule"><div class="rh"><span class="id">colorectal_urgent</span> <span class="site">bowel cancer</span>
+<span class="tier">See a doctor soon · within 2 weeks · guideline strength: recommended</span></div>
+<div class="crit"><b>Criteria in the file:</b><br><b></b>aged 40 or over AND weight loss with no known reason AND tummy pain with no known cause<br><b>OR </b>aged 50 or over AND bleeding from the back passage<br><b>OR </b>aged 60 or over AND iron-deficiency anaemia<br><b>OR </b>aged 60 or over AND a lasting change in your bowel habit<br><b>OR </b>a stool test that found hidden blood</div>
+<div class="act"><b>What the tool tells the person:</b> Ask your doctor for a specialist appointment within about 2 weeks to check for bowel cancer.</div>
+<div class="src"><b>Source page cited:</b> NG12 2015, colorectal cancer, p.137</div>
+<div class="tick">☐ matches the current guideline &nbsp;&nbsp; ☐ needs a change &nbsp;&nbsp; ☐ remove &nbsp;&nbsp; Comment: ______________________________________________</div></div><div class="rule"><div class="rh"><span class="id">colorectal_mass</span> <span class="site">bowel cancer</span>
+<span class="tier">Worth raising · within 2 weeks · guideline strength: consider</span></div>
+<div class="crit"><b>Criteria in the file:</b><br><b></b>a lump you can feel in your tummy<br><b>OR </b>a lump you can feel in the rectum or back passage</div>
+<div class="act"><b>What the tool tells the person:</b> Ask your doctor if you need a specialist appointment within about 2 weeks.</div>
+<div class="src"><b>Source page cited:</b> NG12 2015, colorectal cancer, p.137</div>
+<div class="tick">☐ matches the current guideline &nbsp;&nbsp; ☐ needs a change &nbsp;&nbsp; ☐ remove &nbsp;&nbsp; Comment: ______________________________________________</div></div><div class="rule"><div class="rh"><span class="id">colorectal_young_bleeding</span> <span class="site">bowel cancer</span>
+<span class="tier">Worth raising · within 2 weeks · guideline strength: consider</span></div>
+<div class="crit"><b>Criteria in the file:</b><br><b></b>under 50 AND bleeding from the back passage AND any one of: tummy pain with no known cause; a lasting change in your bowel habit; weight loss with no known reason<br><b>OR </b>under 50 AND bleeding from the back passage AND iron-deficiency anaemia</div>
+<div class="act"><b>What the tool tells the person:</b> Ask your doctor if you need a specialist appointment within about 2 weeks.</div>
+<div class="src"><b>Source page cited:</b> NG12 2015, colorectal cancer, p.137</div>
+<div class="tick">☐ matches the current guideline &nbsp;&nbsp; ☐ needs a change &nbsp;&nbsp; ☐ remove &nbsp;&nbsp; Comment: ______________________________________________</div></div><div class="rule"><div class="rh"><span class="id">colorectal_stool_test</span> <span class="site">bowel cancer</span>
+<span class="tier">Worth raising · primary-care test · guideline strength: recommended</span></div>
+<div class="crit"><b>Criteria in the file:</b><br><b></b>no bleeding from the back passage AND aged 50 or over AND any one of: tummy pain with no known cause; weight loss with no known reason<br><b>OR </b>no bleeding from the back passage AND under 60 AND a lasting change in your bowel habit<br><b>OR </b>no bleeding from the back passage AND under 60 AND iron-deficiency anaemia<br><b>OR </b>no bleeding from the back passage AND aged 60 or over AND low haemoglobin (anaemia)</div>
+<div class="act"><b>What the tool tells the person:</b> Ask for a stool test for hidden blood.</div>
+<div class="src"><b>Source page cited:</b> NG12 2015, colorectal cancer, p.137</div>
+<div class="tick">☐ matches the current guideline &nbsp;&nbsp; ☐ needs a change &nbsp;&nbsp; ☐ remove &nbsp;&nbsp; Comment: ______________________________________________</div></div><div class="rule"><div class="rh"><span class="id">anal_mass</span> <span class="site">anal cancer</span>
+<span class="tier">Worth raising · within 2 weeks · guideline strength: consider</span></div>
+<div class="crit"><b>Criteria in the file:</b><br><b></b>a lump or sore (ulcer) at the anus that is not explained</div>
+<div class="act"><b>What the tool tells the person:</b> Ask your doctor if you need a specialist appointment within about 2 weeks.</div>
+<div class="src"><b>Source page cited:</b> NG12 2015, anal cancer, p.144</div>
+<div class="tick">☐ matches the current guideline &nbsp;&nbsp; ☐ needs a change &nbsp;&nbsp; ☐ remove &nbsp;&nbsp; Comment: ______________________________________________</div></div><div class="rule"><div class="rh"><span class="id">breast_urgent</span> <span class="site">breast cancer</span>
+<span class="tier">See a doctor soon · within 2 weeks · guideline strength: recommended</span></div>
+<div class="crit"><b>Criteria in the file:</b><br><b></b>aged 30 or over AND a breast lump with no known cause<br><b>OR </b>aged 50 or over AND discharge, pulling in, or another change in one nipple only</div>
+<div class="act"><b>What the tool tells the person:</b> A doctor should arrange an urgent breast clinic appointment (within about 2 weeks).</div>
+<div class="src"><b>Source page cited:</b> NG12 2015, breast cancer, p.155</div>
+<div class="tick">☐ matches the current guideline &nbsp;&nbsp; ☐ needs a change &nbsp;&nbsp; ☐ remove &nbsp;&nbsp; Comment: ______________________________________________</div></div><div class="rule"><div class="rh"><span class="id">breast_consider</span> <span class="site">breast cancer</span>
+<span class="tier">Worth raising · within 2 weeks · guideline strength: consider</span></div>
+<div class="crit"><b>Criteria in the file:</b><br><b></b>skin changes on a breast that look unusual<br><b>OR </b>aged 30 or over AND a lump in the armpit with no known cause</div>
+<div class="act"><b>What the tool tells the person:</b> Ask whether an urgent breast clinic appointment (within about 2 weeks) is needed.</div>
+<div class="src"><b>Source page cited:</b> NG12 2015, breast cancer, p.155</div>
+<div class="tick">☐ matches the current guideline &nbsp;&nbsp; ☐ needs a change &nbsp;&nbsp; ☐ remove &nbsp;&nbsp; Comment: ______________________________________________</div></div><div class="rule"><div class="rh"><span class="id">breast_young_lump</span> <span class="site">breast cancer</span>
+<span class="tier">Mention at a routine visit · routine / non-urgent · guideline strength: consider</span></div>
+<div class="crit"><b>Criteria in the file:</b><br><b></b>under 30 AND a breast lump with no known cause</div>
+<div class="act"><b>What the tool tells the person:</b> Ask for a non-urgent referral to have the lump checked.</div>
+<div class="src"><b>Source page cited:</b> NG12 2015, breast cancer, p.155</div>
+<div class="tick">☐ matches the current guideline &nbsp;&nbsp; ☐ needs a change &nbsp;&nbsp; ☐ remove &nbsp;&nbsp; Comment: ______________________________________________</div></div><div class="rule"><div class="rh"><span class="id">ovarian_symptoms</span> <span class="site">ovarian cancer</span>
+<span class="tier">Worth raising · primary-care test · guideline strength: recommended</span></div>
+<div class="crit"><b>Criteria in the file:</b><br><b></b>female AND any of these on 12 or more days a month: a swollen, bloated tummy that keeps coming back; feeling full quickly when eating; loss of appetite with no known reason; pain in the pelvis or tummy; needing to pass urine urgently or more often</div>
+<div class="act"><b>What the tool tells the person:</b> Ask for a CA-125 blood test. These symptoms, especially after 50 and on more than about 12 days a month, are the ones doctors test for ovarian cancer.</div>
+<div class="src"><b>Source page cited:</b> NG12 (ovarian cancer recommendations dated 2011), p.159</div>
+<div class="tick">☐ matches the current guideline &nbsp;&nbsp; ☐ needs a change &nbsp;&nbsp; ☐ remove &nbsp;&nbsp; Comment: ______________________________________________</div></div><div class="rule"><div class="rh"><span class="id">ovarian_ibs</span> <span class="site">ovarian cancer</span>
+<span class="tier">Worth raising · primary-care test · guideline strength: recommended</span></div>
+<div class="crit"><b>Criteria in the file:</b><br><b></b>female AND aged 50 or over AND bowel symptoms that look like irritable bowel syndrome, starting in the last 12 months</div>
+<div class="act"><b>What the tool tells the person:</b> Ask for tests for ovarian cancer. Irritable bowel syndrome rarely appears for the first time at this age.</div>
+<div class="src"><b>Source page cited:</b> NG12 (ovarian cancer recommendations dated 2011), p.159</div>
+<div class="tick">☐ matches the current guideline &nbsp;&nbsp; ☐ needs a change &nbsp;&nbsp; ☐ remove &nbsp;&nbsp; Comment: ______________________________________________</div></div><div class="rule"><div class="rh"><span class="id">ovarian_ca125</span> <span class="site">ovarian cancer</span>
+<span class="tier">Worth raising · primary-care test · guideline strength: recommended</span></div>
+<div class="crit"><b>Criteria in the file:</b><br><b></b>female AND CA-125 of 35 or above AND any one of: a swollen, bloated tummy that keeps coming back; feeling full quickly when eating; loss of appetite with no known reason; pain in the pelvis or tummy; needing to pass urine urgently or more often</div>
+<div class="act"><b>What the tool tells the person:</b> A CA-125 at or above 35 with these symptoms means an ultrasound of the abdomen and pelvis should be arranged.</div>
+<div class="src"><b>Source page cited:</b> NG12 (ovarian cancer recommendations dated 2011), p.159</div>
+<div class="tick">☐ matches the current guideline &nbsp;&nbsp; ☐ needs a change &nbsp;&nbsp; ☐ remove &nbsp;&nbsp; Comment: ______________________________________________</div></div><div class="rule"><div class="rh"><span class="id">ovarian_other</span> <span class="site">ovarian cancer</span>
+<span class="tier">Worth raising · primary-care test · guideline strength: consider</span></div>
+<div class="crit"><b>Criteria in the file:</b><br><b></b>female AND any one of: weight loss with no known reason; tiredness or fatigue with no known cause; a lasting change in your bowel habit</div>
+<div class="act"><b>What the tool tells the person:</b> Ask whether tests for ovarian cancer are worth doing, alongside looking for other causes.</div>
+<div class="src"><b>Source page cited:</b> NG12 (ovarian cancer recommendations dated 2011), p.159</div>
+<div class="tick">☐ matches the current guideline &nbsp;&nbsp; ☐ needs a change &nbsp;&nbsp; ☐ remove &nbsp;&nbsp; Comment: ______________________________________________</div></div><div class="rule"><div class="rh"><span class="id">prostate_psa</span> <span class="site">prostate cancer</span>
+<span class="tier">See a doctor soon · within 2 weeks · guideline strength: recommended</span></div>
+<div class="crit"><b>Criteria in the file:</b><br><b></b>male AND a psa result your report marks as above the range for your age</div>
+<div class="act"><b>What the tool tells the person:</b> Ask your doctor for a specialist appointment within about 2 weeks.</div>
+<div class="src"><b>Source page cited:</b> NG12 2015, prostate cancer, p.178</div>
+<div class="tick">☐ matches the current guideline &nbsp;&nbsp; ☐ needs a change &nbsp;&nbsp; ☐ remove &nbsp;&nbsp; Comment: ______________________________________________</div></div><div class="rule"><div class="rh"><span class="id">prostate_symptoms</span> <span class="site">prostate cancer</span>
+<span class="tier">Mention at a routine visit · routine / non-urgent · guideline strength: consider</span></div>
+<div class="crit"><b>Criteria in the file:</b><br><b></b>male AND getting up at night to pass urine, frequency, hesitancy, urgency, or difficulty emptying<br><b>OR </b>male AND erection problems<br><b>OR </b>male AND blood you can see in your urine</div>
+<div class="act"><b>What the tool tells the person:</b> Ask about a PSA blood test and a prostate examination.</div>
+<div class="src"><b>Source page cited:</b> NG12 2015, prostate cancer, p.178</div>
+<div class="tick">☐ matches the current guideline &nbsp;&nbsp; ☐ needs a change &nbsp;&nbsp; ☐ remove &nbsp;&nbsp; Comment: ______________________________________________</div></div><div class="rule"><div class="rh"><span class="id">bladder_urgent</span> <span class="site">bladder cancer</span>
+<span class="tier">See a doctor soon · within 2 weeks · guideline strength: recommended</span></div>
+<div class="crit"><b>Criteria in the file:</b><br><b></b>aged 45 or over AND blood you can see in your urine<br><b>OR </b>aged 60 or over AND blood found on a urine test that you cannot see AND pain when passing urine<br><b>OR </b>aged 60 or over AND blood found on a urine test that you cannot see AND a raised white blood cell count</div>
+<div class="act"><b>What the tool tells the person:</b> Ask your doctor for a specialist appointment within about 2 weeks.</div>
+<div class="src"><b>Source page cited:</b> NG12 2015, bladder cancer, p.189</div>
+<div class="tick">☐ matches the current guideline &nbsp;&nbsp; ☐ needs a change &nbsp;&nbsp; ☐ remove &nbsp;&nbsp; Comment: ______________________________________________</div></div><div class="rule"><div class="rh"><span class="id">bladder_uti</span> <span class="site">bladder cancer</span>
+<span class="tier">Mention at a routine visit · routine / non-urgent · guideline strength: consider</span></div>
+<div class="crit"><b>Criteria in the file:</b><br><b></b>aged 60 or over AND urine infections that keep coming back or will not clear</div>
+<div class="act"><b>What the tool tells the person:</b> Ask for a non-urgent referral to look for a cause of repeated urine infections.</div>
+<div class="src"><b>Source page cited:</b> NG12 2015, bladder cancer, p.189</div>
+<div class="tick">☐ matches the current guideline &nbsp;&nbsp; ☐ needs a change &nbsp;&nbsp; ☐ remove &nbsp;&nbsp; Comment: ______________________________________________</div></div><div class="rule"><div class="rh"><span class="id">renal_haematuria</span> <span class="site">kidney cancer</span>
+<span class="tier">See a doctor soon · within 2 weeks · guideline strength: recommended</span></div>
+<div class="crit"><b>Criteria in the file:</b><br><b></b>aged 45 or over AND blood you can see in your urine</div>
+<div class="act"><b>What the tool tells the person:</b> Ask your doctor for a specialist appointment within about 2 weeks.</div>
+<div class="src"><b>Source page cited:</b> NG12 2015, renal cancer, p.203</div>
+<div class="tick">☐ matches the current guideline &nbsp;&nbsp; ☐ needs a change &nbsp;&nbsp; ☐ remove &nbsp;&nbsp; Comment: ______________________________________________</div></div><div class="rule"><div class="rh"><span class="id">leukaemia_children_blood_count</span> <span class="site">leukaemia</span>
+<span class="tier">See a doctor soon · within 48 hours · guideline strength: recommended</span></div>
+<div class="crit"><b>Criteria in the file:</b><br><b></b>under 25 AND any one of: looking unusually pale; tiredness or fatigue with no known cause; fevers with no known cause; infections that keep coming back or will not clear, with no known reason; swollen glands in several places at once; bone pain with no injury to explain it; bruising with no injury to explain it; bleeding with no injury to explain it</div>
+<div class="act"><b>What the tool tells the person:</b> Ask for a blood count within about 2 days. In children and young people these symptoms are the ones doctors check a blood count for, to look for leukaemia.</div>
+<div class="src"><b>Source page cited:</b> NG12 2015, leukaemia, p.256</div>
+<div class="tick">☐ matches the current guideline &nbsp;&nbsp; ☐ needs a change &nbsp;&nbsp; ☐ remove &nbsp;&nbsp; Comment: ______________________________________________</div></div><div class="rule"><div class="rh"><span class="id">leukaemia_children_petechiae</span> <span class="site">leukaemia</span>
+<span class="tier">See a doctor soon · immediately · guideline strength: recommended</span></div>
+<div class="crit"><b>Criteria in the file:</b><br><b></b>under 25 AND tiny red or purple spots on the skin that do not fade when pressed</div>
+<div class="act"><b>What the tool tells the person:</b> Tiny red or purple spots that do not fade under pressure in a child or young person need to be seen by a specialist straight away. Seek urgent care now.</div>
+<div class="src"><b>Source page cited:</b> NG12 2015, leukaemia, p.256</div>
+<div class="tick">☐ matches the current guideline &nbsp;&nbsp; ☐ needs a change &nbsp;&nbsp; ☐ remove &nbsp;&nbsp; Comment: ______________________________________________</div></div><div class="rule"><div class="rh"><span class="id">leukaemia_adult_blood_count</span> <span class="site">leukaemia</span>
+<span class="tier">Worth raising · within 48 hours · guideline strength: consider</span></div>
+<div class="crit"><b>Criteria in the file:</b><br><b></b>aged 25 or over AND any one of: looking unusually pale; tiredness or fatigue with no known cause; fevers with no known cause; infections that keep coming back or will not clear, with no known reason; swollen glands in several places at once; bruising with no injury to explain it; bleeding with no injury to explain it; tiny red or purple spots on the skin that do not fade when pressed</div>
+<div class="act"><b>What the tool tells the person:</b> Ask whether a blood count within about 2 days is worth doing. Most people with tiredness or similar symptoms do not have leukaemia.</div>
+<div class="src"><b>Source page cited:</b> NG12 2015, leukaemia, p.256</div>
+<div class="tick">☐ matches the current guideline &nbsp;&nbsp; ☐ needs a change &nbsp;&nbsp; ☐ remove &nbsp;&nbsp; Comment: ______________________________________________</div></div><div class="rule"><div class="rh"><span class="id">lymphoma_adult</span> <span class="site">lymphoma</span>
+<span class="tier">Worth raising · within 2 weeks · guideline strength: consider</span></div>
+<div class="crit"><b>Criteria in the file:</b><br><b></b>aged 25 or over AND a swollen gland or glands (neck, armpit or groin) with no infection to explain it</div>
+<div class="act"><b>What the tool tells the person:</b> Ask your doctor if you need a specialist appointment within about 2 weeks. Fever, night sweats, breathlessness, itching, or weight loss make it more likely.</div>
+<div class="src"><b>Source page cited:</b> NG12 2015, non-Hodgkin and Hodgkin lymphoma, pp.274 and 280</div>
+<div class="tick">☐ matches the current guideline &nbsp;&nbsp; ☐ needs a change &nbsp;&nbsp; ☐ remove &nbsp;&nbsp; Comment: ______________________________________________</div></div><div class="rule"><div class="rh"><span class="id">lymphoma_children</span> <span class="site">lymphoma</span>
+<span class="tier">Worth raising · within 48 hours · guideline strength: consider</span></div>
+<div class="crit"><b>Criteria in the file:</b><br><b></b>under 25 AND a swollen gland or glands (neck, armpit or groin) with no infection to explain it</div>
+<div class="act"><b>What the tool tells the person:</b> Ask whether a specialist appointment within about 2 days is needed. Fever, night sweats, breathlessness, itching, or weight loss make it more likely.</div>
+<div class="src"><b>Source page cited:</b> NG12 2015, non-Hodgkin and Hodgkin lymphoma, pp.274 and 280</div>
+<div class="tick">☐ matches the current guideline &nbsp;&nbsp; ☐ needs a change &nbsp;&nbsp; ☐ remove &nbsp;&nbsp; Comment: ______________________________________________</div></div><div class="rule"><div class="rh"><span class="id">weight_loss</span> <span class="site">several cancers</span>
+<span class="tier">See a doctor soon · within 2 weeks · guideline strength: recommended</span></div>
+<div class="crit"><b>Criteria in the file:</b><br><b></b>weight loss with no known reason</div>
+<div class="act"><b>What the tool tells the person:</b> Weight loss with no known reason can be a sign of several cancers. These include bowel, stomach, gullet, lung, prostate, pancreas, kidney and bladder cancer. It can also have other causes. Guidelines say a doctor should look for the cause soon.</div>
+<div class="src"><b>Source page cited:</b> NG12 2015, symptoms that are not specific to one cancer, p.347</div>
+<div class="tick">☐ matches the current guideline &nbsp;&nbsp; ☐ needs a change &nbsp;&nbsp; ☐ remove &nbsp;&nbsp; Comment: ______________________________________________</div></div><div class="rule"><div class="rh"><span class="id">appetite_loss</span> <span class="site">several cancers</span>
+<span class="tier">See a doctor soon · within 2 weeks · guideline strength: recommended</span></div>
+<div class="crit"><b>Criteria in the file:</b><br><b></b>loss of appetite with no known reason</div>
+<div class="act"><b>What the tool tells the person:</b> Losing your appetite for no known reason can be a sign of several cancers. These include lung, gullet, stomach, bowel, pancreas, bladder and kidney cancer. It can also have other causes. Guidelines say a doctor should look for the cause soon.</div>
+<div class="src"><b>Source page cited:</b> NG12 2015, symptoms that are not specific to one cancer, p.347</div>
+<div class="tick">☐ matches the current guideline &nbsp;&nbsp; ☐ needs a change &nbsp;&nbsp; ☐ remove &nbsp;&nbsp; Comment: ______________________________________________</div></div><div class="rule"><div class="rh"><span class="id">melanoma_7point</span> <span class="site">melanoma</span>
+<span class="tier">See a doctor soon · within 2 weeks · guideline strength: recommended</span></div>
+<div class="crit"><b>Criteria in the file:</b><br>Self-scored checklist: The mole or spot has changed in size (2); Irregular shape (2); Irregular colour (2); Wider than 7 mm (1); Looks inflamed (1); Oozing or crusting (1); Itching or other change in sensation (1). Threshold 3 or more.</div>
+<div class="act"><b>What the tool tells the person:</b> A doctor should look at this spot urgently (within about 2 weeks). A self-assessment is not reliable: a clinician needs to examine it.</div>
+<div class="src"><b>Source page cited:</b> NG12 2015, skin cancers, p.220</div>
+<div class="tick">☐ matches the current guideline &nbsp;&nbsp; ☐ needs a change &nbsp;&nbsp; ☐ remove &nbsp;&nbsp; Comment: ______________________________________________</div></div>
+<h2>The five US screening items</h2>
+<p>Each applies only to average-risk adults. Wording was checked against the Task Force pages on 5 October 2026.</p>
+<table><tr><th>Cancer</th><th>Source cited</th><th>Page</th><th>Your view</th></tr><tr><td>breast cancer</td><td>USPSTF, Breast Cancer: Screening, April 30 2024 (Grade B)</td><td>https://www.uspreventiveservicestaskforce.org/uspstf/recommendation/breast-cancer-screening</td><td>☐ ok &nbsp; ☐ change</td></tr><tr><td>cervical cancer</td><td>USPSTF, Cervical Cancer: Screening, August 21 2018 (Grade A)</td><td>https://www.uspreventiveservicestaskforce.org/uspstf/recommendation/cervical-cancer-screening</td><td>☐ ok &nbsp; ☐ change</td></tr><tr><td>bowel (colorectal) cancer</td><td>USPSTF, Colorectal Cancer: Screening, May 18 2021 (Grade A for 50 to 75, Grade B for 45 to 49, Grade C for 76 to 85)</td><td>https://www.uspreventiveservicestaskforce.org/uspstf/recommendation/colorectal-cancer-screening</td><td>☐ ok &nbsp; ☐ change</td></tr><tr><td>lung cancer</td><td>USPSTF, Lung Cancer: Screening, March 9 2021 (Grade B)</td><td>https://www.uspreventiveservicestaskforce.org/uspstf/recommendation/lung-cancer-screening</td><td>☐ ok &nbsp; ☐ change</td></tr><tr><td>prostate cancer</td><td>USPSTF, Prostate Cancer: Screening, May 8 2018 (Grade C for 55 to 69, Grade D for 70 and older)</td><td>https://www.uspreventiveservicestaskforce.org/uspstf/recommendation/prostate-cancer-screening</td><td>☐ ok &nbsp; ☐ change</td></tr></table>
+<h2>Sign-off</h2><p>Reviewer name and role: ______________________ &nbsp; Date: __________ &nbsp; Signature: ______________________</p>
+<p>Overall: ☐ rules acceptable as a research prototype &nbsp; ☐ acceptable after the changes marked &nbsp; ☐ not acceptable</p>
+</body></html>

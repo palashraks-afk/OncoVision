@@ -1,0 +1,102 @@
+{
+  "Hippisley-Cox QCancer BMJ Open 2015": [
+    {
+      "title": "Development and validation of risk prediction algorithms to estimate future risk of common cancers in men and women: prospective cohort study",
+      "container": "BMJ Open",
+      "year": 2015,
+      "volume": "5",
+      "page": "e007825",
+      "doi": "10.1136/bmjopen-2015-007825",
+      "first_author": "Hippisley-Cox"
+    },
+    {
+      "title": "Development and validation of QRISK3 risk prediction algorithms to estimate future risk of cardiovascular disease: prospective cohort study",
+      "container": "BMJ",
+      "year": 2017,
+      "volume": null,
+      "page": "j2099",
+      "doi": "10.1136/bmj.j2099",
+      "first_author": "Hippisley-Cox"
+    }
+  ],
+  "Goff ovarian symptom index 2007": [
+    {
+      "title": "Development of an ovarian cancer symptom index: Possibilities for earlier detection",
+      "container": "Cancer",
+      "year": 2007,
+      "volume": "110",
+      "page": "226-227",
+      "doi": "10.1002/cncr.22749",
+      "first_author": "Markman"
+    },
+    {
+      "title": "Symptom index can predict women with ovarian cancer",
+      "container": "Nursing Standard",
+      "year": 2007,
+      "volume": "21",
+      "page": "18-19",
+      "doi": "10.7748/ns.21.38.18.s19",
+      "first_author": null
+    }
+  ],
+  "TRIPOD+AI 2024": [
+    {
+      "title": "TRIPOD+AI statement: updated guidance for reporting clinical prediction models that use regression or machine learning methods",
+      "container": "BMJ",
+      "year": 2024,
+      "volume": null,
+      "page": "q902",
+      "doi": "10.1136/bmj.q902",
+      "first_author": null
+    },
+    {
+      "title": "TRIPOD+AI: an updated reporting guideline for clinical prediction models",
+      "container": "BMJ",
+      "year": 2024,
+      "volume": null,
+      "page": "q824",
+      "doi": "10.1136/bmj.q824",
+      "first_author": "Cohen"
+    }
+  ],
+  "Wilson 1927": [
+    {
+      "title": "Probable Inference, the Law of Succession, and Statistical Inference",
+      "container": "Journal of the American Statistical Association",
+      "year": 1927,
+      "volume": "22",
+      "page": "209-212",
+      "doi": "10.1080/01621459.1927.10502953",
+      "first_author": "Wilson"
+    },
+    {
+      "title": "On the existence of a unique most probable category",
+      "container": "Journal of Statistical Planning and Inference",
+      "year": 2001,
+      "volume": "99",
+      "page": "175-182",
+      "doi": "10.1016/s0378-3758(01)00082-9",
+      "first_author": "Berry"
+    }
+  ],
+  "Flesch 1948": [
+    {
+      "title": "A new readability yardstick.",
+      "container": "Journal of Applied Psychology",
+      "year": 1948,
+      "volume": "32",
+      "page": "221-233",
+      "doi": "10.1037/h0057532",
+      "first_author": "Flesch"
+    },
+    {
+      "title": "Introduction to a New Approach to Readability",
+      "container": "Readability: Text and Context",
+      "year": 2016,
+      "volume": null,
+      "page": "1-9",
+      "doi": "10.1057/9781137388773_1",
+      "first_author": "Bailin"
+    }
+  ]
+}

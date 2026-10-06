@@ -1,0 +1,62 @@
+{
+  "meta": {
+    "title": "US cancer screening recommendations for average-risk adults",
+    "source_organisation": "US Preventive Services Task Force (USPSTF)",
+    "checked_against": "The USPSTF recommendation pages on uspreventiveservicestaskforce.org, read on 2026-10-05",
+    "scope": "Adults at average risk. People with a family history, a known gene change (such as BRCA1/2), earlier cancer, past chest radiation, or other risk factors may be advised differently by their own doctor.",
+    "review_status": "NOT YET REVIEWED BY A CLINICIAN",
+    "reviewed_by": null,
+    "not_covered": "Only breast, cervical, colorectal, lung and prostate cancer are covered, because they have a general-population screening recommendation from the Task Force that was checked. Nothing here says other cancers cannot be screened for.",
+    "known_limitations": [
+      "Recommendations are revised over time. Each item carries its publication date; a newer version may exist.",
+      "Cervical screening depends on whether the cervix is still present. The tool asks.",
+      "Lung screening needs pack-years (packs per day times years smoked), which people often estimate poorly.",
+      "The Task Force's grade describes the strength of evidence for average-risk people. It is not a personal prediction."
+    ]
+  },
+  "items": [
+    {
+      "id": "breast",
+      "site": "breast cancer",
+      "test": "mammogram",
+      "source": "USPSTF, Breast Cancer: Screening, April 30 2024 (Grade B)",
+      "url": "https://www.uspreventiveservicestaskforce.org/uspstf/recommendation/breast-cancer-screening"
+    },
+    {
+      "id": "cervical",
+      "site": "cervical cancer",
+      "test": "Pap test and/or HPV test",
+      "source": "USPSTF, Cervical Cancer: Screening, August 21 2018 (Grade A)",
+      "url": "https://www.uspreventiveservicestaskforce.org/uspstf/recommendation/cervical-cancer-screening"
+    },
+    {
+      "id": "colorectal",
+      "site": "bowel (colorectal) cancer",
+      "test": "stool test or a look inside the bowel",
+      "source": "USPSTF, Colorectal Cancer: Screening, May 18 2021 (Grade A for 50 to 75, Grade B for 45 to 49, Grade C for 76 to 85)",
+      "url": "https://www.uspreventiveservicestaskforce.org/uspstf/recommendation/colorectal-cancer-screening"
+    },
+    {
+      "id": "lung",
+      "site": "lung cancer",
+      "test": "low-dose CT scan of the chest",
+      "source": "USPSTF, Lung Cancer: Screening, March 9 2021 (Grade B)",
+      "url": "https://www.uspreventiveservicestaskforce.org/uspstf/recommendation/lung-cancer-screening"
+    },
+    {
+      "id": "prostate",
+      "site": "prostate cancer",
+      "test": "PSA blood test",
+      "source": "USPSTF, Prostate Cancer: Screening, May 8 2018 (Grade C for 55 to 69, Grade D for 70 and older)",
+      "url": "https://www.uspreventiveservicestaskforce.org/uspstf/recommendation/prostate-cancer-screening"
+    }
+  ],
+  "colorectal_tests": [
+    "a stool test (FIT or a sensitive guaiac test) every year",
+    "a stool DNA test with FIT every 1 to 3 years",
+    "a CT colonography every 5 years",
+    "a flexible sigmoidoscopy every 5 years",
+    "a flexible sigmoidoscopy every 10 years plus a yearly FIT",
+    "a colonoscopy every 10 years"
+  ]
+}

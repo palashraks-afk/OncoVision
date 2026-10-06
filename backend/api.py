@@ -38,6 +38,7 @@ except ImportError:  # per-patient attribution degrades to global importance
 ENABLE_SHAP = os.getenv("ENABLE_SHAP", "1").strip().lower() not in ("0", "false", "no")
 
 import navigator  # symptom-and-lab pattern navigator, rules in navigator_rules.json
+import screening  # US routine-screening lookup, rules in screening_rules.json
 
 app = FastAPI(title="Oncovision AI")
 
@@ -1486,6 +1487,27 @@ async def navigator_evaluate(data: NavigatorRequest):
         return {"status": "success", **navigator.evaluate(data.model_dump())}
     except ValueError as e:
         return JSONResponse(status_code=422, content={"status": "error", "message": str(e)})
+
+class ScreeningRequest(BaseModel):
+    """Who the person is, for a lookup of routine screening recommendations. Everything but age is optional."""
+    model_config = ConfigDict(extra="ignore")
+    age: Optional[float] = None
+    sex_at_birth: Optional[str] = None
+    has_cervix: Optional[bool] = None
+    ever_smoked: Optional[bool] = None
+    smokes_now: Optional[bool] = None
+    years_since_quit: Optional[float] = None
+    pack_years: Optional[float] = None
+
+
+@app.post("/screening")
+async def screening_evaluate(data: ScreeningRequest):
+    """Which routine cancer screenings US guidelines recommend for this person. Research prototype, not medical advice."""
+    try:
+        return {"status": "success", **screening.evaluate(data.model_dump())}
+    except ValueError as e:
+        return JSONResponse(status_code=422, content={"status": "error", "message": str(e)})
+
 
 @app.post("/parse-pdf")
 async def parse_pdf(files: List[UploadFile] = File(...)):

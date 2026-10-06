@@ -33,7 +33,7 @@ type Match = {
 type Could = { id: string; site: string; tier: string; needs: string[]; if_so: string };
 type Result = {
   state: string; headline: string; matches: Match[]; could_apply_if: Could[];
-  melanoma_score: number | null; lab_notes: string[]; lab_findings: Record<string, boolean>;
+  melanoma_score: number | null; lab_notes: string[]; guideline_notes?: string[]; lab_findings: Record<string, boolean>;
   ignored_symptoms: string[]; safety: string[]; disclaimer: string;
   context: { per_1000: number; text: string; smoking_assumed_average: boolean; basis: string } | null;
   rules: { guideline_version: string; review_status: string; n_rules: number };
@@ -177,6 +177,7 @@ export default function NavigatorPage() {
         <a href="/" className="inline-flex items-center gap-2 text-xs font-bold text-[var(--stamp)] mb-6">
           <ArrowLeft className="w-3.5 h-3.5" /> Back to Oncovision
         </a>
+        <p className="text-xs text-[var(--ink-3)] mb-4">Looking for routine screening advice (mammogram, bowel, lung, cervical, PSA)? Try the <a className="underline" href="/screening">screening lookup</a>.</p>
 
         <h1 className="display text-3xl mb-2">Symptom and lab pattern navigator</h1>
         <p className="text-[var(--ink-2)] text-sm mb-5">
@@ -358,6 +359,12 @@ export default function NavigatorPage() {
                   ))}
                 </ul>
                 {result.lab_notes.map((n, i) => <p key={i} className="text-xs text-[var(--warn)] mt-2">{n}</p>)}
+              </div>
+            )}
+
+            {(result.guideline_notes || []).length > 0 && (
+              <div className="border border-[var(--warn-line)] bg-[var(--warn-bg)] p-4 text-xs text-[var(--ink-2)] leading-relaxed">
+                {(result.guideline_notes || []).map((n, i) => <p key={i}>{n}</p>)}
               </div>
             )}
 
