@@ -1,0 +1,25 @@
+{
+  "what": "Share of US adults who died of cancer within five years of a health examination, by age, sex and smoking history",
+  "outcome": "death from cancer (underlying cause, National Death Index) within 60 months",
+  "data": "NHANES 1999-2014 adults 40 and over, linked mortality through 2019",
+  "n": 24180,
+  "cancer_deaths": 379,
+  "age_range": [
+    40,
+    85
+  ],
+  "mean_ever_smoked": 0.4963,
+  "coefficients": {
+    "intercept": -5.052070363839368,
+    "age_minus_60": 0.07001776509677404,
+    "age_minus_60_sq_over_20": -0.012884031576413837,
+    "male": 0.3972593654592648,
+    "ever_smoked": 0.8125092952486044
+  },
+  "validation_out_of_era": {
+    "fit_on": "1999-2006",
+    "tested_on": "2007-2014",
+    "calibration_slope": 0.921,
+    "auc": 0.7473
+  }
+}

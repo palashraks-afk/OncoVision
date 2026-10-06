@@ -1,0 +1,731 @@
+{
+  "n_cohort": 28580,
+  "n_nhanes3": 9335,
+  "q1": {
+    "bands": {
+      "1988-1994 (NHANES III)": {
+        "40-49": {
+          "n": 2414,
+          "talk_soon": {
+            "n": 0,
+            "share": 0.0,
+            "ci": [
+              0.0,
+              0.0016
+            ]
+          },
+          "any_alert": {
+            "n": 98,
+            "share": 0.0406,
+            "ci": [
+              0.0334,
+              0.0492
+            ]
+          }
+        },
+        "50-59": {
+          "n": 1746,
+          "talk_soon": {
+            "n": 0,
+            "share": 0.0,
+            "ci": [
+              0.0,
+              0.0022
+            ]
+          },
+          "any_alert": {
+            "n": 36,
+            "share": 0.0206,
+            "ci": [
+              0.0149,
+              0.0284
+            ]
+          }
+        },
+        "60-69": {
+          "n": 2183,
+          "talk_soon": {
+            "n": 37,
+            "share": 0.0169,
+            "ci": [
+              0.0123,
+              0.0233
+            ]
+          },
+          "any_alert": {
+            "n": 214,
+            "share": 0.098,
+            "ci": [
+              0.0863,
+              0.1112
+            ]
+          }
+        },
+        "70-79": {
+          "n": 1683,
+          "talk_soon": {
+            "n": 28,
+            "share": 0.0166,
+            "ci": [
+              0.0115,
+              0.0239
+            ]
+          },
+          "any_alert": {
+            "n": 203,
+            "share": 0.1206,
+            "ci": [
+              0.1059,
+              0.137
+            ]
+          }
+        },
+        "80-+": {
+          "n": 1309,
+          "talk_soon": {
+            "n": 23,
+            "share": 0.0176,
+            "ci": [
+              0.0117,
+              0.0262
+            ]
+          },
+          "any_alert": {
+            "n": 278,
+            "share": 0.2124,
+            "ci": [
+              0.1911,
+              0.2354
+            ]
+          }
+        }
+      },
+      "1999-2006": {
+        "40-49": {
+          "n": 2932,
+          "talk_soon": {
+            "n": 0,
+            "share": 0.0,
+            "ci": [
+              0.0,
+              0.0013
+            ]
+          },
+          "any_alert": {
+            "n": 121,
+            "share": 0.0413,
+            "ci": [
+              0.0346,
+              0.0491
+            ]
+          }
+        },
+        "50-59": {
+          "n": 2138,
+          "talk_soon": {
+            "n": 0,
+            "share": 0.0,
+            "ci": [
+              0.0,
+              0.0018
+            ]
+          },
+          "any_alert": {
+            "n": 31,
+            "share": 0.0145,
+            "ci": [
+              0.0102,
+              0.0205
+            ]
+          }
+        },
+        "60-69": {
+          "n": 2388,
+          "talk_soon": {
+            "n": 37,
+            "share": 0.0155,
+            "ci": [
+              0.0113,
+              0.0213
+            ]
+          },
+          "any_alert": {
+            "n": 169,
+            "share": 0.0708,
+            "ci": [
+              0.0612,
+              0.0818
+            ]
+          }
+        },
+        "70-79": {
+          "n": 1597,
+          "talk_soon": {
+            "n": 24,
+            "share": 0.015,
+            "ci": [
+              0.0101,
+              0.0223
+            ]
+          },
+          "any_alert": {
+            "n": 188,
+            "share": 0.1177,
+            "ci": [
+              0.1028,
+              0.1345
+            ]
+          }
+        },
+        "80-+": {
+          "n": 1067,
+          "talk_soon": {
+            "n": 10,
+            "share": 0.0094,
+            "ci": [
+              0.0051,
+              0.0172
+            ]
+          },
+          "any_alert": {
+            "n": 169,
+            "share": 0.1584,
+            "ci": [
+              0.1377,
+              0.1815
+            ]
+          }
+        }
+      },
+      "2007-2014": {
+        "40-49": {
+          "n": 3565,
+          "talk_soon": {
+            "n": 0,
+            "share": 0.0,
+            "ci": [
+              0.0,
+              0.0011
+            ]
+          },
+          "any_alert": {
+            "n": 188,
+            "share": 0.0527,
+            "ci": [
+              0.0459,
+              0.0606
+            ]
+          }
+        },
+        "50-59": {
+          "n": 3187,
+          "talk_soon": {
+            "n": 0,
+            "share": 0.0,
+            "ci": [
+              0.0,
+              0.0012
+            ]
+          },
+          "any_alert": {
+            "n": 64,
+            "share": 0.0201,
+            "ci": [
+              0.0158,
+              0.0256
+            ]
+          }
+        },
+        "60-69": {
+          "n": 3046,
+          "talk_soon": {
+            "n": 61,
+            "share": 0.02,
+            "ci": [
+              0.0156,
+              0.0256
+            ]
+          },
+          "any_alert": {
+            "n": 313,
+            "share": 0.1028,
+            "ci": [
+              0.0925,
+              0.114
+            ]
+          }
+        },
+        "70-79": {
+          "n": 1701,
+          "talk_soon": {
+            "n": 37,
+            "share": 0.0218,
+            "ci": [
+              0.0158,
+              0.0298
+            ]
+          },
+          "any_alert": {
+            "n": 287,
+            "share": 0.1687,
+            "ci": [
+              0.1517,
+              0.1873
+            ]
+          }
+        },
+        "80-+": {
+          "n": 962,
+          "talk_soon": {
+            "n": 15,
+            "share": 0.0156,
+            "ci": [
+              0.0095,
+              0.0256
+            ]
+          },
+          "any_alert": {
+            "n": 220,
+            "share": 0.2287,
+            "ci": [
+              0.2033,
+              0.2563
+            ]
+          }
+        }
+      },
+      "2015-2018": {
+        "40-49": {
+          "n": 1522,
+          "talk_soon": {
+            "n": 0,
+            "share": 0.0,
+            "ci": [
+              0.0,
+              0.0025
+            ]
+          },
+          "any_alert": {
+            "n": 123,
+            "share": 0.0808,
+            "ci": [
+              0.0682,
+              0.0956
+            ]
+          }
+        },
+        "50-59": {
+          "n": 1575,
+          "talk_soon": {
+            "n": 0,
+            "share": 0.0,
+            "ci": [
+              0.0,
+              0.0024
+            ]
+          },
+          "any_alert": {
+            "n": 27,
+            "share": 0.0171,
+            "ci": [
+              0.0118,
+              0.0248
+            ]
+          }
+        },
+        "60-69": {
+          "n": 1657,
+          "talk_soon": {
+            "n": 23,
+            "share": 0.0139,
+            "ci": [
+              0.0093,
+              0.0207
+            ]
+          },
+          "any_alert": {
+            "n": 187,
+            "share": 0.1129,
+            "ci": [
+              0.0985,
+              0.129
+            ]
+          }
+        },
+        "70-79": {
+          "n": 793,
+          "talk_soon": {
+            "n": 15,
+            "share": 0.0189,
+            "ci": [
+              0.0115,
+              0.031
+            ]
+          },
+          "any_alert": {
+            "n": 113,
+            "share": 0.1425,
+            "ci": [
+              0.1199,
+              0.1686
+            ]
+          }
+        },
+        "80-+": {
+          "n": 450,
+          "talk_soon": {
+            "n": 12,
+            "share": 0.0267,
+            "ci": [
+              0.0153,
+              0.046
+            ]
+          },
+          "any_alert": {
+            "n": 120,
+            "share": 0.2667,
+            "ci": [
+              0.2279,
+              0.3094
+            ]
+          }
+        }
+      }
+    },
+    "worst_talk_soon": 0.0267,
+    "worst_any_alert": 0.2667,
+    "bar": "talk soon <= 3% and any alert <= 20% in every band and era",
+    "passes": false
+  },
+  "n_outcome_cohort": 22583,
+  "q2": {
+    "results": {
+      "1999-2014 labs only": {
+        "or": 0.628,
+        "ci": [
+          0.494,
+          0.799
+        ],
+        "decedents": 3864,
+        "cancer_deaths": 782,
+        "alerted": 687,
+        "cancer_share_alerted": 0.1354,
+        "cancer_share_not": 0.2169
+      },
+      "1999-2014 labs and proxies": {
+        "or": 0.745,
+        "ci": [
+          0.634,
+          0.875
+        ],
+        "decedents": 3864,
+        "cancer_deaths": 782,
+        "alerted": 2094,
+        "cancer_share_alerted": 0.1848,
+        "cancer_share_not": 0.2232
+      },
+      "NHANES III labs only": {
+        "or": 1.184,
+        "ci": [
+          0.908,
+          1.543
+        ],
+        "decedents": 2324,
+        "cancer_deaths": 522,
+        "alerted": 400,
+        "cancer_share_alerted": 0.23,
+        "cancer_share_not": 0.2235
+      }
+    },
+    "bar": "adjusted OR 95% CI above 1 in pooled 1999-2014 (labs and proxies) and OR above 1 in NHANES III",
+    "passes": false
+  },
+  "q3": {
+    "results": {
+      "age+sex vs +labs alert": {
+        "auc_base": 0.7265,
+        "auc_with_alert": 0.7267,
+        "gain": 0.0002,
+        "gain_ci": [
+          -0.0046,
+          0.0054
+        ],
+        "train_n": 10122,
+        "test_n": 12438,
+        "test_cancer_deaths": 179
+      },
+      "age+sex vs +labs and proxies alert": {
+        "auc_base": 0.7265,
+        "auc_with_alert": 0.7318,
+        "gain": 0.0054,
+        "gain_ci": [
+          -0.0088,
+          0.0186
+        ],
+        "train_n": 10122,
+        "test_n": 12438,
+        "test_cancer_deaths": 179
+      },
+      "trained 1999-2014, tested NHANES III (labs alert)": {
+        "auc_base": 0.7501,
+        "auc_with_alert": 0.7592,
+        "gain": 0.0091,
+        "gain_ci": [
+          0.0048,
+          0.0143
+        ],
+        "test_n": 9326,
+        "test_cancer_deaths": 238
+      }
+    },
+    "bar": "AUC gain 95% bootstrap interval excludes 0 in 2007-2014 (labs and proxies)",
+    "passes": false
+  },
+  "q4": {
+    "n_with_ferritin": 7373,
+    "anaemic": 817,
+    "true_ida_by_ferritin": 328,
+    "proxy_ida_by_mcv": 299,
+    "proxy_sensitivity": 0.649,
+    "proxy_ppv": 0.712,
+    "age60_talk_soon_with_ferritin": 36,
+    "age60_talk_soon_proxy_only": 53,
+    "age60_n": 2743
+  },
+  "q5": {
+    "colorectal_stool_test": {
+      "n": 3359,
+      "cancer_deaths_5y": 90,
+      "rate": 0.0268,
+      "ci": [
+        0.0218,
+        0.0328
+      ],
+      "mean_age": 65.8
+    },
+    "colorectal_urgent": {
+      "n": 184,
+      "cancer_deaths_5y": 6,
+      "rate": 0.0326,
+      "ci": [
+        0.015,
+        0.0693
+      ],
+      "mean_age": 69.5
+    },
+    "lung_xray_consider": {
+      "n": 332,
+      "cancer_deaths_5y": 8,
+      "rate": 0.0241,
+      "ci": [
+        0.0123,
+        0.0468
+      ],
+      "mean_age": 57.9
+    },
+    "lung_xray_symptoms": {
+      "n": 5953,
+      "cancer_deaths_5y": 136,
+      "rate": 0.0228,
+      "ci": [
+        0.0193,
+        0.027
+      ],
+      "mean_age": 60.5
+    },
+    "ovarian_other": {
+      "n": 1446,
+      "cancer_deaths_5y": 18,
+      "rate": 0.0124,
+      "ci": [
+        0.0079,
+        0.0196
+      ],
+      "mean_age": 60.4
+    },
+    "upper_gi_consider": {
+      "n": 55,
+      "cancer_deaths_5y": 2,
+      "rate": 0.0364,
+      "ci": [
+        0.01,
+        0.1232
+      ],
+      "mean_age": 68.8
+    },
+    "weight_loss": {
+      "n": 2520,
+      "cancer_deaths_5y": 46,
+      "rate": 0.0183,
+      "ci": [
+        0.0137,
+        0.0243
+      ],
+      "mean_age": 60.3
+    },
+    "_everyone": {
+      "n": 22560,
+      "rate": 0.0151
+    }
+  },
+  "q6": {
+    "calibration_slope": 0.921,
+    "calibration_intercept": -0.238,
+    "auc": 0.7473,
+    "brier": 0.01398,
+    "brier_if_no_model": 0.01419,
+    "deciles": [
+      {
+        "predicted": 0.0015,
+        "observed": 0.0032,
+        "n": 1250
+      },
+      {
+        "predicted": 0.0026,
+        "observed": 0.0016,
+        "n": 1268
+      },
+      {
+        "predicted": 0.0039,
+        "observed": 0.0072,
+        "n": 1254
+      },
+      {
+        "predicted": 0.0053,
+        "observed": 0.0041,
+        "n": 1208
+      },
+      {
+        "predicted": 0.007,
+        "observed": 0.008,
+        "n": 1255
+      },
+      {
+        "predicted": 0.0095,
+        "observed": 0.0064,
+        "n": 1249
+      },
+      {
+        "predicted": 0.013,
+        "observed": 0.0162,
+        "n": 1298
+      },
+      {
+        "predicted": 0.0177,
+        "observed": 0.025,
+        "n": 1202
+      },
+      {
+        "predicted": 0.0261,
+        "observed": 0.0294,
+        "n": 1225
+      },
+      {
+        "predicted": 0.0493,
+        "observed": 0.0439,
+        "n": 1229
+      }
+    ],
+    "coefficients": {
+      "age_minus_60": 0.07032050535011733,
+      "age_sq": -0.0061998251926268086,
+      "male": 0.5056189797315879,
+      "ever_smoked": 0.9387090073990513,
+      "intercept": -5.328861473680043
+    },
+    "passes": true,
+    "bar": "calibration slope between 0.8 and 1.2 in 2007-2014"
+  },
+  "q7": {
+    "results": {
+      "anaemia": {
+        "or": 0.57,
+        "ci": [
+          0.452,
+          0.72
+        ],
+        "decedents_with_flag": 748,
+        "decedents": 3864
+      },
+      "small red cells (MCV < 80)": {
+        "or": 0.93,
+        "ci": [
+          0.617,
+          1.402
+        ],
+        "decedents_with_flag": 149,
+        "decedents": 3864
+      },
+      "high platelets (> 400)": {
+        "or": 1.096,
+        "ci": [
+          0.703,
+          1.706
+        ],
+        "decedents_with_flag": 127,
+        "decedents": 3864
+      },
+      "raised white count (> 11)": {
+        "or": 0.996,
+        "ci": [
+          0.728,
+          1.362
+        ],
+        "decedents_with_flag": 252,
+        "decedents": 3864
+      },
+      "weight loss (proxy)": {
+        "or": 0.694,
+        "ci": [
+          0.551,
+          0.874
+        ],
+        "decedents_with_flag": 652,
+        "decedents": 3864
+      },
+      "chronic cough (proxy)": {
+        "or": 0.806,
+        "ci": [
+          0.618,
+          1.052
+        ],
+        "decedents_with_flag": 413,
+        "decedents": 3864
+      },
+      "breathless (proxy)": {
+        "or": 0.737,
+        "ci": [
+          0.626,
+          0.867
+        ],
+        "decedents_with_flag": 1779,
+        "decedents": 3864
+      },
+      "ever smoked": {
+        "or": 1.305,
+        "ci": [
+          1.095,
+          1.556
+        ],
+        "decedents_with_flag": 2297,
+        "decedents": 3864
+      },
+      "any alert, labs only": {
+        "or": 0.628,
+        "ci": [
+          0.494,
+          0.799
+        ],
+        "decedents_with_flag": 687,
+        "decedents": 3864
+      }
+    },
+    "note": "Exploratory. Nine comparisons, so only intervals far from 1 should be believed. Not a basis for changing a rule without a clinician."
+  },
+  "summary": {
+    "q1": false,
+    "q2": false,
+    "q3": false,
+    "q6": true
+  }
+}

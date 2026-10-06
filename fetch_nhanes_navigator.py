@@ -9,7 +9,7 @@ white count, and FERRITIN where it was measured, so iron deficiency is measured 
 assumed) plus whatever symptom-like facts NHANES asked about, and a death certificate
 years later.
 
-Eight continuous cycles, 1999-2000 through 2013-2014, are linked to the National Death
+Ten continuous cycles, 1999-2000 through 2017-2018, are linked to the National Death
 Index through 31 December 2019. 2015-2018 are left out for the reason fetch_nhanes_mortality
 gives: their follow-up is too short for a five-year outcome to be fully observable.
 
@@ -39,7 +39,9 @@ import pandas as pd
 import fetch_nhanes_mortality as fm
 
 OUT = os.path.join("data", "nhanes_navigator.csv.gz")
-CYCLES = fm.CYCLES[:8]      # 1999-2000 ... 2013-2014
+CYCLES = fm.CYCLES[:8] + [("2015", "I", "2015", "2016"), ("2017", "J", "2017", "2018")]
+# 2015-2018 have too little follow-up for a five-year outcome, so analyses that need an outcome
+# use year0 <= 2013 only. They are included for the lab-only alert burden, which needs none.
 
 FERRITIN_NAMES = ["FERTIN", "L06TFR", "TFR", "L06"]
 

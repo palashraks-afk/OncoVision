@@ -290,3 +290,41 @@ def test_tiers_are_ordered_most_actionable_first():
     tiers = [m["tier"] for m in r["matches"]]
     assert tiers == sorted(tiers, key=lambda t: nav.TIER_ORDER[t])
     assert r["state"] == tiers[0] == "talk_soon"
+
+
+# ---------------------------------------------------------------- context layer
+def test_context_rises_with_age_and_smoking_and_is_a_group_figure():
+    young = nav.evaluate({"age": 45, "sex": "female", "ever_smoked": False})["context"]
+    old = nav.evaluate({"age": 75, "sex": "female", "ever_smoked": False})["context"]
+    smoker = nav.evaluate({"age": 75, "sex": "female", "ever_smoked": True})["context"]
+    assert young["per_1000"] < old["per_1000"] < smoker["per_1000"]
+    assert "not your own risk" in old["text"]
+
+
+def test_context_absent_without_age_sex_or_outside_range():
+    assert nav.evaluate({"age": 60})["context"] is None
+    assert nav.evaluate({"sex": "male"})["context"] is None
+    assert nav.evaluate({"age": 30, "sex": "male"})["context"] is None
+    assert nav.evaluate({"age": 95, "sex": "male"})["context"] is None
+
+
+def test_context_says_when_smoking_is_assumed():
+    assert nav.evaluate({"age": 60, "sex": "male"})["context"]["smoking_assumed_average"] is True
+
+
+def test_mesothelioma_rule_no_longer_fires_for_a_smoker_without_asbestos():
+    out = nav.evaluate({"age": 60, "sex": "male", "ever_smoked": True, "asbestos": False,
+                        "symptoms": [{"key": "cough"}]})
+    ids = {m["id"] for m in out["matches"]}
+    assert "lung_xray_symptoms" in ids and "meso_xray_symptoms" not in ids
+    out = nav.evaluate({"age": 60, "sex": "male", "ever_smoked": False, "asbestos": True,
+                        "symptoms": [{"key": "cough"}]})
+    assert "meso_xray_symptoms" in {m["id"] for m in out["matches"]}
+
+
+def test_lab_only_alert_carries_the_survey_caveat_and_symptoms_remove_it():
+    labs = {"hemoglobin": 10.5, "mcv": 72, "platelets": 250, "wbc": 6}
+    out = nav.evaluate({"age": 65, "sex": "male", "labs": labs})
+    assert out["matches"] and any("lab results alone" in n for n in out["lab_notes"])
+    out = nav.evaluate({"age": 65, "sex": "male", "labs": labs, "symptoms": [{"key": "weight_loss"}]})
+    assert not any("lab results alone" in n for n in out["lab_notes"])

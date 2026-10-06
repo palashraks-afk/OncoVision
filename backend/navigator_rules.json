@@ -7,7 +7,8 @@
       "This is the 2015 edition. NICE has revised NG12 since (for example the colorectal pathway now uses the faecal immunochemical test). A clinician must reconcile every rule with the current version before any use beyond research.",
       "It is UK guidance. Referral timeframes and pathways differ in the United States and elsewhere.",
       "The guideline says 'fatigue' in the lung and ovarian recommendations and 'persistent fatigue' in the leukaemia ones. They are treated as one symptom, so the leukaemia and ovarian rules fire slightly more readily than the wording strictly allows.",
-      "Examination findings (a lump found by a doctor, an enlarged spleen, a chest X-ray read by a radiologist) cannot be reported by a patient and are excluded except where a report can be uploaded."
+      "Examination findings (a lump found by a doctor, an enlarged spleen, a chest X-ray read by a radiologist) cannot be reported by a patient and are excluded except where a report can be uploaded.",
+      "The mesothelioma rule keeps only its asbestos and X-ray-finding paths. The guideline's other paths (two symptoms; smoker plus one symptom) lead to the same chest X-ray already recommended by the lung rule, and showing asbestos-specific wording to a smoker with no exposure was misleading. Changed 2026-10-05 after a defect was noticed during the evidence study."
     ],
     "design_decisions_for_clinician_review": [
       "The lung 'consider an urgent chest X-ray' rule lists a high platelet count among its triggers. It is gated here behind at least one symptom with no known cause. The guideline text does not state that condition, but its lung recommendations are written for people being assessed for lung symptoms, and 3.7% of symptom-free adults over 40 in NHANES have a platelet count above 400, so prompting all of them would be mostly false alarm. This is a deviation from the literal text and a clinician must confirm or reverse it.",
@@ -23,7 +24,11 @@
     }
   },
   "lab_thresholds": {
-    "anaemia_hemoglobin_g_dl": {"male": 13.0, "female": 12.0, "note": "World Health Organization definition for adults. Used for 'low haemoglobin' and 'anaemia'."},
+    "anaemia_hemoglobin_g_dl": {
+      "male": 13.0,
+      "female": 12.0,
+      "note": "World Health Organization definition for adults. Used for 'low haemoglobin' and 'anaemia'."
+    },
     "iron_deficiency_ferritin_ng_ml": 15.0,
     "microcytic_mcv_fl": 80.0,
     "thrombocytosis_platelets_k_ul": 400.0,
@@ -31,219 +36,1296 @@
     "ca125_u_ml": 35.0
   },
   "symptoms": [
-    {"key": "haemoptysis", "group": "Chest and breathing", "label": "Coughing up blood", "hint": "Blood in the phlegm you cough up."},
-    {"key": "cough", "group": "Chest and breathing", "label": "A cough that has no known cause", "hint": ""},
-    {"key": "shortness_of_breath", "group": "Chest and breathing", "label": "Shortness of breath with no known cause", "hint": ""},
-    {"key": "chest_pain", "group": "Chest and breathing", "label": "Chest pain with no known cause", "hint": ""},
-    {"key": "persistent_chest_infection", "group": "Chest and breathing", "label": "Chest infections that keep coming back or will not clear", "hint": ""},
-    {"key": "finger_clubbing", "group": "Chest and breathing", "label": "Fingertips that have become wider and rounded, nails curving over", "hint": ""},
-    {"key": "swollen_glands_neck", "group": "Lumps and glands", "label": "Swollen glands above the collarbone, or in the neck that do not go away", "hint": ""},
-    {"key": "swollen_glands", "group": "Lumps and glands", "label": "A swollen gland or glands (neck, armpit or groin) with no infection to explain it", "hint": ""},
-    {"key": "swollen_glands_widespread", "group": "Lumps and glands", "label": "Swollen glands in several places at once", "hint": ""},
-    {"key": "weight_loss", "group": "Whole body", "label": "Weight loss with no known reason", "hint": "Not dieting, and no illness that explains it."},
-    {"key": "appetite_loss", "group": "Whole body", "label": "Loss of appetite with no known reason", "hint": ""},
-    {"key": "fatigue", "group": "Whole body", "label": "Tiredness or fatigue with no known cause", "hint": "Counts if it has lasted for some time."},
-    {"key": "unexplained_fever", "group": "Whole body", "label": "Fevers with no known cause", "hint": ""},
-    {"key": "pallor", "group": "Whole body", "label": "Looking unusually pale", "hint": ""},
-    {"key": "unexplained_bruising", "group": "Whole body", "label": "Bruising with no injury to explain it", "hint": ""},
-    {"key": "unexplained_bleeding", "group": "Whole body", "label": "Bleeding with no injury to explain it", "hint": ""},
-    {"key": "petechiae", "group": "Whole body", "label": "Tiny red or purple spots on the skin that do not fade when pressed", "hint": ""},
-    {"key": "bone_pain", "group": "Whole body", "label": "Bone pain with no injury to explain it", "hint": ""},
-    {"key": "persistent_or_recurrent_infection", "group": "Whole body", "label": "Infections that keep coming back or will not clear, with no known reason", "hint": ""},
-    {"key": "dysphagia", "group": "Digestion", "label": "Trouble swallowing", "hint": "Food feels like it sticks."},
-    {"key": "upper_abdominal_pain", "group": "Digestion", "label": "Pain in the upper tummy", "hint": ""},
-    {"key": "reflux", "group": "Digestion", "label": "Heartburn or acid reflux", "hint": ""},
-    {"key": "dyspepsia", "group": "Digestion", "label": "Indigestion", "hint": ""},
-    {"key": "treatment_resistant_dyspepsia", "group": "Digestion", "label": "Indigestion that does not improve with treatment", "hint": ""},
-    {"key": "haematemesis", "group": "Digestion", "label": "Vomiting blood", "hint": ""},
-    {"key": "nausea", "group": "Digestion", "label": "Nausea with no known cause", "hint": ""},
-    {"key": "vomiting", "group": "Digestion", "label": "Vomiting with no known cause", "hint": ""},
-    {"key": "abdominal_pain", "group": "Digestion", "label": "Tummy pain with no known cause", "hint": ""},
-    {"key": "change_bowel_habit", "group": "Digestion", "label": "A lasting change in your bowel habit", "hint": "Looser, harder or more or less often than usual."},
-    {"key": "rectal_bleeding", "group": "Digestion", "label": "Bleeding from the back passage", "hint": ""},
-    {"key": "constipation", "group": "Digestion", "label": "Constipation with no known cause", "hint": ""},
-    {"key": "diarrhoea", "group": "Digestion", "label": "Diarrhoea with no known cause", "hint": ""},
-    {"key": "abdominal_mass", "group": "Digestion", "label": "A lump you can feel in your tummy", "hint": ""},
-    {"key": "rectal_mass", "group": "Digestion", "label": "A lump you can feel in the rectum or back passage", "hint": ""},
-    {"key": "anal_mass_or_ulcer", "group": "Digestion", "label": "A lump or sore (ulcer) at the anus that is not explained", "hint": ""},
-    {"key": "jaundice", "group": "Digestion", "label": "Yellow skin or yellow whites of the eyes", "hint": ""},
-    {"key": "back_pain", "group": "Digestion", "label": "Back pain with no known cause", "hint": ""},
-    {"key": "new_onset_diabetes", "group": "Digestion", "label": "Diabetes diagnosed recently", "hint": ""},
-    {"key": "breast_lump", "group": "Breast", "label": "A breast lump with no known cause", "hint": "With or without pain."},
-    {"key": "nipple_changes_one_side", "group": "Breast", "label": "Discharge, pulling in, or another change in ONE nipple only", "hint": ""},
-    {"key": "breast_skin_changes", "group": "Breast", "label": "Skin changes on a breast that look unusual", "hint": ""},
-    {"key": "armpit_lump", "group": "Breast", "label": "A lump in the armpit with no known cause", "hint": ""},
-    {"key": "bloating", "group": "Pelvis and abdomen (women)", "label": "A swollen, bloated tummy that keeps coming back", "hint": ""},
-    {"key": "early_satiety", "group": "Pelvis and abdomen (women)", "label": "Feeling full quickly when eating", "hint": ""},
-    {"key": "pelvic_or_abdominal_pain", "group": "Pelvis and abdomen (women)", "label": "Pain in the pelvis or tummy", "hint": ""},
-    {"key": "urinary_urgency_frequency", "group": "Pelvis and abdomen (women)", "label": "Needing to pass urine urgently or more often", "hint": ""},
-    {"key": "new_ibs_like_symptoms", "group": "Pelvis and abdomen (women)", "label": "Bowel symptoms that look like irritable bowel syndrome, starting in the last 12 months", "hint": ""},
-    {"key": "visible_haematuria", "group": "Urine and prostate", "label": "Blood you can see in your urine", "hint": ""},
-    {"key": "non_visible_haematuria", "group": "Urine and prostate", "label": "Blood found on a urine test that you cannot see", "hint": ""},
-    {"key": "dysuria", "group": "Urine and prostate", "label": "Pain when passing urine", "hint": ""},
-    {"key": "recurrent_uti", "group": "Urine and prostate", "label": "Urine infections that keep coming back or will not clear", "hint": ""},
-    {"key": "lower_urinary_tract_symptoms", "group": "Urine and prostate", "label": "Getting up at night to pass urine, frequency, hesitancy, urgency, or difficulty emptying", "hint": ""},
-    {"key": "erectile_dysfunction", "group": "Urine and prostate", "label": "Erection problems", "hint": ""}
+    {
+      "key": "haemoptysis",
+      "group": "Chest and breathing",
+      "label": "Coughing up blood",
+      "hint": "Blood in the phlegm you cough up."
+    },
+    {
+      "key": "cough",
+      "group": "Chest and breathing",
+      "label": "A cough that has no known cause",
+      "hint": ""
+    },
+    {
+      "key": "shortness_of_breath",
+      "group": "Chest and breathing",
+      "label": "Shortness of breath with no known cause",
+      "hint": ""
+    },
+    {
+      "key": "chest_pain",
+      "group": "Chest and breathing",
+      "label": "Chest pain with no known cause",
+      "hint": ""
+    },
+    {
+      "key": "persistent_chest_infection",
+      "group": "Chest and breathing",
+      "label": "Chest infections that keep coming back or will not clear",
+      "hint": ""
+    },
+    {
+      "key": "finger_clubbing",
+      "group": "Chest and breathing",
+      "label": "Fingertips that have become wider and rounded, nails curving over",
+      "hint": ""
+    },
+    {
+      "key": "swollen_glands_neck",
+      "group": "Lumps and glands",
+      "label": "Swollen glands above the collarbone, or in the neck that do not go away",
+      "hint": ""
+    },
+    {
+      "key": "swollen_glands",
+      "group": "Lumps and glands",
+      "label": "A swollen gland or glands (neck, armpit or groin) with no infection to explain it",
+      "hint": ""
+    },
+    {
+      "key": "swollen_glands_widespread",
+      "group": "Lumps and glands",
+      "label": "Swollen glands in several places at once",
+      "hint": ""
+    },
+    {
+      "key": "weight_loss",
+      "group": "Whole body",
+      "label": "Weight loss with no known reason",
+      "hint": "Not dieting, and no illness that explains it."
+    },
+    {
+      "key": "appetite_loss",
+      "group": "Whole body",
+      "label": "Loss of appetite with no known reason",
+      "hint": ""
+    },
+    {
+      "key": "fatigue",
+      "group": "Whole body",
+      "label": "Tiredness or fatigue with no known cause",
+      "hint": "Counts if it has lasted for some time."
+    },
+    {
+      "key": "unexplained_fever",
+      "group": "Whole body",
+      "label": "Fevers with no known cause",
+      "hint": ""
+    },
+    {
+      "key": "pallor",
+      "group": "Whole body",
+      "label": "Looking unusually pale",
+      "hint": ""
+    },
+    {
+      "key": "unexplained_bruising",
+      "group": "Whole body",
+      "label": "Bruising with no injury to explain it",
+      "hint": ""
+    },
+    {
+      "key": "unexplained_bleeding",
+      "group": "Whole body",
+      "label": "Bleeding with no injury to explain it",
+      "hint": ""
+    },
+    {
+      "key": "petechiae",
+      "group": "Whole body",
+      "label": "Tiny red or purple spots on the skin that do not fade when pressed",
+      "hint": ""
+    },
+    {
+      "key": "bone_pain",
+      "group": "Whole body",
+      "label": "Bone pain with no injury to explain it",
+      "hint": ""
+    },
+    {
+      "key": "persistent_or_recurrent_infection",
+      "group": "Whole body",
+      "label": "Infections that keep coming back or will not clear, with no known reason",
+      "hint": ""
+    },
+    {
+      "key": "dysphagia",
+      "group": "Digestion",
+      "label": "Trouble swallowing",
+      "hint": "Food feels like it sticks."
+    },
+    {
+      "key": "upper_abdominal_pain",
+      "group": "Digestion",
+      "label": "Pain in the upper tummy",
+      "hint": ""
+    },
+    {
+      "key": "reflux",
+      "group": "Digestion",
+      "label": "Heartburn or acid reflux",
+      "hint": ""
+    },
+    {
+      "key": "dyspepsia",
+      "group": "Digestion",
+      "label": "Indigestion",
+      "hint": ""
+    },
+    {
+      "key": "treatment_resistant_dyspepsia",
+      "group": "Digestion",
+      "label": "Indigestion that does not improve with treatment",
+      "hint": ""
+    },
+    {
+      "key": "haematemesis",
+      "group": "Digestion",
+      "label": "Vomiting blood",
+      "hint": ""
+    },
+    {
+      "key": "nausea",
+      "group": "Digestion",
+      "label": "Nausea with no known cause",
+      "hint": ""
+    },
+    {
+      "key": "vomiting",
+      "group": "Digestion",
+      "label": "Vomiting with no known cause",
+      "hint": ""
+    },
+    {
+      "key": "abdominal_pain",
+      "group": "Digestion",
+      "label": "Tummy pain with no known cause",
+      "hint": ""
+    },
+    {
+      "key": "change_bowel_habit",
+      "group": "Digestion",
+      "label": "A lasting change in your bowel habit",
+      "hint": "Looser, harder or more or less often than usual."
+    },
+    {
+      "key": "rectal_bleeding",
+      "group": "Digestion",
+      "label": "Bleeding from the back passage",
+      "hint": ""
+    },
+    {
+      "key": "constipation",
+      "group": "Digestion",
+      "label": "Constipation with no known cause",
+      "hint": ""
+    },
+    {
+      "key": "diarrhoea",
+      "group": "Digestion",
+      "label": "Diarrhoea with no known cause",
+      "hint": ""
+    },
+    {
+      "key": "abdominal_mass",
+      "group": "Digestion",
+      "label": "A lump you can feel in your tummy",
+      "hint": ""
+    },
+    {
+      "key": "rectal_mass",
+      "group": "Digestion",
+      "label": "A lump you can feel in the rectum or back passage",
+      "hint": ""
+    },
+    {
+      "key": "anal_mass_or_ulcer",
+      "group": "Digestion",
+      "label": "A lump or sore (ulcer) at the anus that is not explained",
+      "hint": ""
+    },
+    {
+      "key": "jaundice",
+      "group": "Digestion",
+      "label": "Yellow skin or yellow whites of the eyes",
+      "hint": ""
+    },
+    {
+      "key": "back_pain",
+      "group": "Digestion",
+      "label": "Back pain with no known cause",
+      "hint": ""
+    },
+    {
+      "key": "new_onset_diabetes",
+      "group": "Digestion",
+      "label": "Diabetes diagnosed recently",
+      "hint": ""
+    },
+    {
+      "key": "breast_lump",
+      "group": "Breast",
+      "label": "A breast lump with no known cause",
+      "hint": "With or without pain."
+    },
+    {
+      "key": "nipple_changes_one_side",
+      "group": "Breast",
+      "label": "Discharge, pulling in, or another change in ONE nipple only",
+      "hint": ""
+    },
+    {
+      "key": "breast_skin_changes",
+      "group": "Breast",
+      "label": "Skin changes on a breast that look unusual",
+      "hint": ""
+    },
+    {
+      "key": "armpit_lump",
+      "group": "Breast",
+      "label": "A lump in the armpit with no known cause",
+      "hint": ""
+    },
+    {
+      "key": "bloating",
+      "group": "Pelvis and abdomen (women)",
+      "label": "A swollen, bloated tummy that keeps coming back",
+      "hint": ""
+    },
+    {
+      "key": "early_satiety",
+      "group": "Pelvis and abdomen (women)",
+      "label": "Feeling full quickly when eating",
+      "hint": ""
+    },
+    {
+      "key": "pelvic_or_abdominal_pain",
+      "group": "Pelvis and abdomen (women)",
+      "label": "Pain in the pelvis or tummy",
+      "hint": ""
+    },
+    {
+      "key": "urinary_urgency_frequency",
+      "group": "Pelvis and abdomen (women)",
+      "label": "Needing to pass urine urgently or more often",
+      "hint": ""
+    },
+    {
+      "key": "new_ibs_like_symptoms",
+      "group": "Pelvis and abdomen (women)",
+      "label": "Bowel symptoms that look like irritable bowel syndrome, starting in the last 12 months",
+      "hint": ""
+    },
+    {
+      "key": "visible_haematuria",
+      "group": "Urine and prostate",
+      "label": "Blood you can see in your urine",
+      "hint": ""
+    },
+    {
+      "key": "non_visible_haematuria",
+      "group": "Urine and prostate",
+      "label": "Blood found on a urine test that you cannot see",
+      "hint": ""
+    },
+    {
+      "key": "dysuria",
+      "group": "Urine and prostate",
+      "label": "Pain when passing urine",
+      "hint": ""
+    },
+    {
+      "key": "recurrent_uti",
+      "group": "Urine and prostate",
+      "label": "Urine infections that keep coming back or will not clear",
+      "hint": ""
+    },
+    {
+      "key": "lower_urinary_tract_symptoms",
+      "group": "Urine and prostate",
+      "label": "Getting up at night to pass urine, frequency, hesitancy, urgency, or difficulty emptying",
+      "hint": ""
+    },
+    {
+      "key": "erectile_dysfunction",
+      "group": "Urine and prostate",
+      "label": "Erection problems",
+      "hint": ""
+    }
   ],
   "findings": [
-    {"key": "chest_xray_suspicious_lung", "label": "A chest X-ray report that suggests lung cancer"},
-    {"key": "chest_xray_suspicious_mesothelioma", "label": "A chest X-ray report that suggests mesothelioma"},
-    {"key": "fit_positive", "label": "A stool test that found hidden blood"},
-    {"key": "psa_flagged_high", "label": "A PSA result your report marks as above the range for your age"}
+    {
+      "key": "chest_xray_suspicious_lung",
+      "label": "A chest X-ray report that suggests lung cancer"
+    },
+    {
+      "key": "chest_xray_suspicious_mesothelioma",
+      "label": "A chest X-ray report that suggests mesothelioma"
+    },
+    {
+      "key": "fit_positive",
+      "label": "A stool test that found hidden blood"
+    },
+    {
+      "key": "psa_flagged_high",
+      "label": "A PSA result your report marks as above the range for your age"
+    }
   ],
   "rules": [
-    {"id": "lung_haemoptysis", "site": "lung cancer", "timeframe": "2w", "strength": "recommended",
-     "paths": [[{"age_min": 40}, {"sym": "haemoptysis"}], [{"finding": "chest_xray_suspicious_lung"}]],
-     "action": "Ask your doctor for a specialist appointment within about 2 weeks to check for lung cancer.",
-     "source": "NG12 2015, lung and pleural cancers, p.45"},
-    {"id": "lung_xray_symptoms", "site": "lung cancer", "timeframe": "2w", "strength": "recommended",
-     "paths": [[{"age_min": 40}, {"sym_min": {"of": ["cough", "shortness_of_breath", "chest_pain", "weight_loss", "appetite_loss", "fatigue"], "n": 2}}],
-               [{"age_min": 40}, {"ever_smoked": true}, {"sym_min": {"of": ["cough", "shortness_of_breath", "chest_pain", "weight_loss", "appetite_loss", "fatigue"], "n": 1}}]],
-     "action": "Ask for a chest X-ray within about 2 weeks to check for lung cancer.",
-     "source": "NG12 2015, lung and pleural cancers, p.45"},
-    {"id": "lung_xray_consider", "site": "lung cancer", "timeframe": "2w", "strength": "consider",
-     "paths": [[{"age_min": 40}, {"sym": "persistent_chest_infection"}], [{"age_min": 40}, {"sym": "finger_clubbing"}],
-               [{"age_min": 40}, {"sym": "swollen_glands_neck"}], [{"age_min": 40}, {"lab": "thrombocytosis"}, {"any_symptom": true}]],
-     "action": "Ask your doctor if a chest X-ray within about 2 weeks is worth doing.",
-     "source": "NG12 2015, lung and pleural cancers, p.45"},
-    {"id": "meso_xray_symptoms", "site": "mesothelioma", "timeframe": "2w", "strength": "recommended",
-     "paths": [[{"age_min": 40}, {"sym_min": {"of": ["cough", "shortness_of_breath", "chest_pain", "weight_loss", "appetite_loss", "fatigue"], "n": 2}}],
-               [{"age_min": 40}, {"ever_smoked": true}, {"sym_min": {"of": ["cough", "shortness_of_breath", "chest_pain", "weight_loss", "appetite_loss", "fatigue"], "n": 1}}],
-               [{"age_min": 40}, {"asbestos": true}, {"sym_min": {"of": ["cough", "shortness_of_breath", "chest_pain", "weight_loss", "appetite_loss", "fatigue"], "n": 1}}],
-               [{"finding": "chest_xray_suspicious_mesothelioma"}]],
-     "action": "Ask for a chest X-ray within about 2 weeks. Doctors check for mesothelioma when these symptoms come with asbestos exposure.",
-     "source": "NG12 2015, lung and pleural cancers, p.49"},
-    {"id": "upper_gi_urgent", "site": "oesophageal or stomach cancer", "timeframe": "2w", "strength": "recommended",
-     "paths": [[{"sym": "dysphagia"}],
-               [{"age_min": 55}, {"sym": "weight_loss"}, {"sym_min": {"of": ["upper_abdominal_pain", "reflux", "dyspepsia"], "n": 1}}]],
-     "action": "Ask for a camera test of the gullet and stomach (an endoscopy) within about 2 weeks.",
-     "source": "NG12 2015, oesophageal and stomach cancers, pp.62 and 84"},
-    {"id": "upper_gi_haematemesis", "site": "oesophageal or stomach cancer", "timeframe": "routine", "strength": "consider",
-     "paths": [[{"sym": "haematemesis"}]],
-     "action": "Tell a doctor. A non-urgent endoscopy may be considered. Vomiting a lot of blood is an emergency: seek care now.",
-     "source": "NG12 2015, oesophageal and stomach cancers, pp.62 and 84"},
-    {"id": "upper_gi_consider", "site": "oesophageal or stomach cancer", "timeframe": "routine", "strength": "consider",
-     "paths": [[{"age_min": 55}, {"sym": "treatment_resistant_dyspepsia"}],
-               [{"age_min": 55}, {"sym": "upper_abdominal_pain"}, {"lab": "anaemia"}],
-               [{"age_min": 55}, {"lab": "thrombocytosis"}, {"sym_min": {"of": ["nausea", "vomiting", "weight_loss", "reflux", "dyspepsia", "upper_abdominal_pain"], "n": 1}}],
-               [{"age_min": 55}, {"sym_min": {"of": ["nausea", "vomiting"], "n": 1}}, {"sym_min": {"of": ["weight_loss", "reflux", "dyspepsia", "upper_abdominal_pain"], "n": 1}}]],
-     "action": "Ask whether a non-urgent endoscopy is worth doing.",
-     "source": "NG12 2015, oesophageal and stomach cancers, pp.62 and 84"},
-    {"id": "pancreas_jaundice", "site": "pancreatic cancer", "timeframe": "2w", "strength": "recommended",
-     "paths": [[{"age_min": 40}, {"sym": "jaundice"}]],
-     "action": "Ask your doctor for a specialist appointment within about 2 weeks.",
-     "source": "NG12 2015, pancreatic cancer, p.71"},
-    {"id": "pancreas_scan", "site": "pancreatic cancer", "timeframe": "2w", "strength": "consider",
-     "paths": [[{"age_min": 60}, {"sym": "weight_loss"}, {"sym_min": {"of": ["diarrhoea", "back_pain", "abdominal_pain", "nausea", "vomiting", "constipation", "new_onset_diabetes"], "n": 1}}]],
-     "action": "Ask whether an urgent scan (CT, or ultrasound if CT is not available) is worth doing.",
-     "source": "NG12 2015, pancreatic cancer, p.71"},
-    {"id": "colorectal_urgent", "site": "bowel cancer", "timeframe": "2w", "strength": "recommended",
-     "paths": [[{"age_min": 40}, {"sym": "weight_loss"}, {"sym": "abdominal_pain"}],
-               [{"age_min": 50}, {"sym": "rectal_bleeding"}],
-               [{"age_min": 60}, {"lab": "iron_deficiency_anaemia"}],
-               [{"age_min": 60}, {"sym": "change_bowel_habit"}],
-               [{"finding": "fit_positive"}]],
-     "action": "Ask your doctor for a specialist appointment within about 2 weeks to check for bowel cancer.",
-     "source": "NG12 2015, colorectal cancer, p.137"},
-    {"id": "colorectal_mass", "site": "bowel cancer", "timeframe": "2w", "strength": "consider",
-     "paths": [[{"sym": "abdominal_mass"}], [{"sym": "rectal_mass"}]],
-     "action": "Ask your doctor if you need a specialist appointment within about 2 weeks.",
-     "source": "NG12 2015, colorectal cancer, p.137"},
-    {"id": "colorectal_young_bleeding", "site": "bowel cancer", "timeframe": "2w", "strength": "consider",
-     "paths": [[{"age_lt": 50}, {"sym": "rectal_bleeding"}, {"sym_min": {"of": ["abdominal_pain", "change_bowel_habit", "weight_loss"], "n": 1}}],
-               [{"age_lt": 50}, {"sym": "rectal_bleeding"}, {"lab": "iron_deficiency_anaemia"}]],
-     "action": "Ask your doctor if you need a specialist appointment within about 2 weeks.",
-     "source": "NG12 2015, colorectal cancer, p.137"},
-    {"id": "colorectal_stool_test", "site": "bowel cancer", "timeframe": "primary_care", "strength": "recommended",
-     "paths": [[{"not_sym": "rectal_bleeding"}, {"age_min": 50}, {"sym_min": {"of": ["abdominal_pain", "weight_loss"], "n": 1}}],
-               [{"not_sym": "rectal_bleeding"}, {"age_lt": 60}, {"sym": "change_bowel_habit"}],
-               [{"not_sym": "rectal_bleeding"}, {"age_lt": 60}, {"lab": "iron_deficiency_anaemia"}],
-               [{"not_sym": "rectal_bleeding"}, {"age_min": 60}, {"lab": "anaemia"}]],
-     "action": "Ask for a stool test for hidden blood.",
-     "source": "NG12 2015, colorectal cancer, p.137"},
-    {"id": "anal_mass", "site": "anal cancer", "timeframe": "2w", "strength": "consider",
-     "paths": [[{"sym": "anal_mass_or_ulcer"}]],
-     "action": "Ask your doctor if you need a specialist appointment within about 2 weeks.",
-     "source": "NG12 2015, anal cancer, p.144"},
-    {"id": "breast_urgent", "site": "breast cancer", "timeframe": "2w", "strength": "recommended",
-     "paths": [[{"age_min": 30}, {"sym": "breast_lump"}],
-               [{"age_min": 50}, {"sym": "nipple_changes_one_side"}]],
-     "action": "A doctor should arrange an urgent breast clinic appointment (within about 2 weeks).",
-     "source": "NG12 2015, breast cancer, p.155"},
-    {"id": "breast_consider", "site": "breast cancer", "timeframe": "2w", "strength": "consider",
-     "paths": [[{"sym": "breast_skin_changes"}], [{"age_min": 30}, {"sym": "armpit_lump"}]],
-     "action": "Ask whether an urgent breast clinic appointment (within about 2 weeks) is needed.",
-     "source": "NG12 2015, breast cancer, p.155"},
-    {"id": "breast_young_lump", "site": "breast cancer", "timeframe": "routine", "strength": "consider",
-     "paths": [[{"age_lt": 30}, {"sym": "breast_lump"}]],
-     "action": "Ask for a non-urgent referral to have the lump checked.",
-     "source": "NG12 2015, breast cancer, p.155"},
-    {"id": "ovarian_symptoms", "site": "ovarian cancer", "timeframe": "primary_care", "strength": "recommended",
-     "paths": [[{"sex": "female"}, {"freq_min": {"of": ["bloating", "early_satiety", "appetite_loss", "pelvic_or_abdominal_pain", "urinary_urgency_frequency"], "per_month": 12}}]],
-     "action": "Ask for a CA-125 blood test. These symptoms, especially after 50 and on more than about 12 days a month, are the ones doctors test for ovarian cancer.",
-     "source": "NG12 (ovarian cancer recommendations dated 2011), p.159"},
-    {"id": "ovarian_ibs", "site": "ovarian cancer", "timeframe": "primary_care", "strength": "recommended",
-     "paths": [[{"sex": "female"}, {"age_min": 50}, {"sym": "new_ibs_like_symptoms"}]],
-     "action": "Ask for tests for ovarian cancer. Irritable bowel syndrome rarely appears for the first time at this age.",
-     "source": "NG12 (ovarian cancer recommendations dated 2011), p.159"},
-    {"id": "ovarian_ca125", "site": "ovarian cancer", "timeframe": "primary_care", "strength": "recommended",
-     "paths": [[{"sex": "female"}, {"lab": "ca125_high"}, {"sym_min": {"of": ["bloating", "early_satiety", "appetite_loss", "pelvic_or_abdominal_pain", "urinary_urgency_frequency"], "n": 1}}]],
-     "action": "A CA-125 at or above 35 with these symptoms means an ultrasound of the abdomen and pelvis should be arranged.",
-     "source": "NG12 (ovarian cancer recommendations dated 2011), p.159"},
-    {"id": "ovarian_other", "site": "ovarian cancer", "timeframe": "primary_care", "strength": "consider",
-     "paths": [[{"sex": "female"}, {"sym_min": {"of": ["weight_loss", "fatigue", "change_bowel_habit"], "n": 1}}]],
-     "action": "Ask whether tests for ovarian cancer are worth doing, alongside looking for other causes.",
-     "source": "NG12 (ovarian cancer recommendations dated 2011), p.159"},
-    {"id": "prostate_psa", "site": "prostate cancer", "timeframe": "2w", "strength": "recommended",
-     "paths": [[{"sex": "male"}, {"finding": "psa_flagged_high"}]],
-     "action": "Ask your doctor for a specialist appointment within about 2 weeks.",
-     "source": "NG12 2015, prostate cancer, p.178"},
-    {"id": "prostate_symptoms", "site": "prostate cancer", "timeframe": "routine", "strength": "consider",
-     "paths": [[{"sex": "male"}, {"sym": "lower_urinary_tract_symptoms"}], [{"sex": "male"}, {"sym": "erectile_dysfunction"}], [{"sex": "male"}, {"sym": "visible_haematuria"}]],
-     "action": "Ask about a PSA blood test and a prostate examination.",
-     "source": "NG12 2015, prostate cancer, p.178"},
-    {"id": "bladder_urgent", "site": "bladder cancer", "timeframe": "2w", "strength": "recommended",
-     "paths": [[{"age_min": 45}, {"sym": "visible_haematuria"}],
-               [{"age_min": 60}, {"sym": "non_visible_haematuria"}, {"sym": "dysuria"}],
-               [{"age_min": 60}, {"sym": "non_visible_haematuria"}, {"lab": "raised_wbc"}]],
-     "action": "Ask your doctor for a specialist appointment within about 2 weeks.",
-     "source": "NG12 2015, bladder cancer, p.189"},
-    {"id": "bladder_uti", "site": "bladder cancer", "timeframe": "routine", "strength": "consider",
-     "paths": [[{"age_min": 60}, {"sym": "recurrent_uti"}]],
-     "action": "Ask for a non-urgent referral to look for a cause of repeated urine infections.",
-     "source": "NG12 2015, bladder cancer, p.189"},
-    {"id": "renal_haematuria", "site": "kidney cancer", "timeframe": "2w", "strength": "recommended",
-     "paths": [[{"age_min": 45}, {"sym": "visible_haematuria"}]],
-     "action": "Ask your doctor for a specialist appointment within about 2 weeks.",
-     "source": "NG12 2015, renal cancer, p.203"},
-    {"id": "leukaemia_children_blood_count", "site": "leukaemia", "timeframe": "48h", "strength": "recommended",
-     "paths": [[{"age_lt": 25}, {"sym_min": {"of": ["pallor", "fatigue", "unexplained_fever", "persistent_or_recurrent_infection", "swollen_glands_widespread", "bone_pain", "unexplained_bruising", "unexplained_bleeding"], "n": 1}}]],
-     "action": "Ask for a blood count within about 2 days. In children and young people these symptoms are the ones doctors check a blood count for, to look for leukaemia.",
-     "source": "NG12 2015, leukaemia, p.256"},
-    {"id": "leukaemia_children_petechiae", "site": "leukaemia", "timeframe": "immediate", "strength": "recommended",
-     "paths": [[{"age_lt": 25}, {"sym": "petechiae"}]],
-     "action": "Tiny red or purple spots that do not fade under pressure in a child or young person need to be seen by a specialist straight away. Seek urgent care now.",
-     "source": "NG12 2015, leukaemia, p.256"},
-    {"id": "leukaemia_adult_blood_count", "site": "leukaemia", "timeframe": "48h", "strength": "consider",
-     "paths": [[{"age_min": 25}, {"sym_min": {"of": ["pallor", "fatigue", "unexplained_fever", "persistent_or_recurrent_infection", "swollen_glands_widespread", "unexplained_bruising", "unexplained_bleeding", "petechiae"], "n": 1}}]],
-     "action": "Ask whether a blood count within about 2 days is worth doing. Most people with tiredness or similar symptoms do not have leukaemia.",
-     "source": "NG12 2015, leukaemia, p.256"},
-    {"id": "lymphoma_adult", "site": "lymphoma", "timeframe": "2w", "strength": "consider",
-     "paths": [[{"age_min": 25}, {"sym": "swollen_glands"}]],
-     "action": "Ask your doctor if you need a specialist appointment within about 2 weeks. Fever, night sweats, breathlessness, itching, or weight loss make it more likely.",
-     "source": "NG12 2015, non-Hodgkin and Hodgkin lymphoma, pp.274 and 280"},
-    {"id": "lymphoma_children", "site": "lymphoma", "timeframe": "48h", "strength": "consider",
-     "paths": [[{"age_lt": 25}, {"sym": "swollen_glands"}]],
-     "action": "Ask whether a specialist appointment within about 2 days is needed. Fever, night sweats, breathlessness, itching, or weight loss make it more likely.",
-     "source": "NG12 2015, non-Hodgkin and Hodgkin lymphoma, pp.274 and 280"},
-    {"id": "weight_loss", "site": "several cancers", "timeframe": "2w", "strength": "recommended",
-     "paths": [[{"sym": "weight_loss"}]],
-     "action": "Weight loss with no known reason can be a sign of several cancers. These include bowel, stomach, gullet, lung, prostate, pancreas, kidney and bladder cancer. It can also have other causes. Guidelines say a doctor should look for the cause soon.",
-     "source": "NG12 2015, symptoms that are not specific to one cancer, p.347"},
-    {"id": "appetite_loss", "site": "several cancers", "timeframe": "2w", "strength": "recommended",
-     "paths": [[{"sym": "appetite_loss"}]],
-     "action": "Losing your appetite for no known reason can be a sign of several cancers. These include lung, gullet, stomach, bowel, pancreas, bladder and kidney cancer. It can also have other causes. Guidelines say a doctor should look for the cause soon.",
-     "source": "NG12 2015, symptoms that are not specific to one cancer, p.347"}
+    {
+      "id": "lung_haemoptysis",
+      "site": "lung cancer",
+      "timeframe": "2w",
+      "strength": "recommended",
+      "paths": [
+        [
+          {
+            "age_min": 40
+          },
+          {
+            "sym": "haemoptysis"
+          }
+        ],
+        [
+          {
+            "finding": "chest_xray_suspicious_lung"
+          }
+        ]
+      ],
+      "action": "Ask your doctor for a specialist appointment within about 2 weeks to check for lung cancer.",
+      "source": "NG12 2015, lung and pleural cancers, p.45"
+    },
+    {
+      "id": "lung_xray_symptoms",
+      "site": "lung cancer",
+      "timeframe": "2w",
+      "strength": "recommended",
+      "paths": [
+        [
+          {
+            "age_min": 40
+          },
+          {
+            "sym_min": {
+              "of": [
+                "cough",
+                "shortness_of_breath",
+                "chest_pain",
+                "weight_loss",
+                "appetite_loss",
+                "fatigue"
+              ],
+              "n": 2
+            }
+          }
+        ],
+        [
+          {
+            "age_min": 40
+          },
+          {
+            "ever_smoked": true
+          },
+          {
+            "sym_min": {
+              "of": [
+                "cough",
+                "shortness_of_breath",
+                "chest_pain",
+                "weight_loss",
+                "appetite_loss",
+                "fatigue"
+              ],
+              "n": 1
+            }
+          }
+        ]
+      ],
+      "action": "Ask for a chest X-ray within about 2 weeks to check for lung cancer.",
+      "source": "NG12 2015, lung and pleural cancers, p.45"
+    },
+    {
+      "id": "lung_xray_consider",
+      "site": "lung cancer",
+      "timeframe": "2w",
+      "strength": "consider",
+      "paths": [
+        [
+          {
+            "age_min": 40
+          },
+          {
+            "sym": "persistent_chest_infection"
+          }
+        ],
+        [
+          {
+            "age_min": 40
+          },
+          {
+            "sym": "finger_clubbing"
+          }
+        ],
+        [
+          {
+            "age_min": 40
+          },
+          {
+            "sym": "swollen_glands_neck"
+          }
+        ],
+        [
+          {
+            "age_min": 40
+          },
+          {
+            "lab": "thrombocytosis"
+          },
+          {
+            "any_symptom": true
+          }
+        ]
+      ],
+      "action": "Ask your doctor if a chest X-ray within about 2 weeks is worth doing.",
+      "source": "NG12 2015, lung and pleural cancers, p.45"
+    },
+    {
+      "id": "meso_xray_symptoms",
+      "site": "mesothelioma",
+      "timeframe": "2w",
+      "strength": "recommended",
+      "paths": [
+        [
+          {
+            "age_min": 40
+          },
+          {
+            "asbestos": true
+          },
+          {
+            "sym_min": {
+              "of": [
+                "cough",
+                "shortness_of_breath",
+                "chest_pain",
+                "weight_loss",
+                "appetite_loss",
+                "fatigue"
+              ],
+              "n": 1
+            }
+          }
+        ],
+        [
+          {
+            "finding": "chest_xray_suspicious_mesothelioma"
+          }
+        ]
+      ],
+      "action": "Ask for a chest X-ray within about 2 weeks. Doctors check for mesothelioma when these symptoms come with asbestos exposure.",
+      "source": "NG12 2015, lung and pleural cancers, p.49"
+    },
+    {
+      "id": "upper_gi_urgent",
+      "site": "oesophageal or stomach cancer",
+      "timeframe": "2w",
+      "strength": "recommended",
+      "paths": [
+        [
+          {
+            "sym": "dysphagia"
+          }
+        ],
+        [
+          {
+            "age_min": 55
+          },
+          {
+            "sym": "weight_loss"
+          },
+          {
+            "sym_min": {
+              "of": [
+                "upper_abdominal_pain",
+                "reflux",
+                "dyspepsia"
+              ],
+              "n": 1
+            }
+          }
+        ]
+      ],
+      "action": "Ask for a camera test of the gullet and stomach (an endoscopy) within about 2 weeks.",
+      "source": "NG12 2015, oesophageal and stomach cancers, pp.62 and 84"
+    },
+    {
+      "id": "upper_gi_haematemesis",
+      "site": "oesophageal or stomach cancer",
+      "timeframe": "routine",
+      "strength": "consider",
+      "paths": [
+        [
+          {
+            "sym": "haematemesis"
+          }
+        ]
+      ],
+      "action": "Tell a doctor. A non-urgent endoscopy may be considered. Vomiting a lot of blood is an emergency: seek care now.",
+      "source": "NG12 2015, oesophageal and stomach cancers, pp.62 and 84"
+    },
+    {
+      "id": "upper_gi_consider",
+      "site": "oesophageal or stomach cancer",
+      "timeframe": "routine",
+      "strength": "consider",
+      "paths": [
+        [
+          {
+            "age_min": 55
+          },
+          {
+            "sym": "treatment_resistant_dyspepsia"
+          }
+        ],
+        [
+          {
+            "age_min": 55
+          },
+          {
+            "sym": "upper_abdominal_pain"
+          },
+          {
+            "lab": "anaemia"
+          }
+        ],
+        [
+          {
+            "age_min": 55
+          },
+          {
+            "lab": "thrombocytosis"
+          },
+          {
+            "sym_min": {
+              "of": [
+                "nausea",
+                "vomiting",
+                "weight_loss",
+                "reflux",
+                "dyspepsia",
+                "upper_abdominal_pain"
+              ],
+              "n": 1
+            }
+          }
+        ],
+        [
+          {
+            "age_min": 55
+          },
+          {
+            "sym_min": {
+              "of": [
+                "nausea",
+                "vomiting"
+              ],
+              "n": 1
+            }
+          },
+          {
+            "sym_min": {
+              "of": [
+                "weight_loss",
+                "reflux",
+                "dyspepsia",
+                "upper_abdominal_pain"
+              ],
+              "n": 1
+            }
+          }
+        ]
+      ],
+      "action": "Ask whether a non-urgent endoscopy is worth doing.",
+      "source": "NG12 2015, oesophageal and stomach cancers, pp.62 and 84"
+    },
+    {
+      "id": "pancreas_jaundice",
+      "site": "pancreatic cancer",
+      "timeframe": "2w",
+      "strength": "recommended",
+      "paths": [
+        [
+          {
+            "age_min": 40
+          },
+          {
+            "sym": "jaundice"
+          }
+        ]
+      ],
+      "action": "Ask your doctor for a specialist appointment within about 2 weeks.",
+      "source": "NG12 2015, pancreatic cancer, p.71"
+    },
+    {
+      "id": "pancreas_scan",
+      "site": "pancreatic cancer",
+      "timeframe": "2w",
+      "strength": "consider",
+      "paths": [
+        [
+          {
+            "age_min": 60
+          },
+          {
+            "sym": "weight_loss"
+          },
+          {
+            "sym_min": {
+              "of": [
+                "diarrhoea",
+                "back_pain",
+                "abdominal_pain",
+                "nausea",
+                "vomiting",
+                "constipation",
+                "new_onset_diabetes"
+              ],
+              "n": 1
+            }
+          }
+        ]
+      ],
+      "action": "Ask whether an urgent scan (CT, or ultrasound if CT is not available) is worth doing.",
+      "source": "NG12 2015, pancreatic cancer, p.71"
+    },
+    {
+      "id": "colorectal_urgent",
+      "site": "bowel cancer",
+      "timeframe": "2w",
+      "strength": "recommended",
+      "paths": [
+        [
+          {
+            "age_min": 40
+          },
+          {
+            "sym": "weight_loss"
+          },
+          {
+            "sym": "abdominal_pain"
+          }
+        ],
+        [
+          {
+            "age_min": 50
+          },
+          {
+            "sym": "rectal_bleeding"
+          }
+        ],
+        [
+          {
+            "age_min": 60
+          },
+          {
+            "lab": "iron_deficiency_anaemia"
+          }
+        ],
+        [
+          {
+            "age_min": 60
+          },
+          {
+            "sym": "change_bowel_habit"
+          }
+        ],
+        [
+          {
+            "finding": "fit_positive"
+          }
+        ]
+      ],
+      "action": "Ask your doctor for a specialist appointment within about 2 weeks to check for bowel cancer.",
+      "source": "NG12 2015, colorectal cancer, p.137"
+    },
+    {
+      "id": "colorectal_mass",
+      "site": "bowel cancer",
+      "timeframe": "2w",
+      "strength": "consider",
+      "paths": [
+        [
+          {
+            "sym": "abdominal_mass"
+          }
+        ],
+        [
+          {
+            "sym": "rectal_mass"
+          }
+        ]
+      ],
+      "action": "Ask your doctor if you need a specialist appointment within about 2 weeks.",
+      "source": "NG12 2015, colorectal cancer, p.137"
+    },
+    {
+      "id": "colorectal_young_bleeding",
+      "site": "bowel cancer",
+      "timeframe": "2w",
+      "strength": "consider",
+      "paths": [
+        [
+          {
+            "age_lt": 50
+          },
+          {
+            "sym": "rectal_bleeding"
+          },
+          {
+            "sym_min": {
+              "of": [
+                "abdominal_pain",
+                "change_bowel_habit",
+                "weight_loss"
+              ],
+              "n": 1
+            }
+          }
+        ],
+        [
+          {
+            "age_lt": 50
+          },
+          {
+            "sym": "rectal_bleeding"
+          },
+          {
+            "lab": "iron_deficiency_anaemia"
+          }
+        ]
+      ],
+      "action": "Ask your doctor if you need a specialist appointment within about 2 weeks.",
+      "source": "NG12 2015, colorectal cancer, p.137"
+    },
+    {
+      "id": "colorectal_stool_test",
+      "site": "bowel cancer",
+      "timeframe": "primary_care",
+      "strength": "recommended",
+      "paths": [
+        [
+          {
+            "not_sym": "rectal_bleeding"
+          },
+          {
+            "age_min": 50
+          },
+          {
+            "sym_min": {
+              "of": [
+                "abdominal_pain",
+                "weight_loss"
+              ],
+              "n": 1
+            }
+          }
+        ],
+        [
+          {
+            "not_sym": "rectal_bleeding"
+          },
+          {
+            "age_lt": 60
+          },
+          {
+            "sym": "change_bowel_habit"
+          }
+        ],
+        [
+          {
+            "not_sym": "rectal_bleeding"
+          },
+          {
+            "age_lt": 60
+          },
+          {
+            "lab": "iron_deficiency_anaemia"
+          }
+        ],
+        [
+          {
+            "not_sym": "rectal_bleeding"
+          },
+          {
+            "age_min": 60
+          },
+          {
+            "lab": "anaemia"
+          }
+        ]
+      ],
+      "action": "Ask for a stool test for hidden blood.",
+      "source": "NG12 2015, colorectal cancer, p.137"
+    },
+    {
+      "id": "anal_mass",
+      "site": "anal cancer",
+      "timeframe": "2w",
+      "strength": "consider",
+      "paths": [
+        [
+          {
+            "sym": "anal_mass_or_ulcer"
+          }
+        ]
+      ],
+      "action": "Ask your doctor if you need a specialist appointment within about 2 weeks.",
+      "source": "NG12 2015, anal cancer, p.144"
+    },
+    {
+      "id": "breast_urgent",
+      "site": "breast cancer",
+      "timeframe": "2w",
+      "strength": "recommended",
+      "paths": [
+        [
+          {
+            "age_min": 30
+          },
+          {
+            "sym": "breast_lump"
+          }
+        ],
+        [
+          {
+            "age_min": 50
+          },
+          {
+            "sym": "nipple_changes_one_side"
+          }
+        ]
+      ],
+      "action": "A doctor should arrange an urgent breast clinic appointment (within about 2 weeks).",
+      "source": "NG12 2015, breast cancer, p.155"
+    },
+    {
+      "id": "breast_consider",
+      "site": "breast cancer",
+      "timeframe": "2w",
+      "strength": "consider",
+      "paths": [
+        [
+          {
+            "sym": "breast_skin_changes"
+          }
+        ],
+        [
+          {
+            "age_min": 30
+          },
+          {
+            "sym": "armpit_lump"
+          }
+        ]
+      ],
+      "action": "Ask whether an urgent breast clinic appointment (within about 2 weeks) is needed.",
+      "source": "NG12 2015, breast cancer, p.155"
+    },
+    {
+      "id": "breast_young_lump",
+      "site": "breast cancer",
+      "timeframe": "routine",
+      "strength": "consider",
+      "paths": [
+        [
+          {
+            "age_lt": 30
+          },
+          {
+            "sym": "breast_lump"
+          }
+        ]
+      ],
+      "action": "Ask for a non-urgent referral to have the lump checked.",
+      "source": "NG12 2015, breast cancer, p.155"
+    },
+    {
+      "id": "ovarian_symptoms",
+      "site": "ovarian cancer",
+      "timeframe": "primary_care",
+      "strength": "recommended",
+      "paths": [
+        [
+          {
+            "sex": "female"
+          },
+          {
+            "freq_min": {
+              "of": [
+                "bloating",
+                "early_satiety",
+                "appetite_loss",
+                "pelvic_or_abdominal_pain",
+                "urinary_urgency_frequency"
+              ],
+              "per_month": 12
+            }
+          }
+        ]
+      ],
+      "action": "Ask for a CA-125 blood test. These symptoms, especially after 50 and on more than about 12 days a month, are the ones doctors test for ovarian cancer.",
+      "source": "NG12 (ovarian cancer recommendations dated 2011), p.159"
+    },
+    {
+      "id": "ovarian_ibs",
+      "site": "ovarian cancer",
+      "timeframe": "primary_care",
+      "strength": "recommended",
+      "paths": [
+        [
+          {
+            "sex": "female"
+          },
+          {
+            "age_min": 50
+          },
+          {
+            "sym": "new_ibs_like_symptoms"
+          }
+        ]
+      ],
+      "action": "Ask for tests for ovarian cancer. Irritable bowel syndrome rarely appears for the first time at this age.",
+      "source": "NG12 (ovarian cancer recommendations dated 2011), p.159"
+    },
+    {
+      "id": "ovarian_ca125",
+      "site": "ovarian cancer",
+      "timeframe": "primary_care",
+      "strength": "recommended",
+      "paths": [
+        [
+          {
+            "sex": "female"
+          },
+          {
+            "lab": "ca125_high"
+          },
+          {
+            "sym_min": {
+              "of": [
+                "bloating",
+                "early_satiety",
+                "appetite_loss",
+                "pelvic_or_abdominal_pain",
+                "urinary_urgency_frequency"
+              ],
+              "n": 1
+            }
+          }
+        ]
+      ],
+      "action": "A CA-125 at or above 35 with these symptoms means an ultrasound of the abdomen and pelvis should be arranged.",
+      "source": "NG12 (ovarian cancer recommendations dated 2011), p.159"
+    },
+    {
+      "id": "ovarian_other",
+      "site": "ovarian cancer",
+      "timeframe": "primary_care",
+      "strength": "consider",
+      "paths": [
+        [
+          {
+            "sex": "female"
+          },
+          {
+            "sym_min": {
+              "of": [
+                "weight_loss",
+                "fatigue",
+                "change_bowel_habit"
+              ],
+              "n": 1
+            }
+          }
+        ]
+      ],
+      "action": "Ask whether tests for ovarian cancer are worth doing, alongside looking for other causes.",
+      "source": "NG12 (ovarian cancer recommendations dated 2011), p.159"
+    },
+    {
+      "id": "prostate_psa",
+      "site": "prostate cancer",
+      "timeframe": "2w",
+      "strength": "recommended",
+      "paths": [
+        [
+          {
+            "sex": "male"
+          },
+          {
+            "finding": "psa_flagged_high"
+          }
+        ]
+      ],
+      "action": "Ask your doctor for a specialist appointment within about 2 weeks.",
+      "source": "NG12 2015, prostate cancer, p.178"
+    },
+    {
+      "id": "prostate_symptoms",
+      "site": "prostate cancer",
+      "timeframe": "routine",
+      "strength": "consider",
+      "paths": [
+        [
+          {
+            "sex": "male"
+          },
+          {
+            "sym": "lower_urinary_tract_symptoms"
+          }
+        ],
+        [
+          {
+            "sex": "male"
+          },
+          {
+            "sym": "erectile_dysfunction"
+          }
+        ],
+        [
+          {
+            "sex": "male"
+          },
+          {
+            "sym": "visible_haematuria"
+          }
+        ]
+      ],
+      "action": "Ask about a PSA blood test and a prostate examination.",
+      "source": "NG12 2015, prostate cancer, p.178"
+    },
+    {
+      "id": "bladder_urgent",
+      "site": "bladder cancer",
+      "timeframe": "2w",
+      "strength": "recommended",
+      "paths": [
+        [
+          {
+            "age_min": 45
+          },
+          {
+            "sym": "visible_haematuria"
+          }
+        ],
+        [
+          {
+            "age_min": 60
+          },
+          {
+            "sym": "non_visible_haematuria"
+          },
+          {
+            "sym": "dysuria"
+          }
+        ],
+        [
+          {
+            "age_min": 60
+          },
+          {
+            "sym": "non_visible_haematuria"
+          },
+          {
+            "lab": "raised_wbc"
+          }
+        ]
+      ],
+      "action": "Ask your doctor for a specialist appointment within about 2 weeks.",
+      "source": "NG12 2015, bladder cancer, p.189"
+    },
+    {
+      "id": "bladder_uti",
+      "site": "bladder cancer",
+      "timeframe": "routine",
+      "strength": "consider",
+      "paths": [
+        [
+          {
+            "age_min": 60
+          },
+          {
+            "sym": "recurrent_uti"
+          }
+        ]
+      ],
+      "action": "Ask for a non-urgent referral to look for a cause of repeated urine infections.",
+      "source": "NG12 2015, bladder cancer, p.189"
+    },
+    {
+      "id": "renal_haematuria",
+      "site": "kidney cancer",
+      "timeframe": "2w",
+      "strength": "recommended",
+      "paths": [
+        [
+          {
+            "age_min": 45
+          },
+          {
+            "sym": "visible_haematuria"
+          }
+        ]
+      ],
+      "action": "Ask your doctor for a specialist appointment within about 2 weeks.",
+      "source": "NG12 2015, renal cancer, p.203"
+    },
+    {
+      "id": "leukaemia_children_blood_count",
+      "site": "leukaemia",
+      "timeframe": "48h",
+      "strength": "recommended",
+      "paths": [
+        [
+          {
+            "age_lt": 25
+          },
+          {
+            "sym_min": {
+              "of": [
+                "pallor",
+                "fatigue",
+                "unexplained_fever",
+                "persistent_or_recurrent_infection",
+                "swollen_glands_widespread",
+                "bone_pain",
+                "unexplained_bruising",
+                "unexplained_bleeding"
+              ],
+              "n": 1
+            }
+          }
+        ]
+      ],
+      "action": "Ask for a blood count within about 2 days. In children and young people these symptoms are the ones doctors check a blood count for, to look for leukaemia.",
+      "source": "NG12 2015, leukaemia, p.256"
+    },
+    {
+      "id": "leukaemia_children_petechiae",
+      "site": "leukaemia",
+      "timeframe": "immediate",
+      "strength": "recommended",
+      "paths": [
+        [
+          {
+            "age_lt": 25
+          },
+          {
+            "sym": "petechiae"
+          }
+        ]
+      ],
+      "action": "Tiny red or purple spots that do not fade under pressure in a child or young person need to be seen by a specialist straight away. Seek urgent care now.",
+      "source": "NG12 2015, leukaemia, p.256"
+    },
+    {
+      "id": "leukaemia_adult_blood_count",
+      "site": "leukaemia",
+      "timeframe": "48h",
+      "strength": "consider",
+      "paths": [
+        [
+          {
+            "age_min": 25
+          },
+          {
+            "sym_min": {
+              "of": [
+                "pallor",
+                "fatigue",
+                "unexplained_fever",
+                "persistent_or_recurrent_infection",
+                "swollen_glands_widespread",
+                "unexplained_bruising",
+                "unexplained_bleeding",
+                "petechiae"
+              ],
+              "n": 1
+            }
+          }
+        ]
+      ],
+      "action": "Ask whether a blood count within about 2 days is worth doing. Most people with tiredness or similar symptoms do not have leukaemia.",
+      "source": "NG12 2015, leukaemia, p.256"
+    },
+    {
+      "id": "lymphoma_adult",
+      "site": "lymphoma",
+      "timeframe": "2w",
+      "strength": "consider",
+      "paths": [
+        [
+          {
+            "age_min": 25
+          },
+          {
+            "sym": "swollen_glands"
+          }
+        ]
+      ],
+      "action": "Ask your doctor if you need a specialist appointment within about 2 weeks. Fever, night sweats, breathlessness, itching, or weight loss make it more likely.",
+      "source": "NG12 2015, non-Hodgkin and Hodgkin lymphoma, pp.274 and 280"
+    },
+    {
+      "id": "lymphoma_children",
+      "site": "lymphoma",
+      "timeframe": "48h",
+      "strength": "consider",
+      "paths": [
+        [
+          {
+            "age_lt": 25
+          },
+          {
+            "sym": "swollen_glands"
+          }
+        ]
+      ],
+      "action": "Ask whether a specialist appointment within about 2 days is needed. Fever, night sweats, breathlessness, itching, or weight loss make it more likely.",
+      "source": "NG12 2015, non-Hodgkin and Hodgkin lymphoma, pp.274 and 280"
+    },
+    {
+      "id": "weight_loss",
+      "site": "several cancers",
+      "timeframe": "2w",
+      "strength": "recommended",
+      "paths": [
+        [
+          {
+            "sym": "weight_loss"
+          }
+        ]
+      ],
+      "action": "Weight loss with no known reason can be a sign of several cancers. These include bowel, stomach, gullet, lung, prostate, pancreas, kidney and bladder cancer. It can also have other causes. Guidelines say a doctor should look for the cause soon.",
+      "source": "NG12 2015, symptoms that are not specific to one cancer, p.347"
+    },
+    {
+      "id": "appetite_loss",
+      "site": "several cancers",
+      "timeframe": "2w",
+      "strength": "recommended",
+      "paths": [
+        [
+          {
+            "sym": "appetite_loss"
+          }
+        ]
+      ],
+      "action": "Losing your appetite for no known reason can be a sign of several cancers. These include lung, gullet, stomach, bowel, pancreas, bladder and kidney cancer. It can also have other causes. Guidelines say a doctor should look for the cause soon.",
+      "source": "NG12 2015, symptoms that are not specific to one cancer, p.347"
+    }
   ],
   "melanoma_checklist": {
     "id": "melanoma_7point",
@@ -252,13 +1334,41 @@
     "strength": "recommended",
     "threshold": 3,
     "features": [
-      {"key": "change_in_size", "points": 2, "label": "The mole or spot has changed in size"},
-      {"key": "irregular_shape", "points": 2, "label": "Irregular shape"},
-      {"key": "irregular_colour", "points": 2, "label": "Irregular colour"},
-      {"key": "diameter_7mm", "points": 1, "label": "Wider than 7 mm"},
-      {"key": "inflammation", "points": 1, "label": "Looks inflamed"},
-      {"key": "oozing", "points": 1, "label": "Oozing or crusting"},
-      {"key": "change_in_sensation", "points": 1, "label": "Itching or other change in sensation"}
+      {
+        "key": "change_in_size",
+        "points": 2,
+        "label": "The mole or spot has changed in size"
+      },
+      {
+        "key": "irregular_shape",
+        "points": 2,
+        "label": "Irregular shape"
+      },
+      {
+        "key": "irregular_colour",
+        "points": 2,
+        "label": "Irregular colour"
+      },
+      {
+        "key": "diameter_7mm",
+        "points": 1,
+        "label": "Wider than 7 mm"
+      },
+      {
+        "key": "inflammation",
+        "points": 1,
+        "label": "Looks inflamed"
+      },
+      {
+        "key": "oozing",
+        "points": 1,
+        "label": "Oozing or crusting"
+      },
+      {
+        "key": "change_in_sensation",
+        "points": 1,
+        "label": "Itching or other change in sensation"
+      }
     ],
     "action": "A doctor should look at this spot urgently (within about 2 weeks). A self-assessment is not reliable: a clinician needs to examine it.",
     "source": "NG12 2015, skin cancers, p.220"

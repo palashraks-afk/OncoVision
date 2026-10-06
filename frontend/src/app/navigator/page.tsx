@@ -35,6 +35,7 @@ type Result = {
   state: string; headline: string; matches: Match[]; could_apply_if: Could[];
   melanoma_score: number | null; lab_notes: string[]; lab_findings: Record<string, boolean>;
   ignored_symptoms: string[]; safety: string[]; disclaimer: string;
+  context: { per_1000: number; text: string; smoking_assumed_average: boolean; basis: string } | null;
   rules: { guideline_version: string; review_status: string; n_rules: number };
 };
 
@@ -357,6 +358,20 @@ export default function NavigatorPage() {
                   ))}
                 </ul>
                 {result.lab_notes.map((n, i) => <p key={i} className="text-xs text-[var(--warn)] mt-2">{n}</p>)}
+              </div>
+            )}
+
+            {result.context && (
+              <div className="border border-[var(--rule)] bg-[var(--surface)] p-5 text-sm">
+                <p className={lbl}>How common this is for your age</p>
+                <p className="text-[var(--ink-2)] leading-relaxed">{result.context.text}</p>
+                {result.context.smoking_assumed_average && (
+                  <p className="text-xs text-[var(--ink-3)] mt-2">You did not say whether you have smoked, so the group average is used.</p>
+                )}
+                <details className="mt-2 text-xs text-[var(--ink-3)]">
+                  <summary className="cursor-pointer">Where this number comes from</summary>
+                  <p className="mt-1">{result.context.basis}</p>
+                </details>
               </div>
             )}
 

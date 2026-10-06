@@ -33,6 +33,7 @@ been reviewed by a clinician. See meta in navigator_rules.json.
 """
 
 import json
+import math
 import os
 from typing import Any, Dict, List, Optional
 
@@ -70,6 +71,46 @@ def load() -> dict:
         _KB["_sym_labels"] = {s["key"]: s["label"] for s in _KB["symptoms"]}
         _KB["_finding_labels"] = {f_["key"]: f_["label"] for f_ in _KB["findings"]}
     return _KB
+
+
+CONTEXT_PATH = os.path.join(os.path.dirname(os.path.abspath(__file__)), "navigator_context.json")
+_CTX: Optional[dict] = None
+
+
+def context_for(age: Optional[float], sex: Optional[str], ever_smoked: Optional[bool]) -> Optional[dict]:
+    """How common cancer death is, for people of this age, sex and smoking history.
+
+    A population base rate from a US survey, validated out of era (see
+    experiments/navigator_evidence.py question 6). It does not use the person's labs or
+    symptoms and is not their risk. It exists so that an alert can be read against what
+    is ordinary for their age, since age explains most of the difference between people.
+    Returns None when age or sex is missing or outside the range it was fitted on.
+    """
+    global _CTX
+    if age is None or sex not in ("male", "female") or not os.path.exists(CONTEXT_PATH):
+        return None
+    if _CTX is None:
+        with open(CONTEXT_PATH, encoding="utf-8") as f:
+            _CTX = json.load(f)
+    lo, hi = _CTX["age_range"]
+    if not (lo <= age <= hi):
+        return None
+    c = _CTX["coefficients"]
+    smoked = _CTX["mean_ever_smoked"] if ever_smoked is None else float(bool(ever_smoked))
+    z = (c["intercept"] + c["age_minus_60"] * (age - 60) + c["age_minus_60_sq_over_20"] * (age - 60) ** 2 / 20
+         + c["male"] * (sex == "male") + c["ever_smoked"] * smoked)
+    per_1000 = 1000 / (1 + math.exp(-z))
+    shown = round(per_1000) if per_1000 >= 10 else round(per_1000, 1)
+    who = "adults" if ever_smoked is None else ("adults who have smoked" if ever_smoked else "adults who have never smoked")
+    return {
+        "per_1000": shown,
+        "text": (f"For context: in a US health survey, about {shown:g} in every 1,000 {sex} {who} aged "
+                 f"around {int(round(age))} died of cancer within five years. This is a group average for your age "
+                 "and not your own risk. Age explains most of the difference between people."),
+        "smoking_assumed_average": ever_smoked is None,
+        "basis": "NHANES 1999-2014, 24,180 adults 40 and over, deaths from the National Death Index. Checked on a later "
+                 "survey period (calibration slope %.2f). Does not use your labs or symptoms." % _CTX["validation_out_of_era"]["calibration_slope"],
+    }
 
 
 def vocabulary() -> dict:
@@ -402,6 +443,13 @@ def evaluate(request: dict) -> dict:
     else:
         state = "nothing_meets"
 
+    lab_notes = list(derived["notes"])
+    if matches and not symptoms and labs_provided:
+        lab_notes.append(
+            "This came from lab results alone, with no symptoms entered. Common causes are not cancer, such as low iron "
+            "from diet, kidney disease or heart disease. In a US survey, these lab findings did not help tell who would "
+            "later die of cancer once age and sex were known. Take it to a doctor as a question, not as a warning.")
+
     headline = {
         "talk_soon": "This combination meets a guideline threshold for a prompt check. Most people who meet it do not have cancer, but it is worth seeing a doctor soon.",
         "worth_raising": "Nothing here is urgent by the guideline, but some of it is worth raising with a doctor.",
@@ -416,9 +464,10 @@ def evaluate(request: dict) -> dict:
         "matches": matches,
         "could_apply_if": could_apply,
         "melanoma_score": mel_score,
-        "lab_notes": derived["notes"],
+        "lab_notes": lab_notes,
         "lab_findings": {k: v for k, v in derived["flags"].items() if v is not None},
         "ignored_symptoms": ignored,
+        "context": context_for(age, sex, x.ever_smoked),
         "safety": SAFETY,
         "disclaimer": DISCLAIMER,
         "rules": {"guideline_version": kb["meta"]["guideline_version"],
