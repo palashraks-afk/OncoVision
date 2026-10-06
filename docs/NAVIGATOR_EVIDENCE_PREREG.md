@@ -52,3 +52,26 @@ Whether any alert is a correct referral. The outcome is death, not diagnosis. Th
 are proxies. The cohort is US adults examined in the 2000s and 2010s, and the guideline is
 UK 2015. A good result would be consistent with the rules being useful. It would not
 validate them.
+
+## Deviations, recorded after the first run
+
+The bars and questions above were not changed. These things were done after the first run
+of `navigator_evidence.py`, in this order, and are listed so a reader can judge them.
+
+1. **2015-2016 and 2017-2018 were added to Question 1 only.** They have too little follow-up
+   for an outcome, so they feed the outcome-free burden question and Question 4, and nothing
+   else. The cohort therefore grew from 39,692 to 49,782 adults (20+) and from 22,583 to
+   28,580 aged 40+ with a blood count.
+2. **The mesothelioma rule was restricted to its asbestos and X-ray paths.** A smoker with a
+   cough was being shown wording about asbestos. The other paths led to the same chest X-ray
+   the lung rule already recommends. No bar depends on this.
+3. **Question 7 was added** (each flag on its own, among decedents) after Question 2 failed,
+   to see which flag was responsible. It is exploratory and carries no bar.
+4. **A lower-tier match for the same cancer site is no longer shown beside a higher-tier one.**
+   Display only; no alert state changed.
+5. **The context layer** (Question 6) was put in the app because its bar was met, as the
+   table above says it would be. Lab-only alerts now carry a caveat because Question 3 was
+   missed.
+
+The first run's results for Questions 1 to 6 were unchanged by items 2 and 4 except for the
+per-rule counts in Question 5.

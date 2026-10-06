@@ -494,14 +494,14 @@
   },
   "q5": {
     "colorectal_stool_test": {
-      "n": 3359,
-      "cancer_deaths_5y": 90,
-      "rate": 0.0268,
+      "n": 3175,
+      "cancer_deaths_5y": 84,
+      "rate": 0.0265,
       "ci": [
-        0.0218,
-        0.0328
+        0.0214,
+        0.0326
       ],
-      "mean_age": 65.8
+      "mean_age": 65.6
     },
     "colorectal_urgent": {
       "n": 184,
@@ -514,14 +514,14 @@
       "mean_age": 69.5
     },
     "lung_xray_consider": {
-      "n": 332,
-      "cancer_deaths_5y": 8,
-      "rate": 0.0241,
+      "n": 127,
+      "cancer_deaths_5y": 1,
+      "rate": 0.0079,
       "ci": [
-        0.0123,
-        0.0468
+        0.0014,
+        0.0433
       ],
-      "mean_age": 57.9
+      "mean_age": 58.2
     },
     "lung_xray_symptoms": {
       "n": 5953,

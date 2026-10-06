@@ -425,6 +425,12 @@ def evaluate(request: dict) -> dict:
                 "because": [f"a self-scored checklist total of {mel_score} (3 or more is the threshold)"]})
 
     matches.sort(key=lambda m: (TIER_ORDER[m["tier"]], TIMEFRAME_ORDER[m["timeframe"]], m["site"]))
+    # For one site, a lower-tier match adds nothing once a higher-tier one is shown (an urgent
+    # bowel referral already covers the lower-tier stool test).
+    best = {}
+    for m in matches:
+        best.setdefault(m["site"], TIER_ORDER[m["tier"]])
+    matches = [m for m in matches if TIER_ORDER[m["tier"]] == best[m["site"]]]
     # One could-apply entry per site, and none for a site already matched at the same tier.
     seen = {(m["site"], m["tier"]) for m in matches}
     uniq, taken = [], set()

@@ -328,3 +328,9 @@ def test_lab_only_alert_carries_the_survey_caveat_and_symptoms_remove_it():
     assert out["matches"] and any("lab results alone" in n for n in out["lab_notes"])
     out = nav.evaluate({"age": 65, "sex": "male", "labs": labs, "symptoms": [{"key": "weight_loss"}]})
     assert not any("lab results alone" in n for n in out["lab_notes"])
+
+
+def test_one_site_shows_only_its_highest_tier():
+    out = nav.evaluate({"age": 66, "sex": "male", "labs": {"hemoglobin": 10.8, "mcv": 74, "ferritin": 9, "platelets": 310}})
+    bowel = [m for m in out["matches"] if m["site"] == "bowel cancer"]
+    assert bowel and all(m["tier"] == "talk_soon" for m in bowel)
