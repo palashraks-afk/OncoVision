@@ -27,6 +27,8 @@ outside its scope and is stated as such.
 
 ## Already done, on public data
 
+**Superseded in part:** the larger, pre-registered evidence study (37,915 adults, four eras, outcomes, ferritin) is in `docs/NAVIGATOR_EVIDENCE_PREREG.md`, `experiments/navigator_evidence.py` and the paper in `docs/paper/`. The 13,295-person burden table below is the earlier, smaller version.
+
 ### 1. Alert burden: `experiments/navigator_lab_trigger_burden.py`
 
 The real engine was run on 13,295 NHANES adults aged 40 and over with a blood count, with

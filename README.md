@@ -34,11 +34,20 @@ fact instead of assuming it. It never says "you have cancer", and it says so whe
   each with its source page. A clinician can read and review the file directly.
 - **Not clinician-reviewed yet.** The file and the page both say so. The rules are UK guidance
   from 2015 and have been revised since.
-- **Alert burden measured** on 13,295 NHANES adults 40 and over with labs only: 3.8% to 17.2%
-  alerted depending on age, 0.7% told to talk to a doctor soon.
-  [`experiments/navigator_lab_trigger_burden.py`](experiments/navigator_lab_trigger_burden.py)
+- **Tested on 37,915 US adults** (NHANES III 1988-94 and ten NHANES cycles 1999-2018, linked to
+  death records), against bars written down first
+  ([pre-registration](docs/NAVIGATOR_EVIDENCE_PREREG.md)). **Three of the four bars with a
+  pass/fail criterion were missed, and that is the headline.** Lab-driven alerts are not specific
+  to cancer among people who died, and add nothing to age and sex out of era (AUC gain +0.005,
+  95% CI -0.009 to +0.019). Lab-only alerts reach 16% to 27% of people 80+, almost all from the
+  anaemia-to-stool-test rule. The small-red-cells stand-in for iron deficiency has 65% sensitivity
+  against measured ferritin. An age, sex and smoking context layer *is* calibrated in a later
+  era (slope 0.92) and now ships with every answer.
+  [`experiments/navigator_evidence.py`](experiments/navigator_evidence.py)
 - **Readability measured** against a bar set in advance: patient-facing lines average US grade
   6.9, none above 10. [`experiments/navigator_readability.py`](experiments/navigator_readability.py)
+- **Research paper (PDF, 24 pages, 11 figures):** [docs/paper/Navigator_Research_Paper.pdf](docs/paper/Navigator_Research_Paper.pdf),
+  rebuilt from the result files by `python docs/paper/build_paper.py`.
 - **Next:** clinician sign-off and a vignette-agreement study.
   [Validation protocol](docs/NAVIGATOR_VALIDATION_PROTOCOL.md) · [Mentor's role](docs/DR_CHAVAN_ROLE.md) ·
   [Paper angle](docs/PAPER_ANGLE.md) · [Symptom-pattern path](docs/SYMPTOM_PATTERN_PATH.md)

@@ -61,7 +61,7 @@ def fig_pipeline():
     box(65, 2, 34, 17, "Honest limits shown", "rules not clinician-reviewed\n2015 UK guidance\nresearch prototype, not advice", RED)
     for (x0, y0, x1, y1) in ((24.6, 32.5, 30.4, 32.5), (58.6, 32.5, 64.4, 32.5), (44.5, 23.4, 44.5, 19.6), (58.6, 10.5, 64.4, 10.5)):
         ax.annotate("", xy=(x1, y1), xytext=(x0, y0), arrowprops=dict(arrowstyle="-|>", color=INK, lw=1.3))
-    ax.set_title("Figure 1. How the navigator works", loc="left", pad=6)
+    ax.set_title("How the navigator works", loc="left", pad=6)
     save("fig1_pipeline.png")
 
 
@@ -85,7 +85,7 @@ def fig_cohort():
     ax.axvspan(8.5, 10.5, color=GRID, alpha=0.6, zorder=0)
     ax.text(9.5, max(r[1] for r in rows) * 0.95, "too little follow-up\nfor an outcome:\nburden only", ha="center", va="top", fontsize=8, color=MUTED)
     ax.set_ylabel("people")
-    ax.set_title("Figure 2. The data: eleven survey cycles across three decades")
+    ax.set_title("The data: eleven survey cycles across three decades")
     ax.legend(frameon=False, loc="upper center", bbox_to_anchor=(0.55, 0.97), ncol=1, fontsize=8.5)
     save("fig2_cohort.png")
 
@@ -112,7 +112,7 @@ def fig_burden():
     axes[1].axhline(20, color=RED, ls="--", lw=1)
     axes[1].text(4.45, 20.4, "bar: 20%", color=RED, fontsize=8, va="bottom", ha="right")
     axes[1].legend(frameon=False, fontsize=8, loc="upper left", bbox_to_anchor=(0.0, 0.97))
-    fig.suptitle("Figure 3. How many symptom-free adults the lab rules alert, by age and era", x=0.06, ha="left", y=1.02, fontsize=11, fontweight="bold")
+    fig.suptitle("How many symptom-free adults the lab rules alert, by age and era", x=0.06, ha="left", y=1.02, fontsize=11, fontweight="bold")
     plt.tight_layout()
     save("fig3_burden.png")
 
@@ -130,7 +130,7 @@ def fig_rules():
         ax.text(v["n"] + 60, i, f"{v['n']:,}  (5-yr cancer death {100 * v['rate']:.1f}%, mean age {v['mean_age']:.0f})", va="center", fontsize=8)
     ax.set_xlim(0, max(v["n"] for _, v in items) * 1.65)
     ax.set_xlabel("people in whom the rule fired (labs + proxy symptoms)")
-    ax.set_title("Figure 4. Which rules fire. Descriptive only: age differs between groups")
+    ax.set_title("Which rules fire. Descriptive only: age differs between groups")
     save("fig4_rules.png")
 
 
@@ -156,7 +156,7 @@ def fig_forest():
     ax.set_xticks([0.4, 0.6, 0.8, 1, 1.5, 2, 3])
     ax.set_xticklabels(["0.4", "0.6", "0.8", "1", "1.5", "2", "3"])
     ax.set_xlabel("odds that a death within 10 years was from cancer, flagged vs not\n(left of 1: more likely another cause)")
-    ax.set_title("Figure 5. Among people who died, is a flag specific to cancer?")
+    ax.set_title("Among people who died, is a flag specific to cancer?")
     ax.grid(axis="y", visible=False)
     save("fig5_decedents.png")
 
@@ -178,7 +178,7 @@ def fig_auc():
     ax.set_xticklabels([l for _, l in labels], fontsize=8.5)
     ax.set_ylabel("AUC, five-year cancer death")
     ax.legend(frameon=False, fontsize=8.5, loc="upper center", bbox_to_anchor=(0.5, -0.27), ncol=2)
-    ax.set_title("Figure 6. Does an alert add anything to age and sex?")
+    ax.set_title("Does an alert add anything to age and sex?")
     save("fig6_auc.png")
 
 
@@ -194,7 +194,7 @@ def fig_calibration():
     ax.set_ylabel("observed, per 1,000 people (2007-2014)")
     ax.legend(frameon=False, fontsize=8.5, loc="upper left")
     ax.text(m * 0.98, m * 0.04, f"calibration slope {q6['calibration_slope']}\nAUC {q6['auc']}", ha="right", fontsize=9)
-    ax.set_title("Figure 7. The age context layer on a later era")
+    ax.set_title("The age context layer on a later era")
     save("fig7_calibration.png")
 
 
@@ -216,7 +216,7 @@ def fig_ferritin():
         ax.text(i, v + 0.8, str(v), ha="center", fontsize=10)
     ax.set_ylabel(f"people told 'see a doctor soon'\n(of {q4['age60_n']:,} aged 60+ with ferritin)")
     ax.set_title("What the assumption costs", fontsize=9.5)
-    fig.suptitle("Figure 8. Testing the tool's own disclosed assumption", x=0.06, ha="left", y=1.03, fontsize=11, fontweight="bold")
+    fig.suptitle("Testing the tool's own disclosed assumption", x=0.06, ha="left", y=1.03, fontsize=11, fontweight="bold")
     plt.tight_layout()
     save("fig8_ferritin.png")
 
@@ -233,7 +233,7 @@ def fig_readability():
     ax.axvline(8, color=RED, ls="--", lw=1)
     ax.text(8.1, len(order) - 0.55, "bar: mean 8", color=RED, fontsize=8)
     ax.set_xlabel("Flesch-Kincaid US grade level (lower is easier)")
-    ax.set_title("Figure 9. Reading level of everything the tool can say")
+    ax.set_title("Reading level of everything the tool can say")
     save("fig9_readability.png")
 
 

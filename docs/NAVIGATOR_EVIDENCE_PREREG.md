@@ -73,5 +73,7 @@ of `navigator_evidence.py`, in this order, and are listed so a reader can judge 
    table above says it would be. Lab-only alerts now carry a caveat because Question 3 was
    missed.
 
-The first run's results for Questions 1 to 6 were unchanged by items 2 and 4 except for the
-per-rule counts in Question 5.
+Compared with the first run, Questions 2, 3, 6 and 7's inputs were unchanged. Question 1 gained
+a fourth era, Question 4 changed because 2015-2018 added ferritin measurements (proxy
+sensitivity 60% to 65%, from 3,930 to 7,373 people with ferritin), and the per-rule counts in
+Question 5 changed with items 2 and 4. No bar was passed or failed differently.
