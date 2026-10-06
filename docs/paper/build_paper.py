@@ -11,6 +11,7 @@ Needs: experiments/navigator_evidence_result.json, navigator_readability_result.
 
 import json
 import os
+import re
 import subprocess
 import sys
 
@@ -22,6 +23,8 @@ import navigator as nav  # noqa: E402
 EV = json.load(open(os.path.join(ROOT, "experiments", "navigator_evidence_result.json")))
 RD = json.load(open(os.path.join(ROOT, "experiments", "navigator_readability_result.json")))
 CTX = json.load(open(os.path.join(ROOT, "backend", "navigator_context.json")))
+SE = json.load(open(os.path.join(ROOT, "experiments", "navigator_sensitivity_result.json")))
+RR = json.load(open(os.path.join(ROOT, "experiments", "risk_ranking_result.json")))
 KB = nav.load()
 ERAS = ["1988-1994 (NHANES III)", "1999-2006", "2007-2014", "2015-2018"]
 BANDS = ["40-49", "50-59", "60-69", "70-79", "80-+"]
@@ -39,12 +42,29 @@ def orci(r):
     return f"{r['or']:.2f} ({r['ci'][0]:.2f} to {r['ci'][1]:.2f})"
 
 
+FIGS = ["fig1_pipeline", "fig2_cohort", "fig3_burden", "fig5_decedents", "fig_sensitivity", "fig_absrisk", "fig6_auc", "fig8_ferritin",
+        "fig4_rules", "fig7_calibration", "fig_sets", "fig_triage", "fig_learning", "fig9_readability", "app_form_crop", "app_result_crop"]
+FN = {n: i + 1 for i, n in enumerate(FIGS)}
+
+
+def F(name):
+    return f"Figure {FN[name]}"
+
+
 def fig(name, caption, width="100%"):
-    return f'<figure style="width:{width}"><img src="figures/{name}" alt=""><figcaption>{caption}</figcaption></figure>'
+    stem = name[:-4]
+    caption = re.sub(r"<b>Figure \d+\.</b>\s*", "", caption)
+    return (f'<figure style="width:{width}"><img src="figures/{name}" alt="">'
+            f'<figcaption><b>Figure {FN[stem]}.</b> {caption}</figcaption></figure>')
 
 
-TN = {"rules": 1, "labs": 2, "sources": 3, "pre": 4, "burden": 5, "dec": 6, "flags": 7, "auc": 8, "rulehit": 9, "deciles": 10, "read": 11}
-FN = {"pipeline": 1, "cohort": 2, "burden": 3, "decedents": 4, "auc": 5, "ferritin": 6, "rules": 7, "calib": 8, "read": 9, "form": 10, "result": 11}
+TNAMES = ["rules", "labs", "sources", "pre", "cohort", "burden", "dec", "sens", "test", "abs", "flags", "auc", "rulehit", "deciles",
+          "sets", "steps", "triage", "learn", "topvars", "read"]
+TN = {n: i + 1 for i, n in enumerate(TNAMES)}
+
+
+def T(name):
+    return f"Table {TN[name]}"
 
 
 def table(head, rows, cls="", note="", key=None, title=""):
@@ -117,8 +137,14 @@ pre = [
     ["5", "Which rules fire (no bar)", "Colorectal rules account for almost all lab-driven alerts", "Reported"],
     ["6", "Age, sex and smoking context layer is calibrated in a later era (slope 0.8 to 1.2)",
      f"Slope {q6['calibration_slope']:.2f}; AUC {q6['auc']:.3f}", "<b class='ok'>Met</b>"],
+    ["R1", "Risk ranking: the whole picture (380 variables) beats age, sex, smoking and BMI by at least 0.02 AUC, out of era",
+     f"Whole picture {RR['R1']['auc_S3']:.3f} vs {RR['R1']['auc_S1']:.3f}: gain {RR['R1']['gain']:+.3f} ({RR['R1']['gain_ci'][0]:+.3f} to {RR['R1']['gain_ci'][1]:+.3f})", "<b class='bad'>Missed</b>"],
+    ["R2", "Risk ranking: among decedents, the whole picture separates cancer from other deaths better than the baseline (CI above 0)",
+     f"Decedent AUC {RR['R2']['auc_S3']:.2f} vs {RR['R2']['auc_S1']:.2f}: gain {RR['R2']['gain']:+.3f} ({RR['R2']['gain_ci'][0]:+.3f} to {RR['R2']['gain_ci'][1]:+.3f})", "<b class='ok'>Met</b>, but read with care (Section 3.10)"],
+    ["R3", "Risk ranking: whole-picture calibration slope 0.8 to 1.2 out of era", f"Slope {RR['R3']['slope']} (baseline: {RR['R3']['slope_S1']})", "<b class='bad'>Missed</b>"],
+    ["R4, R5", "Does more data help; triage value (no bars)", "More data did not help; whole picture found fewer cancer deaths in its top 20% than the baseline", "Reported"],
 ]
-t_pre = table(["#", "Pre-registered question and bar", "Result", "Outcome"], pre, "", "Bars were committed to the repository before the analysis was run (docs/NAVIGATOR_EVIDENCE_PREREG.md).")
+t_pre = table(["#", "Pre-registered question and bar", "Result", "Outcome"], pre, "", "Bars were committed to the repository before each analysis was run (docs/NAVIGATOR_EVIDENCE_PREREG.md and docs/RISK_RANKING_PREREG.md).")
 
 t_dec = table(
     ["Group", "Deaths in 10 years", "Alerted", "Cancer share, alerted", "Cancer share, not alerted", "Adjusted OR (95% CI)"],
@@ -153,6 +179,76 @@ t_deciles = table(["Predicted per 1,000", "Observed per 1,000", "People"],
                   [[f"{1000 * d['predicted']:.1f}", f"{1000 * d['observed']:.1f}", f"{d['n']:,}"] for d in q6["deciles"]], "num",
                   "Ten equal-sized groups of the 2007-2014 people, ordered by predicted risk, from a model fitted only on 1999-2006.")
 
+
+cb = SE["cohort_by_era"]
+t_cohort = table(["Characteristic", "1999-2006", "2007-2014", "2015-2018"],
+    [["Adults 40+ with a blood count"] + [f"{cb[e]['n']:,}" for e in cb],
+     ["Mean age (years)"] + [cb[e]["mean_age"] for e in cb],
+     ["Female"] + [p(cb[e]["female_pct"], 0) for e in cb],
+     ["Ever smoked"] + [p(cb[e]["ever_smoked_pct"], 0) for e in cb],
+     ["Mean haemoglobin (g/dL)"] + [cb[e]["hemoglobin_mean"] for e in cb],
+     ["Mean MCV (fL)"] + [cb[e]["mcv_mean"] for e in cb],
+     ["Mean platelets (x10^9/L)"] + [f"{cb[e]['platelets_mean']:.0f}" for e in cb],
+     ["Mean white count (x10^9/L)"] + [cb[e]["wbc_mean"] for e in cb],
+     ["Weight-loss proxy present"] + [p(cb[e]["weight_loss_proxy_pct"], 0) for e in cb],
+     ["Died by end of 2019"] + [p(cb[e]["died_pct"], 0) for e in cb],
+     ["Cancer deaths (any time to 2019)"] + [cb[e]["cancer_deaths"] for e in cb],
+     ["Any lab-only alert"] + [p(cb[e]["any_lab_alert_pct"]) for e in cb]], "num",
+    "Later cycles have fewer deaths because they have had less time to die, not because they were healthier.")
+
+ss = SE["specificity_sensitivity"]
+t_sens = table(["Analysis", "Decedents", "Alerted", "Adjusted OR (95% CI)"],
+    [[k, f"{v['decedents']:,}", f"{v['alerted']:,}", orci(v)] for k, v in ss.items() if v], "num",
+    "Labs-only alert, people who died. Every row is a different choice about who to include; none changes the direction.")
+
+at = SE["alert_as_test"]
+rows = []
+for k, v in at.items():
+    rows.append([k, p(v["flagged_share"]), f"{p(v['sensitivity'])} ({ci(v['sensitivity_ci'])})", p(v["specificity"]),
+                 f"{p(v['ppv'])} ({ci(v['ppv_ci'])})", v["lr_positive"]])
+t_test = table(["Rule for who is flagged", "Share flagged", "Sensitivity (95% CI)", "Specificity", "PPV (95% CI)", "LR+"], rows, "num",
+    "Five-year cancer death, examinations 1999-2013. PPV: of those flagged, the share who died of cancer within five years. The base rate is 1.5%. "
+    "The age-only rows flag the same number of people but choose the oldest, as a fair comparison.")
+
+ab = SE["absolute_risk_by_age"]
+t_abs = table(["Age", "Alerted: n", "Died of cancer in 5 years", "Not alerted: n", "Died of cancer in 5 years", "Rate ratio"],
+    [[k, f"{v['alerted']['n']:,}", f"{p(v['alerted']['rate'], 2)} ({ci(v['alerted']['ci'], 2)})", f"{v['not_alerted']['n']:,}",
+      f"{p(v['not_alerted']['rate'], 2)} ({ci(v['not_alerted']['ci'], 2)})", v["rate_ratio"]] for k, v in ab.items()], "num",
+    "Labs-only alert. Absolute risk is low in every group, including the alerted: even in the oldest band, about 94 in 100 alerted people did not die of cancer within five years.")
+
+rm = RR["models"]
+t_sets = table(["Feature set", "Variables", "Model chosen", "AUC inside fitting era (cross-validated)", "AUC in held-out later era"],
+    [[k, RR["variables"].get(k, ""), v["chosen"], f"{v['cv_auc_train_era']:.3f}", f"{v['test_auc']:.3f}"] for k, v in rm.items()], "num",
+    f"Fitted on 1999-2006 ({RR['n_train']:,} adults, {RR['cancer_train']} cancer deaths); tested on 2007-2014 ({RR['n_test']:,} adults, {RR['cancer_test']} cancer deaths). "
+    "The model type was chosen by cross-validation inside the fitting era, never on the test era.")
+
+st = RR["R1"]["steps"]
+r1b = RR["R1b_post_hoc"]
+t_steps = table(["Comparison, held-out era", "AUC gain", "95% CI"],
+    [[k, f"{v['gain']:+.3f}", f"{v['ci'][0]:+.3f} to {v['ci'][1]:+.3f}"] for k, v in st.items()] +
+    [["Whole picture, no missing flags (post hoc) vs age + sex + smoking + BMI", f"{r1b['gain_vs_S1']:+.3f}", f"{r1b['gain_ci'][0]:+.3f} to {r1b['gain_ci'][1]:+.3f}"],
+     ["Whole picture vs age + sex + smoking + BMI, among 1,007 people who died within five years (cancer vs other cause)", f"{RR['R2']['gain']:+.3f}",
+      f"{RR['R2']['gain_ci'][0]:+.3f} to {RR['R2']['gain_ci'][1]:+.3f}"]], "num",
+    "Bootstrap intervals. Each row adds information to the one before it. Note the last row: among decedents the age-and-smoking baseline has AUC "
+    f"{RR['R2']['auc_S1']:.2f} (below chance: older, smoking decedents are more often non-cancer deaths) and the whole picture {RR['R2']['auc_S3']:.2f}, barely above chance.")
+
+cp = RR["R5"]
+t_triage = table(["Score from", "Top 10% of people", "Top 20%", "Top 30%"],
+    [[k, p(v["top10"]), p(v["top20"]), p(v["top30"])] for k, v in (("Age + sex", cp["age+sex"]), ("+ smoking, BMI", cp["S1"]), ("+ 22 routine labs", cp["S2"]), ("Whole picture", cp["S3"]))], "num",
+    "Share of all five-year cancer deaths found among the highest-scored people in the held-out era. Chance would give 10%, 20% and 30%.")
+
+lc = RR["R4"]
+t_learn = table(["People used to fit", "Age + sex + smoking + BMI", "Whole picture"],
+    [[f"{lc[k]['n_train']:,}", f"{lc[k]['S1']:.3f}", f"{lc[k]['S3']:.3f}"] for k in sorted(lc, key=float)], "num",
+    "Held-out AUC. Averaged over three random subsets for the smaller fits.")
+
+t_topvars = table(["Variable", "Meaning", "AUC lost when shuffled"],
+    [[v["variable"], ("a missing-value flag for this questionnaire item" if v["variable"].endswith("__missing") else
+                       {"age": "age", "PFQ061K": "difficulty with a physical function question", "LBDHDDSI": "HDL cholesterol", "LBXRDW": "red cell width",
+                        "BMXARMC": "arm circumference", "male": "sex"}.get(v["variable"], "")), f"{v['auc_drop']:.4f}"] for v in RR["top_variables"][:12]], "num",
+    "Permutation importance of the whole-picture model on a held-out sample. Most of the largest entries are missing-value flags: whether a question was asked at all depends on the survey cycle.")
+
+
 def cap(key, title, html):
     return f'<div class="tcap"><b>Table {TN[key]}.</b> {title}</div>' + html
 
@@ -168,28 +264,31 @@ t_flags = cap("flags", "Each flag on its own, among decedents (exploratory).", t
 t_rulehit = cap("rulehit", "Rules that fired, labs plus proxy symptoms.", t_rulehit)
 t_deciles = cap("deciles", "Calibration of the context layer by tenth.", t_deciles)
 t_read = cap("read", "Reading level of the tool's text.", t_read)
+t_cohort = cap("cohort", "Who is in the analysis, by survey era.", t_cohort)
+t_sens = cap("sens", "Sensitivity analyses for cancer specificity.", t_sens)
+t_test = cap("test", "The lab alert treated as a test for five-year cancer death.", t_test)
+t_abs = cap("abs", "Absolute five-year cancer death by age, alerted versus not.", t_abs)
+t_sets = cap("sets", "Risk ranking: more information per person, fitted on one era and tested on another.", t_sets)
+t_steps = cap("steps", "What each addition buys, in the held-out era.", t_steps)
+t_triage = cap("triage", "Triage value of each score.", t_triage)
+t_learn = cap("learn", "Does more data help?", t_learn)
+t_topvars = cap("topvars", "What the whole-picture model relies on.", t_topvars)
 
 # ---------------------------------------------------------------- text
 ABSTRACT = f"""
-<p><b>Background.</b> Cancers are often found late because early symptoms and mildly abnormal blood tests are individually vague.
-Clinical guidelines such as the UK's NICE NG12 list symptom-and-test combinations that justify a prompt check, but they are written for clinicians
-and are hard for a person with a lab report in hand to apply. We built a patient-facing navigator that applies those rules, and measured what it does on real people
-before anyone relies on it.</p>
-<p><b>Methods.</b> The navigator is a rule engine, not a trained model: {n_rules} rules transcribed from the 2015 edition of NG12, each with its source page, evaluated with
-three-valued logic so that missing facts are requested rather than assumed. We ran the engine on {n_all + n3:,} adults aged 40 and over from NHANES III (1988-1994) and
-ten continuous NHANES cycles (1999-2018), linked to the National Death Index through 2019. Six questions and their pass-or-fail bars were committed to the repository before the analysis.
-Outcomes were burden of alerts, cancer-specificity among decedents, added value over age and sex in an unseen era, validity of the tool's own iron-deficiency assumption against measured ferritin,
-and calibration of an age, sex and smoking context layer. Reading level was measured for every sentence the tool can show.</p>
-<p><b>Results.</b> Lab results alone alerted {p(min(age_burden(e,'70-79','any_alert') for e in ERAS), 0)} to {p(max(age_burden(e,'70-79','any_alert') for e in ERAS), 0)} of people aged 70-79 and {p(min(age_burden(e,'80-+','any_alert') for e in ERAS), 0)} to {p(max(age_burden(e,'80-+','any_alert') for e in ERAS), 0)} of those 80 and over, almost entirely through the guideline's
-anaemia-to-stool-test rule, and no more than {p(q1['worst_talk_soon'])} in any age band were told to see a doctor soon. <b>Three of the four bars with a pass-or-fail criterion were missed.</b>
-Among people who died, alerted people were not more likely to have died of cancer (adjusted odds ratio {orci(ctx_pool)} in 1999-2014; {orci(n3o)} in NHANES III).
-Adding the alert to age and sex did not improve prediction of five-year cancer death in the held-out era (AUC gain {g_ctx['gain']:+.3f}, 95% CI {g_ctx['gain_ci'][0]:+.3f} to {g_ctx['gain_ci'][1]:+.3f}; age and sex alone gave AUC {g_ctx['auc_base']:.2f}).
-The tool's assumption that small red cells indicate iron deficiency had sensitivity {p(q4['proxy_sensitivity'], 0)} and positive predictive value {p(q4['proxy_ppv'], 0)} against measured ferritin, and overstated
-"see a doctor soon" alerts by {p(q4['age60_talk_soon_proxy_only'] / q4['age60_talk_soon_with_ferritin'] - 1, 0)} in people aged 60 and over. The context layer was well calibrated in a later era (slope {q6['calibration_slope']:.2f}).
+<p><b>Background.</b> Cancers are often found late because early symptoms and mildly abnormal blood tests are individually vague. Two ideas could help: apply published referral guidelines to a person's own symptoms and lab results
+in plain language, and rank people by cancer risk from information that is already routinely collected so that follow-up reaches those who need it first. We built the first, tested both, and set the pass-or-fail bars before looking.</p>
+<p><b>Methods.</b> The navigator is a rule engine, not a trained model: {n_rules} rules transcribed from the 2015 edition of the UK NICE suspected-cancer guideline (NG12), each with its source page, using three-valued logic so that missing facts are requested rather than assumed.
+We ran it on {n_all + n3:,} adults aged 40 and over from NHANES III and ten continuous NHANES cycles (1988-2018), linked to the National Death Index through 2019 (alert burden, cancer specificity among decedents, added value over age and sex, validity of its iron-deficiency assumption against measured ferritin, calibration of an age context layer).
+Separately, a risk-ranking study fitted five nested models for five-year cancer death on 1999-2006 ({RR['n_train']:,} adults) and tested them on 2007-2014 ({RR['n_test']:,} adults), from age and sex alone up to 380 variables covering every laboratory, examination and questionnaire item.</p>
+<p><b>Results.</b> Lab results alone alerted {p(min(age_burden(e,'70-79','any_alert') for e in ERAS), 0)} to {p(max(age_burden(e,'70-79','any_alert') for e in ERAS), 0)} of people aged 70-79 and {p(min(age_burden(e,'80-+','any_alert') for e in ERAS), 0)} to {p(max(age_burden(e,'80-+','any_alert') for e in ERAS), 0)} of those 80 and over, almost entirely through the guideline's anaemia-to-stool-test rule; no more than {p(q1['worst_talk_soon'])} in any band were told to see a doctor soon.
+<b>Four of the seven pass-or-fail bars were missed.</b> Among people who died, alerted people were not more likely to have died of cancer (adjusted odds ratio {orci(ctx_pool)} in 1999-2014; {orci(n3o)} in NHANES III), and this held across sex, age group, follow-up window and a lag that removed the first two years.
+As a test for five-year cancer death the alert had sensitivity {p(at['any alert, labs only']['sensitivity'], 0)}, specificity {p(at['any alert, labs only']['specificity'], 0)} and positive predictive value {p(at['any alert, labs only']['ppv'])} against a base rate of 1.5%.
+Adding it to age and sex did not improve prediction in the later era (AUC gain {g_ctx['gain']:+.3f}, 95% CI {g_ctx['gain_ci'][0]:+.3f} to {g_ctx['gain_ci'][1]:+.3f}). In the risk-ranking study, age, sex, smoking and body mass index reached an AUC of {RR['R1']['auc_S1']:.3f} out of era and routine labs added {st['S1 +smoking, BMI -> S2 +22 routine labs']['gain']:+.3f};
+the 380-variable whole picture scored {RR['R1']['auc_S3']:.3f} (gain {RR['R1']['gain']:+.3f}) and was badly miscalibrated (slope {RR['R3']['slope']}), and quadrupling the fitting data did not help. The age, sex and smoking context layer was well calibrated in the later era (slope {q6['calibration_slope']:.2f}).
 Patient-facing text averaged US grade {RD['patient_facing_action_mean']}.</p>
-<p><b>Conclusions.</b> The navigator applies a published guideline faithfully and readably, but its lab-driven alerts do not carry information about who will die of cancer beyond age and sex.
-It should therefore be presented as a way of reading a guideline, not as a risk predictor, and lab-only alerts should be worded as questions for a doctor. The tool is not clinician-reviewed
-and the rules are UK guidance from 2015; clinician validation is the necessary next step.</p>
+<p><b>Conclusions.</b> A guideline-based navigator can be built, made readable and tested against bars set in advance. Its lab-driven alerts, and a model using everything the survey recorded, did not identify who would die of cancer better than age, sex, smoking and body mass index, which together reach AUC about 0.74.
+The honest uses are reading a guideline in plain language and putting an alert in proportion to what is ordinary for a person's age. The rules are UK guidance from 2015, have not been clinician-reviewed, and clinician validation is the necessary next step.</p>
 """
 
 INTRO = """
@@ -199,6 +298,7 @@ and smoking history. Doctors weigh these together. The person holding the report
 <p>Two bodies of work address parts of this. Clinical guidelines, most prominently the NICE guideline NG12 on suspected cancer, list the combinations of age, symptoms and test results that justify
 an urgent check, chosen so that the chance of cancer for someone meeting a criterion is about three percent or more.<sup>1</sup> Statistical risk models such as QCancer combine symptoms, risk factors and
 blood tests into a probability.<sup>2</sup> Both are written for clinicians. Neither is designed to be handed to a person who has a lab report and a worry and wants to know whether it is worth asking about.</p>
+<p>The second idea is screening in the sense of finding risk: using what is already known about a person to rank who is more likely to be affected, so that scarce follow-up goes to them first. Risk scores of this kind exist and some are validated, so the interest is not in the idea but in measuring honestly how much routine information adds once age is accounted for.</p>
 <p>Multi-cancer detection from blood alone, in people with no symptoms, is a harder and still unresolved problem. Earlier work in this project built and tested several blood-only panels and withdrew most of them
 when they failed bars set in advance; the lesson was that routine blood values add little to age and sex for cancer outcomes in the general population. The route that remains well supported is narrower:
 people who already have a reason to be looking, such as a symptom, where guidelines already define who deserves a prompt check.</p>
@@ -210,7 +310,7 @@ We committed the questions and the pass-or-fail criteria to the repository befor
 METHODS = f"""
 <h3>2.1 Design</h3>
 <p>This is a development and retrospective evaluation study. No participant was contacted. All data are public, de-identified US survey records; the study is therefore not human-subjects research under
-the usual definitions, though the institution's own determination is being sought before any comprehension testing with readers (Section 4.5).</p>
+the usual definitions, though the institution's own determination is being sought before any comprehension testing with readers (Section 4.6).</p>
 <h3>2.2 The rule engine</h3>
 <p>The navigator (<code>backend/navigator.py</code>) reads a request containing age, sex, smoking and asbestos history, a list of symptoms the person has ticked (with how often, where a rule needs it), lab values,
 and optional findings such as a positive stool test. It evaluates {n_rules} rules held in a plain data file (<code>backend/navigator_rules.json</code>) that a clinician can read without reading code. The rules were
@@ -249,7 +349,17 @@ Non-cancer deaths inside the window are counted as non-cases, which is a competi
 then refitted on all outcome cycles for use in the tool. It does not use labs or symptoms and is shown as a group average, not the person's risk.</p>
 <h3>2.9 Readability</h3>
 <p>Every sentence the tool can show was scored with the Flesch-Kincaid grade level.<sup>4</sup> The bar, set before the first measurement, was a mean of at most 8 and no action line above 10. This is a floor and not a test of understanding.</p>
-<h3>2.10 Software and reproducibility</h3>
+<h3>2.10 Further descriptive and sensitivity analyses</h3>
+<p>To show whether the headline findings depend on a choice, the cancer-specificity analysis was repeated by sex, by age group (40-59, 60-74, 75 and over), by smoking status, in the subset with measured ferritin, with a five-year instead of ten-year window,
+and with the first 12 and 24 months of follow-up removed (to guard against illness already present at the examination). The alert was also treated as a diagnostic test for five-year cancer death (sensitivity, specificity, predictive values, positive likelihood ratio, each with Wilson intervals) and compared with simply flagging the same number of the oldest people.
+Absolute five-year cancer death was tabulated by age band for alerted and non-alerted people. None of these carries a pass-or-fail bar.</p>
+<h3>2.11 Risk-ranking study</h3>
+<p>The question was whether information beyond age predicts five-year cancer death. The risk-ranking cohort is NHANES 1999-2014 adults 40 and over with every laboratory, examination and questionnaire column recorded in at least six of eight cycles (over 300 columns, plus a missing-value indicator for each partly missing column).
+Models were fitted on cycles 1999-2006 and tested on cycles 2007-2014, which differ in population, laboratory methods and questionnaire. Five feature sets were compared: age and sex (S0); plus smoking and body mass index (S1, the strong baseline); plus 22 routine blood values (S2);
+all 380 variables (S3); and, post hoc, the same without the missing-value indicators (S3b). For each set, ridge logistic regression or gradient-boosted trees were chosen by five-fold cross-validation inside the fitting era; hyperparameters were fixed in advance.
+Bars were committed beforehand (docs/RISK_RANKING_PREREG.md): R1, an AUC gain of at least 0.02 for S3 over S1 with a bootstrap interval above zero; R2, a better separation of cancer from other deaths among people who died within five years; R3, a calibration slope between 0.8 and 1.2.
+R4 (learning curve on 25%, 50% and 100% of the fitting data) and R5 (share of cancer deaths in the top-scored 10%, 20% and 30%) have no bar.</p>
+<h3>2.12 Software and reproducibility</h3>
 <p>Backend: Python and FastAPI; frontend: Next.js, deployed publicly. There are {79} automated tests, including properties such as "a symptom-free person with normal labs is never told to see a doctor soon over 300 random profiles",
 "the tool never says 'you have cancer'" and "a rule that refers to a symptom the form cannot ask about is a loud failure". Every number in this paper is regenerated by scripts in the repository, and the tables and figures are built directly from their output.
 Reporting follows the spirit of TRIPOD+AI where it applies;<sup>5</sup> because the engine is not a trained model there is no training-set leakage to guard against in the rules themselves, only in the context layer, which is validated out of era.</p>
@@ -258,85 +368,129 @@ Reporting follows the spirit of TRIPOD+AI where it applies;<sup>5</sup> because 
 RESULTS = f"""
 <h3>3.1 Summary against the pre-registered bars</h3>
 {t_pre}
-<h3>3.2 Alert burden</h3>
-<p>With lab results alone and no symptoms, the share of adults alerted rises steeply with age (Table 5, Figure 3): about {p(age_burden('1999-2006','40-49','any_alert'),0)} to {p(age_burden('2015-2018','40-49','any_alert'),0)} at 40-49, {p(age_burden('1999-2006','50-59','any_alert'),0)} to {p(age_burden('2007-2014','50-59','any_alert'),0)} at 50-59,
+<h3>3.2 Who is in the analysis</h3>
+<p>The navigator cohort comprises {n_all:,} adults aged 40 and over from ten NHANES cycles, of whom {n_out:,} (examined 1999-2013) have enough follow-up for a five-year outcome, and {n3:,} from NHANES III. Table {TN['cohort']} describes the three continuous eras. They are similar in age and sex and differ in smoking (falling from 52% to 44%),
+mean haemoglobin and the share with a lab alert. The five-year cancer death rate was 1.5% overall.</p>
+{t_cohort}
+{t_sources}
+{fig("fig2_cohort.png", "The data. Blue bars are adults aged 40 or over with a blood count. Orange shows how many also had ferritin measured, which differs by survey cycle. The shaded cycles have too little follow-up for an outcome.")}
+<h3>3.3 Alert burden</h3>
+<p>With lab results alone and no symptoms, the share of adults alerted rises steeply with age (Table {TN['burden']}, {F('fig3_burden')}): about {p(age_burden('1999-2006','40-49','any_alert'),0)} to {p(age_burden('2015-2018','40-49','any_alert'),0)} at 40-49, {p(age_burden('1999-2006','50-59','any_alert'),0)} to {p(age_burden('2007-2014','50-59','any_alert'),0)} at 50-59,
 and {p(age_burden('1999-2006','80-+','any_alert'),0)} to {p(age_burden('2015-2018','80-+','any_alert'),0)} at 80 and over. The pattern is close to identical in all four eras, spanning thirty years of laboratory methods. "See a doctor soon" stayed at or below {p(q1['worst_talk_soon'])}
 in every band and era, and is zero below age 60.</p>
 <p>Almost every lab-driven alert comes from one guideline rule: anaemia in people 60 or over, or iron-deficiency anaemia under 60, leads to a stool test. In the two newest cycles, where ferritin was measured for most people, this rule
 alerted 13.7% of women but 1.6% of men aged 40-49, a difference consistent with menstrual iron loss, which the rule does not take into account. That is a real feature of the guideline applied to people who may have a benign explanation. The pre-registered 20% line for any alert was crossed only at age 80 and over, in three of the four eras (21%, 23% and 27%).</p>
-{fig("fig3_burden.png", "<b>Figure 3.</b> Share of symptom-free adults alerted by lab results alone, by age and era. Red dashed lines are the pre-registered bars. Error bars are 95% Wilson intervals.")}
+{fig("fig3_burden.png", "Share of symptom-free adults alerted by lab results alone, by age and era. Red dashed lines are the pre-registered bars. Error bars are 95% Wilson intervals.")}
 {t_burden}
-<h3>3.3 Are the alerts specific to cancer?</h3>
+<h3>3.4 Are the alerts specific to cancer?</h3>
 <p>No. Among the {labs_only['decedents']:,} people in 1999-2014 who died within ten years, those alerted by labs alone were <i>less</i> likely to have died of cancer than of something else ({p(labs_only['cancer_share_alerted'])} versus {p(labs_only['cancer_share_not'])}; adjusted odds ratio {orci(labs_only)}). Adding the proxy symptoms moved the estimate to {orci(ctx_pool)}.
 The result did not replicate in direction in NHANES III ({orci(n3o)}, interval including 1). In no era did an alert identify cancer deaths.</p>
-<p>Looking at one flag at a time (Table 7, Figure 4; exploratory), anaemia was the clearest: among decedents, anaemic people had about 40% lower odds of having died of cancer rather than another cause (OR {orci(q7['results']['anaemia'])}). The proxy for weight loss and breathlessness
+<p>The direction held under every other choice we tried ({T('sens')}, {F('fig_sensitivity')}): a five-year window, removing the first one or two years of follow-up, women and men separately, three age groups, smokers and non-smokers, and the subset with measured ferritin. Women showed the strongest effect (OR {orci(ss['females only'])}), and the ferritin subset the widest interval.
+No subgroup pointed toward cancer. The upper bound crossed 1 only in subgroups with few alerted decedents.</p>
+<p>Looking at one flag at a time ({T('flags')}, {F('fig5_decedents')}; exploratory), anaemia was the clearest: among decedents, anaemic people had about 40% lower odds of having died of cancer rather than another cause (OR {orci(q7['results']['anaemia'])}). The proxies for weight loss and breathlessness
 pointed the same way. Smoking, the one flag that is not a symptom or lab, pointed the expected way (OR {orci(q7['results']['ever smoked'])}).</p>
-{fig("fig5_decedents.png", "<b>Figure 4.</b> Among people who died within ten years, the odds that the death was from cancer rather than another cause, for people with each flag versus those without. Red intervals lie entirely below 1. Adjusted for age, sex and year.")}
+{fig("fig5_decedents.png", "Among people who died within ten years, the odds that the death was from cancer rather than another cause, for people with each flag versus those without. Red intervals lie entirely below 1. Adjusted for age, sex and year.")}
 {t_dec}
+{fig("fig_sensitivity.png", "The result under twelve different choices about who is included. Red intervals lie entirely below 1. No choice moves the estimate toward cancer.")}
+{t_sens}
 {t_flags}
-<h3>3.4 Do alerts add to age and sex?</h3>
+<h3>3.5 The alert as a test, and absolute risk</h3>
+<p>Treated as a screening test for five-year cancer death ({T('test')}), the labs-only alert flagged {p(at['any alert, labs only']['flagged_share'])} of adults, found {p(at['any alert, labs only']['sensitivity'], 0)} of those who died of cancer, and had a positive predictive value of {p(at['any alert, labs only']['ppv'])} (a positive likelihood ratio of {at['any alert, labs only']['lr_positive']}) against a base rate of 1.5%.
+So it lifted the chance from 1.5% to 3.1%, an improvement but a small one in absolute terms, and one that mostly reflects age: flagging the same number of the oldest people by age alone gave a PPV of {p(at['any alert, labs only (versus oldest 1,749 by age alone)']['ppv'])} and sensitivity of {p(at['any alert, labs only (versus oldest 1,749 by age alone)']['sensitivity'], 0)}. Including the proxy symptoms flagged {p(at['any alert, labs + proxy symptoms']['flagged_share'], 0)} of adults
+at a PPV of {p(at['any alert, labs + proxy symptoms']['ppv'])}.</p>
+<p>The absolute numbers are reassuring in every group ({T('abs')}, {F('fig_absrisk')}). From age 50 the alerted group had a higher five-year cancer death rate than the non-alerted group (rate ratios 1.3 to 2.2), but the intervals overlap and even among alerted people aged 80 and over about 94 in 100 did not die of cancer within five years.
+At 40-49 there was no difference. This is consistent with the alert marking general ill health somewhat more than cancer: raising the rate of cancer death modestly while raising the rate of all death more.</p>
+{fig("fig_absrisk.png", "Five-year cancer death by age band for people with and without a labs-only alert. Error bars are 95% Wilson intervals; group sizes are under each band.")}
+{t_test}
+{t_abs}
+<h3>3.6 Do alerts add to age and sex?</h3>
 <p>Age and sex alone predicted five-year cancer death with AUC {g_ctx['auc_base']:.2f} in the held-out era. Adding the labs-only alert changed this by {g_lab['gain']:+.3f} (95% CI {g_lab['gain_ci'][0]:+.3f} to {g_lab['gain_ci'][1]:+.3f}); adding the alert from labs and proxy symptoms changed it by {g_ctx['gain']:+.3f} ({g_ctx['gain_ci'][0]:+.3f} to {g_ctx['gain_ci'][1]:+.3f}). Both intervals include zero, so the bar was missed.
 In the exploratory NHANES III test the gain was {g_n3['gain']:+.3f} ({g_n3['gain_ci'][0]:+.3f} to {g_n3['gain_ci'][1]:+.3f}), statistically above zero but under one point of AUC and not in the pre-registered test.</p>
-{fig("fig6_auc.png", "<b>Figure 5.</b> AUC for five-year cancer death with and without the navigator alert. Age and sex do nearly all the work.")}
+{fig("fig6_auc.png", "AUC for five-year cancer death with and without the navigator alert. Age and sex do nearly all the work.")}
 {t_auc}
-<h3>3.5 The tool's own iron-deficiency assumption</h3>
+<h3>3.7 The tool's own iron-deficiency assumption</h3>
 <p>Among {q4['n_with_ferritin']:,} adults with a measured ferritin, {q4['anaemic']} were anaemic and {q4['true_ida_by_ferritin']} of those were iron-deficient by ferritin. Using MCV below 80 as a stand-in caught {p(q4['proxy_sensitivity'],0)} of them and was right {p(q4['proxy_ppv'],0)} of the time.
 Among {q4['age60_n']:,} adults 60 or over with a ferritin, the proxy told {q4['age60_talk_soon_proxy_only']} to see a doctor soon where measured ferritin told {q4['age60_talk_soon_with_ferritin']}. A person who enters ferritin gets a more accurate answer than one who does not, and the tool says which one they got.</p>
-{fig("fig8_ferritin.png", "<b>Figure 6.</b> Left: how well MCV below 80 stands in for ferritin below 15 among anaemic adults. Right: the cost in alerts for people aged 60 and over.")}
-<h3>3.6 Which rules fire</h3>
+{fig("fig8_ferritin.png", "Left: how well MCV below 80 stands in for ferritin below 15 among anaemic adults. Right: the cost in alerts for people aged 60 and over.")}
+<h3>3.8 Which rules fire</h3>
 {t_rulehit}
-{fig("fig4_rules.png", "<b>Figure 7.</b> Which rules fire for labs plus proxy symptoms. The lung rule fires most often because breathlessness and smoking are common in older NHANES adults, not because of an excess of cancer.")}
-<h3>3.7 The age context layer</h3>
+{fig("fig4_rules.png", "Which rules fire for labs plus proxy symptoms. The lung rule fires most often because breathlessness and smoking are common in older NHANES adults, not because of an excess of cancer.")}
+<h3>3.9 The age context layer</h3>
 <p>Fitted on 1999-2006 and tested on 2007-2014, the age, sex and smoking model had AUC {q6['auc']:.3f} and a calibration slope of {q6['calibration_slope']:.2f}, inside the pre-registered 0.8 to 1.2. Its Brier score ({q6['brier']:.5f}) was slightly better than predicting the average for everyone ({q6['brier_if_no_model']:.5f}).
 The model was refitted on {CTX['n']:,} adults with {CTX['cancer_deaths']} five-year cancer deaths for use in the tool. Typical outputs range from about 2 in 1,000 for a 45-year-old woman who has never smoked to about 50 in 1,000 for a 75-year-old man who has smoked.</p>
-{fig("fig7_calibration.png", "<b>Figure 8.</b> Calibration of the context layer in the later era.", "58%")}{t_deciles}
-<h3>3.8 Readability</h3>
+{fig("fig7_calibration.png", "Calibration of the context layer in the later era.", "58%")}{t_deciles}
+<h3>3.10 Risk ranking: does everything a survey knows beat the obvious baseline?</h3>
+<p>{T('sets')} and {F('fig_sets')} show the main result. Age and sex alone ranked five-year cancer death with AUC {rm['S0 age+sex']['test_auc']:.3f} in the held-out era. Adding smoking and body mass index raised this to {rm['S1 +smoking, BMI']['test_auc']:.3f} (gain {st['S0 age+sex -> S1 +smoking, BMI']['gain']:+.3f}, 95% CI {st['S0 age+sex -> S1 +smoking, BMI']['ci'][0]:+.3f} to {st['S0 age+sex -> S1 +smoking, BMI']['ci'][1]:+.3f}),
+which was the only step that helped. Adding 22 routine blood values changed it by {st['S1 +smoking, BMI -> S2 +22 routine labs']['gain']:+.3f} ({st['S1 +smoking, BMI -> S2 +22 routine labs']['ci'][0]:+.3f} to {st['S1 +smoking, BMI -> S2 +22 routine labs']['ci'][1]:+.3f}), which is nothing. This repeats, on a larger sample and a later era, the project's earlier finding that routine blood values add little to age and sex for cancer outcomes.</p>
+<p>The 380-variable whole picture did worse: AUC {RR['R1']['auc_S3']:.3f} against the baseline's {RR['R1']['auc_S1']:.3f} (gain {RR['R1']['gain']:+.3f}, {RR['R1']['gain_ci'][0]:+.3f} to {RR['R1']['gain_ci'][1]:+.3f}), and a calibration slope of {RR['R3']['slope']}, meaning its predictions barely tracked outcomes. Bars R1 and R3 were missed.
+Inside the fitting era, cross-validation gave this model {rm['S3 whole picture']['cv_auc_train_era']:.3f}, so the failure is specific to moving to a later era. The permutation importances point to why ({T('topvars')}): most of the largest entries are missing-value flags, that is, whether a questionnaire item was asked at all, and that depends on the survey cycle,
+which also differs in follow-up and baseline mortality. A model can learn "cycle" from those flags and look good by cross-validation inside the era, then fail on a new one. Removing the flags (a post hoc analysis, not pre-registered) restored the AUC to {r1b['auc_S3b']:.3f} but did not beat the baseline (gain {r1b['gain_vs_S1']:+.3f}, {r1b['gain_ci'][0]:+.3f} to {r1b['gain_ci'][1]:+.3f}).
+That explanation is consistent with the data but was not itself tested.</p>
+<p>Bar R2 was met: among the {RR['R2']['decedents']:,} people who died within five years in the later era ({RR['R2']['cancer_deaths']} of cancer), the whole picture separated cancer deaths from other deaths better than the baseline did (AUC {RR['R2']['auc_S3']:.2f} against {RR['R2']['auc_S1']:.2f}). This should not be read as the whole picture being cancer-specific:
+{RR['R2']['auc_S3']:.2f} is barely above chance, and the baseline's {RR['R2']['auc_S1']:.2f} is below it because age and smoking point toward non-cancer deaths among decedents, so the comparison is against a baseline that does worse than coin-flipping at this particular task. The whole picture is also the model that failed R1 and R3.</p>
+<p>More data did not help ({T('learn')}, {F('fig_learning')}): fitting on 25%, 50% and 100% of the fitting era left the whole picture between {min(lc[k]['S3'] for k in lc):.2f} and {max(lc[k]['S3'] for k in lc):.2f}, while the four-variable baseline stayed near {RR['R1']['auc_S1']:.2f}. The problem is not the sample size in this range; it is that the extra variables carry era-specific patterns and little cancer signal.
+For triage ({T('triage')}, {F('fig_triage')}), the highest-scored 20% of people under the baseline contained {p(cp['S1']['top20'], 0)} of five-year cancer deaths, against {p(cp['age+sex']['top20'], 0)} under age and sex alone and {p(cp['S3']['top20'], 0)} under the whole picture, where chance would give 20%.</p>
+{fig("fig_sets.png", "AUC for five-year cancer death by how much information the model sees. Grey: cross-validated inside the fitting era. Blue: the later era the model never saw. Red line: the strong baseline.")}
+{t_sets}
+{t_steps}
+{fig("fig_triage.png", "Share of five-year cancer deaths found in the highest-scored 10%, 20% and 30% of people in the later era. Dotted line: chance.")}
+{t_triage}
+{fig("fig_learning.png", "Held-out AUC against the number of people used to fit the model.", "70%")}
+{t_learn}
+{t_topvars}
+<h3>3.11 Readability</h3>
 <p>Patient-facing action and headline lines averaged US grade {RD['patient_facing_action_mean']}, with none over grade 10. The first measurement missed the bar: five action lines exceeded grade 10 and the emergency advice scored grade 16.5 because it was a single long sentence. After rewriting without changing meaning,
 the emergency advice scored grade {rd['safety']['mean']}. The remaining hard items in the table are one-word symptom labels, where the formula over-scores.</p>
-{fig("fig9_readability.png", "<b>Figure 9.</b> Reading level of each kind of text. Lower is easier; the dashed line is the bar.")}
+{fig("fig9_readability.png", "Reading level of each kind of text. Lower is easier; the dashed line is the bar.")}
 {t_read}
-<h3>3.9 The tool as a person sees it</h3>
-<p>Figures 10 and 11 are screenshots of the deployed application. The case entered is invented for illustration: a 66-year-old man who has smoked, with unexplained weight loss and a blood count showing iron-deficiency anaemia.</p>
-<figure class="shot"><img src="figures/app_form_crop.png" alt=""><figcaption><b>Figure 10.</b> The entry form, with the research-prototype warning at the top.</figcaption></figure>
-<figure class="shot"><img src="figures/app_result_crop.png" alt=""><figcaption><b>Figure 11.</b> An answer for the invented case: what was flagged, why, and where in the guideline it comes from, followed by the age context.</figcaption></figure>
+<h3>3.12 The tool as a person sees it</h3>
+<p>{F('app_form_crop')} and {F('app_result_crop')} are screenshots of the deployed application. The case entered is invented for illustration: a 66-year-old man who has smoked, with unexplained weight loss and a blood count showing iron-deficiency anaemia.</p>
+<figure class="shot"><img src="figures/app_form_crop.png" alt=""><figcaption><b>{F('app_form_crop')}.</b> The entry form, with the research-prototype warning at the top.</figcaption></figure>
+<figure class="shot"><img src="figures/app_result_crop.png" alt=""><figcaption><b>{F('app_result_crop')}.</b> An answer for the invented case: what was flagged, why, and where in the guideline it comes from, followed by the age context.</figcaption></figure>
 """
 
 DISCUSSION = f"""
 <h3>4.1 What the results mean</h3>
 <p>The navigator did what it was designed to do. It applied a published guideline to a person's facts, asked for what was missing, explained each alert with the page it came from, and did so at a reading level most adults can follow. It did not do something it was never designed to do and that a patient-facing tool might be mistaken for:
-it did not identify who would die of cancer. This distinction is the main lesson. The NG12 criteria are thresholds for <i>looking</i>, set so that the chance of finding cancer is about three percent or more among people who have <i>already come to a doctor with a symptom</i>. Applied to symptom-free people using only their lab values, the same thresholds mostly flag the common conditions that cause anaemia and raised white counts.</p>
-<p>The decedent-only result needs careful reading. It does not show that anaemia protects against cancer death, and it does not show the guideline is wrong. Anaemia is common in people dying of kidney, heart and lung disease, and in a general-population sample those causes of death are far more common than cancer. Whether an alerted person who then received a stool test or a colonoscopy would have had a bowel cancer found is not something death records can show. What the result does show is that a tool which presents lab-only alerts as a signal of cancer would mislead.</p>
-<p>The context layer is the other practical result. Age and sex alone give an AUC of about 0.73 for five-year cancer death, and nothing the navigator adds changes that appreciably. Showing a person what is ordinary for their age is cheap, calibrated and, we believe, useful for reading an alert in proportion; whether it helps or alarms people is a question for readers, not for this data.</p>
-<h3>4.2 Changes made because of the results</h3>
+it did not identify who would die of cancer. The NG12 criteria are thresholds for <i>looking</i>, set so that the chance of finding cancer is about three percent or more among people who have <i>already come to a doctor with a symptom</i>. Applied to symptom-free people using only their lab values, the same thresholds mostly flag the common conditions that cause anaemia and raised white counts.</p>
+<p>The decedent-only result needs careful reading. It does not show that anaemia protects against cancer death, and it does not show the guideline is wrong. Anaemia is common in people dying of kidney, heart and lung disease, and in a general-population sample those causes of death are far more common than cancer. Whether an alerted person who then received a stool test or a colonoscopy would have had a bowel cancer found is not something death records can show.
+What the results do show is that a tool which presents lab-only alerts as a signal of cancer would mislead: the alert lifted the five-year chance of cancer death only from 1.5% to about 3%, mostly by selecting older people, and it marked other causes of death more than cancer.</p>
+<h3>4.2 The risk-ranking question</h3>
+<p>The second idea, ranking risk from routine information, produced a clear and useful negative. A four-number model (age, sex, smoking, body mass index) reaches AUC about 0.74 in a later era, is calibrated, and finds roughly half of five-year cancer deaths in its top fifth. Nothing we added, whether 22 routine blood values or 380 variables, improved on it, and giving the larger model four times the data did not help.
+This does not mean no better model exists. It means that in this survey, with this outcome, the available extra variables carry little cancer-specific signal, and that the apparent gains of a broad model can come from features that identify which survey cycle someone was in. A claim that a broad model detects cancer risk should therefore always show out-of-era performance against a strong baseline, which is what the pre-registration here required.</p>
+<p>It is also worth being clear about what a stronger model would need. Stronger discrimination for cancer would most likely come from information this survey does not have: symptoms, family history, prior imaging, and diagnoses rather than deaths as the outcome. Those are the data a clinical-records study would bring, and why clinician collaboration is the next step, not more survey data.</p>
+<h3>4.3 Changes made because of the results</h3>
 <p>Lab-only alerts now carry a note that common causes are not cancer and that, in a US survey, these findings did not help tell who later died of cancer once age and sex were known. A lower-tier alert for a cancer site is no longer shown beside a higher-tier one. The context layer was added to the tool because its bar was met.
 A rule defect found along the way (asbestos wording shown to a smoker without exposure) was fixed and recorded. These changes are listed as deviations in the pre-registration, which was committed before the first analysis.</p>
-<h3>4.3 Relation to existing work</h3>
+<h3>4.4 Relation to existing work</h3>
 <p>QCancer-style models report AUCs of roughly 0.84 to 0.88 for cancer when symptoms, risk factors and blood tests are combined in primary-care records.<sup>2</sup> Those models use a much richer symptom set and diagnoses as the outcome; the figures are not comparable with an AUC for cancer death
-in a survey, and we make no claim to match them. The navigator's different contribution is access: a person can enter a lab report and symptoms, see why an alert arose in the guideline's own words, and read a plain-language answer. We have not verified that no similar patient-facing tool exists, and the novelty claim should be checked before it is made.</p>
-<h3>4.4 Limitations</h3>
+in a survey, and we make no claim to match them. Risk-ranking from routine data is therefore an established idea, not a new one. What this work adds is a patient-facing way to read a guideline with a lab report in hand, an honest measurement of what routine survey information does and does not add to age, and a public record of bars set before results.
+We have not verified that no similar patient-facing tool exists, and any novelty claim should be checked before it is made.</p>
+<h3>4.5 Limitations</h3>
 <ul>
 <li><b>Not clinician-reviewed.</b> The rule file records <code>review_status: not yet reviewed</code>, and the tool shows this to every user. Transcription errors are possible. A design decision that departs from the guideline text (gating the lung "consider chest X-ray" thrombocytosis path behind at least one symptom, because applied literally it alerted 3.7% of symptom-free adults over 40) needs a clinician's confirmation.</li>
 <li><b>Dated and foreign guidance.</b> The rules are the 2015 edition of UK guidance, which has since been revised (for example, the bowel pathway now uses the faecal immunochemical test). US guidance may differ.</li>
 <li><b>Death, not diagnosis.</b> The outcome cannot show whether an alert would have led to a correct referral. Cancers that were found early and cured are counted as non-cases.</li>
 <li><b>Proxies for symptoms.</b> NHANES has three crude symptom stand-ins and none of the symptoms that drive most of the guideline's high-value rules (bleeding, lumps, bowel change, jaundice). Results for symptom-plus-lab combinations are therefore weak evidence.</li>
+<li><b>Few cancer deaths for the risk models.</b> The fitting era has {RR['cancer_train']} five-year cancer deaths and the test era {RR['cancer_test']}, so differences of one or two AUC points are uncertain, as the intervals show. Conclusions about the large failure of the whole-picture model rest on a much bigger difference.</li>
 <li><b>Self-reported weight and unweighted analysis.</b> The proxy for weight loss misclassifies people. The analyses ignore survey weights and describe the sample, not the US population.</li>
 <li><b>Competing risks.</b> Non-cancer deaths inside the window are treated as non-cases, which a cause-specific hazard model would handle more carefully.</li>
-<li><b>Single comparison for the main prediction question.</b> The one analysis on NHANES III went the other way from the pre-registered era, and with 238 cancer deaths and a one-point AUC difference it should not be over-read.</li>
+<li><b>One post hoc analysis in the risk study.</b> The no-missing-flags variant and the explanation for the failure were added after seeing the result and are labelled as such.</li>
 <li><b>Reading level is not comprehension.</b> A short sentence can still be misunderstood.</li>
 </ul>
-<h3>4.5 Next steps</h3>
+<h3>4.6 Next steps</h3>
 <ol>
 <li>Clinician sign-off of every rule against the current guideline, recorded in the rule file.</li>
 <li>A vignette study in which clinicians independently apply the guideline text to written cases and their answers are compared with the tool's, with under-alerting counted separately because it is the harmful direction (docs/NAVIGATOR_VALIDATION_PROTOCOL.md).</li>
 <li>A comprehension check with lay readers, after an ethics determination.</li>
-<li>An evaluation on data with real symptoms and diagnoses, such as a clinical records database, once access is obtained.</li>
+<li>An evaluation on data with real symptoms and diagnoses, such as a clinical records database, once access is obtained: this is where a stronger model could actually be built.</li>
 <li>Reconciling the rules with current UK and US guidance.</li>
 </ol>
 """
 
 CONCLUSION = """
-<p>A guideline-based navigator can be built, can be made readable, and can be tested against bars set in advance. In this test it applied the guideline as written and produced a stable, modest alert burden. Its lab-driven alerts did not identify who would die of cancer, three of its four pass-or-fail bars were missed, and the paper says so.
-The honest claim is therefore a modest one: the navigator is a faithful, readable way to apply a published referral guideline, accompanied by a calibrated statement of how common cancer death is for a person's age, and it should not be presented as a detector. Whether it helps real people reach a diagnosis sooner is untested.</p>
+<p>A guideline-based navigator can be built, can be made readable, and can be tested against bars set in advance. In this test it applied the guideline as written and produced a stable, modest alert burden. Its lab-driven alerts did not identify who would die of cancer, and a model that used everything a national health survey recorded did no better than age, sex, smoking and body mass index, which together rank cancer death with an AUC of about 0.74.
+Four of seven pass-or-fail bars were missed and the paper says so. The honest claim is therefore a modest one: the navigator is a faithful, readable way to apply a published referral guideline, accompanied by a calibrated statement of how common cancer death is for a person's age, and it should not be presented as a detector. A stronger model will need symptom and diagnosis data this survey does not have, and whether the navigator helps real people reach a diagnosis sooner is untested.</p>
 """
 
 DECL = """
@@ -404,15 +558,15 @@ sup { font-size: 7pt; line-height: 0; }
 .pb { break-before: page; }
 """
 
-TITLE = "A Guideline-Based Symptom and Laboratory Navigator for Cancer Referral Thresholds"
-SUBTITLE = f"Alert burden, cancer specificity and calibration in {n_all + n3:,} US adults, with the bars set in advance and the failures reported"
+TITLE = "Reading Cancer Referral Guidelines for Patients, and Testing Whether Routine Health Information Can Rank Cancer Risk"
+SUBTITLE = f"A guideline-based symptom and laboratory navigator and a pre-registered risk-ranking study in {n_all + n3:,} US adults, with the bars set in advance and the failures reported"
 
 html = f"""<!doctype html><html lang="en"><head><meta charset="utf-8"><title>{TITLE}</title><style>{CSS}</style></head><body>
 <h1>{TITLE}</h1>
 <div class="sub">{SUBTITLE}</div>
 <div class="meta"><b>Rahul</b> (author; surname to be added) &nbsp;·&nbsp; Clinical mentor: Dr. Rishikesh Chavan, UCI Health / CHOC (role and authorship to be agreed) &nbsp;·&nbsp; Oncovision project &nbsp;·&nbsp; Draft of 5 October 2026</div>
 <div class="banner"><b>Draft for mentor review. Not peer reviewed.</b> The navigator applies the 2015 edition of UK guidance, its rules have <b>not</b> been reviewed by a clinician, and nothing here is tested on patients or is medical advice.
-The key findings are negative: three of four pre-registered bars were missed.</div>
+The key findings are negative: four of seven pre-registered bars were missed.</div>
 <div class="abstract"><h2>Abstract</h2>{ABSTRACT}</div>
 <p class="meta"><b>Keywords:</b> cancer referral guidelines; symptom checker; laboratory medicine; early detection; NHANES; pre-registration; health literacy.</p>
 

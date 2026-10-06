@@ -1,0 +1,225 @@
+{
+  "n_train": 11041,
+  "n_test": 13139,
+  "cancer_train": 179,
+  "cancer_test": 200,
+  "variables": {
+    "S0 age+sex": 2,
+    "S1 +smoking, BMI": 4,
+    "S2 +22 routine labs": 65,
+    "S3 whole picture": 380,
+    "S3b whole picture, no missing flags": 206
+  },
+  "models": {
+    "S0 age+sex": {
+      "chosen": "ridge",
+      "cv_auc_train_era": 0.7266,
+      "test_auc": 0.7195
+    },
+    "S1 +smoking, BMI": {
+      "chosen": "ridge",
+      "cv_auc_train_era": 0.7496,
+      "test_auc": 0.7432
+    },
+    "S2 +22 routine labs": {
+      "chosen": "ridge",
+      "cv_auc_train_era": 0.7548,
+      "test_auc": 0.7428
+    },
+    "S3 whole picture": {
+      "chosen": "ridge",
+      "cv_auc_train_era": 0.7374,
+      "test_auc": 0.6288
+    },
+    "S3b whole picture, no missing flags": {
+      "chosen": "ridge",
+      "cv_auc_train_era": 0.7243,
+      "test_auc": 0.7155
+    }
+  },
+  "R1": {
+    "auc_S1": 0.7432,
+    "auc_S3": 0.6288,
+    "gain": -0.1144,
+    "gain_ci": [
+      -0.1606,
+      -0.0685
+    ],
+    "bar": "gain >= 0.02 and CI above 0",
+    "passes": false,
+    "steps": {
+      "S0 age+sex -> S1 +smoking, BMI": {
+        "gain": 0.0237,
+        "ci": [
+          0.0072,
+          0.0416
+        ]
+      },
+      "S1 +smoking, BMI -> S2 +22 routine labs": {
+        "gain": -0.0004,
+        "ci": [
+          -0.0211,
+          0.0183
+        ]
+      },
+      "S2 +22 routine labs -> S3 whole picture": {
+        "gain": -0.114,
+        "ci": [
+          -0.1588,
+          -0.0725
+        ]
+      }
+    }
+  },
+  "R1b_post_hoc": {
+    "auc_S3b": 0.7155,
+    "gain_vs_S1": -0.0278,
+    "gain_ci": [
+      -0.0606,
+      0.006
+    ],
+    "slope": 0.559,
+    "note": "Post hoc. Not pre-registered. Removes missing-value indicators, which can encode survey cycle."
+  },
+  "R2": {
+    "decedents": 1007,
+    "cancer_deaths": 200,
+    "auc_S1": 0.4683,
+    "auc_S3": 0.531,
+    "gain": 0.0627,
+    "gain_ci": [
+      0.0047,
+      0.1222
+    ],
+    "bar": "decedent AUC gain CI above 0",
+    "passes": true
+  },
+  "R3": {
+    "slope": 0.087,
+    "intercept": -3.449,
+    "bar": "slope 0.8 to 1.2",
+    "passes": false,
+    "slope_S1": 0.978
+  },
+  "R4": {
+    "0.25": {
+      "S1": 0.7343,
+      "S3": 0.6594,
+      "n_train": 2760
+    },
+    "0.5": {
+      "S1": 0.7422,
+      "S3": 0.625,
+      "n_train": 5520
+    },
+    "1.0": {
+      "S1": 0.7432,
+      "S3": 0.6288,
+      "n_train": 11041
+    }
+  },
+  "R5": {
+    "age+sex": {
+      "top10": 0.305,
+      "top20": 0.455,
+      "top30": 0.61
+    },
+    "S1": {
+      "top10": 0.295,
+      "top20": 0.5,
+      "top30": 0.655
+    },
+    "S2": {
+      "top10": 0.31,
+      "top20": 0.5,
+      "top30": 0.655
+    },
+    "S3": {
+      "top10": 0.285,
+      "top20": 0.395,
+      "top30": 0.46
+    }
+  },
+  "top_variables": [
+    {
+      "variable": "MCQ140__missing",
+      "auc_drop": 0.02066
+    },
+    {
+      "variable": "age",
+      "auc_drop": 0.02066
+    },
+    {
+      "variable": "RDQ070__missing",
+      "auc_drop": 0.01448
+    },
+    {
+      "variable": "RDQ050__missing",
+      "auc_drop": 0.00922
+    },
+    {
+      "variable": "HUQ050__missing",
+      "auc_drop": 0.00745
+    },
+    {
+      "variable": "PFQ061K",
+      "auc_drop": 0.00471
+    },
+    {
+      "variable": "LBDHDDSI",
+      "auc_drop": 0.00448
+    },
+    {
+      "variable": "BMXARMC__missing",
+      "auc_drop": 0.00367
+    },
+    {
+      "variable": "OSQ010B__missing",
+      "auc_drop": 0.00347
+    },
+    {
+      "variable": "PFQ059__missing",
+      "auc_drop": 0.00336
+    },
+    {
+      "variable": "OSQ060__missing",
+      "auc_drop": 0.00321
+    },
+    {
+      "variable": "LBXRDW",
+      "auc_drop": 0.00316
+    },
+    {
+      "variable": "BMXARMC",
+      "auc_drop": 0.00292
+    },
+    {
+      "variable": "male",
+      "auc_drop": 0.0029
+    },
+    {
+      "variable": "BPAEN2",
+      "auc_drop": 0.00268
+    },
+    {
+      "variable": "OSQ010C__missing",
+      "auc_drop": 0.00245
+    },
+    {
+      "variable": "PFQ061E",
+      "auc_drop": 0.00238
+    },
+    {
+      "variable": "LBXSPH",
+      "auc_drop": 0.00237
+    },
+    {
+      "variable": "OSQ010A__missing",
+      "auc_drop": 0.00235
+    },
+    {
+      "variable": "BPQ080",
+      "auc_drop": 0.00232
+    }
+  ]
+}

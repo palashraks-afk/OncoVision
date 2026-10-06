@@ -46,7 +46,13 @@ fact instead of assuming it. It never says "you have cancer", and it says so whe
   [`experiments/navigator_evidence.py`](experiments/navigator_evidence.py)
 - **Readability measured** against a bar set in advance: patient-facing lines average US grade
   6.9, none above 10. [`experiments/navigator_readability.py`](experiments/navigator_readability.py)
-- **Research paper (PDF, 24 pages, 11 figures):** [docs/paper/Navigator_Research_Paper.pdf](docs/paper/Navigator_Research_Paper.pdf),
+- **Risk ranking, tested too** ([pre-registered](docs/RISK_RANKING_PREREG.md)): five nested models for
+  five-year cancer death, fitted on 1999-2006 and tested on 2007-2014, from age + sex up to 380
+  variables. Age, sex, smoking and BMI reach AUC 0.743 out of era; routine labs add nothing
+  (-0.000); the 380-variable "whole picture" falls to 0.629 and is miscalibrated (slope 0.09),
+  and more data does not fix it. **Four of seven pass/fail bars were missed overall.**
+  [`experiments/risk_ranking.py`](experiments/risk_ranking.py)
+- **Research paper (PDF, 35 pages, 16 figures, 20 tables):** [docs/paper/Navigator_Research_Paper.pdf](docs/paper/Navigator_Research_Paper.pdf),
   rebuilt from the result files by `python docs/paper/build_paper.py`.
 - **Next:** clinician sign-off and a vignette-agreement study.
   [Validation protocol](docs/NAVIGATOR_VALIDATION_PROTOCOL.md) · [Mentor's role](docs/DR_CHAVAN_ROLE.md) ·

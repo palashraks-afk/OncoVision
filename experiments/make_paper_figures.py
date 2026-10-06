@@ -20,6 +20,8 @@ FIG = os.path.join(ROOT, "docs", "paper", "figures")
 os.makedirs(FIG, exist_ok=True)
 EV = json.load(open(os.path.join(ROOT, "experiments", "navigator_evidence_result.json")))
 RD = json.load(open(os.path.join(ROOT, "experiments", "navigator_readability_result.json")))
+SE = json.load(open(os.path.join(ROOT, "experiments", "navigator_sensitivity_result.json")))
+RR = json.load(open(os.path.join(ROOT, "experiments", "risk_ranking_result.json")))
 
 INK, MUTED, GRID = "#1f2933", "#6b7785", "#e4e7eb"
 BLUE, ORANGE, TEAL, RED, GOLD = "#2f6fb0", "#d9822b", "#2a9d8f", "#c0392b", "#b8962e"
@@ -237,6 +239,113 @@ def fig_readability():
     save("fig9_readability.png")
 
 
+def fig_sensitivity():
+    s = {k: v for k, v in SE["specificity_sensitivity"].items() if v}
+    order = ["all, 10-year window", "5-year window", "first 12 months removed", "first 24 months removed", "females only", "males only",
+             "aged 40-59", "aged 60-74", "aged 75 and over", "never smoked", "ever smoked", "ferritin measured"]
+    order = [k for k in order if k in s]
+    fig, ax = plt.subplots(figsize=(8.6, 4.6))
+    y = np.arange(len(order))[::-1]
+    for yi, k in zip(y, order):
+        r = s[k]
+        col = RED if r["ci"][1] < 1 else MUTED
+        ax.plot([r["ci"][0], r["ci"][1]], [yi, yi], color=col, lw=2)
+        ax.plot(r["or"], yi, "o", color=col, ms=6)
+        ax.text(3.6, yi, f"{r['alerted']} alerted of {r['decedents']:,}", va="center", fontsize=8, color=MUTED)
+    ax.axvline(1, color=INK, lw=1)
+    ax.set_yticks(y)
+    ax.set_yticklabels(order, fontsize=9)
+    ax.set_xscale("log")
+    ax.set_xlim(0.08, 3.4)
+    ax.set_xticks([0.1, 0.2, 0.4, 0.7, 1, 2])
+    ax.set_xticklabels(["0.1", "0.2", "0.4", "0.7", "1", "2"])
+    ax.set_xlabel("odds that a death was from cancer, labs-only alert vs none (left of 1: another cause more likely)")
+    ax.set_title("Does the result depend on the choices? Cancer specificity among decedents")
+    ax.grid(axis="y", visible=False)
+    save("fig_sensitivity.png")
+
+
+def fig_absrisk():
+    ab = SE["absolute_risk_by_age"]
+    bands = list(ab)
+    fig, ax = plt.subplots(figsize=(8.4, 3.9))
+    x = np.arange(len(bands))
+    w = 0.36
+    for i, (key, col, lab) in enumerate((("not_alerted", "#9aa5b1", "no lab alert"), ("alerted", BLUE, "lab alert"))):
+        v = [100 * ab[b][key]["rate"] for b in bands]
+        lo = [100 * ab[b][key]["ci"][0] for b in bands]
+        hi = [100 * ab[b][key]["ci"][1] for b in bands]
+        ax.bar(x + (i - 0.5) * w, v, w, color=col, label=lab)
+        ax.errorbar(x + (i - 0.5) * w, v, yerr=[np.array(v) - lo, np.array(hi) - v], fmt="none", ecolor=INK, lw=0.7, capsize=2)
+    for xi, b in zip(x, bands):
+        ax.text(xi, -1.15, f"n={ab[b]['alerted']['n']} / {ab[b]['not_alerted']['n']:,}", ha="center", fontsize=7, color=MUTED)
+    ax.set_xticks(x)
+    ax.set_xticklabels([b.replace("-+", "+") for b in bands])
+    ax.set_xlabel("age", labelpad=16)
+    ax.set_ylabel("died of cancer within 5 years (%)")
+    ax.legend(frameon=False, fontsize=9, loc="upper left")
+    ax.set_title("From age 50 the alerted group had a higher rate, but the intervals overlap")
+    save("fig_absrisk.png")
+
+
+def fig_sets():
+    m = RR["models"]
+    names = list(m)
+    short = ["Age + sex", "+ smoking,\nBMI", "+ 22 routine\nlabs", "Whole picture\n(380 variables)", "Whole picture,\nno missing flags"]
+    fig, ax = plt.subplots(figsize=(9, 4))
+    x = np.arange(len(names))
+    w = 0.36
+    ax.bar(x - w / 2, [m[n]["cv_auc_train_era"] for n in names], w, color="#9aa5b1", label="inside the fitting era (cross-validated)")
+    ax.bar(x + w / 2, [m[n]["test_auc"] for n in names], w, color=BLUE, label="held-out later era")
+    for xi, n in zip(x, names):
+        ax.text(xi + w / 2, m[n]["test_auc"] + 0.006, f"{m[n]['test_auc']:.3f}", ha="center", fontsize=8.5)
+    ax.set_ylim(0.55, 0.8)
+    ax.axhline(RR["R1"]["auc_S1"], color=RED, ls="--", lw=1)
+    ax.text(len(names) - 0.55, RR["R1"]["auc_S1"] + 0.004, "strong baseline", color=RED, fontsize=8, ha="right")
+    ax.set_xticks(x)
+    ax.set_xticklabels(short, fontsize=8.5)
+    ax.set_ylabel("AUC, five-year cancer death")
+    ax.legend(frameon=False, fontsize=8.5, loc="upper left")
+    ax.set_title("More information per person did not improve out-of-era ranking")
+    save("fig_sets.png")
+
+
+def fig_triage():
+    c = RR["R5"]
+    keys = [("age+sex", "Age + sex", "#9aa5b1"), ("S1", "+ smoking, BMI", BLUE), ("S3", "Whole picture", ORANGE)]
+    fig, ax = plt.subplots(figsize=(7.6, 3.8))
+    x = np.arange(3)
+    w = 0.26
+    for i, (k, lab, col) in enumerate(keys):
+        v = [100 * c[k][t] for t in ("top10", "top20", "top30")]
+        ax.bar(x + (i - 1) * w, v, w, color=col, label=lab)
+        for xi, vv in zip(x + (i - 1) * w, v):
+            ax.text(xi, vv + 1, f"{vv:.0f}", ha="center", fontsize=8)
+    ax.plot([-0.4, 2.4], [10, 30], color=MUTED, ls=":", lw=1)
+    ax.text(2.4, 31, "chance", color=MUTED, fontsize=8, ha="right")
+    ax.set_xticks(x)
+    ax.set_xticklabels(["highest-scored 10%", "highest-scored 20%", "highest-scored 30%"])
+    ax.set_ylabel("% of cancer deaths found")
+    ax.legend(frameon=False, fontsize=8.5, loc="upper left")
+    ax.set_title("Triage: how many cancer deaths sit in the top of the ranking")
+    save("fig_triage.png")
+
+
+def fig_learning():
+    lc = RR["R4"]
+    fr = sorted(lc, key=float)
+    x = [lc[f]["n_train"] for f in fr]
+    fig, ax = plt.subplots(figsize=(6.4, 3.8))
+    ax.plot(x, [lc[f]["S1"] for f in fr], "o-", color=BLUE, label="age, sex, smoking, BMI")
+    ax.plot(x, [lc[f]["S3"] for f in fr], "o-", color=ORANGE, label="whole picture (380 variables)")
+    ax.set_xlabel("people used to fit the model")
+    ax.set_ylabel("held-out AUC")
+    ax.set_ylim(0.58, 0.78)
+    ax.legend(frameon=False, fontsize=8.5, loc="center right")
+    ax.set_title("Would more data fix it? Not in this range")
+    save("fig_learning.png")
+
+
 if __name__ == "__main__":
-    for f in (fig_pipeline, fig_cohort, fig_burden, fig_rules, fig_forest, fig_auc, fig_calibration, fig_ferritin, fig_readability):
+    for f in (fig_pipeline, fig_cohort, fig_burden, fig_rules, fig_forest, fig_auc, fig_calibration, fig_ferritin, fig_readability, fig_sensitivity, fig_absrisk, fig_sets, fig_triage, fig_learning):
         f()

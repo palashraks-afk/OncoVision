@@ -1,0 +1,390 @@
+{
+  "cohort_by_era": {
+    "1999-2006": {
+      "n": 10122,
+      "mean_age": 59.8,
+      "female_pct": 0.503,
+      "ever_smoked_pct": 0.52,
+      "hemoglobin_mean": 14.28,
+      "mcv_mean": 90.6,
+      "platelets_mean": 265.0,
+      "wbc_mean": 7.14,
+      "weight_loss_proxy_pct": 0.111,
+      "died_pct": 0.364,
+      "cancer_deaths": 705,
+      "any_lab_alert_pct": 0.067
+    },
+    "2007-2014": {
+      "n": 12461,
+      "mean_age": 58.4,
+      "female_pct": 0.516,
+      "ever_smoked_pct": 0.477,
+      "hemoglobin_mean": 13.99,
+      "mcv_mean": 89.6,
+      "platelets_mean": 242.0,
+      "wbc_mean": 7.1,
+      "weight_loss_proxy_pct": 0.112,
+      "died_pct": 0.156,
+      "cancer_deaths": 410,
+      "any_lab_alert_pct": 0.086
+    },
+    "2015-2018": {
+      "n": 5997,
+      "mean_age": 59.0,
+      "female_pct": 0.516,
+      "ever_smoked_pct": 0.441,
+      "hemoglobin_mean": 13.91,
+      "mcv_mean": 88.9,
+      "platelets_mean": 237.0,
+      "wbc_mean": 7.2,
+      "weight_loss_proxy_pct": 0.126,
+      "died_pct": 0.039,
+      "cancer_deaths": 40,
+      "any_lab_alert_pct": 0.095
+    }
+  },
+  "alert_as_test": {
+    "any alert, labs only": {
+      "tp": 54,
+      "fp": 1695,
+      "fn": 286,
+      "tn": 20525,
+      "sensitivity": 0.1588,
+      "sensitivity_ci": [
+        0.1238,
+        0.2015
+      ],
+      "specificity": 0.9237,
+      "specificity_ci": [
+        0.9202,
+        0.9271
+      ],
+      "ppv": 0.0309,
+      "ppv_ci": [
+        0.0237,
+        0.0401
+      ],
+      "npv": 0.98626,
+      "lr_positive": 2.08,
+      "flagged_share": 0.0775
+    },
+    "see a doctor soon, labs only": {
+      "tp": 6,
+      "fp": 178,
+      "fn": 334,
+      "tn": 22042,
+      "sensitivity": 0.0176,
+      "sensitivity_ci": [
+        0.0081,
+        0.038
+      ],
+      "specificity": 0.992,
+      "specificity_ci": [
+        0.9907,
+        0.9931
+      ],
+      "ppv": 0.0326,
+      "ppv_ci": [
+        0.015,
+        0.0693
+      ],
+      "npv": 0.98507,
+      "lr_positive": 2.2,
+      "flagged_share": 0.0082
+    },
+    "any alert, labs + proxy symptoms": {
+      "tp": 181,
+      "fp": 7688,
+      "fn": 159,
+      "tn": 14532,
+      "sensitivity": 0.5324,
+      "sensitivity_ci": [
+        0.4793,
+        0.5847
+      ],
+      "specificity": 0.654,
+      "specificity_ci": [
+        0.6477,
+        0.6602
+      ],
+      "ppv": 0.023,
+      "ppv_ci": [
+        0.0199,
+        0.0266
+      ],
+      "npv": 0.98918,
+      "lr_positive": 1.54,
+      "flagged_share": 0.3488
+    },
+    "any alert, labs only (versus oldest 1,749 by age alone)": {
+      "tp": 78,
+      "fp": 1671,
+      "fn": 262,
+      "tn": 20549,
+      "sensitivity": 0.2294,
+      "sensitivity_ci": [
+        0.1879,
+        0.277
+      ],
+      "specificity": 0.9248,
+      "specificity_ci": [
+        0.9213,
+        0.9282
+      ],
+      "ppv": 0.0446,
+      "ppv_ci": [
+        0.0359,
+        0.0553
+      ],
+      "npv": 0.98741,
+      "lr_positive": 3.05,
+      "flagged_share": 0.0775
+    },
+    "any alert, labs + proxy symptoms (versus oldest 7,869 by age alone)": {
+      "tp": 229,
+      "fp": 7640,
+      "fn": 111,
+      "tn": 14580,
+      "sensitivity": 0.6735,
+      "sensitivity_ci": [
+        0.622,
+        0.7212
+      ],
+      "specificity": 0.6562,
+      "specificity_ci": [
+        0.6499,
+        0.6624
+      ],
+      "ppv": 0.0291,
+      "ppv_ci": [
+        0.0256,
+        0.0331
+      ],
+      "npv": 0.99244,
+      "lr_positive": 1.96,
+      "flagged_share": 0.3488
+    }
+  },
+  "absolute_risk_by_age": {
+    "40-49": {
+      "n": 6487,
+      "alerted": {
+        "n": 309,
+        "cancer_deaths": 1,
+        "rate": 0.0032,
+        "ci": [
+          0.0006,
+          0.0181
+        ]
+      },
+      "not_alerted": {
+        "n": 6178,
+        "cancer_deaths": 21,
+        "rate": 0.0034,
+        "ci": [
+          0.0022,
+          0.0052
+        ]
+      },
+      "rate_ratio": 0.94
+    },
+    "50-59": {
+      "n": 5319,
+      "alerted": {
+        "n": 95,
+        "cancer_deaths": 2,
+        "rate": 0.0211,
+        "ci": [
+          0.0058,
+          0.0735
+        ]
+      },
+      "not_alerted": {
+        "n": 5224,
+        "cancer_deaths": 50,
+        "rate": 0.0096,
+        "ci": [
+          0.0073,
+          0.0126
+        ]
+      },
+      "rate_ratio": 2.2
+    },
+    "60-69": {
+      "n": 5429,
+      "alerted": {
+        "n": 482,
+        "cancer_deaths": 10,
+        "rate": 0.0207,
+        "ci": [
+          0.0113,
+          0.0378
+        ]
+      },
+      "not_alerted": {
+        "n": 4947,
+        "cancer_deaths": 70,
+        "rate": 0.0141,
+        "ci": [
+          0.0112,
+          0.0178
+        ]
+      },
+      "rate_ratio": 1.47
+    },
+    "70-79": {
+      "n": 3297,
+      "alerted": {
+        "n": 475,
+        "cancer_deaths": 17,
+        "rate": 0.0358,
+        "ci": [
+          0.0225,
+          0.0566
+        ]
+      },
+      "not_alerted": {
+        "n": 2822,
+        "cancer_deaths": 78,
+        "rate": 0.0276,
+        "ci": [
+          0.0222,
+          0.0344
+        ]
+      },
+      "rate_ratio": 1.3
+    },
+    "80-+": {
+      "n": 2028,
+      "alerted": {
+        "n": 388,
+        "cancer_deaths": 24,
+        "rate": 0.0619,
+        "ci": [
+          0.0419,
+          0.0904
+        ]
+      },
+      "not_alerted": {
+        "n": 1640,
+        "cancer_deaths": 67,
+        "rate": 0.0409,
+        "ci": [
+          0.0323,
+          0.0516
+        ]
+      },
+      "rate_ratio": 1.51
+    }
+  },
+  "specificity_sensitivity": {
+    "all, 10-year window": {
+      "or": 0.633,
+      "ci": [
+        0.497,
+        0.805
+      ],
+      "decedents": 3859,
+      "alerted": 682
+    },
+    "5-year window": {
+      "or": 0.644,
+      "ci": [
+        0.466,
+        0.889
+      ],
+      "decedents": 1856,
+      "alerted": 424
+    },
+    "first 12 months removed": {
+      "or": 0.653,
+      "ci": [
+        0.507,
+        0.84
+      ],
+      "decedents": 3568,
+      "alerted": 598
+    },
+    "first 24 months removed": {
+      "or": 0.654,
+      "ci": [
+        0.498,
+        0.857
+      ],
+      "decedents": 3219,
+      "alerted": 511
+    },
+    "females only": {
+      "or": 0.405,
+      "ci": [
+        0.257,
+        0.638
+      ],
+      "decedents": 1715,
+      "alerted": 278
+    },
+    "males only": {
+      "or": 0.773,
+      "ci": [
+        0.578,
+        1.033
+      ],
+      "decedents": 2144,
+      "alerted": 404
+    },
+    "aged 40-59": {
+      "or": 0.816,
+      "ci": [
+        0.292,
+        2.281
+      ],
+      "decedents": 639,
+      "alerted": 21
+    },
+    "aged 60-74": {
+      "or": 0.524,
+      "ci": [
+        0.363,
+        0.757
+      ],
+      "decedents": 1313,
+      "alerted": 240
+    },
+    "aged 75 and over": {
+      "or": 0.732,
+      "ci": [
+        0.521,
+        1.026
+      ],
+      "decedents": 1907,
+      "alerted": 421
+    },
+    "ferritin measured": {
+      "or": 0.284,
+      "ci": [
+        0.109,
+        0.738
+      ],
+      "decedents": 557,
+      "alerted": 73
+    },
+    "never smoked": {
+      "or": 0.77,
+      "ci": [
+        0.526,
+        1.126
+      ],
+      "decedents": 1559,
+      "alerted": 308
+    },
+    "ever smoked": {
+      "or": 0.57,
+      "ci": [
+        0.417,
+        0.78
+      ],
+      "decedents": 2294,
+      "alerted": 373
+    }
+  }
+}
