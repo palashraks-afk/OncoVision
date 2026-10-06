@@ -49,10 +49,16 @@ fact instead of assuming it. It never says "you have cancer", and it says so whe
 - **Risk ranking, tested too** ([pre-registered](docs/RISK_RANKING_PREREG.md)): five nested models for
   five-year cancer death, fitted on 1999-2006 and tested on 2007-2014, from age + sex up to 380
   variables. Age, sex, smoking and BMI reach AUC 0.743 out of era; routine labs add nothing
-  (-0.000); the 380-variable "whole picture" falls to 0.629 and is miscalibrated (slope 0.09),
-  and more data does not fix it. **Four of seven pass/fail bars were missed overall.**
+  (-0.000); a curated 29-variable set also misses its bar (+0.009, CI -0.007 to +0.027); the 380-variable "whole picture" falls to 0.629 and is miscalibrated (slope 0.09),
+  and more data does not fix it. **Five of eight pass/fail bars were missed overall.**
   [`experiments/risk_ranking.py`](experiments/risk_ranking.py)
-- **Research paper (PDF, 35 pages, 16 figures, 20 tables):** [docs/paper/Navigator_Research_Paper.pdf](docs/paper/Navigator_Research_Paper.pdf),
+- **Which screenings are you due for?** [`/screening`](https://oncovisionai.vercel.app/screening): the US Preventive
+  Services Task Force recommendations for breast, cervical, bowel, lung and prostate cancer, applied to age, sex
+  and smoking history. Each age and smoking boundary is tested against the published wording
+  ([`tests/test_screening.py`](tests/test_screening.py)). Not clinician-reviewed.
+- **For a clinician:** [`docs/clinician_review/Rule_Review_Packet.pdf`](docs/clinician_review/Rule_Review_Packet.pdf) puts every rule in plain words with tick boxes
+  (regenerate with `python tools/make_review_packet.py`). Status of every open problem: [`docs/PROBLEMS_STATUS.md`](docs/PROBLEMS_STATUS.md).
+- **Research paper (PDF, 37 pages, 17 figures, 20 tables):** [docs/paper/Navigator_Research_Paper.pdf](docs/paper/Navigator_Research_Paper.pdf),
   rebuilt from the result files by `python docs/paper/build_paper.py`.
 - **Next:** clinician sign-off and a vignette-agreement study.
   [Validation protocol](docs/NAVIGATOR_VALIDATION_PROTOCOL.md) · [Mentor's role](docs/DR_CHAVAN_ROLE.md) ·

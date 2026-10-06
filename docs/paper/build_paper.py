@@ -44,7 +44,7 @@ def orci(r):
 
 
 FIGS = ["fig1_pipeline", "fig2_cohort", "fig3_burden", "fig5_decedents", "fig_sensitivity", "fig_absrisk", "fig6_auc", "fig8_ferritin",
-        "fig4_rules", "fig7_calibration", "fig_sets", "fig_triage", "fig_learning", "fig9_readability", "app_form_crop", "app_result_crop"]
+        "fig4_rules", "fig7_calibration", "fig_sets", "fig_triage", "fig_learning", "fig9_readability", "app_form_crop", "app_result_crop", "app_screening_crop"]
 FN = {n: i + 1 for i, n in enumerate(FIGS)}
 
 
@@ -302,7 +302,7 @@ Separately, a risk-ranking study fitted five nested models for five-year cancer 
 As a test for five-year cancer death the alert had sensitivity {p(at['any alert, labs only']['sensitivity'], 0)}, specificity {p(at['any alert, labs only']['specificity'], 0)} and positive predictive value {p(at['any alert, labs only']['ppv'])} against a base rate of 1.5%.
 Adding it to age and sex did not improve prediction in the later era (AUC gain {g_ctx['gain']:+.3f}, 95% CI {g_ctx['gain_ci'][0]:+.3f} to {g_ctx['gain_ci'][1]:+.3f}). In the risk-ranking study, age, sex, smoking and body mass index reached an AUC of {RR['R1']['auc_S1']:.3f} out of era and routine labs added {st['S1 +smoking, BMI -> S2 +22 routine labs']['gain']:+.3f};
 the 380-variable whole picture scored {RR['R1']['auc_S3']:.3f} (gain {RR['R1']['gain']:+.3f}) and was badly miscalibrated (slope {RR['R3']['slope']}), and quadrupling the fitting data did not help. The age, sex and smoking context layer was well calibrated in the later era (slope {q6['calibration_slope']:.2f}).
-Patient-facing text averaged US grade {RD['patient_facing_action_mean']}.</p>
+Patient-facing text averaged US grade {RD['patient_facing_action_mean']}. A companion lookup of US screening recommendations (breast, cervical, colorectal, lung, prostate) was built from the Task Force's own pages and tested at every age boundary.</p>
 <p><b>Conclusions.</b> A guideline-based navigator can be built, made readable and tested against bars set in advance. Its lab-driven alerts, and a model using everything the survey recorded, did not identify who would die of cancer better than age, sex, smoking and body mass index, which together reach AUC about 0.74.
 The honest uses are reading a guideline in plain language and putting an alert in proportion to what is ordinary for a person's age. The rules are UK guidance from 2015, have not been clinician-reviewed, and clinician validation is the necessary next step.</p>
 """
@@ -375,8 +375,12 @@ Models were fitted on cycles 1999-2006 and tested on cycles 2007-2014, which dif
 all 380 variables (S3); and, post hoc, the same without the missing-value indicators (S3b). For each set, ridge logistic regression or gradient-boosted trees were chosen by five-fold cross-validation inside the fitting era; hyperparameters were fixed in advance.
 Bars were committed beforehand (docs/RISK_RANKING_PREREG.md): R1, an AUC gain of at least 0.02 for S3 over S1 with a bootstrap interval above zero; R2, a better separation of cancer from other deaths among people who died within five years; R3, a calibration slope between 0.8 and 1.2.
 R4 (learning curve on 25%, 50% and 100% of the fitting data) and R5 (share of cancer deaths in the top-scored 10%, 20% and 30%) have no bar.</p>
-<h3>2.12 Software and reproducibility</h3>
-<p>Backend: Python and FastAPI; frontend: Next.js, deployed publicly. There are {79} automated tests, including properties such as "a symptom-free person with normal labs is never told to see a doctor soon over 300 random profiles",
+<h3>2.12 The screening lookup (companion tool)</h3>
+<p>A second page, <code>/screening</code>, answers a different question: which routine screenings do US guidelines recommend for a person at average risk? It is a lookup, not a prediction. It applies the five US Preventive Services Task Force (USPSTF) recommendations for breast, cervical, colorectal, lung and prostate cancer to age, sex at birth, whether the cervix is present, and smoking history (smoking now, years since quitting, pack-years).
+The age limits, tests, intervals and grades were read from the Task Force's own recommendation pages on 5 October 2026 and are recorded with each item. Every boundary (for example age 39 versus 40 for mammography, 15 versus 15.5 years since quitting for lung screening, 19.9 versus 20 pack-years) has an automated test written from the published wording. Missing facts are asked for, and the tool states that it covers average-risk adults only and that it does not say other cancers cannot be screened for.
+Prostate testing is never called "due", because the Task Force's grade for ages 55 to 69 is an individual decision.</p>
+<h3>2.13 Software and reproducibility</h3>
+<p>Backend: Python and FastAPI; frontend: Next.js, deployed publicly. There are {120} automated tests, including properties such as "a symptom-free person with normal labs is never told to see a doctor soon over 300 random profiles",
 "the tool never says 'you have cancer'" and "a rule that refers to a symptom the form cannot ask about is a loud failure". Every number in this paper is regenerated by scripts in the repository, and the tables and figures are built directly from their output.
 Reporting follows the spirit of TRIPOD+AI where it applies;<sup>5</sup> because the engine is not a trained model there is no training-set leakage to guard against in the rules themselves, only in the context layer, which is validated out of era.</p>
 """
@@ -464,6 +468,10 @@ the emergency advice scored grade {rd['safety']['mean']}. The remaining hard ite
 <p>{F('app_form_crop')} and {F('app_result_crop')} are screenshots of the deployed application. The case entered is invented for illustration: a 66-year-old man who has smoked, with unexplained weight loss and a blood count showing iron-deficiency anaemia.</p>
 <figure class="shot"><img src="figures/app_form_crop.png" alt=""><figcaption><b>{F('app_form_crop')}.</b> The entry form, with the research-prototype warning at the top.</figcaption></figure>
 <figure class="shot"><img src="figures/app_result_crop.png" alt=""><figcaption><b>{F('app_result_crop')}.</b> An answer for the invented case: what was flagged, why, and where in the guideline it comes from, followed by the age context.</figcaption></figure>
+<h3>3.13 The screening lookup</h3>
+<p>The screening lookup has no accuracy to report in the sense of the earlier sections, because it applies written recommendations and predicts nothing. What can be reported is that every age and smoking boundary in the five recommendations is covered by a test written from the published text, and that the page links each answer to its source. {F('app_screening_crop')} shows an invented case: a 58-year-old man who smokes one pack a day and has done so for 30 years.
+He is told that bowel screening and an annual low-dose CT scan are recommended, that PSA testing is his own choice with his doctor, and is reminded that a family history or gene change could change this.</p>
+<figure class="shot"><img src="figures/app_screening_crop.png" alt=""><figcaption><b>{F('app_screening_crop')}.</b> The screening lookup for an invented 58-year-old man who smokes, with 30 pack-years. Each item links to the Task Force page it comes from.</figcaption></figure>
 """
 
 DISCUSSION = f"""
@@ -493,7 +501,9 @@ A short search found that QCancer is publicly available online, that Cancer Rese
 <li><b>Self-reported weight and unweighted analysis.</b> The proxy for weight loss misclassifies people. The analyses ignore survey weights and describe the sample, not the US population.</li>
 <li><b>Competing risks.</b> Non-cancer deaths inside the window are treated as non-cases, which a cause-specific hazard model would handle more carefully.</li>
 <li><b>One post hoc analysis in the risk study.</b> The no-missing-flags variant and the explanation for the failure were added after seeing the result and are labelled as such.</li>
-<li><b>Reading level is not comprehension.</b> A short sentence can still be misunderstood.</li>
+<li><b>Reading level is not comprehension.</b> A short sentence can still be misunderstood. A protocol for testing it with readers is written (docs/COMPREHENSION_STUDY_PROTOCOL.md) and has not been run.</li>
+<li><b>The screening lookup is unreviewed and narrow.</b> It covers five cancers for average-risk adults, applies guidelines that are revised over time, and has not been reviewed by a clinician.</li>
+<li><b>Current NG12 not read at source.</b> NICE's website refused automated access, so the 2023 changes to the bowel pathway are known only from secondary sources.</li>
 </ul>
 <h3>4.6 Next steps</h3>
 <ol>
