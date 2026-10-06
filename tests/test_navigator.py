@@ -342,3 +342,10 @@ def test_young_woman_with_low_iron_gets_a_periods_note_and_bowel_matches_get_a_v
     assert any("2015" in n and "FIT" in n for n in out["guideline_notes"])
     out = nav.evaluate({"age": 44, "sex": "female", "symptoms": [{"key": "cough"}]})
     assert out["guideline_notes"] == []
+
+
+def test_context_for_people_in_their_fifties_says_it_runs_low():
+    out = nav.evaluate({"age": 55, "sex": "male", "ever_smoked": True})["context"]
+    assert "ran low" in out["text"] and "minimum" in out["text"]
+    assert "ran low" not in nav.evaluate({"age": 45, "sex": "male", "ever_smoked": True})["context"]["text"]
+    assert "ran low" not in nav.evaluate({"age": 65, "sex": "male", "ever_smoked": True})["context"]["text"]

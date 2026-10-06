@@ -102,11 +102,15 @@ def context_for(age: Optional[float], sex: Optional[str], ever_smoked: Optional[
     per_1000 = 1000 / (1 + math.exp(-z))
     shown = round(per_1000) if per_1000 >= 10 else round(per_1000, 1)
     who = "adults" if ever_smoked is None else ("adults who have smoked" if ever_smoked else "adults who have never smoked")
+    low_note = ""
+    if 50 <= age < 60:
+        low_note = (" In our checks this figure ran low for people in their 50s, by about half again, so treat it as a minimum "
+                    "and not an estimate of your own risk.")
     return {
         "per_1000": shown,
         "text": (f"For context: in a US health survey, about {shown:g} in every 1,000 {sex} {who} aged "
                  f"around {int(round(age))} died of cancer within five years. This is a group average for your age "
-                 "and not your own risk. Age explains most of the difference between people."),
+                 "and not your own risk. Age explains most of the difference between people." + low_note),
         "smoking_assumed_average": ever_smoked is None,
         "basis": "NHANES 1999-2014, 24,180 adults 40 and over, deaths from the National Death Index. Checked on a later "
                  "survey period (calibration slope %.2f). Does not use your labs or symptoms." % _CTX["validation_out_of_era"]["calibration_slope"],

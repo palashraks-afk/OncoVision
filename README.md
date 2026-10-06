@@ -50,8 +50,12 @@ fact instead of assuming it. It never says "you have cancer", and it says so whe
   five-year cancer death, fitted on 1999-2006 and tested on 2007-2014, from age + sex up to 380
   variables. Age, sex, smoking and BMI reach AUC 0.743 out of era; routine labs add nothing
   (-0.000); a curated 29-variable set also misses its bar (+0.009, CI -0.007 to +0.027); the 380-variable "whole picture" falls to 0.629 and is miscalibrated (slope 0.09),
-  and more data does not fix it. **Five of eight pass/fail bars were missed overall.**
+  and more data does not fix it. **Six of nine pass/fail bars were missed overall.**
   [`experiments/risk_ranking.py`](experiments/risk_ranking.py)
+- **A personal percentage was attempted and is not released** ([pre-registered](docs/RISK_ESTIMATE_PREREG.md)):
+  age, sex, smoking and BMI give AUC 0.74 and good overall calibration, but underpredicted cancer deaths in ages 50 to 59
+  in two separate held-out eras (40 observed vs 25 predicted; 32 vs 19). The age-context line now says so for that age group.
+  [`experiments/risk_estimate.py`](experiments/risk_estimate.py)
 - **Which screenings are you due for?** [`/screening`](https://oncovisionai.vercel.app/screening): the US Preventive
   Services Task Force recommendations for breast, cervical, bowel, lung and prostate cancer, applied to age, sex
   and smoking history. Each age and smoking boundary is tested against the published wording

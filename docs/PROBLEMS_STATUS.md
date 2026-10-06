@@ -17,3 +17,14 @@ improved but not gone. "Needs a person" means I cannot do it from here.
 | 10 | Novelty not checked | **Checked, claim softened** | `docs/NOVELTY_AND_REFERENCES_CHECK.md`: QCancer is public online; CRUK has a clinician-facing NG12 guide; commercial calculators exist | Paper no longer implies novelty beyond what was found |
 | 11 | Readability is only a score | **Needs a person** | `docs/COMPREHENSION_STUDY_PROTOCOL.md`: three fixed outputs, five questions, scoring key, bars | Needs readers and an ethics determination |
 | 12 | NHANES III went the other way | **Tested** | Heterogeneity test: z = -3.47, p = 0.0005. The paper now says the effect is not stable across eras | The honest reading is "alerts never identified cancer deaths", not "alerts protect" |
+
+## Added 6 October 2026: the personal percentage
+
+The user asked for a personal cancer-risk percentage. It was built with its bars fixed first
+(`docs/RISK_ESTIMATE_PREREG.md`). Three of four bars were met; the fourth (calibration in every
+age band) failed for ages 50 to 59 in two held-out eras, always in the too-low direction. One
+declared repair (a cubic age term) did not fix it. **The percentage is not released.** The
+existing age-context line now says it ran low for people in their 50s.
+
+What would fix it: a genuinely new data era or cohort to test a better age model on, or a
+clinical dataset with diagnoses. Neither exists in this project yet.

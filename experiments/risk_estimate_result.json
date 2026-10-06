@@ -1,0 +1,1047 @@
+{
+  "first_run": {
+    "M1": {
+      "label": "A",
+      "form": "M1",
+      "n_train": 11041,
+      "n_test": 13139,
+      "cancer_train": 179,
+      "cancer_test": 200,
+      "auc": 0.7438,
+      "brier": 0.014791,
+      "slope": 0.923,
+      "intercept": -0.191,
+      "deciles": [
+        {
+          "predicted": 0.0016,
+          "observed": 0.0029,
+          "n": 1393,
+          "wilson": [
+            0.0011,
+            0.0074
+          ],
+          "inside": true
+        },
+        {
+          "predicted": 0.0028,
+          "observed": 0.0016,
+          "n": 1288,
+          "wilson": [
+            0.0004,
+            0.0056
+          ],
+          "inside": true
+        },
+        {
+          "predicted": 0.0041,
+          "observed": 0.0059,
+          "n": 1345,
+          "wilson": [
+            0.003,
+            0.0117
+          ],
+          "inside": true
+        },
+        {
+          "predicted": 0.0057,
+          "observed": 0.0055,
+          "n": 1271,
+          "wilson": [
+            0.0027,
+            0.0113
+          ],
+          "inside": true
+        },
+        {
+          "predicted": 0.0075,
+          "observed": 0.0076,
+          "n": 1311,
+          "wilson": [
+            0.0041,
+            0.014
+          ],
+          "inside": true
+        },
+        {
+          "predicted": 0.0101,
+          "observed": 0.0084,
+          "n": 1303,
+          "wilson": [
+            0.0047,
+            0.0151
+          ],
+          "inside": true
+        },
+        {
+          "predicted": 0.0137,
+          "observed": 0.0203,
+          "n": 1331,
+          "wilson": [
+            0.014,
+            0.0294
+          ],
+          "inside": false
+        },
+        {
+          "predicted": 0.0179,
+          "observed": 0.0251,
+          "n": 1274,
+          "wilson": [
+            0.0178,
+            0.0352
+          ],
+          "inside": true
+        },
+        {
+          "predicted": 0.0264,
+          "observed": 0.0312,
+          "n": 1316,
+          "wilson": [
+            0.023,
+            0.042
+          ],
+          "inside": true
+        },
+        {
+          "predicted": 0.0472,
+          "observed": 0.0444,
+          "n": 1307,
+          "wilson": [
+            0.0345,
+            0.0569
+          ],
+          "inside": true
+        }
+      ],
+      "deciles_inside": 9,
+      "bands": {
+        "40-49": {
+          "n": 3716,
+          "observed": 12,
+          "expected": 12.8,
+          "ok": true
+        },
+        "50-59": {
+          "n": 3329,
+          "observed": 40,
+          "expected": 26.9,
+          "ok": false
+        },
+        "60-69": {
+          "n": 3186,
+          "observed": 47,
+          "expected": 51.2,
+          "ok": true
+        },
+        "70+": {
+          "n": 2908,
+          "observed": 101,
+          "expected": 88.2,
+          "ok": true
+        }
+      },
+      "bars": {
+        "auc_ge_0.74": true,
+        "slope_and_intercept": true,
+        "deciles_8_of_10": true,
+        "age_bands": false
+      },
+      "all_bars_met": false
+    },
+    "M2": {
+      "label": "A",
+      "form": "M2",
+      "n_train": 11041,
+      "n_test": 13139,
+      "cancer_train": 179,
+      "cancer_test": 200,
+      "auc": 0.746,
+      "brier": 0.014788,
+      "slope": 0.923,
+      "intercept": -0.19,
+      "deciles": [
+        {
+          "predicted": 0.0016,
+          "observed": 0.003,
+          "n": 1314,
+          "wilson": [
+            0.0012,
+            0.0078
+          ],
+          "inside": true
+        },
+        {
+          "predicted": 0.0027,
+          "observed": 0.0015,
+          "n": 1314,
+          "wilson": [
+            0.0004,
+            0.0055
+          ],
+          "inside": true
+        },
+        {
+          "predicted": 0.004,
+          "observed": 0.0053,
+          "n": 1314,
+          "wilson": [
+            0.0026,
+            0.011
+          ],
+          "inside": true
+        },
+        {
+          "predicted": 0.0056,
+          "observed": 0.0053,
+          "n": 1314,
+          "wilson": [
+            0.0026,
+            0.011
+          ],
+          "inside": true
+        },
+        {
+          "predicted": 0.0075,
+          "observed": 0.0061,
+          "n": 1314,
+          "wilson": [
+            0.0031,
+            0.012
+          ],
+          "inside": true
+        },
+        {
+          "predicted": 0.01,
+          "observed": 0.0099,
+          "n": 1313,
+          "wilson": [
+            0.0058,
+            0.0169
+          ],
+          "inside": true
+        },
+        {
+          "predicted": 0.0135,
+          "observed": 0.0205,
+          "n": 1314,
+          "wilson": [
+            0.0142,
+            0.0297
+          ],
+          "inside": false
+        },
+        {
+          "predicted": 0.0179,
+          "observed": 0.0266,
+          "n": 1314,
+          "wilson": [
+            0.0192,
+            0.0368
+          ],
+          "inside": false
+        },
+        {
+          "predicted": 0.0263,
+          "observed": 0.0289,
+          "n": 1314,
+          "wilson": [
+            0.0211,
+            0.0394
+          ],
+          "inside": true
+        },
+        {
+          "predicted": 0.0471,
+          "observed": 0.0449,
+          "n": 1314,
+          "wilson": [
+            0.035,
+            0.0575
+          ],
+          "inside": true
+        }
+      ],
+      "deciles_inside": 8,
+      "bands": {
+        "40-49": {
+          "n": 3716,
+          "observed": 12,
+          "expected": 12.8,
+          "ok": true
+        },
+        "50-59": {
+          "n": 3329,
+          "observed": 40,
+          "expected": 26.9,
+          "ok": false
+        },
+        "60-69": {
+          "n": 3186,
+          "observed": 47,
+          "expected": 51.2,
+          "ok": true
+        },
+        "70+": {
+          "n": 2908,
+          "observed": 101,
+          "expected": 88.1,
+          "ok": true
+        }
+      },
+      "bars": {
+        "auc_ge_0.74": true,
+        "slope_and_intercept": true,
+        "deciles_8_of_10": true,
+        "age_bands": false
+      },
+      "all_bars_met": false
+    },
+    "M3": {
+      "label": "A",
+      "form": "M3",
+      "n_train": 11041,
+      "n_test": 13139,
+      "cancer_train": 179,
+      "cancer_test": 200,
+      "auc": 0.7456,
+      "brier": 0.014785,
+      "slope": 0.924,
+      "intercept": -0.191,
+      "deciles": [
+        {
+          "predicted": 0.0016,
+          "observed": 0.003,
+          "n": 1314,
+          "wilson": [
+            0.0012,
+            0.0078
+          ],
+          "inside": true
+        },
+        {
+          "predicted": 0.0027,
+          "observed": 0.0015,
+          "n": 1314,
+          "wilson": [
+            0.0004,
+            0.0055
+          ],
+          "inside": true
+        },
+        {
+          "predicted": 0.0041,
+          "observed": 0.0061,
+          "n": 1314,
+          "wilson": [
+            0.0031,
+            0.012
+          ],
+          "inside": true
+        },
+        {
+          "predicted": 0.0056,
+          "observed": 0.0046,
+          "n": 1314,
+          "wilson": [
+            0.0021,
+            0.0099
+          ],
+          "inside": true
+        },
+        {
+          "predicted": 0.0075,
+          "observed": 0.0061,
+          "n": 1314,
+          "wilson": [
+            0.0031,
+            0.012
+          ],
+          "inside": true
+        },
+        {
+          "predicted": 0.0101,
+          "observed": 0.0107,
+          "n": 1313,
+          "wilson": [
+            0.0064,
+            0.0178
+          ],
+          "inside": true
+        },
+        {
+          "predicted": 0.0136,
+          "observed": 0.0205,
+          "n": 1314,
+          "wilson": [
+            0.0142,
+            0.0297
+          ],
+          "inside": false
+        },
+        {
+          "predicted": 0.018,
+          "observed": 0.0244,
+          "n": 1314,
+          "wilson": [
+            0.0173,
+            0.0342
+          ],
+          "inside": true
+        },
+        {
+          "predicted": 0.0264,
+          "observed": 0.0304,
+          "n": 1314,
+          "wilson": [
+            0.0224,
+            0.0412
+          ],
+          "inside": true
+        },
+        {
+          "predicted": 0.0471,
+          "observed": 0.0449,
+          "n": 1314,
+          "wilson": [
+            0.035,
+            0.0575
+          ],
+          "inside": true
+        }
+      ],
+      "deciles_inside": 9,
+      "bands": {
+        "40-49": {
+          "n": 3716,
+          "observed": 12,
+          "expected": 12.8,
+          "ok": true
+        },
+        "50-59": {
+          "n": 3329,
+          "observed": 40,
+          "expected": 27.1,
+          "ok": false
+        },
+        "60-69": {
+          "n": 3186,
+          "observed": 47,
+          "expected": 51.4,
+          "ok": true
+        },
+        "70+": {
+          "n": 2908,
+          "observed": 101,
+          "expected": 88.3,
+          "ok": true
+        }
+      },
+      "bars": {
+        "auc_ge_0.74": true,
+        "slope_and_intercept": true,
+        "deciles_8_of_10": true,
+        "age_bands": false
+      },
+      "all_bars_met": false
+    }
+  },
+  "amendment": {
+    "M1": {
+      "A": {
+        "label": "A",
+        "form": "M1",
+        "n_train": 11041,
+        "n_test": 13139,
+        "cancer_train": 179,
+        "cancer_test": 200,
+        "auc": 0.7438,
+        "brier": 0.014791,
+        "slope": 0.923,
+        "intercept": -0.191,
+        "deciles": [
+          {
+            "predicted": 0.0016,
+            "observed": 0.0029,
+            "n": 1393,
+            "wilson": [
+              0.0011,
+              0.0074
+            ],
+            "inside": true
+          },
+          {
+            "predicted": 0.0028,
+            "observed": 0.0016,
+            "n": 1288,
+            "wilson": [
+              0.0004,
+              0.0056
+            ],
+            "inside": true
+          },
+          {
+            "predicted": 0.0041,
+            "observed": 0.0059,
+            "n": 1345,
+            "wilson": [
+              0.003,
+              0.0117
+            ],
+            "inside": true
+          },
+          {
+            "predicted": 0.0057,
+            "observed": 0.0055,
+            "n": 1271,
+            "wilson": [
+              0.0027,
+              0.0113
+            ],
+            "inside": true
+          },
+          {
+            "predicted": 0.0075,
+            "observed": 0.0076,
+            "n": 1311,
+            "wilson": [
+              0.0041,
+              0.014
+            ],
+            "inside": true
+          },
+          {
+            "predicted": 0.0101,
+            "observed": 0.0084,
+            "n": 1303,
+            "wilson": [
+              0.0047,
+              0.0151
+            ],
+            "inside": true
+          },
+          {
+            "predicted": 0.0137,
+            "observed": 0.0203,
+            "n": 1331,
+            "wilson": [
+              0.014,
+              0.0294
+            ],
+            "inside": false
+          },
+          {
+            "predicted": 0.0179,
+            "observed": 0.0251,
+            "n": 1274,
+            "wilson": [
+              0.0178,
+              0.0352
+            ],
+            "inside": true
+          },
+          {
+            "predicted": 0.0264,
+            "observed": 0.0312,
+            "n": 1316,
+            "wilson": [
+              0.023,
+              0.042
+            ],
+            "inside": true
+          },
+          {
+            "predicted": 0.0472,
+            "observed": 0.0444,
+            "n": 1307,
+            "wilson": [
+              0.0345,
+              0.0569
+            ],
+            "inside": true
+          }
+        ],
+        "deciles_inside": 9,
+        "bands": {
+          "40-49": {
+            "n": 3716,
+            "observed": 12,
+            "expected": 12.8,
+            "ok": true
+          },
+          "50-59": {
+            "n": 3329,
+            "observed": 40,
+            "expected": 26.9,
+            "ok": false
+          },
+          "60-69": {
+            "n": 3186,
+            "observed": 47,
+            "expected": 51.2,
+            "ok": true
+          },
+          "70+": {
+            "n": 2908,
+            "observed": 101,
+            "expected": 88.2,
+            "ok": true
+          }
+        },
+        "bars": {
+          "auc_ge_0.74": true,
+          "slope_and_intercept": true,
+          "deciles_8_of_10": true,
+          "age_bands": false
+        },
+        "all_bars_met": false
+      },
+      "B": {
+        "label": "B",
+        "form": "M1",
+        "n_train": 14446,
+        "n_test": 9734,
+        "cancer_train": 228,
+        "cancer_test": 151,
+        "auc": 0.7418,
+        "brier": 0.015056,
+        "slope": 0.914,
+        "intercept": -0.187,
+        "deciles": [
+          {
+            "predicted": 0.0016,
+            "observed": 0.004,
+            "n": 990,
+            "wilson": [
+              0.0016,
+              0.0103
+            ],
+            "inside": false
+          },
+          {
+            "predicted": 0.0027,
+            "observed": 0.003,
+            "n": 986,
+            "wilson": [
+              0.001,
+              0.0089
+            ],
+            "inside": true
+          },
+          {
+            "predicted": 0.004,
+            "observed": 0.005,
+            "n": 994,
+            "wilson": [
+              0.0022,
+              0.0117
+            ],
+            "inside": true
+          },
+          {
+            "predicted": 0.0055,
+            "observed": 0.0043,
+            "n": 932,
+            "wilson": [
+              0.0017,
+              0.011
+            ],
+            "inside": true
+          },
+          {
+            "predicted": 0.0073,
+            "observed": 0.0091,
+            "n": 989,
+            "wilson": [
+              0.0048,
+              0.0172
+            ],
+            "inside": true
+          },
+          {
+            "predicted": 0.0099,
+            "observed": 0.0103,
+            "n": 974,
+            "wilson": [
+              0.0056,
+              0.0188
+            ],
+            "inside": true
+          },
+          {
+            "predicted": 0.0133,
+            "observed": 0.0186,
+            "n": 966,
+            "wilson": [
+              0.0118,
+              0.0293
+            ],
+            "inside": true
+          },
+          {
+            "predicted": 0.018,
+            "observed": 0.0205,
+            "n": 974,
+            "wilson": [
+              0.0133,
+              0.0315
+            ],
+            "inside": true
+          },
+          {
+            "predicted": 0.0261,
+            "observed": 0.0343,
+            "n": 962,
+            "wilson": [
+              0.0245,
+              0.0478
+            ],
+            "inside": true
+          },
+          {
+            "predicted": 0.0454,
+            "observed": 0.0465,
+            "n": 967,
+            "wilson": [
+              0.035,
+              0.0617
+            ],
+            "inside": true
+          }
+        ],
+        "deciles_inside": 9,
+        "bands": {
+          "40-49": {
+            "n": 2829,
+            "observed": 10,
+            "expected": 9.1,
+            "ok": true
+          },
+          "50-59": {
+            "n": 2503,
+            "observed": 32,
+            "expected": 19.6,
+            "ok": false
+          },
+          "60-69": {
+            "n": 2350,
+            "observed": 36,
+            "expected": 37.6,
+            "ok": true
+          },
+          "70+": {
+            "n": 2052,
+            "observed": 73,
+            "expected": 63.1,
+            "ok": true
+          }
+        },
+        "bars": {
+          "auc_ge_0.74": true,
+          "slope_and_intercept": true,
+          "deciles_8_of_10": true,
+          "age_bands": false
+        },
+        "all_bars_met": false
+      }
+    },
+    "M4": {
+      "A": {
+        "label": "A",
+        "form": "M4",
+        "n_train": 11041,
+        "n_test": 13139,
+        "cancer_train": 179,
+        "cancer_test": 200,
+        "auc": 0.7427,
+        "brier": 0.014793,
+        "slope": 0.923,
+        "intercept": -0.192,
+        "deciles": [
+          {
+            "predicted": 0.0017,
+            "observed": 0.003,
+            "n": 1327,
+            "wilson": [
+              0.0012,
+              0.0077
+            ],
+            "inside": true
+          },
+          {
+            "predicted": 0.0028,
+            "observed": 0.0015,
+            "n": 1313,
+            "wilson": [
+              0.0004,
+              0.0055
+            ],
+            "inside": true
+          },
+          {
+            "predicted": 0.0041,
+            "observed": 0.0073,
+            "n": 1366,
+            "wilson": [
+              0.004,
+              0.0134
+            ],
+            "inside": true
+          },
+          {
+            "predicted": 0.0056,
+            "observed": 0.0045,
+            "n": 1348,
+            "wilson": [
+              0.002,
+              0.0097
+            ],
+            "inside": true
+          },
+          {
+            "predicted": 0.0074,
+            "observed": 0.0073,
+            "n": 1237,
+            "wilson": [
+              0.0038,
+              0.0138
+            ],
+            "inside": true
+          },
+          {
+            "predicted": 0.0098,
+            "observed": 0.0084,
+            "n": 1304,
+            "wilson": [
+              0.0047,
+              0.015
+            ],
+            "inside": true
+          },
+          {
+            "predicted": 0.0134,
+            "observed": 0.0213,
+            "n": 1359,
+            "wilson": [
+              0.0149,
+              0.0305
+            ],
+            "inside": false
+          },
+          {
+            "predicted": 0.018,
+            "observed": 0.0245,
+            "n": 1306,
+            "wilson": [
+              0.0174,
+              0.0344
+            ],
+            "inside": true
+          },
+          {
+            "predicted": 0.0267,
+            "observed": 0.0307,
+            "n": 1272,
+            "wilson": [
+              0.0225,
+              0.0416
+            ],
+            "inside": true
+          },
+          {
+            "predicted": 0.0487,
+            "observed": 0.0444,
+            "n": 1307,
+            "wilson": [
+              0.0345,
+              0.0569
+            ],
+            "inside": true
+          }
+        ],
+        "deciles_inside": 9,
+        "bands": {
+          "40-49": {
+            "n": 3716,
+            "observed": 12,
+            "expected": 13.5,
+            "ok": true
+          },
+          "50-59": {
+            "n": 3329,
+            "observed": 40,
+            "expected": 25.3,
+            "ok": false
+          },
+          "60-69": {
+            "n": 3186,
+            "observed": 47,
+            "expected": 50.4,
+            "ok": true
+          },
+          "70+": {
+            "n": 2908,
+            "observed": 101,
+            "expected": 91.3,
+            "ok": true
+          }
+        },
+        "bars": {
+          "auc_ge_0.74": true,
+          "slope_and_intercept": true,
+          "deciles_8_of_10": true,
+          "age_bands": false
+        },
+        "all_bars_met": false
+      },
+      "B": {
+        "label": "B",
+        "form": "M4",
+        "n_train": 14446,
+        "n_test": 9734,
+        "cancer_train": 228,
+        "cancer_test": 151,
+        "auc": 0.7403,
+        "brier": 0.015057,
+        "slope": 0.914,
+        "intercept": -0.188,
+        "deciles": [
+          {
+            "predicted": 0.0017,
+            "observed": 0.0039,
+            "n": 1021,
+            "wilson": [
+              0.0015,
+              0.01
+            ],
+            "inside": true
+          },
+          {
+            "predicted": 0.0028,
+            "observed": 0.002,
+            "n": 986,
+            "wilson": [
+              0.0006,
+              0.0074
+            ],
+            "inside": true
+          },
+          {
+            "predicted": 0.004,
+            "observed": 0.0062,
+            "n": 963,
+            "wilson": [
+              0.0029,
+              0.0135
+            ],
+            "inside": true
+          },
+          {
+            "predicted": 0.0054,
+            "observed": 0.0053,
+            "n": 938,
+            "wilson": [
+              0.0023,
+              0.0124
+            ],
+            "inside": true
+          },
+          {
+            "predicted": 0.0072,
+            "observed": 0.0072,
+            "n": 978,
+            "wilson": [
+              0.0035,
+              0.0147
+            ],
+            "inside": true
+          },
+          {
+            "predicted": 0.0098,
+            "observed": 0.0111,
+            "n": 991,
+            "wilson": [
+              0.0062,
+              0.0198
+            ],
+            "inside": true
+          },
+          {
+            "predicted": 0.0132,
+            "observed": 0.0193,
+            "n": 982,
+            "wilson": [
+              0.0124,
+              0.03
+            ],
+            "inside": true
+          },
+          {
+            "predicted": 0.0182,
+            "observed": 0.0222,
+            "n": 993,
+            "wilson": [
+              0.0147,
+              0.0333
+            ],
+            "inside": true
+          },
+          {
+            "predicted": 0.0265,
+            "observed": 0.0328,
+            "n": 915,
+            "wilson": [
+              0.0231,
+              0.0464
+            ],
+            "inside": true
+          },
+          {
+            "predicted": 0.0462,
+            "observed": 0.0465,
+            "n": 967,
+            "wilson": [
+              0.035,
+              0.0617
+            ],
+            "inside": true
+          }
+        ],
+        "deciles_inside": 10,
+        "bands": {
+          "40-49": {
+            "n": 2829,
+            "observed": 10,
+            "expected": 9.5,
+            "ok": true
+          },
+          "50-59": {
+            "n": 2503,
+            "observed": 32,
+            "expected": 18.9,
+            "ok": false
+          },
+          "60-69": {
+            "n": 2350,
+            "observed": 36,
+            "expected": 37.3,
+            "ok": true
+          },
+          "70+": {
+            "n": 2052,
+            "observed": 73,
+            "expected": 64.4,
+            "ok": true
+          }
+        },
+        "bars": {
+          "auc_ge_0.74": true,
+          "slope_and_intercept": true,
+          "deciles_8_of_10": true,
+          "age_bands": false
+        },
+        "all_bars_met": false
+      }
+    }
+  },
+  "ship": false
+}
