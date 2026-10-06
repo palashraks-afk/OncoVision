@@ -55,3 +55,28 @@ Anyone with a family history, a known gene change, or earlier cancer has a diffe
 ## If a bar is missed
 
 The estimate is not shown as a percentage. The group context line stays as it is.
+
+## First result and an amendment, written before the second run
+
+**First run (forms M1 to M3, fit 1999-2006, test 2007-2014).** Bars 1 to 3 were met: AUC 0.744,
+calibration slope 0.92 with intercept -0.19, and 9 of 10 groups inside their interval. **Bar 4
+was missed**: in ages 50 to 59 the model predicted 26.9 cancer deaths and 40 occurred. Under the
+rule above, the percentage is not shipped on this result. BMI changed nothing (M2 AUC 0.746,
+M3 0.746), so M1 was the chosen form.
+
+**Amendment.** One repair is tried, declared before it is run. It is not a rescue by moving the
+bar.
+
+- **M4 = M1 + a cubic age term** (age minus 60, cubed, divided by 800), so the age curve can bend
+  where the 50 to 59 miss suggests it is too flat.
+- **Two held-out checks**, because the first test era has now been looked at twice:
+  - **Split A**: fit 1999-2006, test 2007-2014 (the same as before, so weaker evidence).
+  - **Split B**: fit 1999-2008, test 2009-2014 (a later era, only partly new: 2009-2014
+    overlap Split A's test cycles).
+- **The same four bars, unchanged**, must all be met in **both** splits to ship a percentage.
+- If M4 fails either split, the percentage is **not** shown, the group context line stays, and
+  the paper says the estimate was not good enough to release.
+
+What this cannot do: a fresh test. The data is a single survey, and no era is untouched. A pass
+here is evidence the estimate is calibrated on this survey in two later eras, not proof it will
+be calibrated for a new person.
