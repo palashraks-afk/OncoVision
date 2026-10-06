@@ -564,7 +564,7 @@ SUBTITLE = f"A guideline-based symptom and laboratory navigator and a pre-regist
 html = f"""<!doctype html><html lang="en"><head><meta charset="utf-8"><title>{TITLE}</title><style>{CSS}</style></head><body>
 <h1>{TITLE}</h1>
 <div class="sub">{SUBTITLE}</div>
-<div class="meta"><b>Rahul</b> (author; surname to be added) &nbsp;·&nbsp; Clinical mentor: Dr. Rishikesh Chavan, UCI Health / CHOC (role and authorship to be agreed) &nbsp;·&nbsp; Oncovision project &nbsp;·&nbsp; Draft of 5 October 2026</div>
+<div class="meta"><b>Palash Rakshit</b> (author) &nbsp;·&nbsp; Clinical mentor: Dr. Rishikesh Chavan, UCI Health / CHOC (role and authorship to be agreed) &nbsp;·&nbsp; Oncovision project &nbsp;·&nbsp; Draft of 5 October 2026</div>
 <div class="banner"><b>Draft for mentor review. Not peer reviewed.</b> The navigator applies the 2015 edition of UK guidance, its rules have <b>not</b> been reviewed by a clinician, and nothing here is tested on patients or is medical advice.
 The key findings are negative: four of seven pre-registered bars were missed.</div>
 <div class="abstract"><h2>Abstract</h2>{ABSTRACT}</div>
