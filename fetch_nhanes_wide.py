@@ -62,8 +62,10 @@ import pandas as pd
 
 import fetch_nhanes_mortality as fm
 
-OUT = os.path.join("data", "nhanes_wide.csv.gz")
-CYCLES = fm.CYCLES[:5]            # 1999-2000 through 2007-2008
+# WIDE_CYCLES=8 extends to 2013-2014 (a later era for out-of-era tests) and writes a separate file.
+N_CYCLES = int(os.environ.get("WIDE_CYCLES", "5"))
+OUT = os.path.join("data", "nhanes_wide.csv.gz" if N_CYCLES == 5 else f"nhanes_wide_{N_CYCLES}c.csv.gz")
+CYCLES = fm.CYCLES[:N_CYCLES]     # 5: 1999-2000 through 2007-2008; 8: through 2013-2014
 
 # component -> candidate file names, tried in order. NHANES renamed its
 # laboratory files between 1999 and 2005, so the same measurement has up to three
@@ -97,7 +99,7 @@ EXCLUDE_PREFIX = ("SEQN", "WT", "SDMV", "SDDSRVYR", "MCQ220", "MCQ230", "MCQ240"
                   "DMDMARTL", "RIDEXMON", "RIDEXAGM", "RIDSTATR")
 EXCLUDE_SUFFIX = ("LC", "COM", "STATS", "STAT")
 SPECIAL = {7, 9, 77, 99, 777, 999, 7777, 9999, 77777, 99999}
-MIN_CYCLES, MIN_PRESENT = 4, 0.30
+MIN_CYCLES, MIN_PRESENT = (4 if N_CYCLES == 5 else 6), 0.30
 
 
 def usable(name):
