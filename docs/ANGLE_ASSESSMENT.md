@@ -115,3 +115,20 @@ be true.
 - Pre-registration: `docs/CHEAP_MARKERS_PREREG.md`
 - Analysis: `experiments/cheap_markers.py`, `experiments/cheap_markers_sensitivity.py`; figures `experiments/make_marker_figures.py`
 - Earlier angles: `docs/paper/` (navigator and risk ranking) and `docs/audit_paper/` (audit)
+
+## Angle D: free information and cost-matched screening invitation (added 10 Oct 2026)
+
+Paper: `docs/cancer_age_paper/Free_Information_Cheaper_Cancer_Screening.pdf`. Pre-registered in
+`docs/CANCER_AGE_PREREG.md`. 183,585 NHIS adults, two external surveys, equity analysis.
+
+Honest scores on the same 1 / 3 / 5 scale (my judgement, not an external review):
+
+| Criterion | Score | Why not higher |
+|---|---|---|
+| Novelty | 4 | Risk-based screening start ages exist for lung, bowel and breast; the general free-information, cost-matched, three-survey framing was not found in a recorded 6-query search (not proof). |
+| Impact | 4 | Concrete cheaper-invitation result (about 21% fewer invitations to reach half of cancer deaths), but outcome is all cancer deaths, gain is mostly smoking, and weaker for non-White adults. |
+| Research-paper quality | 4 to 5 | Pre-registered, replicated in two surveys, honest miss on the fairness bar. Not 5 because no second analyst has re-run it and there are no registry diagnoses. |
+
+**The target of 4 on one criterion and 5 on the other two was not reached.** Raising impact and
+novelty needs a registry-outcome cohort (cancer sites, diagnoses), a clinician co-author and a
+second analyst; those are human steps.

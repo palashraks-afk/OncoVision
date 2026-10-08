@@ -50,7 +50,7 @@ PERSON_VARS = ["SRVY_YR", "HHX", "FMX", "FPX", "PX", "EDUC", "EDUC1", "PHSTAT", 
 
 
 def get(url):
-    r = requests.get(url, verify=False, timeout=1800, headers=H)
+    r = requests.get(url, verify=False, timeout=240, headers=H)
     r.raise_for_status()
     return r.content
 

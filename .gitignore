@@ -42,3 +42,4 @@ prospective_results.json
 data/nhanes_wide.csv.gz
 data/audit/fulltext/
 data/audit/snippets.json
+data/audit/nhis_cache/

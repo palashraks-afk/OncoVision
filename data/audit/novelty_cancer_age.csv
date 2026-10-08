@@ -1,0 +1,807 @@
+query,pmid,year,title
+Q1 risk advancement period + cancer,41411614,2025,Integrated Genetic Information of Metabolic Dysfunction-Associated Steatotic Liver Disease-Related Traits Improves Hepatocellular Carcinoma Risk Stratification and Screening.
+Q1 risk advancement period + cancer,41430273,2025,Dynamic screening initiation using 16 plasma protein biomarkers with polygenic risk and PLCOm2012: a precision prevention framework for lung cancer.
+Q1 risk advancement period + cancer,37878311,2023,Personalized Initial Screening Age for Colorectal Cancer in Individuals at Average Risk.
+Q1 risk advancement period + cancer,29574091,2018,Genetic Risk Score Is Associated With Prevalence of Advanced Neoplasms in a Colorectal Cancer Screening Population.
+Q2 equivalent / risk age + cancer mortality,41269479,2025,Association of Spirometric Lung Age with Survival Outcomes in Elderly Patients Undergoing Radical Surgery for Gastric Cancer.
+Q2 equivalent / risk age + cancer mortality,40893114,2025,Mortality After Cerebral Venous Thrombosis.
+Q2 equivalent / risk age + cancer mortality,41440197,2025,Canadian Prostate Cancer Trends in the Context of PSA Screening Guideline Changes.
+Q2 equivalent / risk age + cancer mortality,42332494,2026,"A 5-year mortality-prediction model for patients with stomach cancer, based on the Korean nationwide health insurance claim database."
+Q2 equivalent / risk age + cancer mortality,PPR1310452,2026,"Trends and Age-Period-Cohort Effects in Breast Cancer Incidence and Mortality Among Women Aged 20 Years and Older from 2009 to 2023 in Quzhou, China"
+Q2 equivalent / risk age + cancer mortality,41949867,2026,Multimodal Assessment of Biological Age Following Radiation Therapy Among Patients With Early-Stage NSCLC.
+Q2 equivalent / risk age + cancer mortality,42634841,2026,"SMOKING, ENVIRONMENTAL EXPOSURES, AND CHRONIC LUNG DISEASE AS KEY RISK FACTORS FOR LUNG CANCER IN NORTH SUMATRA."
+Q2 equivalent / risk age + cancer mortality,42830190,2026,Global trends in urological cancers: an analysis of the global burden of disease study 2023. 
+Q2 equivalent / risk age + cancer mortality,41399694,2025,"Burden of Malignant Neoplasm of Bone and Articular Cartilage: Trends (1990-2021), Projections to 2030, and Comparison Between China and the G20 Countries (GBD 2021)."
+Q2 equivalent / risk age + cancer mortality,42432983,2026,Sex-specific coexisting burden of oral cancer and cardiovascular disease in Malaysia: An analysis based on GBD 2023 and WHO data.
+Q2 equivalent / risk age + cancer mortality,42361283,2026,Survival Outcomes in Breast Cancer Patients With Use of Vaginal Estrogen Therapy: A SEER Analysis.
+Q2 equivalent / risk age + cancer mortality,40427218,2025,Global Burden of Rare Cancers: Insights from GLOBOCAN 2022 Estimates.
+Q2 equivalent / risk age + cancer mortality,PPR880940,2024,"Mortality from prostate cancer in the years 2007-2021 in North Rhine-Westphalia, Germany"
+Q2 equivalent / risk age + cancer mortality,PPR1266559,2026,Genomic ascertainment of  <i>PALB2</i>  -related cancer predisposition
+Q2 equivalent / risk age + cancer mortality,39994252,2025,Analysis of trends in cancer mortality and the years of life lost in six provinces in northwest China from 2013 to 2021.
+Q2 equivalent / risk age + cancer mortality,39192311,2024,"Mortality from prostate cancer in the years 2007-2021 in North Rhine-Westphalia, Germany."
+Q2 equivalent / risk age + cancer mortality,41973170,2026,The Global Landscape of Colorectal cancer Incidence and Mortality in 2022 and Projections to 2045: New Estimates From GLOBOCAN 2022.
+Q2 equivalent / risk age + cancer mortality,40974336,2025,"Disease Burden of Gastrointestinal Tumors in China From 1990 to 2021, an Analysis for the Global Burden of Disease Study 2021."
+Q2 equivalent / risk age + cancer mortality,41147370,2025,"Global Trends and Forecast of Cardiovascular Diseases, Cancer, and Shared Risk Factors: Insights From the GBD 2021."
+Q2 equivalent / risk age + cancer mortality,42214941,2026,Impact of concurrent cancers on survival of patients with newly diagnosed glioblastoma.
+Q2 equivalent / risk age + cancer mortality,41375006,2025,Impact of Postoperative Radiotherapy on the Risk of Ischemic Heart Disease and Survival in Patients with Ductal Carcinoma In Situ: A Nationwide Claims-Based Cohort Study.
+Q2 equivalent / risk age + cancer mortality,41472453,2025,Health Determinants in Association with Cancer Mortality from a Health Ecological Perspective.
+Q2 equivalent / risk age + cancer mortality,41239237,2025,"The difference in contralateral breast cancer and ovarian cancer risks for BRCA1 founder variant (c.5266dup, c.4035del) carriers with primary breast cancer."
+Q2 equivalent / risk age + cancer mortality,40533790,2025,microRNA-196b-5p expression in cancer tissues is closely associated with clinical and pathological characteristics and prognosis of patients with non-small cell lung cancer.
+Q2 equivalent / risk age + cancer mortality,38537701,2025,Long-term and short-term cardiovascular disease mortality among patients of 21 non-metastatic cancers.
+Q2 equivalent / risk age + cancer mortality,41982702,2026,Preoperative Prognostic Factors of Colorectal Cancer in Patients from Central China: A Retrospective Observational Study.
+Q2 equivalent / risk age + cancer mortality,41945877,2025,Cancer burden and the contributions of risk factors in China: A systematic analysis for the Global Burden of Disease Study 2021.
+Q2 equivalent / risk age + cancer mortality,42696234,2026,"Temporal trends, risk factors, and future projections of gastric cancer burden in China, India, and the United States: a GBD 2023 analysis."
+Q2 equivalent / risk age + cancer mortality,PPR807269,2024,"Trends in Cervical Cancer Incidence and Mortality in the United States, 1975-2018. A Population-Based Study"
+Q2 equivalent / risk age + cancer mortality,42428225,2026,Association of Systemic Inflammatory Indices With Breast Cancer: A Cross-Sectional Analysis of National Health and Nutrition Examination Survey (NHANES) Data.
+Q2 equivalent / risk age + cancer mortality,40950915,2025,"Aging population of tracheal, bronchus, and lung cancer: global, regional, and national burden-insights from the Global Burden of Disease Study 2021."
+Q2 equivalent / risk age + cancer mortality,41367029,2025,Impact of aging on colon cancer burden: A cross-sectional analysis of nationally representative data.
+Q2 equivalent / risk age + cancer mortality,41511952,2026,"Global burden and projections of cervical cancer attributable to unsafe sex and smoking, 1990-2034."
+Q2 equivalent / risk age + cancer mortality,42016061,2026,Extended versus limited pelvic lymph node dissection and long-term outcomes in high-risk prostate cancer before radiotherapy.
+Q2 equivalent / risk age + cancer mortality,40770796,2025,The global burden of stomach cancer and its risk factors from 1990 to 2021: findings from the Global Burden of Disease Study 2021.
+Q2 equivalent / risk age + cancer mortality,40114188,2025,Global burden of prostate cancer: age-period-cohort analysis from 1990 to 2021 and projections until 2040.
+Q2 equivalent / risk age + cancer mortality,41366349,2025,"Individual- and area-level socioeconomic inequalities in cancer incidence in the working-age population - a cohort study based on German statutory health insurance data, 2015 to 2019."
+Q2 equivalent / risk age + cancer mortality,38658500,2024,Association between interstitial lung abnormality and mortality in patients with esophageal cancer.
+Q2 equivalent / risk age + cancer mortality,39697222,2024,"Lung cancer incidence and mortality in trend and prediction between 2012-2030 in Shandong Province, using a Bayesian age-period-cohort model."
+Q2 equivalent / risk age + cancer mortality,39450607,2024,Effects of screening coverage and screening quality assurance on cervical cancer mortality: Implication for integrated framework to monitor global implementation of cervical cancer screening programme
+Q2 equivalent / risk age + cancer mortality,38770622,2024,Disparities in treatment patterns and mortality in prostate cancer: Interaction between Black race and end-stage kidney disease.
+Q2 equivalent / risk age + cancer mortality,42077263,2026,"Age-specific effects of hemoglobin A1c, blood pressure, and cholesterol levels on incident cardiovascular diseases among adults with diabetes in China: a 10-year prospective cohort study."
+Q2 equivalent / risk age + cancer mortality,38545089,2024,"The rise of home death in the COVID-19 pandemic: a population-based study of death certificate data for adults from 32 countries, 2012-2021."
+Q2 equivalent / risk age + cancer mortality,40274571,2025,[The spatio-temporal trend of female breast cancer incidence and mortality in Shandong Province from 2012 to 2023 and trend prediction].
+Q2 equivalent / risk age + cancer mortality,40257575,2025,Influence of the effectiveness of sarcopenia on postoperative major complications after cytoreductive surgery and hyperthermic intraperitoneal chemotherapy in patients with peritoneal surface malignan
+Q2 equivalent / risk age + cancer mortality,39293990,2024,[Trends of stomach cancer incidence and mortality in Shandong province from 2012 to 2012 and predictions from 2023 to 2030].
+Q2 equivalent / risk age + cancer mortality,40737579,2025,Charting Postoperative Trajectories in Patients With Cancer: Perspectives From a Resource-Constrained Setting in Northeast India.
+Q2 equivalent / risk age + cancer mortality,38561107,2024,"Impact of breast-, gastrointestinal-, and lung cancer on prognosis in patients with first-time pulmonary embolism: A Danish nationwide cohort study."
+Q2 equivalent / risk age + cancer mortality,38724186,2024,Breast cancer risk assessment for prescription of menopausal hormone therapy in women with a family history of breast cancer: an epidemiological modelling study.
+Q2 equivalent / risk age + cancer mortality,40903011,2026,Effects of Resistance versus High-Intensity Interval Training on Myokines and Cancer Cell Suppression in Breast Cancer Survivors: A Randomized Trial.
+Q2 equivalent / risk age + cancer mortality,38462351,2024,"[Incidence and mortality of endometrial cancer in China, data from China Cancer Registry Annual Report, 2004-2017]."
+Q2 equivalent / risk age + cancer mortality,39715101,2025,"Trends, age shifts, and potential delayed peaks post-pandemic of early-onset brain and central nervous system cancers in individuals aged 20-49: a cross-sectional study."
+Q2 equivalent / risk age + cancer mortality,39196709,2025,Gerotherapeutics: aging mechanism-based pharmaceutical and behavioral interventions to reduce cancer racial and ethnic disparities.
+Q2 equivalent / risk age + cancer mortality,39082568,2024,[Estimation of cancer incidence in Brazil and its regions in 2018: methodological aspects].
+Q2 equivalent / risk age + cancer mortality,PMC10155948,2023,European Cancer Summit 2022 submission for Special Network: Impact of the Covid-19 Pandemic on CancerImpact of the COVID-19 Pandemic on Cancer Surgery and Cancer Mortality in England
+Q2 equivalent / risk age + cancer mortality,41522125,2025,Long-term survival of patients undergoing off-pump coronary artery bypass grafting combined with pulmonary lobectomy.
+Q2 equivalent / risk age + cancer mortality,36435603,2023,Disparities in Breast Cancer Outcomes and How to Resolve Them.
+Q2 equivalent / risk age + cancer mortality,38761802,2024,"Socioeconomic characteristics, cancer mortality, and universal health coverage: A global analysis."
+Q2 equivalent / risk age + cancer mortality,38515875,2022,"Overall survival analyses of female malignancies in Southern Brazil during 2008-2017: A closer look at breast, cervical and ovarian cancer."
+Q2 equivalent / risk age + cancer mortality,38141471,2024,"Trends in gastric cancer incidence and mortality in Asia and association analysis with human development index, 1990-2019."
+Q2 equivalent / risk age + cancer mortality,37185403,2023,Prognosis after Local Recurrence in Patients with Early-Stage Breast Cancer Treated without Chemotherapy.
+Q2 equivalent / risk age + cancer mortality,40651456,2025,"Comparison of short- and mid-term outcomes of robotic versus laparoscopic gastrectomy in high-risk patients with gastric cancer: a nationwide, multicentre cohort study."
+Q2 equivalent / risk age + cancer mortality,40144857,2025,Surgeons are apprehensive to use DCD lungs despite similar post-transplant outcomes: A 20-year UNOS retrospective analysis.
+Q2 equivalent / risk age + cancer mortality,38728284,2024,Sex differences in prognosis factors in patients with lung cancer: A nationwide retrospective cohort study in Korea.
+Q2 equivalent / risk age + cancer mortality,35769890,2022,Kidney Cancer Incidence and Mortality Disparities Involving American Indians/Alaska Natives: An Analysis of the Oklahoma Central Cancer Registry (OCCR).
+Q2 equivalent / risk age + cancer mortality,40910565,2025,First-line pembrolizumab for metastatic NSCLC in lower-middle-income countries: bridging the efficacy-effectiveness gap.
+Q2 equivalent / risk age + cancer mortality,40423702,2025,Risk of Pancreatic Cancer in Cystic Fibrosis and Cystic Fibrosis Transmembrane Conductance Regulator Germline Variants: A Retrospective Cohort Study.
+Q2 equivalent / risk age + cancer mortality,38477855,2024,Efficacy and safety of naldemedine for opioid-induced constipation in older patients with cancer: a retrospective study.
+Q2 equivalent / risk age + cancer mortality,38275104,2025,Microbiome Dysbiosis With Enterococcus Presence in the Upper Gastrointestinal Tract Is a Risk Factor for Mortality in Patients Undergoing Surgery for Pancreatic Cancer.
+Q2 equivalent / risk age + cancer mortality,38318949,2024,Projected Colorectal Cancer Incidence and Mortality Based on Observed Adherence to Colonoscopy and Sequential Stool-Based Screening.
+Q2 equivalent / risk age + cancer mortality,PPR922968,2024,Parity and cumulative incidence rates of breast cancer in the Norwegian Woman and Cancer Study (NOWAC)
+Q2 equivalent / risk age + cancer mortality,37639192,2023,"Cancer Burden Variations and Convergences in Globalization: A Comparative Study on the Tracheal, Bronchus, and Lung (TBL) and Liver Cancer Burdens Among WHO Regions from 1990 to 2019."
+Q2 equivalent / risk age + cancer mortality,36703792,2022,Can the sustainable development goals for cancer be met in Brazil? A population-based study.
+Q2 equivalent / risk age + cancer mortality,34364188,2021,"Descriptive epidemiology of cancer of unknown primary in South Korea, 1999-2017."
+Q2 equivalent / risk age + cancer mortality,36164696,2022,[Regional disparities in trends of global gastric cancer incidence and mortality from 1990 to 2019].
+Q2 equivalent / risk age + cancer mortality,34599340,2021,Trends in Incidence and Mortality Rates of Uterine Cancer in Kentucky.
+Q2 equivalent / risk age + cancer mortality,35698451,2022,"Estimates of incidence, prevalence, mortality, and disability-adjusted life years of lung cancer in Iran, 1990-2019: A systematic analysis from the global burden of disease study 2019."
+Q2 equivalent / risk age + cancer mortality,38409928,2024,Lessons from a population-based bladder cancer registry: exploring why survival is not improving.
+Q2 equivalent / risk age + cancer mortality,34963146,2022,Beneficial effects of endoscopic screening on gastric cancer and optimal screening interval: a population-based study.
+Q2 equivalent / risk age + cancer mortality,37414265,2023,Role of standard HLA mismatch in modifying associations between non-pharmacologic risk factors and solid organ malignancy after kidney transplantation.
+Q2 equivalent / risk age + cancer mortality,33872399,2021,The clinical outcomes of COVID-19 infection in patients with a history of thyroid cancer: A nationwide study.
+Q2 equivalent / risk age + cancer mortality,37103437,2023,Bladder and Kidney Cancer Diagnosis and Survival Increase With Medicare Eligibility at Age 65.
+Q2 equivalent / risk age + cancer mortality,39378034,2024,Reproductive Risk Factor Patterns in Caribbean Women With Breast Cancer Across 4 Generations.
+Q2 equivalent / risk age + cancer mortality,38087115,2023,"Benefits, harms and cost-effectiveness of cervical screening, triage and treatment strategies for women in the general population."
+Q2 equivalent / risk age + cancer mortality,36305680,2023,"Polygenic risk of any, metastatic, and fatal prostate cancer in the Million Veteran Program."
+Q2 equivalent / risk age + cancer mortality,34755823,2021,"Mortality from oral and oropharyngeal cancer: age-period-cohort effect, Brazil, 1983-2017."
+Q2 equivalent / risk age + cancer mortality,PPR669026,2023,Efficacy and Safety of Naldemedine for Opioid-Induced Constipation in Older Patients with Cancer: A Retrospective Study
+Q2 equivalent / risk age + cancer mortality,PPR296292,2021,"The incidence, risk factors and predictive nomograms for early death of lung cancer with synchronous brain metastasis: A retrospective study in the SEER database"
+Q2 equivalent / risk age + cancer mortality,37707371,2023,"Birth Defects in Offspring of Adolescent and Young Adults with a History of Cancer: A Population-Based Study of 27,000 Women."
+Q2 equivalent / risk age + cancer mortality,37820489,2023,Mechanical properties of CTCs in patients with diagnosed ovarian cancer.
+Q2 equivalent / risk age + cancer mortality,35614399,2022,"Cancer incidence and mortality and risk factors in member countries of the "" Belt and Road "" initiative."
+Q2 equivalent / risk age + cancer mortality,37085859,2023,Factors associated with suffering from dying in patients with cancer: a cross-sectional analytical study among bereaved caregivers.
+Q2 equivalent / risk age + cancer mortality,38125964,2024,Feasibility of monitoring Global Breast Cancer Initiative Framework key performance indicators in 21 Asian National Cancer Centers Alliance member countries.
+Q2 equivalent / risk age + cancer mortality,38087229,2023,Application of parametric survival analysis to women patients with breast cancer at Jimma University Medical Center.
+Q2 equivalent / risk age + cancer mortality,38090492,2023,Assessment of geriatric and clinical domains for development and validation of a novel nomogram to predict the prognosis of older patients with breast cancer: a real-world retrospective cohort study.
+Q2 equivalent / risk age + cancer mortality,38076592,2023,"A Cross-Sectional Study on the Knowledge and Awareness of Lung Cancer and Screening in Jazan Region, Saudi Arabia."
+Q2 equivalent / risk age + cancer mortality,34653370,2021,"National health system characteristics, breast cancer stage at diagnosis, and breast cancer mortality: a population-based analysis."
+Q2 equivalent / risk age + cancer mortality,37718168,2024,Racial disparities in survival of early onset colon cancer (Age<50): A matched NCDB analysis.
+Q2 equivalent / risk age + cancer mortality,PPR773505,2023,The curvilinear relationships between grand parity and incidence of hormone-dependent cancers; follow-up of postmenopausal women in the Norwegian 1960 Census
+Q2 equivalent / risk age + cancer mortality,33429114,2021,"Age-related incidence and outcomes of sepsis in California, 2008-2015."
+Q2 equivalent / risk age + cancer mortality,36420288,2022,"Breast cancer: age incidence, hormone receptor status and family history in Najaf, Iraq."
+Q2 equivalent / risk age + cancer mortality,33263137,2020,Trends in Premature Deaths among Women Living with HIV/AIDS and Cervical Cancer.
+Q2 equivalent / risk age + cancer mortality,35060629,2022,Prognostic and Treatment Differences Between T1a and T1b Glottic Cancer.
+Q2 equivalent / risk age + cancer mortality,34006465,2022,Treatment-associated survival outcomes in real-world patients with de novo metastatic triple-negative breast cancer: Age as a significant treatment effect-modifier.
+Q2 equivalent / risk age + cancer mortality,32899000,2020,"Recurrence, death risk, and related factors in patients with stage 0 colorectal cancer: A nationwide population-based study."
+Q2 equivalent / risk age + cancer mortality,34936169,2022,Incidence and risk of cancer among multiple sclerosis patients: A matched population-based cohort study.
+Q2 equivalent / risk age + cancer mortality,33186993,2021,Clinical Features and Outcome of Thrombotic Microangiopathies: Comparison between Patients with and without Malignancy.
+Q2 equivalent / risk age + cancer mortality,35697884,2022,Equal receipt of specialized palliative care in breast and prostate cancer: a register study.
+Q2 equivalent / risk age + cancer mortality,38165068,2024,"Comparison of fludarabine-based conditioning regimens in adult cord blood transplantation for myeloid malignancy: A retrospective, registry-based study."
+Q2 equivalent / risk age + cancer mortality,31744773,2020,Contribution of high body mass index and alcohol use to liver cancer-related mortality: A study based on 195 countries or territories.
+Q2 equivalent / risk age + cancer mortality,35232576,2022,"Survival of adult patients with solid cancer in Reunion Island, 1998-2014."
+Q2 equivalent / risk age + cancer mortality,PPR231958,2020,"Global, Regional, and National Burden of Breast Cancer and Its Attributable Risk Factors Among Women, 1990–2017"
+Q2 equivalent / risk age + cancer mortality,33188657,2021,Surgical outcomes following colorectal cancer resections in patients aged 80 years and over: results from the Australia and New Zealand Binational Colorectal Cancer Audit.
+Q2 equivalent / risk age + cancer mortality,34955444,2022,The association between Memorial Sloan Kettering Frailty Index with 30-day survival among patients aged ≥ 75 with cancer and COVID-19.
+Q2 equivalent / risk age + cancer mortality,33394520,2021,DNA methylation age as a biomarker for cancer.
+Q2 equivalent / risk age + cancer mortality,31268465,2019,National and State Estimates of Lost Earnings From Cancer Deaths in the United States.
+Q2 equivalent / risk age + cancer mortality,PPR283475,2021,Mapping the Trends in Esophageal Cancer Disease Burden in the United States: Results from the Global Burden of Disease Study 2017
+Q2 equivalent / risk age + cancer mortality,PPR401047,2021,"Polygenic risk of any, metastatic, and fatal prostate cancer in the Million Veteran Program"
+Q2 equivalent / risk age + cancer mortality,37897646,2024,"Screening mammographic performance by race and age in the National Mammography Database: 29,479,665 screening mammograms from 13,181,241 women."
+Q2 equivalent / risk age + cancer mortality,33979241,2021,Men receive more end-of-life cancer hospital treatment than women: fact or fiction?
+Q2 equivalent / risk age + cancer mortality,37345045,2023,Sex-Specific Associations of &lt;i&gt;MDM2&lt;/i&gt; and &lt;i&gt;MDM4&lt;/i&gt; Variants with Risk of Multiple Primary Melanomas and Melanoma Survival in Non-Hispanic Whites.
+Q2 equivalent / risk age + cancer mortality,34107655,2021,Long-term prognosis for patients admitted to a medical intermediate care unit.
+Q2 equivalent / risk age + cancer mortality,35227790,2022,Lung Restriction in Patients With Breast Cancer After Hypofractionated and Conventional Radiation Therapy: A 10-Year Follow-up.
+Q2 equivalent / risk age + cancer mortality,31842805,2019,"Survival status and associated factors of death among cervical cancer patients attending at Tikur Anbesa Specialized Hospital, Addis Ababa, Ethiopia: a retrospective cohort study."
+Q2 equivalent / risk age + cancer mortality,35587916,2022,Oncologic outcomes of Bacillus Calmette-Guérin therapy in elderly patients with non-muscle-invasive bladder cancer: A meta-analysis.
+Q2 equivalent / risk age + cancer mortality,27732702,2017,A Population-Based Study of Cardiovascular Mortality Following Early-Stage Breast Cancer.
+Q2 equivalent / risk age + cancer mortality,34260475,2021,Impact of menopausal status on risk of metastatic recurrence of breast cancer.
+Q2 equivalent / risk age + cancer mortality,32946461,2020,"Knowledge and practice of cervical cancer screening and associated factors among reproductive age group women in districts of Gurage zone, Southern Ethiopia. A cross-sectional study."
+Q2 equivalent / risk age + cancer mortality,35508556,2022,Preoperative prognostic factors for obstructive colorectal cancer.
+Q2 equivalent / risk age + cancer mortality,29889424,2016,THE INCIDENCE OF COLORECTAL CANCER IN KAZAKHSTAN.
+Q2 equivalent / risk age + cancer mortality,26331817,2015,Increased lung cancer mortality rates in the Chinese population from 1973-1975 to 2004-2005: An adverse health effect from exposure to smoking.
+Q2 equivalent / risk age + cancer mortality,33632256,2021,"Clinicopathologic characteristics, metastasis-free survival, and skeletal-related events in 628 patients with skeletal metastases in a tertiary orthopedic and trauma center."
+Q2 equivalent / risk age + cancer mortality,28669629,2017,The ratio of serum eicosapentaenoic acid to arachidonic acid and risk of cancer death in a Japanese community: The Hisayama Study.
+Q2 equivalent / risk age + cancer mortality,29582432,2018,"Smoking, alcohol and cancer mortality in Eastern European men: Findings from the PrivMort retrospective cohort study."
+Q2 equivalent / risk age + cancer mortality,31648977,2019,"The global, regional, and national burden of colorectal cancer and its attributable risk factors in 195 countries and territories, 1990-2017: a systematic analysis for the Global Burden of Disease Stu"
+Q2 equivalent / risk age + cancer mortality,36945309,2020,Risk of osteoporosis and fracture in long-term breast cancer survivors.
+Q2 equivalent / risk age + cancer mortality,32436147,2020,"Exploring the effects of lifestyle on breast cancer risk, age at diagnosis, and survival: the EBBA-Life study."
+Q2 equivalent / risk age + cancer mortality,30460662,2018,"Impact of Age, Comorbidity, and FIGO Stage on Treatment Choice and Mortality in Older Danish Patients with Gynecological Cancer: A Retrospective Register-Based Cohort Study."
+Q2 equivalent / risk age + cancer mortality,31662756,2019,Cancer Survival by Stage at Diagnosis in Kuwait: A Population-Based Study.
+Q2 equivalent / risk age + cancer mortality,29174187,2018,Risk of cancer death by comorbidity severity and use of adjuvant chemotherapy among women with locoregional breast cancer.
+Q2 equivalent / risk age + cancer mortality,PMC8822921,,4309 Ascertaining the Medical Needs of Galveston County
+Q2 equivalent / risk age + cancer mortality,32366995,2020,"Relationship between markers of malnutrition and clinical outcomes in older adults with cancer: systematic review, narrative synthesis and meta-analysis."
+Q2 equivalent / risk age + cancer mortality,33667420,2021,"Rituximab plus high-dose chemotherapy (MegaCHOEP) or conventional chemotherapy (CHOEP-14) in young, high-risk patients with aggressive B-cell lymphoma: 10-year follow-up of a randomised, open-label, p"
+Q2 equivalent / risk age + cancer mortality,25604981,2015,"[Breast cancer at the 1st Surgical Department, University Hospital Olomouc assessing the number and age of patients and benefit of breast screening]."
+Q2 equivalent / risk age + cancer mortality,29738925,2018,Derivation of data-driven triggers for palliative care consultation in critically ill patients.
+Q2 equivalent / risk age + cancer mortality,31195394,2019,Impact of Age on Long-Term Survival in Patients with Esophageal Cancer Who Underwent Transthoracic Esophagectomy.
+Q2 equivalent / risk age + cancer mortality,31786347,2020,"Childhood cancer, age at diagnosis and educational attainment: A meta-analysis."
+Q2 equivalent / risk age + cancer mortality,33136163,2021,Clinical Characteristics and Outcomes of COVID-19-Infected Cancer Patients: A Systematic Review and Meta-Analysis.
+Q2 equivalent / risk age + cancer mortality,31673467,2019,Surgical risk assessment for gynecological oncologic patients.
+Q2 equivalent / risk age + cancer mortality,25119175,2014,Polymorphism of the glutathione S-transferase P1 gene (GST-pi) in breast carcinoma.
+Q2 equivalent / risk age + cancer mortality,36034801,2022,The pyroptosis-related gene signature predicts prognosis and reveals characterization of the tumor immune microenvironment in acute myeloid leukemia.
+Q2 equivalent / risk age + cancer mortality,33618551,2021,"Colorectal Cancer in Lebanon: Incidence, Temporal Trends, and Comparison to Regional and Western Countries."
+Q2 equivalent / risk age + cancer mortality,30630082,2019,Operative Mortality Prediction for Primary Rectal Cancer: Age Matters.
+Q2 equivalent / risk age + cancer mortality,32884944,2020,Hope of Recovery in Patients in the Terminal Phase of Cancer under Palliative and Hospice Care in Poland.
+Q2 equivalent / risk age + cancer mortality,23940229,2013,Ten-year survival in patients with BRCA1-negative and BRCA1-positive breast cancer.
+Q2 equivalent / risk age + cancer mortality,28062868,2016,"Temporal trends and regional variations in gastrointestinal cancer mortality in Peru, 2005-2014."
+Q2 equivalent / risk age + cancer mortality,34740480,2022,Early age of onset is an independent predictor for worse disease-free survival in sporadic rectal cancer patients. A comparative analysis of 980 consecutive patients.
+Q2 equivalent / risk age + cancer mortality,26000506,2015,"Comparing mortality of vaginal sarcoma, squamous cell carcinoma, and adenocarcinoma in the surveillance, epidemiology, and end results database."
+Q2 equivalent / risk age + cancer mortality,29936785,2018,Comparison Cure Rate Models by DIC Criteria in Breast Cancer Data
+Q2 equivalent / risk age + cancer mortality,33724693,2021,"Epidemiological characteristics and forecasting incidence for patients with breast cancer in Shantou, Southern China: 2006-2017."
+Q2 equivalent / risk age + cancer mortality,28611890,2017,Index to Predict In-hospital Mortality in Older Adults after Non-traumatic Emergency Department Intubations.
+Q2 equivalent / risk age + cancer mortality,24641369,2014,"Mortality of major cancers in Guangxi, China: sex, age and geographical differences from 1971 and 2005."
+Q2 equivalent / risk age + cancer mortality,28300967,2017,"Burden of cancer mortality and differences attributable to demographic aging and risk factors in Argentina, 1986-2011."
+Q2 equivalent / risk age + cancer mortality,32585221,2020,Breast cancer risk after hysterectomy with and without salpingo-oophorectomy for benign indications.
+Q2 equivalent / risk age + cancer mortality,PPR278778,2021,"COVID19-related and all-cause mortality among middle-aged and older adults across the first epidemic wave of SARS-COV-2 infection in the region of Tarragona, Spain: results from the COVID19 TARRACO Co"
+Q2 equivalent / risk age + cancer mortality,34615512,2021,"COVID19-related and all-cause mortality risk among middle-aged and older adults across the first epidemic wave of SARS-COV-2 infection: a population-based cohort stuJune 2020.dy in Southern Catalonia,"
+Q2 equivalent / risk age + cancer mortality,32927324,2021,Enhanced Recovery after Surgery in Elderly Gastric Cancer Patients Undergoing Laparoscopic Total Gastrectomy.
+Q2 equivalent / risk age + cancer mortality,PPR248880,2020,"Cervical Cancer Screening Practice and Associated Factors Among Women Employees in Wolaita Zone Hospitals, Southern Ethiopia, 2017"
+Q2 equivalent / risk age + cancer mortality,29408193,2018,Global incidence and mortality rates in pancreatic cancer and the association with the Human Development Index: decomposition approach.
+Q2 equivalent / risk age + cancer mortality,31260394,2019,Clinical Features and Outcomes of Invasive Breast Cancer: Age-Specific Analysis of a Modern Hospital-Based Registry.
+Q2 equivalent / risk age + cancer mortality,31863355,2020,Monitoring anti-Xa levels in patients with cancer-associated venous thromboembolism treated with bemiparin.
+Q2 equivalent / risk age + cancer mortality,34118032,2021,"Novel Mitochondria-Targeted Triphenylphosphonium Conjugates of Linear β-Phosphorylated Nitrones : Preparation, <sup>31</sup>P NMR Mitochondrial Distribution, EPR Spin Trapping Reporting, and Site-Dire"
+Q2 equivalent / risk age + cancer mortality,27557374,2016,Cancer incidence and mortality in children in the Mexican Social Security Institute (1996-2013).
+Q2 equivalent / risk age + cancer mortality,33835855,2021,Impact of Previously Unrecognized HLA Mismatches Using Ultrahigh Resolution Typing in Unrelated Donor Hematopoietic Cell Transplantation.
+Q2 equivalent / risk age + cancer mortality,27557370,2016,"The burden of cancer in Mexico, 1990-2013."
+Q2 equivalent / risk age + cancer mortality,30121680,2018,Palliative radiotherapy for advanced Cancer: Are we giving it to the right patient at the right time?
+Q2 equivalent / risk age + cancer mortality,23884980,2014,Trends in cardiovascular diseases and cancer mortality in 45 countries from five continents (1980-2010).
+Q2 equivalent / risk age + cancer mortality,27995351,2017,Short-term and long-term survival of interval breast cancers taking into account prognostic features.
+Q2 equivalent / risk age + cancer mortality,29459246,2018,Breast cancer among older women: The influence of age and cancer stage on survival.
+Q2 equivalent / risk age + cancer mortality,33149023,2020,Differential Expression of PEG10 Contributes to Aggressive Disease in Early Versus Late-Onset Colorectal Cancer.
+Q2 equivalent / risk age + cancer mortality,28194807,2017,"Demographic changes in breast cancer incidence, stage at diagnosis and age associated with population-based mammographic screening."
+Q2 equivalent / risk age + cancer mortality,29114540,2017,"Angiogenesis, Cancer, and Vascular Aging."
+Q2 equivalent / risk age + cancer mortality,34149863,2021,Molecular Targets and Mechanisms of <i>Scutellariae radix</i>-<i>Coptidis rhizoma</i> Drug Pair for the Treatment of Ulcerative Colitis Based on Network Pharmacology and Molecular Docking.
+Q2 equivalent / risk age + cancer mortality,31989094,2020,Clinical variables that increase the probability of pulmonary embolism diagnosis in symptomatic children.
+Q2 equivalent / risk age + cancer mortality,27664873,2016,The identification of risk factors for venous thromboembolism in gastrointestinal oncologic surgery.
+Q2 equivalent / risk age + cancer mortality,26186469,2016,Trends in gastric cancer mortality and in the prevalence of Helicobacter pylori infection in Portugal.
+Q2 equivalent / risk age + cancer mortality,30001431,2018,Higher breast cancer prevalence associated with higher socioeconomic status in the South Korean population; Has it resulted from overdiagnosis?
+Q2 equivalent / risk age + cancer mortality,27349524,2016,Seeing the good in the bad: which factors are associated with posttraumatic growth in long-term survivors of adolescent cancer?
+Q2 equivalent / risk age + cancer mortality,31205984,2019,Presentation and Outcomes of Childhood Cancer Patients at Uganda Cancer Institute.
+Q2 equivalent / risk age + cancer mortality,35344689,2022,Prevalence of monoclonal gammopathies and clinical outcomes in a high-risk US population screened by mass spectrometry: a multicentre cohort study.
+Q2 equivalent / risk age + cancer mortality,25791187,2015,"[Trends in mortality from cancer in Chile according to differences in educational level, 2000-2010]."
+Q2 equivalent / risk age + cancer mortality,28062981,2017,Body size from birth through adolescence in relation to risk of benign breast disease in young women.
+Q2 equivalent / risk age + cancer mortality,33112575,2020,"Evaluating the Possible Association between PD-1 (Rs11568821, Rs2227981, Rs2227982) and PD-L1 (Rs4143815, Rs2890658) Polymorphisms and Susceptibility to Breast Cancer in a Sample of Southeast Iranian "
+Q2 equivalent / risk age + cancer mortality,27496114,2016,Predictors of In-Hospital Mortality in Patients With Metastatic Cancer Receiving Specific Critical Care Therapies.
+Q2 equivalent / risk age + cancer mortality,24130224,2013,Prostate-specific membrane antigen protein expression in tumor tissue and risk of lethal prostate cancer.
+Q2 equivalent / risk age + cancer mortality,27226504,2016,Strategies for the Management of Early-Stage Breast Cancer in Older Women.
+Q2 equivalent / risk age + cancer mortality,31151425,2019,A randomized phase II study of nutritional and exercise treatment for elderly patients with advanced non-small cell lung or pancreatic cancer: the NEXTAC-TWO study protocol.
+Q2 equivalent / risk age + cancer mortality,27322595,2016,Aspirin for Primary Prevention of Atherosclerotic Cardiovascular Disease: Advances in Diagnosis and Treatment.
+Q2 equivalent / risk age + cancer mortality,21769659,2011,Reproductive factors and histologic subtype in relation to mortality after a breast cancer diagnosis.
+Q2 equivalent / risk age + cancer mortality,27940628,2016,What determines duration of palliative care before death for patients with advanced disease? A retrospective cohort study of community and hospital palliative care provision in a large UK city.
+Q3 all-cause or cancer risk expressed as years of age,42587271,2026,The Association Between Obesity Class and Cause-Specific Mortality by Age and Sex in US Adults.
+Q3 all-cause or cancer risk expressed as years of age,42633417,2026,"Obesity at antiretroviral therapy initiation and long-term risk of cardiovascular disease, cancer, or death in people with HIV in Italy: a prospective cohort study."
+Q3 all-cause or cancer risk expressed as years of age,42592398,2026,The Urgent Need to Address Modifiable Risk Factors to Prevent Young-Onset Colorectal Cancer in Mexico.
+Q3 all-cause or cancer risk expressed as years of age,42077649,2026,"Weight trajectories and obesity onset between 17 and 60 years of age, and cause-specific mortality: the Obesity and Disease Development Sweden (ODDS) pooled cohort study."
+Q3 all-cause or cancer risk expressed as years of age,41681919,2026,Cancer Mortality in an Ageing Population: Evidence of Sex-Specific Divergence from a National Study in Poland.
+Q3 all-cause or cancer risk expressed as years of age,42754840,2026,OSAS.MAP10 and all-cause mortality risk in hypertensive patients: a retrospective cohort analysis of NHANES.
+Q3 all-cause or cancer risk expressed as years of age,42660835,2026,Analysis and Model Prediction of the Burden of Early-Onset Cancer Attributed to Overweight and Obesity in the Chinese Population From 1990 to 2021.
+Q3 all-cause or cancer risk expressed as years of age,42746221,2026,The burden of bladder cancer and kidney cancer attributable to smoking in Latin America and the Caribbean from 1990 to 2023 and projections to 2050.
+Q3 all-cause or cancer risk expressed as years of age,41188161,2026,Ideal Cardiovascular Health in Colorectal Cancer Patients at Diagnosis.
+Q3 all-cause or cancer risk expressed as years of age,42036707,2026,Five-Year Survival Prognosis of Early-Onset and Later-Onset Colorectal Cancer by Clinical and Lifestyle Characteristics.
+Q3 all-cause or cancer risk expressed as years of age,40576175,2025,Causal impact of obesity class stratification and endometrial cancer subtypes: an integrated Mendelian randomization and Global Burden of Disease Study 2021 analysis.
+Q3 all-cause or cancer risk expressed as years of age,40231651,2025,Collider Bias Is an Insufficient Explanation for the Inverse Obesity Paradox in Prostate Cancer.
+Q3 all-cause or cancer risk expressed as years of age,42292703,2026,"Trends and cross-country inequalities in the global burden of gastrointestinal cancers attributable to smoking, 1990-2021: A secondary dataset analysis of GBD Study 2021."
+Q3 all-cause or cancer risk expressed as years of age,41568369,2025,"Vaping, smoking and risk of early onset lung cancer."
+Q3 all-cause or cancer risk expressed as years of age,42385994,2026,Lung Cancer Incidence and Mortality After Negative Low-Dose CT Imaging Screening Results.
+Q3 all-cause or cancer risk expressed as years of age,41980036,2026,"Global burden of esophageal cancer attributable to smoking and alcohol, 1990-2021, with projections to 2040: a population-based analysis of the global burden of disease study 2021."
+Q3 all-cause or cancer risk expressed as years of age,41878887,2026,Impact of Adverse Childhood Experience on Lung Cancer Risk: A Population-Based Prospective Cohort Study.
+Q3 all-cause or cancer risk expressed as years of age,42269053,2026,Clinicopathologic features and survival disparities in early onset clear cell renal cell carcinoma in Texas.
+Q3 all-cause or cancer risk expressed as years of age,42438375,2026,Program Guidelines for the National Lung Cancer Screening Program: Targeted Lung Cancer Screening in High-Risk Individuals in Australia.
+Q3 all-cause or cancer risk expressed as years of age,41838257,2026,"Comparative analysis of early-onset and late-onset esophageal cancer burden in China, 1990-2021: based on the 2021 Global Burden of Disease Study."
+Q3 all-cause or cancer risk expressed as years of age,PPR1074644,2025,Burden and trend of kidney cancer attributable to high body mass index among middle-aged males in East and Southeast Asia from 1990 to 2021
+Q3 all-cause or cancer risk expressed as years of age,41486892,2026,Global Burden of Early-Onset Cancers Attributable to Metabolic Risk Factors from 1990 to 2021 and Projections to 2040.
+Q3 all-cause or cancer risk expressed as years of age,PPR1268200,2026,Projected impact of a national Tobacco 21 policy in the Kingdom of Saudi Arabia
+Q3 all-cause or cancer risk expressed as years of age,42174848,2026,Comparing Weight Loss Prior to Pancreatic Cancer Diagnosis in Cases and Controls: A Systematic Review and Meta-Analysis.
+Q3 all-cause or cancer risk expressed as years of age,40579177,2025,Updated cancer mortality among uranium miners on the Colorado Plateau: interactions of radon exposure with smoking and temporal factors.
+Q3 all-cause or cancer risk expressed as years of age,40864148,2025,Impact of Population Cancer Risk on the Cost-effectiveness of Multicancer Early Detection Testing in the United States.
+Q3 all-cause or cancer risk expressed as years of age,41489286,2026,Swedish snus use in non-smoking middle-aged men and risk of cardiovascular disease: a population-based cohort study with 27-year follow-up.
+Q3 all-cause or cancer risk expressed as years of age,34424631,2025,Smokeless Tobacco Oral Pathology
+Q3 all-cause or cancer risk expressed as years of age,40354909,2026,Long-Term Mortality After Cholecystectomy in a Nationwide Cohort of Swedish Individuals Between 1969 and 2016.
+Q3 all-cause or cancer risk expressed as years of age,41942100,2026,Predicting long-term absolute risk of lung cancer in patients with Hodgkin lymphoma.
+Q3 all-cause or cancer risk expressed as years of age,40945714,2026,Association Between Betel Quid Consumption and Respiratory Disease Mortality in a Prospective Bangladeshi Cohort.
+Q3 all-cause or cancer risk expressed as years of age,42406571,2026,Alcohol-Related Liver Disease: A Review.
+Q3 all-cause or cancer risk expressed as years of age,41973450,2026,Endometrial Cancer: A Review.
+Q3 all-cause or cancer risk expressed as years of age,41482371,2026,Risk Factors of Mortality in Older Patients With Candidemia.
+Q3 all-cause or cancer risk expressed as years of age,40517758,2026,Impact of Obesity on Patients with Diffuse Large B-Cell Lymphoma Receiving Chimeric Antigen Receptor T-Cell Therapy.
+Q3 all-cause or cancer risk expressed as years of age,42401993,2026,Age of onset by temporal and spatial changes and prognostic value for esophageal cancer.
+Q3 all-cause or cancer risk expressed as years of age,PPR1238693,2026,Evaluation of the Effectiveness and Safety of Maintenance Therapy in Unresectable Locally Advanced Esophageal Squamous Cell Carcinoma
+Q3 all-cause or cancer risk expressed as years of age,37289457,2023,Updating the Know Your Chances Website to Include Smoking Status as a Risk Factor for Mortality Estimates.
+Q3 all-cause or cancer risk expressed as years of age,41572884,2026,"Incidence, mortality and risk factors of hematologic malignancies in China from 1990 to 2021: A systematic analysis for the GBD 2021."
+Q3 all-cause or cancer risk expressed as years of age,42017883,2026,Midlife Cardiorespiratory Fitness and Healthy Aging: An Observational Cohort Study.
+Q3 all-cause or cancer risk expressed as years of age,41532288,2026,Clinical Characteristics and Prognosis of Thromboembolism in Elderly Patients With Stage IV Lung Cancer.
+Q3 all-cause or cancer risk expressed as years of age,41550865,2025,"Attributable burden of high BMI-related gastrointestinal tract cancers among middle-aged and elderly populations globally, 1990-2021 and projected to 2050: analysis of GBD 2021."
+Q3 all-cause or cancer risk expressed as years of age,40856768,2025,[Frequency of Cancer Risk Factors in a Chilean Population].
+Q3 all-cause or cancer risk expressed as years of age,40895342,2025,Knowledge and attitudes about lung cancer screening amongst American Indian adults who use commercial tobacco.
+Q3 all-cause or cancer risk expressed as years of age,42736147,2026,[Analysis of the global disease burden of cervical cancer in women aged 65 years and older based on the global burden of disease database].
+Q3 all-cause or cancer risk expressed as years of age,42418200,2026,Cost-Effectiveness of Universal Low-Dose Computed Tomographic Lung Cancer Screening in Singapore.
+Q3 all-cause or cancer risk expressed as years of age,PPR930847,2024,The burden of Gastric Cancer and possible risk factors from 1990 to 2021，and projections until 2035: findings from the Global Burden of Disease Study 2021
+Q3 all-cause or cancer risk expressed as years of age,39209063,2025,"Risk Factors, Morbidity, and Mortality in Association With Preserved Ratio Impaired Spirometry and Restrictive Spirometric Pattern: Clinical Relevance of Preserved Ratio Impaired Spirometry and Restri"
+Q3 all-cause or cancer risk expressed as years of age,39972315,2025,"Asbestos exposure, pleural plaques and digestive cancers."
+Q3 all-cause or cancer risk expressed as years of age,41216079,2025,Dermatological Manifestations of Smoking-Induced Oxidative Stress and Inflammation: A Multifaceted Analysis of Cutaneous Aging and Disease Progression.
+Q3 all-cause or cancer risk expressed as years of age,41510768,2026,Three-decade trends in risk factor-attributable cancer burden in China: insights from the Global Burden of Disease Study 2023.
+Q3 all-cause or cancer risk expressed as years of age,PPR708434,2023,Emerging Novel Therapies to Treat Urothelial Carcinoma
+Q3 all-cause or cancer risk expressed as years of age,PPR975640,2025,Breast Cancer in Young Women in Michoacan—A Retrospective Comparative Cohort Study
+Q3 all-cause or cancer risk expressed as years of age,39835504,2026,"The global, regional, and national burden of colorectal cancer attributable to smoking from 1990 to 2021: a population-based study."
+Q3 all-cause or cancer risk expressed as years of age,41377726,2025,"Global burden of tracheal, bronchus, and lung cancer attributable to second-hand smoke exposure from 1992 to 2021: an age-period-cohort analysis and 25-year mortality projections."
+Q3 all-cause or cancer risk expressed as years of age,41881381,2026,Cancer Incidence in People With Glomerular Disease: A Population-Level Study.
+Q3 all-cause or cancer risk expressed as years of age,40146475,2025,Analysis of long-term trends and 15-year predictions of smoking-related bladder cancer burden in china across different age and sex groups from 1990 to 2021.
+Q3 all-cause or cancer risk expressed as years of age,40681781,2025,"Exploring Tobacco Use in Young Childhood Cancer Survivors: the Role of Social Acceptance, Workplace Environments, and Stress Reduction."
+Q3 all-cause or cancer risk expressed as years of age,40364160,2025,EGFR-Mutant Urothelial Carcinoma Harboring an Ala750_Ile759delinsGlyGly Alteration with a Primary Resistance to Polychemotherapy and a Sensitivity to Osimertinib: A Literature Review on EGFR Alteratio
+Q3 all-cause or cancer risk expressed as years of age,40961305,2025,Colorectal Cancer Screening and Prevention.
+Q3 all-cause or cancer risk expressed as years of age,37835580,2023,Current and Emerging Strategies to Treat Urothelial Carcinoma.
+Q3 all-cause or cancer risk expressed as years of age,40128438,2025,Population attributable risk of a competing-risk model for breast cancer and non-breast cancer death among women ≥ 65 years.
+Q3 all-cause or cancer risk expressed as years of age,38146198,2024,The age-related obesity paradigm: results from two large prospective cohort studies.
+Q3 all-cause or cancer risk expressed as years of age,38813448,2024,Projected effectiveness of lung cancer screening and concurrent smoking cessation support in the Netherlands.
+Q3 all-cause or cancer risk expressed as years of age,40833173,2025,"Early-onset gastric cancer global burden profile, trends, and contributors."
+Q3 all-cause or cancer risk expressed as years of age,40386169,2025,The global burden of smoking-related prostate cancer from 1990 to 2021 and projections to 2031.
+Q3 all-cause or cancer risk expressed as years of age,PPR1140114,2026,Right ventricular function among adult survivors of childhood cancer
+Q3 all-cause or cancer risk expressed as years of age,40417134,2025,Global Burden of Kidney Cancer Attributable to High Body Mass Index in Adults Aged 60 and Older from 1990 to 2021 and Projections to 2040: A Systematic Analysis for the Global Burden of Disease Study.
+Q3 all-cause or cancer risk expressed as years of age,39773334,2025,"The burden of Gastric Cancer and possible risk factors from 1990 to 2021, and projections until 2035: findings from the Global Burden of Disease Study 2021."
+Q3 all-cause or cancer risk expressed as years of age,41116844,2025,Development of a risk score for colorectal cancer screening.
+Q3 all-cause or cancer risk expressed as years of age,39763022,2025,The role of adipogenic niche resident cells in colorectal cancer progression in relation to obesity.
+Q3 all-cause or cancer risk expressed as years of age,PPR1166734,2026,Fossil fuel combustion emissions: A dominant source of black carbon over the urban site of India and its impact on health risk
+Q3 all-cause or cancer risk expressed as years of age,38155620,2023,Association of the age at smoking initiation and cessation on all-cause and cause-specific mortality: The Japan Collaborative Cohort Study.
+Q3 all-cause or cancer risk expressed as years of age,36603461,2023,Inflammatory potential of diet and risk of mortality in normal-weight adults with central obesity.
+Q3 all-cause or cancer risk expressed as years of age,40991975,2025,Indications for combining remnant resection in a primary Roux-N-Y gastric bypass: Preliminary results.
+Q3 all-cause or cancer risk expressed as years of age,38871464,2024,Early menopause and hormone therapy as determinants for lung health outcomes: a secondary analysis using the PLCO trial.
+Q3 all-cause or cancer risk expressed as years of age,PPR948729,2024,Assessment of the global burden of esophageal cancer from 1990 to 2021 and the forecasted global burden in 2050: Results from the Global Burden of Disease Study 2021
+Q3 all-cause or cancer risk expressed as years of age,35940514,2023,Cost-Effectiveness of Earlier or More Intensive Colorectal Cancer Screening in Overweight and Obese Patients.
+Q3 all-cause or cancer risk expressed as years of age,40417634,2025,"The global burden of bladder, kidney, and prostate cancers attributable to smoking from 1990 to 2021 and projections for the next two decades: A cross-sectional study."
+Q3 all-cause or cancer risk expressed as years of age,42588147,2026,"Dietary Quality Along a Plant-Based Continuum: The Role of Added Salt, Oil, and Sugar in Chronic Disease Risk."
+Q3 all-cause or cancer risk expressed as years of age,PPR1267046,2026,Screening for Lung Cancer with Computed Tomography: Systematic Reviews on Effectiveness and Patient Preferences
+Q3 all-cause or cancer risk expressed as years of age,40455102,2025,"Folate intake, tissue levels, and colorectal cancer deaths in a national cohort established before folic acid fortification."
+Q3 all-cause or cancer risk expressed as years of age,40653525,2025,Mammography screening status of women aged 40 and older in eastern Iran using the precaution adoption process model (PAPM).
+Q3 all-cause or cancer risk expressed as years of age,40338834,2025,Adolescent cardiorespiratory fitness and risk of cancer in late adulthood: A nationwide sibling-controlled cohort study in Sweden.
+Q3 all-cause or cancer risk expressed as years of age,39806767,2025,Association of tea consumption with all-cause/cardiovascular disease mortality in the chronic kidney disease population: an assessment of participation in the national cohort.
+Q3 all-cause or cancer risk expressed as years of age,37639691,2023,Duration of Type 2 Diabetes and Incidence of Cancer: An Observational Study in England.
+Q3 all-cause or cancer risk expressed as years of age,41626166,2025,"Burden of lip and oral cavity cancer among young people across South, East, and Southeast Asia: trends from 1990 to 2021 and predictions to 2030."
+Q3 all-cause or cancer risk expressed as years of age,40902216,2025,Meat intake and breast cancer risk from the Health Examinees study.
+Q3 all-cause or cancer risk expressed as years of age,40488807,2025,SMART-M24: A Prognostic Nomogram for Long-Term Mortality in Acute Ischemic Stroke Beyond 24 H from Symptom Onset.
+Q3 all-cause or cancer risk expressed as years of age,38084129,2023,Health Inequality in Eight Adverse Outcomes Over a 25-Year Period in a Multi-Ethnic Population in New Zealand Population with Impaired Glucose Tolerance and/or Impaired Fasting Glucose: An Age-Period-
+Q3 all-cause or cancer risk expressed as years of age,38131985,2023,"Mortality Trends in Alzheimer's Disease in Mississippi, 2011-2021."
+Q3 all-cause or cancer risk expressed as years of age,42105607,2026,Associations between the planetary health diet index and multiple long-term conditions among women and men: A prospective cohort study.
+Q3 all-cause or cancer risk expressed as years of age,36635680,2023,Obesity at age 20 and weight gain during adulthood increase risk of total and premature all-cause mortality: findings from women attending breast screening in Manchester.
+Q3 all-cause or cancer risk expressed as years of age,37061557,2023,"Cancer, cardiovascular disease, and all-cause mortality in Iraqi- and Swedish-born individuals in Sweden: the MEDIM cohort study."
+Q3 all-cause or cancer risk expressed as years of age,38000113,2024,"The independent and joint risks of alcohol consumption, smoking, and excess weight on morbidity and mortality: a systematic review and meta-analysis exploring synergistic associations."
+Q3 all-cause or cancer risk expressed as years of age,PPR881118,2024,Assessing the Relationship Between Cannabis Use and DKA Outcomes: Insights from a National Inpatient Sample Study
+Q3 all-cause or cancer risk expressed as years of age,35979450,2022,The Role of Diet Compared to Physical Activity on Women's Cancer Mortality: Results From the Third National Health and Nutrition Examination Survey.
+Q3 all-cause or cancer risk expressed as years of age,41141117,2025,A Decade-Long Comparative Study of Awareness and Knowledge of Oral Cancer Among Cypriots: Implications for Health Policy.
+Q3 all-cause or cancer risk expressed as years of age,37620873,2023,Investigating the association between educational attainment and allostatic load with risk of cancer mortality among African American women.
+Q3 all-cause or cancer risk expressed as years of age,39335135,2024,Gastric Cancer: An Up-to-Date Review with New Insights into Early-Onset Gastric Cancer.
+Q3 all-cause or cancer risk expressed as years of age,39233479,2024,Circulation of rare events in the liquid biopsy for early detection of lung mass lesions.
+Q3 all-cause or cancer risk expressed as years of age,38149139,2023,The Landscape of Primary Gastric Leiomyosarcoma in Texas Population: Analysis of Texas Cancer Registry Data.
+Q3 all-cause or cancer risk expressed as years of age,39259089,2024,"An autopsy case of an adult woman with Rapid-Onset Obesity with Hypoventilation, Hypothalamic, Autonomic Dysregulation, and Neuroendocrine Tumors (ROHHAD(NET)) syndrome developing nonalcoholic steatoh"
+Q3 all-cause or cancer risk expressed as years of age,38637937,2024,NMR metabolomic modeling of age and lifespan: A multicohort analysis.
+Q3 all-cause or cancer risk expressed as years of age,37763185,2023,Bladder Cancer during Pregnancy: A Review of the Literature.
+Q3 all-cause or cancer risk expressed as years of age,36146787,2022,Obesity and Dysmetabolic Factors among Deceased COVID-19 Adults under 65 Years of Age in Italy: A Retrospective Case-Control Study.
+Q3 all-cause or cancer risk expressed as years of age,37801354,2023,"Spatiotemporal Patterns of Esophageal Cancer Burden Attributable to Behavioral, Metabolic, and Dietary Risk Factors From 1990 to 2019: Longitudinal Observational Study."
+Q3 all-cause or cancer risk expressed as years of age,39516030,2024,The dyslipidemic effect of cytostatics in the treatment of early breast cancer as a serious risk factor of cardiovascular diseases.
+Q3 all-cause or cancer risk expressed as years of age,41238020,2025,OncoNutridos study: Prevalence of disease-related malnutrition according to GLIM criteria in cancer patients in oncohaematology day hospitals.
+Q3 all-cause or cancer risk expressed as years of age,39730985,2026,Developing a Charlson Comorbidity Index for the American Indian Population Using the Epidemiologic Data from the Strong Heart Study.
+Q3 all-cause or cancer risk expressed as years of age,38330736,2024,Long-term cancer and overall mortality associated with drinking water nitrate in the United States.
+Q3 all-cause or cancer risk expressed as years of age,38978891,2024,Modifiable Risk Factors in Hispanic Adults With Gastric Cancer in the United States.
+Q3 all-cause or cancer risk expressed as years of age,37633676,2023,Educational and social inequalities and cause-specific mortality in Mexico City: a prospective study.
+Q3 all-cause or cancer risk expressed as years of age,34149912,2021,Pre-treatment high body mass index is associated with poor survival in Asian premenopausal women with localized breast cancer.
+Q3 all-cause or cancer risk expressed as years of age,39232707,2024,Examining the evolving landscape of liver cancer burden in the United States from 1990 to 2019.
+Q3 all-cause or cancer risk expressed as years of age,38375919,2024,"Association between reproductive factors with lung cancer incidence and mortality: A pooled analysis of over 308,000 females in the Asia cohort consortium."
+Q3 all-cause or cancer risk expressed as years of age,PPR754903,2023,NMR metabolomic modelling of age and lifespan: a multi-cohort analysis
+Q3 all-cause or cancer risk expressed as years of age,35920148,2022,"BMI trajectories, morbidity, and mortality in England: a two-step approach to estimating consequences of changes in BMI."
+Q3 all-cause or cancer risk expressed as years of age,39149542,2024,Survival and Disease Progression in Older Adult Patients With Cirrhosis: A Retrospective Study.
+Q3 all-cause or cancer risk expressed as years of age,38657719,2024,Mortality and in-patient outcomes in pheochromocytoma patients with hypertensive emergency in the United States: A propensity score matched analysis.
+Q3 all-cause or cancer risk expressed as years of age,36242042,2022,Estimated projection of oral cavity and oropharyngeal cancer deaths in Spain to 2044.
+Q3 all-cause or cancer risk expressed as years of age,34497352,2022,Estimating the influence of body mass index (BMI) on mortality using offspring BMI as an instrumental variable.
+Q3 all-cause or cancer risk expressed as years of age,35114461,2022,Prediction of lung cancer risk based on age and smoking history.
+Q3 all-cause or cancer risk expressed as years of age,38720363,2024,Design and rationale of the Botswana Smoking Abstinence Reinforcement Trial: a protocol for a stepped-wedge cluster randomized trial.
+Q3 all-cause or cancer risk expressed as years of age,37574416,2024,Cardiovascular Disease in Patients With Breast Cancer Treated in the Modern Era.
+Q3 all-cause or cancer risk expressed as years of age,39829722,2025,Risk of hepatocellular carcinoma in Asian patients with primary biliary cholangitis: A nationwide and hospital cohort study.
+Q3 all-cause or cancer risk expressed as years of age,31915146,2020,Association of Diet Quality and Physical Activity on Obesity-Related Cancer Risk and Mortality in Black Women: Results from the Women's Health Initiative.
+Q3 all-cause or cancer risk expressed as years of age,34977166,2021,"Association Between Initiation, Intensity, and Cessation of Smoking and Mortality Risk in Patients With Cardiovascular Disease: A Cohort Study."
+Q3 all-cause or cancer risk expressed as years of age,36920823,2023,Pulmonary Nodules: Common Questions and Answers.
+Q3 all-cause or cancer risk expressed as years of age,34814037,2021,Moderate-severe coronary calcification predicts long-term cardiovascular death in CT lung cancer screening: The ITALUNG trial.
+Q3 all-cause or cancer risk expressed as years of age,38180951,2024,Burdens of stomach and esophageal cancer from 1990 to 2019 and projection to 2030 in China: Findings from the 2019 Global Burden of Disease Study.
+Q3 all-cause or cancer risk expressed as years of age,39015006,2024,Attributable liver cancer deaths and disability-adjusted life years in China and worldwide: profiles and changing trends.
+Q3 all-cause or cancer risk expressed as years of age,36304365,2022,The 50-Year Journey of Lung Cancer Screening: A Narrative Review.
+Q3 all-cause or cancer risk expressed as years of age,39124836,2024,Prognostic Value of Lymph Node Ratio (LNR) in Patients with Postoperative N2 Feature in Non-Small Cell Lung Cancer (NSCLC).
+Q3 all-cause or cancer risk expressed as years of age,35550537,2022,A New Risk-Scoring System for Colorectal Cancer and Polyp Screening by Turkish Colorectal Cancer and Polyp Study Group.
+Q3 all-cause or cancer risk expressed as years of age,39023662,2024,A Primary Health Care Program and COVID-19. Impact in Hospital Admissions and Mortality.
+Q3 all-cause or cancer risk expressed as years of age,38849203,2024,"Change in Nutrition Behavior After Participating in an Obesity-Related Cancer Education Program in El Paso, Texas."
+Q3 all-cause or cancer risk expressed as years of age,38071441,2023,Factors associated with 30-day mortality and morbidity in patients undergoing emergency colorectal surgery.
+Q3 all-cause or cancer risk expressed as years of age,39895146,2025,Prevalence and Prognostic Significance of Sarcopenia in Gynecologic Oncology: A Systematic Review and Meta-Analysis.
+Q3 all-cause or cancer risk expressed as years of age,39290907,2024,"Global, regional, and national burden of tracheal, bronchus, and lung cancer and its risk factors from 1990 to 2021: findings from the global burden of disease study 2021."
+Q3 all-cause or cancer risk expressed as years of age,34103972,2021,Premature Mortality Due to Tobacco-Related Malignancies in Poland.
+Q3 all-cause or cancer risk expressed as years of age,33688316,2021,"Smoking cessation-associated mortality reduction: A case-control study in Tianjin city, China."
+Q3 all-cause or cancer risk expressed as years of age,37678322,2024,"Pregnancy, delivery and neonatal outcomes in women with gastrointestinal system cancer in pregnancy. An evaluation of a population database."
+Q3 all-cause or cancer risk expressed as years of age,36379496,2022,Smoking Cessation Interventions.
+Q3 all-cause or cancer risk expressed as years of age,37820164,2023,Sociodemographic characteristics associated with indications for surgical menopause in women: a retrospective study.
+Q3 all-cause or cancer risk expressed as years of age,38263684,2024,Prognosis of biopsy-confirmed metabolic dysfunction- associated steatotic liver disease: A sub-analysis of the CLIONE study.
+Q3 all-cause or cancer risk expressed as years of age,34035697,2020,Smoking and Liver Disease.
+Q3 all-cause or cancer risk expressed as years of age,38775020,2024,Reproductive Factors and Thyroid Cancer Risk: The Multiethnic Cohort Study.
+Q3 all-cause or cancer risk expressed as years of age,36185836,2022,Sex Differences in All-Cause Inpatient Mortality Risk in Gastric Cancer: Nationwide Inpatient Population-Based Study.
+Q3 all-cause or cancer risk expressed as years of age,42370441,2026,[Italian Cystic Fibrosis Registry (ICFR). Report 2023-2024].
+Q3 all-cause or cancer risk expressed as years of age,39430337,2024,"Incidence, prevalence, and survival of lung cancer in the United Kingdom from 2000-2021: a population-based cohort study."
+Q3 all-cause or cancer risk expressed as years of age,40316925,2025,Top comorbidities in osteoporotic fracture patients in a northeast population in China.
+Q3 all-cause or cancer risk expressed as years of age,35934119,2022,Early natural menopause is associated with poor lung health and increased mortality among female smokers.
+Q3 all-cause or cancer risk expressed as years of age,37390982,2023,Lung Cancer Screening in Asia: An Expert Consensus Report.
+Q3 all-cause or cancer risk expressed as years of age,39159412,2024,Age-Stratified Assessment of the Impact of Breast Cancer Knowledge on the Lifestyle and Dietary Patterns Among Nigerian Females.
+Q3 all-cause or cancer risk expressed as years of age,35929081,2022,Long-term health outcomes of early menarche in women: an umbrella review.
+Q3 all-cause or cancer risk expressed as years of age,35607590,2022,Risk Factor Analysis of Venous Thromboembolism in Cancer: A National Inpatient Sample Study.
+Q3 all-cause or cancer risk expressed as years of age,PPR312369,2021,"Comorbidity Risk Factors Contributing to COVID-19 Related Deaths in Florida, March 1, 2020-January 16, 2021"
+Q3 all-cause or cancer risk expressed as years of age,36398126,2022,"Colorectal cancer burden, trends and risk factors in China: A review and comparison with the United States."
+Q3 all-cause or cancer risk expressed as years of age,38644759,2024,Prevalence and impact of endocrine disorders in advanced metastatic cancer patients undergoing cancer-directed therapy: A prospective observational study.
+Q3 all-cause or cancer risk expressed as years of age,31954204,2020,"Physical activity compared to adiposity and risk of liver-related mortality: Results from two prospective, nationwide cohorts."
+Q3 all-cause or cancer risk expressed as years of age,36659904,2023,"Temporal Trends in the Disease Burden of Colorectal Cancer with Its Risk Factors at the Global and National Level from 1990 to 2019, and Projections Until 2044."
+Q3 all-cause or cancer risk expressed as years of age,35416842,2022,"Tobacco-related neoplasms: survival analysis and risk of death of population data from Florianópolis, SC."
+Q3 all-cause or cancer risk expressed as years of age,36594042,2023,Main modulators of COVID-19 epidemic in sub-Saharan Africa.
+Q3 all-cause or cancer risk expressed as years of age,PPR171728,2020,Biomarker-assessed passive smoking in relation to cause-specific mortality: pooled data from 12 prospective cohort studies comprising 36 584 individuals
+Q3 all-cause or cancer risk expressed as years of age,39272891,2024,Predictors of Clinical Hematological Toxicities under Radiotherapy in Patients with Cervical Cancer-A Risk Analysis.
+Q3 all-cause or cancer risk expressed as years of age,33622415,2021,Competing mortality risks: predicted cardiovascular disease risk versus predicted risk of breast cancer mortality in patients receiving adjuvant chemotherapy in a single Irish center.
+Q3 all-cause or cancer risk expressed as years of age,37298731,2023,Upgrading Treatment and Molecular Diagnosis in Endometrial Cancer-Driving New Tools for Endometrial Preservation?
+Q3 all-cause or cancer risk expressed as years of age,38254906,2024,The Smokers Health Multiple ACtions (SMAC-1) Trial: Study Design and Results of the Baseline Round.
+Q3 all-cause or cancer risk expressed as years of age,38845739,2023,"Contributors to Early Mortality in African Americans, the Jackson Heart Study."
+Q3 all-cause or cancer risk expressed as years of age,38175294,2024,Real-world outcomes of nivolumab plus ipilimumab and pembrolizumab with platinum-based chemotherapy in advanced non-small cell lung cancer: a multicenter retrospective comparative study.
+Q3 all-cause or cancer risk expressed as years of age,34034414,2021,[Preliminary study on smoking-related behaviors of people aged 60 and over suffering from respiratory diseases in Shangqiu area].
+Q3 all-cause or cancer risk expressed as years of age,PPR732070,2023,Developing a Charlson Comorbidity Index for the American Indian Population Using the Epidemiologic Data from the Strong Heart Study
+Q3 all-cause or cancer risk expressed as years of age,35789784,2022,Economic costs of cigarette smoking among adolescents in Nigeria.
+Q3 all-cause or cancer risk expressed as years of age,34330226,2021,"Obesity, chronic disease, age, and in-hospital mortality in patients with covid-19: analysis of ISARIC clinical characterisation protocol UK cohort."
+Q3 all-cause or cancer risk expressed as years of age,35089255,2022,Uncontrolled blood pressure among hypertensive adults with rheumatoid arthritis in Saudi Arabia: A cross-sectional study.
+Q3 all-cause or cancer risk expressed as years of age,37822208,2024,Intraoperative Radiation Exposure in Adolescent Idiopathic and Neuromuscular Scoliosis.
+Q3 all-cause or cancer risk expressed as years of age,38298299,2024,Awareness and Risk Assessment of Breast Cancer Among Women in Saudi Arabia: A Cross-Sectional Study.
+Q3 all-cause or cancer risk expressed as years of age,36279885,2023,"Postdiagnosis body fatness, recreational physical activity, dietary factors and breast cancer prognosis: Global Cancer Update Programme (CUP Global) summary of evidence grading."
+Q3 all-cause or cancer risk expressed as years of age,33542031,2021,Biomarker-assessed passive smoking in relation to cause-specific mortality: pooled data from 12 prospective cohort studies comprising 36 584 individuals.
+Q3 all-cause or cancer risk expressed as years of age,35860116,2022,An inguinal hernia revealing an advanced stage gastric cancer in a young patient: A case report.
+Q3 all-cause or cancer risk expressed as years of age,32943861,2020,Unique Mortality Profile in Japanese Patients with COPD: An Analysis from the Hokkaido COPD Cohort Study.
+Q3 all-cause or cancer risk expressed as years of age,32994253,2020,Patterns and predictors of mortality in a semi-urban population-based cohort in Sri Lanka: findings from the Ragama Health Study.
+Q3 all-cause or cancer risk expressed as years of age,34655476,2022,"Cancer and the risk of coronavirus disease 2019 diagnosis, hospitalisation and death: A population-based multistate cohort study including 4 618 377 adults in Catalonia, Spain."
+Q3 all-cause or cancer risk expressed as years of age,37236754,2023,ACR Appropriateness Criteria® Lung Cancer Screening: 2022 Update.
+Q3 all-cause or cancer risk expressed as years of age,35221839,2022,Epidemiology and biology of early onset colorectal cancer.
+Q3 all-cause or cancer risk expressed as years of age,38328407,2023,Dachaihu decoction inhibits hypernutrition-induced liver metastasis from colorectal cancer by maintaining the gut vascular barrier.
+Q3 all-cause or cancer risk expressed as years of age,37309394,2023,Real-World Experience of Treating Chronic Obstructive Pulmonary Disease with Triple Therapy.
+Q3 all-cause or cancer risk expressed as years of age,33112411,2021,Multivariate mortality analyses in COVID-19: Comparing patients with cancer and patients without cancer in Louisiana.
+Q3 all-cause or cancer risk expressed as years of age,30691592,2019,Recipient obesity does not affect survival after deceased donor liver transplantation for hepatocellular carcinoma. A national retrospective cohort study in the United States.
+Q3 all-cause or cancer risk expressed as years of age,38310338,2024,Impact of intrapulmonary tumour location of non-small-cell lung cancer on surgical outcomes for segmentectomy.
+Q3 all-cause or cancer risk expressed as years of age,30326010,2019,Association of Obesity With Risk of Early-Onset Colorectal Cancer Among Women.
+Q3 all-cause or cancer risk expressed as years of age,35603841,2022,Prediagnosis Leisure-Time Physical Activity and Lung Cancer Survival: A Pooled Analysis of 11 Cohorts.
+Q3 all-cause or cancer risk expressed as years of age,33491081,2021,Tobacco smoking and mortality among Aboriginal and Torres Strait Islander adults in Australia.
+Q3 all-cause or cancer risk expressed as years of age,29637418,2018,Pre-diagnostic changes in body mass index and mortality among breast cancer patients.
+Q3 all-cause or cancer risk expressed as years of age,PPR180602,2020,Fatality rate and predictors of mortality in a large Italian cohort of hospitalized COVID-19 patients
+Q3 all-cause or cancer risk expressed as years of age,35526556,2022,Management of menopause: a view towards prevention.
+Q3 all-cause or cancer risk expressed as years of age,38094486,2023,"[Oto-rhino-laryngological and cervico-maxillofacial pathologies among hospitalized older patients: epidemiological, diagnostical and therapeutical aspects in Lomé, Togo]."
+Q3 all-cause or cancer risk expressed as years of age,37129130,2023,The Prevalence of Cannabis-related Arrhythmias in Patients with Cancer: Real-world Data Evidence of Patient-reported Outcomes.
+Q3 all-cause or cancer risk expressed as years of age,36292038,2022,Cardiovascular Factors Associated with COVID-19 from an International Registry of Primarily Japanese Patients.
+Q4 questionnaire-only cancer mortality risk score,42203656,2026,[Investigating prognostic factors for T1 stage high-grade bladder cancer and developing a multi-marker risk prediction model using immunohistochemistry].
+Q4 questionnaire-only cancer mortality risk score,42125697,2026,Development of a prediction model for acute kidney injury in critically ill patients with advanced colorectal cancer based on white blood cell-related indicators.
+Q4 questionnaire-only cancer mortality risk score,42630916,2026,Under-Recognition of Kidney Disease in Cause-of-Death Certification: An Adjudication-Based Study With Development of an Exploratory Prediction Model.
+Q4 questionnaire-only cancer mortality risk score,PPR1260879,2026,Machine Learning–Based Lung Cancer Risk Prediction for Smokers and Non-Smokers Using National N3C Data
+Q4 questionnaire-only cancer mortality risk score,PPR1276914,2026,Development and Validation of a Survival Prediction Model for Lung Squamous Cell Carcinoma
+Q4 questionnaire-only cancer mortality risk score,42583329,2026,Development and Internal Validation of a Nutrition-Related Indicator-Based Prediction Model for in-Hospital Mortality in Hospitalized Patients with AECOPD.
+Q4 questionnaire-only cancer mortality risk score,41644000,2026,Development of the MANTAP score for predicting one-year mortality in intermediate-stage hepatocellular carcinoma patients undergoing transarterial chemoembolization.
+Q4 questionnaire-only cancer mortality risk score,42432717,2026,Benchmarking inflammation-nutrition and TyG-related indices for 5-year mortality risk in adults with questionnaire-defined obstructive sleep apnea: a survey-weighted NHANES derivation cohort with mult
+Q4 questionnaire-only cancer mortality risk score,42192022,2026,"Planetary health diet: dissecting the link between diet, mortality risk and heart age from a 16-year follow-up of the Guangzhou Biobank Cohort Study."
+Q4 questionnaire-only cancer mortality risk score,40743465,2025,Cardiotoxicity in Pediatric Cancer Survivorship: Retrospective Cohort Study.
+Q4 questionnaire-only cancer mortality risk score,PPR1294015,2026,GIVE-VTE-3: a simple three-component score for venous thromboembolism risk stratification in gastrointestinal cancers - a cross- sectional development study GIVE-VTE-3: VTE risk score in GI cancers
+Q4 questionnaire-only cancer mortality risk score,40935414,2025,Development and validation of a prediction model for all-cause death in heart failure patients with preserved ejection fraction: a single-centre cohort study in China.
+Q4 questionnaire-only cancer mortality risk score,39237921,2024,Cardiovascular health and cancer mortality: evidence from US NHANES and UK Biobank cohort studies.
+Q4 questionnaire-only cancer mortality risk score,42753353,2026,Gastrointestinal bleeding in hepatocellular carcinoma under systemic therapy: Real-world incidence and clinical predictors.
+Q4 questionnaire-only cancer mortality risk score,42501604,2026,MULTIPREVENT: Integrated screening for smoking-related multimorbidity using low-dose chest computed tomography.
+Q4 questionnaire-only cancer mortality risk score,41962842,2026,Three-Point Correction Factor Improves Accuracy of Framingham Risk Score in Breast Cancer Survivors.
+Q4 questionnaire-only cancer mortality risk score,40322677,2025,Postoperative mid-to-long-term adverse event prediction model for patients receiving non-cardiac surgery: An extension of the Simple Postoperative AKI RisK (SPARK) model.
+Q4 questionnaire-only cancer mortality risk score,42795021,2026,Association of Preoperative Lymphocyte-to-Monocyte Ratio with Failure to Achieve Textbook Outcome After Pancreatoduodenectomy for Pancreatic and Periampullary Cancer.
+Q4 questionnaire-only cancer mortality risk score,42577176,2026,"Muscle index, weight loss, and tumor type predict adjuvant therapy failure in periampullary cancer."
+Q4 questionnaire-only cancer mortality risk score,39675593,2025,A web-based tool for cancer risk prediction for middle-aged and elderly adults using machine learning algorithms and self-reported questions.
+Q4 questionnaire-only cancer mortality risk score,41701286,2026,Chronological and biological age stratify survival after robot-assisted radical cystectomy for bladder cancer: a pragmatic age-ECOG risk score.
+Q4 questionnaire-only cancer mortality risk score,40480553,2025,Predicting the 10-year risk of cardiomyopathy in long-term survivors of childhood cancer.
+Q4 questionnaire-only cancer mortality risk score,40759835,2025,Progression-Free Survival Under Immune Checkpoint Inhibitors for Metastatic Non-Small-Cell Lung Cancer: A Retrospective Cohort Study.
+Q4 questionnaire-only cancer mortality risk score,40203886,2025,Prediction of Recurrent Venous Thromboembolism and Arterial Cardiovascular Events after Discontinuation of Anticoagulation: The R-VTE-predict and MACE-predict Risk Scores.
+Q4 questionnaire-only cancer mortality risk score,39886123,2024,Blood-based DNA methylation markers for lung cancer prediction.
+Q4 questionnaire-only cancer mortality risk score,41695915,2026,Detection rate and risk factors of colorectal adenoma in high-altitude population: A cross-sectional study.
+Q4 questionnaire-only cancer mortality risk score,40549086,2025,"Novel Risk Score Incorporating Type-IV Collagen, Albumin, and Prothrombin Time (CAP score) to Predict 180-Day Surgery-Related Mortality After Liver Resection for Hepatocellular Carcinoma."
+Q4 questionnaire-only cancer mortality risk score,PPR894100,2024,"Cardiotoxicity in Pediatric Cancer Survivorship: Patterns, Predictors, and Implications for Long-term Care"
+Q4 questionnaire-only cancer mortality risk score,40944570,2026,Long-term impact of stressful life events on breast cancer risk: A 36-year genetically informed prospective study in the Finnish Twin Cohort.
+Q4 questionnaire-only cancer mortality risk score,PPR930678,2024,Predicting the 10-year risk of cardiomyopathy in long-term survivors of childhood cancer: a report from the St. Jude Lifetime Cohort and the Childhood Cancer Survivor Study
+Q4 questionnaire-only cancer mortality risk score,41797598,2026,Identifying the best diagnostic test for ovarian cancer - synopsis of Refining Ovarian Cancer Test accuracy Scores (ROCkeTS) research.
+Q4 questionnaire-only cancer mortality risk score,39867262,2025,A Machine Learning Model for Predicting Prognosis in HCC Patients With Diabetes After TACE.
+Q4 questionnaire-only cancer mortality risk score,40253230,2025,Derivation and validation of the Caravaggio score for the risk stratification for recurrence in patients with cancer-associated venous thromboembolism.
+Q4 questionnaire-only cancer mortality risk score,40153794,2025,Lung Cancer Screening in Family Members and Peers of Patients With Lung Cancer: Protocol for a Prospective Cohort Study.
+Q4 questionnaire-only cancer mortality risk score,38598551,2024,Benchmarking multi-ancestry prostate cancer polygenic risk scores in a real-world cohort.
+Q4 questionnaire-only cancer mortality risk score,38538012,2024,Derivation and external validation of a simple risk score for predicting severe acute kidney injury after intravenous cisplatin: cohort study.
+Q4 questionnaire-only cancer mortality risk score,39731532,2025,The prognostic significance of stress-phenotyping for stroke incidence: the Malmö Diet and Cancer Study.
+Q4 questionnaire-only cancer mortality risk score,39635526,2024,A comprehensive nomogram for assessing the prognosis of non-small cell lung cancer patients receiving immunotherapy: a prospective cohort study in China.
+Q4 questionnaire-only cancer mortality risk score,37855240,2023,Prediction algorithm for gastric cancer in a general population: A validation study.
+Q4 questionnaire-only cancer mortality risk score,34894456,2022,A risk prediction model for selecting high-risk population for computed tomography lung cancer screening in China.
+Q4 questionnaire-only cancer mortality risk score,37572680,2023,"Development, validation, and prognostic evaluation of a risk score for long-term liver-related outcomes in the general population: a multicohort study."
+Q4 questionnaire-only cancer mortality risk score,39588309,2024,Development and validation of a nomogram for predicting the risk of developing gastric cancer based on a questionnaire: a cross-sectional study.
+Q4 questionnaire-only cancer mortality risk score,36694222,2023,A model for predicting both breast cancer risk and non-breast cancer death among women > 55 years old.
+Q4 questionnaire-only cancer mortality risk score,PPR902224,2024,Long-Term Impact of Stressful Life Events on Breast Cancer Risk: A 36-Year Genetically Informed Prospective Study in the Finnish Twin Cohort
+Q4 questionnaire-only cancer mortality risk score,39956429,2025,"Arterial thromboembolic events in testicular cancer patients: short- and long-term incidence, risk factors, and impact on mortality."
+Q4 questionnaire-only cancer mortality risk score,37191907,2023,A novel risk prediction nomogram for early death in patients with resected synchronous multiple primary colorectal cancer based on the SEER database.
+Q4 questionnaire-only cancer mortality risk score,PPR635131,2023,A novel risk prediction nomogram for early death in patients with resected synchronous multiple primary colorectal cancer based on the SEER database
+Q4 questionnaire-only cancer mortality risk score,34447748,2021,Identification of Novel Metabolism-Associated Subtypes for Pancreatic Cancer to Establish an Eighteen-Gene Risk Prediction Model.
+Q4 questionnaire-only cancer mortality risk score,36750802,2023,Developing a mortality risk prediction model using data of 3663 hospitalized COVID-19 patients: a retrospective cohort study in an Egyptian University Hospital.
+Q4 questionnaire-only cancer mortality risk score,35677826,2022,Development of a Simple Risk Model to Predict Mortality in Patients With Osteosarcoma of the Extremity.
+Q4 questionnaire-only cancer mortality risk score,34051827,2021,Development and external validation of a breast cancer absolute risk prediction model in Chinese population.
+Q4 questionnaire-only cancer mortality risk score,37423312,2024,PrOgnosis in Pulmonary Embolism (PoPE): 30-Day mortality risk score based on five admission parameters.
+Q4 questionnaire-only cancer mortality risk score,36509888,2022,An improved prognostic model for predicting the mortality of critically ill patients: a retrospective cohort study.
+Q4 questionnaire-only cancer mortality risk score,37403251,2023,Prediction of advanced colorectal neoplasia based on metabolic parameters among symptomatic patients.
+Q4 questionnaire-only cancer mortality risk score,35128811,2022,A new scoring system for predicting in-hospital death after lung cancer surgery (the SABCIP score) using a Japanese nationwide administrative database.
+Q4 questionnaire-only cancer mortality risk score,32971946,2020,Development and Internal Validation of a Multivariable Prediction Model for Adrenocortical-Carcinoma-Specific Mortality.
+Q4 questionnaire-only cancer mortality risk score,38735755,2024,Development of a Concise Healthy Diet Score for Cardiovascular Disease among Japanese; The Japan Collaborative Cohort Study.
+Q4 questionnaire-only cancer mortality risk score,33833388,2021,Development of a multivariable prediction model for severe COVID-19 disease: a population-based study from Hong Kong.
+Q4 questionnaire-only cancer mortality risk score,30552254,2018,Predicting 7-year mortality for use with evidence-based guidelines for Prostate-Specific Antigen (PSA) testing: findings from a large prospective study of 123 697 Australian men.
+Q4 questionnaire-only cancer mortality risk score,35373440,2022,Development and validation of a life expectancy calculator for US patients with prostate cancer.
+Q4 questionnaire-only cancer mortality risk score,37309655,2023,Prediction Model for Postoperative Quality of Life Among Breast Cancer Survivors Along the Survivorship Trajectory From Pretreatment to 5 Years: Machine Learning-Based Analysis.
+Q4 questionnaire-only cancer mortality risk score,36763605,2023,Learning high-order interactions for polygenic risk prediction.
+Q4 questionnaire-only cancer mortality risk score,36203414,2022,"Development and validation of a screening model for lung cancer using machine learning: A large-scale, multi-center study of biomarkers in breath."
+Q4 questionnaire-only cancer mortality risk score,36227638,2022,Coronary Artery Computed Tomography Angiography for Preventing Cardio-Cerebrovascular Disease: Observational Cohort Study Using the Observational Health Data Sciences and Informatics' Common Data Mode
+Q4 questionnaire-only cancer mortality risk score,32156833,2020,"Development, validation and clinical impact of a prediction model for 6-month mortality in older cancer patients: the GRADE."
+Q4 questionnaire-only cancer mortality risk score,35059919,2022,Joanne Knight Breast Health Cohort at Siteman Cancer Center.
+Q4 questionnaire-only cancer mortality risk score,33574075,2021,Combining pulmonary and cardiac computed tomography biomarkers for disease-specific risk modelling in lung cancer screening.
+Q4 questionnaire-only cancer mortality risk score,37254010,2023,Development and Validation of the Life Expectancy Estimator for Older Adults with Diabetes (LEAD): the Diabetes and Aging Study.
+Q4 questionnaire-only cancer mortality risk score,36138428,2022,The Marsden Morbidity Index: the derivation and validation of a simple risk index scoring system using cardiopulmonary exercise testing variables to predict morbidity in high-risk patients having majo
+Q4 questionnaire-only cancer mortality risk score,36158664,2022,Preoperative CT-based deep learning model for predicting overall survival in patients with high-grade serous ovarian cancer.
+Q4 questionnaire-only cancer mortality risk score,33920250,2021,Development and Validation of an Early Mortality Risk Score for Older Patients Treated with Chemotherapy for Cancer.
+Q4 questionnaire-only cancer mortality risk score,32568098,2020,Development and validation of a risk score for predicting mortality after resection of primary hepatocellular carcinoma.
+Q4 questionnaire-only cancer mortality risk score,34808523,2021,A user-friendly objective prediction model in predicting colorectal cancer based on 234 044 Asian adults in a prospective cohort.
+Q4 questionnaire-only cancer mortality risk score,34462406,2021,Development and validation of a comorbidity index for predicting survival outcomes after allogeneic stem cell transplantation in adult patients with acute leukemia: a Korean nationwide cohort study.
+Q4 questionnaire-only cancer mortality risk score,38906616,2024,A prognostic model for use before elective surgery to estimate the risk of postoperative pulmonary complications (GSU-Pulmonary Score): a development and validation study in three international cohort
+Q4 questionnaire-only cancer mortality risk score,32707225,2020,aMAP risk score predicts hepatocellular carcinoma development in patients with chronic hepatitis.
+Q4 questionnaire-only cancer mortality risk score,PPR366590,2021,The Marsden Morbidity Index: The Derivation and Validation of a Simple Risk Index Scoring System Using Cardiopulmonary Exercise Testing Variables to Predict Morbidity in High Risk Patients Having Majo
+Q4 questionnaire-only cancer mortality risk score,28095156,2017,Lung Cancer Risk Prediction Model Incorporating Lung Function: Development and Validation in the UK Biobank Prospective Cohort Study.
+Q4 questionnaire-only cancer mortality risk score,30373451,2018,Association Between a 20-Year Cardiovascular Disease Risk Score Based on Modifiable Lifestyles and Total and Cause-Specific Mortality Among US Men and Women.
+Q4 questionnaire-only cancer mortality risk score,34950851,2021,Recreational Physical Activity and Outcomes After Breast Cancer in Women at High Familial Risk.
+Q4 questionnaire-only cancer mortality risk score,33823024,2021,Relationships between sleep traits and lung cancer risk: a prospective cohort study in UK Biobank.
+Q4 questionnaire-only cancer mortality risk score,37633889,2023,Development and validation of a nomogram based on common biochemical indicators for survival prediction of children with high-risk neuroblastoma: A valuable tool for resource-limited hospitals.
+Q4 questionnaire-only cancer mortality risk score,32622502,2020,Futility Risk Model for Predicting Outcome After Transcatheter Aortic Valve Implantation.
+Q4 questionnaire-only cancer mortality risk score,PPR577357,2022,"Gastrointestinal Diseases, Genetic Risk, and Incident Dementia: A Prospective Cohort Study in 352,463 Middle-Aged Adults"
+Q4 questionnaire-only cancer mortality risk score,30625975,2019,Dynamic Thromboembolic Risk Modelling to Target Appropriate Preventative Strategies for Patients with Non-Small Cell Lung Cancer.
+Q4 questionnaire-only cancer mortality risk score,34585849,2021,Geriatric Nutrition Risk Index: Prognostic factor related to inflammation in elderly patients with cancer cachexia.
+Q4 questionnaire-only cancer mortality risk score,28734776,2017,A preoperative score to predict early death after pancreatic cancer resection.
+Q4 questionnaire-only cancer mortality risk score,31112023,2019,Prediction of early mortality in patients with cancer-associated thrombosis in the RIETE Database.
+Q4 questionnaire-only cancer mortality risk score,29445314,2018,Prognostic assessment for patients with cancer and incidental pulmonary embolism.
+Q4 questionnaire-only cancer mortality risk score,35921862,2023,Predicting Non-home Discharge After Lung Surgery: Analysis of the General Thoracic Surgery Database.
+Q4 questionnaire-only cancer mortality risk score,31787084,2019,One- to 10-year Status Epilepticus Mortality (SEM) score after 30 days of hospital discharge: development and validation using competing risks analysis.
+Q4 questionnaire-only cancer mortality risk score,PPR493740,2022,Learning High-Order Interactions for Polygenic Risk Prediction
+Q4 questionnaire-only cancer mortality risk score,26727414,2017,Simple preoperative risk scale accurately predicts perioperative mortality following esophagectomy for malignancy.
+Q4 questionnaire-only cancer mortality risk score,26860993,2016,Successful external validation of a model to predict other cause mortality in localized prostate cancer.
+Q4 questionnaire-only cancer mortality risk score,33979959,2021,[Application of aMAP score to assess the risk of hepatocarciongenesis in population of chronic liver disease in primary hospitals].
+Q4 questionnaire-only cancer mortality risk score,28177461,2017,Common breast cancer risk alleles and risk assessment: a study on 35 441 individuals from the Danish general population.
+Q4 questionnaire-only cancer mortality risk score,26886613,2016,The PER (Preoperative Esophagectomy Risk) Score: A Simple Risk Score to Predict Short-Term and Long-Term Outcome in Patients with Surgically Treated Esophageal Cancer.
+Q4 questionnaire-only cancer mortality risk score,27544541,2016,"WHipple-ABACUS, a simple, validated risk score for 30-day mortality after pancreaticoduodenectomy developed using the ACS-NSQIP database."
+Q4 questionnaire-only cancer mortality risk score,PPR201498,2020,"Robust, reproducible clinical patterns in hospitalised patients with COVID-19"
+Q4 questionnaire-only cancer mortality risk score,26849527,2016,Clostridium difficile associated risk of death score (CARDS): a novel severity score to predict mortality among hospitalised patients with C. difficile infection.
+Q4 questionnaire-only cancer mortality risk score,25885261,2015,Low oxygen saturation and mortality in an adult cohort: the Tromsø study.
+Q4 questionnaire-only cancer mortality risk score,28592619,2017,Incorporating Tumor Characteristics to the American Joint Committee on Cancer Breast Cancer Staging System.
+Q4 questionnaire-only cancer mortality risk score,26121210,2015,Predicting the Risk of a Second Basal Cell Carcinoma.
+Q4 questionnaire-only cancer mortality risk score,20143433,2010,In-hospital mortality from liver resection for hepatocellular carcinoma: a simple risk score.
+Q4 questionnaire-only cancer mortality risk score,26000634,2015,"The Patient- And Nutrition-Derived Outcome Risk Assessment Score (PANDORA): Development of a Simple Predictive Risk Score for 30-Day In-Hospital Mortality Based on Demographics, Clinical Observation, "
+Q4 questionnaire-only cancer mortality risk score,21655241,2011,A comparative assessment of non-laboratory-based versus commonly used laboratory-based cardiovascular disease risk scores in the NHANES III population.
+Q4 questionnaire-only cancer mortality risk score,19855257,2009,Perioperative mortality for management of hepatic neoplasm: a simple risk score.
+Q4 questionnaire-only cancer mortality risk score,15605663,2004,A simple and accurate prediction model to estimate the intrahospital mortality risk of hospitalised cancer patients.
+Q4 questionnaire-only cancer mortality risk score,31150437,2019,"Primary tumour location affects survival after resection of colorectal liver metastases: A two-institutional cohort study with international validation, systematic meta-analysis and a clinical risk sc"
+Q4 questionnaire-only cancer mortality risk score,26123861,2015,Predicting Early Death Among Elderly Dialysis Patients: Development and Validation of a Risk Score to Assist Shared Decision Making for Dialysis Initiation.
+Q4 questionnaire-only cancer mortality risk score,439491,2007,The LLP risk model : an individual risk prediction model for lung cancer
+Q4 questionnaire-only cancer mortality risk score,25311361,2015,Predicting mortality of elderly patients acutely admitted to the Department of Internal Medicine.
+Q4 questionnaire-only cancer mortality risk score,28728168,2017,Lung cancer prognostic index: a risk score to predict overall survival after the diagnosis of non-small-cell lung cancer.
+Q4 questionnaire-only cancer mortality risk score,25671769,2015,A simple clinical tool to inform the decision-making process to refer elderly incident dialysis patients for kidney transplant evaluation.
+Q4 questionnaire-only cancer mortality risk score,25783428,2015,Development and validation of risk prediction algorithms to estimate future risk of common cancers in men and women: prospective cohort study.
+Q4 questionnaire-only cancer mortality risk score,27775165,2017,Predicting Prostate Cancer Recurrence After Radical Prostatectomy.
+Q4 questionnaire-only cancer mortality risk score,22814859,2013,A clinical prognostic model for the identification of low-risk patients with acute symptomatic pulmonary embolism and active cancer.
+Q4 questionnaire-only cancer mortality risk score,21846713,2011,Development and validation of risk prediction algorithm (QThrombosis) to estimate future risk of venous thromboembolism: prospective cohort study.
+Q4 questionnaire-only cancer mortality risk score,26730436,2017,External validation of a risk score in the prediction of the mortality after esophagectomy for cancer.
+Q4 questionnaire-only cancer mortality risk score,26776867,2016,A Novel Clinical Prediction Model for Prognosis in Malignant Pleural Mesothelioma Using Decision Tree Analysis.
+Q4 questionnaire-only cancer mortality risk score,20155401,2010,A simple risk score to predict in-hospital mortality after pancreatic resection for cancer.
+Q4 questionnaire-only cancer mortality risk score,27695115,2016,Comparison of the Ability of Different Clinical Treatment Scores to Estimate Prognosis in High-Risk Early Breast Cancer Patients: A Hellenic Cooperative Oncology Group Study.
+Q4 questionnaire-only cancer mortality risk score,20932590,2012,A new risk score predicting 1- and 5-year mortality following acute myocardial infarction Soroka Acute Myocardial Infarction (SAMI) Project.
+Q4 questionnaire-only cancer mortality risk score,17728804,2008,Erectile dysfunction prospectively associated with cardiovascular disease in the Dutch general population: results from the Krimpen Study.
+Q4 questionnaire-only cancer mortality risk score,15933390,2005,Predicting death in the nursing home: development and validation of the 6-month Minimum Data Set mortality risk index.
+Q4 questionnaire-only cancer mortality risk score,18407509,2008,Outcome after esophagectomy for cancer of the esophagus and GEJ in patients aged over 75 years.
+Q4 questionnaire-only cancer mortality risk score,18060979,2007,"Relationship among surgical complexity, short-term morbidity, and overall survival in primary surgery for advanced ovarian cancer."
+Q4 questionnaire-only cancer mortality risk score,PMC1495769,2000,Patient-Centered Research : Development and Validation of a Prognostic Index for 1-Year Mortality in Older Adults After Hospitalization
+"Q5 risk-based age to start cancer screening, all cancers or free info",41139691,2026,Use of a risk score to identify the starting age of one-off low-dose CT screening for lung cancer in China.
+"Q5 risk-based age to start cancer screening, all cancers or free info",42320971,2026,Exploring associations between epidemiological risk factors and colorectal cancer in Oman: a case-control study.
+"Q5 risk-based age to start cancer screening, all cancers or free info",41287073,2025,Effectiveness and cost-effectiveness of risk-adapted colorectal cancer screening: a randomized controlled trial and modeling analysis.
+"Q5 risk-based age to start cancer screening, all cancers or free info",42419696,2026,"[From Opportunistic PSA Testing to Individualized, Risk-Adapted Early Detection of Prostate Cancer in Germany]."
+"Q5 risk-based age to start cancer screening, all cancers or free info",PPR1329713,2026,"Post-SVR Intrahepatic Cholangiocarcinoma: Lessons for Long-Term Surveillance, Biomarker Interpretation, and the Role of Metabolic Dysfunction"
+"Q5 risk-based age to start cancer screening, all cancers or free info",42218736,2026,Impact of Population-Based Pathogenic Variant Testing on Risk-Based Breast Screening Recommendations: A Secondary Analysis of the WISDOM Study.
+"Q5 risk-based age to start cancer screening, all cancers or free info",42696860,2026,Integrating minimal residual disease into postoperative treatment selection for head and neck cancer.
+"Q5 risk-based age to start cancer screening, all cancers or free info",42374258,2026,Risk score for esophageal and gastric cancer in the over 50-year-old population based on self-reported information -the RISC-GAP project.
+"Q5 risk-based age to start cancer screening, all cancers or free info",PPR1293899,2026,Predictors of Biochemical Recurrence After Radical Prostatectomy in Localized Prostate Cancer: A Single-Center Retrospective Analysis
+"Q5 risk-based age to start cancer screening, all cancers or free info",41954643,2026,Proteomics-Driven Risk Stratification in Stage III Colon Cancer: A Validated Prognostic Signature for Recurrence Prediction Using Three Independent Cohorts.
+"Q5 risk-based age to start cancer screening, all cancers or free info",40403333,2025,Deriving risk-adapted starting ages of breast cancer screening according to polygenic risk score.
+"Q5 risk-based age to start cancer screening, all cancers or free info",41632141,2025,Risk-Adapted Lung Cancer Screening Starting Ages for Former Smokers.
+"Q5 risk-based age to start cancer screening, all cancers or free info",42726122,2026,Predictive factors for isolated pulmonary metastasis in pathological T1 colorectal cancer following curative resection with lymph node dissection: a multicenter study.
+"Q5 risk-based age to start cancer screening, all cancers or free info",42455460,2026,"Burden of bladder cancer in China from 1990 to 2023: temporal trends, modifiable risk factors, and implications for prevention."
+"Q5 risk-based age to start cancer screening, all cancers or free info",42744708,2026,Performance of the EORTC and CUETO risk prediction models in contemporary patients undergoing transurethral resection of bladder tumor with blue light cystoscopy.
+"Q5 risk-based age to start cancer screening, all cancers or free info",42752793,2026,"Nasopharyngeal carcinoma: epidemiology, risk factors, signaling pathways, clinical features, diagnosis, and management."
+"Q5 risk-based age to start cancer screening, all cancers or free info",42434249,2026,Excess late mortality among long-term gastric cancer survivors following gastrectomy: a population-based cohort study.
+"Q5 risk-based age to start cancer screening, all cancers or free info",42474278,2026,Accelerated Aging and Risk of Subsequent Neoplasms in Survivors of Childhood Cancer: A Report from the Childhood Cancer Survivor Study.
+"Q5 risk-based age to start cancer screening, all cancers or free info",42393631,2026,Leveraging data-driven risk-adapted surveillance strategies after disease progression in locally advanced rectal cancer.
+"Q5 risk-based age to start cancer screening, all cancers or free info",42418475,2026,A clinical pilot study for personalized risk-based breast cancer screening utilizing a polygenic risk score.
+"Q5 risk-based age to start cancer screening, all cancers or free info",42107222,2026,HPV-positive oropharyngeal squamous cell carcinoma: risk-adapted treatment strategies and biomarker-guided individualization.
+"Q5 risk-based age to start cancer screening, all cancers or free info",42416866,2026,Polygenic risk scores in cancer.
+"Q5 risk-based age to start cancer screening, all cancers or free info",42082236,2026,Understanding LUng Cancer risk factors and their Impact Assessment (LUCIA): protocol for multicentre observational cohort study.
+"Q5 risk-based age to start cancer screening, all cancers or free info",38253312,2024,"Risk-Adapted Starting Age of Personalized Lung Cancer Screening: A Population-Based, Prospective Cohort Study in China."
+"Q5 risk-based age to start cancer screening, all cancers or free info",42706634,2026,"Feline Mammary Carcinomas: Clinical Perspectives on Diagnosis, Staging, Treatment and Prognosis."
+"Q5 risk-based age to start cancer screening, all cancers or free info",42613422,2026,"Global epidemiology of metabolic and alcohol-associated liver disease: risk factors, natural history and clinical implications."
+"Q5 risk-based age to start cancer screening, all cancers or free info",PPR1267473,2026,A clinical pilot study for personalized risk-based breast cancer screening utilizing the polygenic risk score
+"Q5 risk-based age to start cancer screening, all cancers or free info",42582861,2026,Risk factors for second primary esophageal cancer after head and neck squamous cell carcinoma: a systematic review and meta-analysis.
+"Q5 risk-based age to start cancer screening, all cancers or free info",42482954,2026,Clinical and pathological profile with prognostic insights in 9504 thyroid cancer cases: a single-center study (2008-2023).
+"Q5 risk-based age to start cancer screening, all cancers or free info",41313996,2026,A scoping review of communication tools for risk-based breast cancer screening.
+"Q5 risk-based age to start cancer screening, all cancers or free info",42320717,2026,Cytomegalovirus After Autologous Hematopoietic Cell Transplantation: Impact on Outcome and A Personalized Risk-Adapted Prevention Strategy.
+"Q5 risk-based age to start cancer screening, all cancers or free info",42449834,2026,Association Between ER/PR-Positive Breast Tumors and Digestive Cancers.
+"Q5 risk-based age to start cancer screening, all cancers or free info",42738287,2026,"Risk-Adapted Surveillance in Borderline Ovarian Tumours (BOTs): The ""Barts"" Evidence-Based Framework."
+"Q5 risk-based age to start cancer screening, all cancers or free info",42471825,2026,Tumor Characteristics and Survival Predictors in Patients With Colorectal Cancer: A Lebanese Single-Center Experience.
+"Q5 risk-based age to start cancer screening, all cancers or free info",42724562,2026,Identification of recurrence risk factors and development of personalized follow-up strategies for esophageal squamous cell carcinoma patients after neoadjuvant therapy and surgery: a retrospective co
+"Q5 risk-based age to start cancer screening, all cancers or free info",42057362,2026,Pre-transplant hepatocellular carcinoma is associated with increased risk of post-transplant non-HCC cancer in liver transplant recipients.
+"Q5 risk-based age to start cancer screening, all cancers or free info",42527158,2026,Unified genetic risk score for prostate cancer enables improved risk stratification for clinical decision-making.
+"Q5 risk-based age to start cancer screening, all cancers or free info",41851747,2026,Optimizing colorectal cancer screening through polygenic risk score-based risk stratification: evidence from a population-based cohort and screening trial.
+"Q5 risk-based age to start cancer screening, all cancers or free info",42556597,2026,Urinary biomarkers for cancer diagnosis and surveillance: From analytical promise to clinical utility.
+"Q5 risk-based age to start cancer screening, all cancers or free info",41576737,2026,Histology-specific prognostic models for early-stage cervical cancer based on pathologic intermediate-risk factors: a multi-center retrospective study.
+"Q5 risk-based age to start cancer screening, all cancers or free info",42820532,2026,Tumor Lysis Syndrome in Solid Tumors: An Emerging Oncologic Emergency in the Era of Precision Oncology.
+"Q5 risk-based age to start cancer screening, all cancers or free info",38976632,2024,"Personalized starting age of gastric cancer screening based on individuals' risk profiles: a population-based, prospective study."
+"Q5 risk-based age to start cancer screening, all cancers or free info",42294298,2026,TURBT versus RC in T1N0M0 non-urothelial bladder cancer: a population-based study.
+"Q5 risk-based age to start cancer screening, all cancers or free info",41771225,2026,"Familial colorectal cancer: risk factors, screening strategies and personalized medicine."
+"Q5 risk-based age to start cancer screening, all cancers or free info",41976283,2026,Evaluation of Real-Life Data on Toxicity in Elderly Patients Undergoing Adjuvant External Beam Radiotherapy for Endometrial Carcinoma.
+"Q5 risk-based age to start cancer screening, all cancers or free info",39402035,2024,Plasma proteomic and polygenic profiling improve risk stratification and personalized screening for colorectal cancer.
+"Q5 risk-based age to start cancer screening, all cancers or free info",42467945,2026,Hepatocellular carcinoma development after hepatitis B surface antigen seroclearance in chronic hepatitis B patients: a 10-year single-center cohort study.
+"Q5 risk-based age to start cancer screening, all cancers or free info",42575071,2026,Brief Report on Sociodemographic Patterns of Lung Cancer in Individuals Who Never Smoked.
+"Q5 risk-based age to start cancer screening, all cancers or free info",42303580,2026,Targeted Prostate Health Checks for prostate cancer in men at high risk: a feasibility pilot in primary and secondary care in North East London.
+"Q5 risk-based age to start cancer screening, all cancers or free info",42120692,2026,Clinical Course and Risk Factors for Malignant Progression in Intraductal Papillary Mucinous Neoplasms with High-Risk Stigmata.
+"Q5 risk-based age to start cancer screening, all cancers or free info",41828052,2026,"Imaging Ductal Carcinoma In Situ in the Era of De-Escalation: Role, Limits, and Clinical Implications for Risk-Adapted Management."
+"Q5 risk-based age to start cancer screening, all cancers or free info",42465149,2026,Prostate Cancer Screening: Current Controversies and Future Directions.
+"Q5 risk-based age to start cancer screening, all cancers or free info",40750496,2025,"Epidemiology of Renal Cancer: Incidence, Mortality, Survival, Genetic Predisposition, and Risk Factors."
+"Q5 risk-based age to start cancer screening, all cancers or free info",41827659,2026,Improving Lung Cancer Screening Selection: A Comparative Analysis of Risk Models and Traditional Criteria in a Western European General Population.
+"Q5 risk-based age to start cancer screening, all cancers or free info",42029478,2026,A Urinary Three-Metabolite Signature Enables Noninvasive Identification of Patients with High-Risk Ovarian Cancer.
+"Q5 risk-based age to start cancer screening, all cancers or free info",42157029,2026,Risk of Cervical Metastasis in Primary Parotid Gland Malignancies: A Yo-IFOS Multicenter Retrospective Longitudinal Study.
+"Q5 risk-based age to start cancer screening, all cancers or free info",42733694,2026,"Risk factors, incidence, and outcomes of bladder and ureteral cancer in lung transplant recipients: A single-center cohort study."
+"Q5 risk-based age to start cancer screening, all cancers or free info",42709184,2026,Clinical guidance on evaluation and management of bone fragility in patients with monoclonal gammopathy of undetermined significance (MGUS): an IOF position statement.
+"Q5 risk-based age to start cancer screening, all cancers or free info",42411740,2026,"POEMS Syndrome: 2026 Update on Diagnosis, Risk-Stratification, and Management."
+"Q5 risk-based age to start cancer screening, all cancers or free info",41997766,2026,Risk-Adapted Follow-up After Negative MRI-Targeted Biopsy in PI-RADS 3-5 Lesions: A Clinical Cohort Study With Diagnostic Stewardship Modeling.
+"Q5 risk-based age to start cancer screening, all cancers or free info",42644436,2026,Surgical Outcomes and Histopathological Risk Factors in Periocular Basal Cell Carcinoma: A Single-Centre Study of 100 Patients.
+"Q5 risk-based age to start cancer screening, all cancers or free info",41724531,2026,Risk-based screening for early detection of colorectal cancer: an overview.
+"Q5 risk-based age to start cancer screening, all cancers or free info",42099018,2026,Risk Factors Influencing Efficacy and Prognosis Evaluation of Neoadjuvant Systemic Therapy in Triple-Positive Breast Cancer.
+"Q5 risk-based age to start cancer screening, all cancers or free info",41719443,2026,"Gastric Cancer in China, 1990 to 2023: Trends, Modifiable Risks, and Prevention Priorities."
+"Q5 risk-based age to start cancer screening, all cancers or free info",41291789,2025,Increased plasma concentrations of acyl-coenzyme A binding protein (ACBP) predict future lung cancer development in smokers at risk of cardiovascular disease.
+"Q5 risk-based age to start cancer screening, all cancers or free info",41637000,2026,Genotoxicity of cancer therapies and the risk of secondary malignancies: toward personalized prevention.
+"Q5 risk-based age to start cancer screening, all cancers or free info",41343724,2025,Recent advances in risk stratification of patients with Barrett's esophagus.
+"Q5 risk-based age to start cancer screening, all cancers or free info",42588654,2026,Real-World Evidence for Breast Cancer Risk Stratification: Insights from the P.I.N.K. Study.
+"Q5 risk-based age to start cancer screening, all cancers or free info",42798930,2026,"Postoperative circulating tumor DNA in stage II colon cancer: biological rationale, clinical evidence, and unresolved challenges."
+"Q5 risk-based age to start cancer screening, all cancers or free info",41770836,2026,Colorectal cancer in metabolic dysfunction-associated steatotic liver disease: an international Delphi consensus statement.
+"Q5 risk-based age to start cancer screening, all cancers or free info",42561626,2026,"Temporal dynamics and spatial patterns of recurrence after curative gastrectomy for gastric cancer: A multicenter hazard function analysis of 3,278 patients."
+"Q5 risk-based age to start cancer screening, all cancers or free info",40115471,2024,Risk-adapted scoring model to identify candidates benefiting from adjuvant chemotherapy after radical nephroureterectomy in nonmetastatic upper tract urothelial carcinoma with ≤pT2.
+"Q5 risk-based age to start cancer screening, all cancers or free info",41682841,2026,Cancer-Associated Thrombosis in Breast Cancer: Risk Factors and Personalized Management.
+"Q5 risk-based age to start cancer screening, all cancers or free info",41725964,2025,Development of a predictive risk score for 1-year intravesical recurrence after radical nephroureterectomy for upper tract urothelial carcinoma.
+"Q5 risk-based age to start cancer screening, all cancers or free info",41768042,2026,Incidental Prostate Cancer Is an Uncommon but Clinically Non-negligible Cause of Death in Selected Long-term Survivors of Urothelial Carcinoma-Oncological Outcomes and a Proposed Follow-up Strategy fr
+"Q5 risk-based age to start cancer screening, all cancers or free info",42161482,2026,Imaging Features and Risk Factors Associated with Locoregional Recurrence of Breast Cancer: Insights for Imaging and Clinical Practice.
+"Q5 risk-based age to start cancer screening, all cancers or free info",42309462,2026,Risk Factors and Outcomes of Pneumocystis jirovecii Pneumonia after Allogeneic Hematopoietic Stem Cell Transplantation for Hematological Malignancy: A 10-Yr Cohort Study.
+"Q5 risk-based age to start cancer screening, all cancers or free info",42700710,2026,Trends in Incidence and Mortality of Oral Cancer in Sri Lanka 2005-2022: A Population-Based Temporal Analysis.
+"Q5 risk-based age to start cancer screening, all cancers or free info",42433251,2026,Over- and underscreening for lung cancer.
+"Q5 risk-based age to start cancer screening, all cancers or free info",PPR1144922,2026,"Gastric cancer burden, risk factors, and early detection strategies in Latin America and Colombia"
+"Q5 risk-based age to start cancer screening, all cancers or free info",41200928,2025,Towards harmonised paediatric thyroid cancer care: adult comparisons and gaps.
+"Q5 risk-based age to start cancer screening, all cancers or free info",PPR1271084,2025,Combining genome-wide polygenic scores with registry data for colorectal cancer risk-based screening
+"Q5 risk-based age to start cancer screening, all cancers or free info",40619102,2026,Incidence and Risk Factors of Skin Cancer and Preneoplastic Lesions after Autologous and Allogeneic Hematopoietic Cell Transplantation.
+"Q5 risk-based age to start cancer screening, all cancers or free info",41869650,2026,Interpretable AI for treatment decision-making in immunoradiotherapy of locally advanced nasopharyngeal carcinoma.
+"Q5 risk-based age to start cancer screening, all cancers or free info",PPR1155879,2026,Development of a pragmatic LDH–magnesium–HER2 risk score for severe chemotherapy toxicity in breast cancer: a prospective study in a resource-limited oncology setting
+"Q5 risk-based age to start cancer screening, all cancers or free info",41300963,2025,Health Inequity of Stage and Survival of Gastric Cancer in California.
+"Q5 risk-based age to start cancer screening, all cancers or free info",40074274,2025,Spousal perceptions and their role in promoting breast cancer screening: a focus group study.
+"Q5 risk-based age to start cancer screening, all cancers or free info",40380018,2025,Alcohol consumption and breast lesions: targets for risk-based screening in high-risk Italian women.
+"Q5 risk-based age to start cancer screening, all cancers or free info",38876387,2024,Development and evaluation of a risk prediction tool for risk-adapted screening of colorectal cancer in China.
+"Q5 risk-based age to start cancer screening, all cancers or free info",PPR1139451,2025,Cancer-Associated Thrombosis in Breast Cancer: Risk Factors and Personalized Management
+"Q5 risk-based age to start cancer screening, all cancers or free info",40553361,2025,"Epidemiology of Early Onset Prostate Cancer: Global Patterns, Risk Factors, and Projections Through 2040."
+"Q5 risk-based age to start cancer screening, all cancers or free info",39589482,2025,[Urothelial carcinoma of the upper and lower urinary tract-which risk factors make early detection worthwhile?]
+"Q5 risk-based age to start cancer screening, all cancers or free info",39828058,2025,Risk-Adapted Letermovir Prophylaxis Based on a Scoring System Predicting a Higher Burden of Cytomegalovirus Exposure After Allogeneic Hematopoietic Cell Transplantation.
+"Q5 risk-based age to start cancer screening, all cancers or free info",42380168,2026,Development and exploratory evaluation of a prediction model for oral mucositis in patients receiving CapeOX chemotherapy: a multicenter retrospective study.
+"Q5 risk-based age to start cancer screening, all cancers or free info",42477705,2026,"Incidence, risk factors and tumor spectrum of second primary cancers after gastric cancer: a multicenter cohort study with long-term follow-up."
+"Q5 risk-based age to start cancer screening, all cancers or free info",40466732,2025,The alarming rise of early-onset colorectal cancer.
+"Q5 risk-based age to start cancer screening, all cancers or free info",40764670,2025,Effect of risk-based screening for upper gastrointestinal cancers: a multi-center real-world study.
+"Q5 risk-based age to start cancer screening, all cancers or free info",42536589,2026,Baseline predictors of early progression during EGFR-TKI therapy in patients with EGFR-mutant non-small cell lung cancer: A retrospective cohort study.
+"Q5 risk-based age to start cancer screening, all cancers or free info",40557205,2025,Early onset gastric cancer: clinical and molecular insights into a rising epidemic among younger adults.
+"Q5 risk-based age to start cancer screening, all cancers or free info",41260054,2026,Participant selection for lung cancer screening using primary care electronic medical records: The Catalan scenario.
+"Q5 risk-based age to start cancer screening, all cancers or free info",42069784,2026,Cardiotoxicity of monoclonal antibody-based therapies in breast cancer: a contemporary narrative review.
+"Q5 risk-based age to start cancer screening, all cancers or free info",36355372,2022,Use of Breast Cancer Risk Factors to Identify Risk-Adapted Starting Age of Screening in China.
+"Q5 risk-based age to start cancer screening, all cancers or free info",42724687,2026,Predictive value of baseline risk factors and early prostate-specific antigen (PSA) kinetics for achieving deep PSA decline in metastatic hormone-sensitive prostate cancer: implications for treatment 
+"Q5 risk-based age to start cancer screening, all cancers or free info",42080343,2026,Long-term cardiotoxicity outcomes of trastuzumab and cardiac safety of novel HER2-targeted therapies.
+"Q5 risk-based age to start cancer screening, all cancers or free info",42214276,2026,Neutrophil-to-lymphocyte ratio and performance status are associated with increased risk of skin toxicity in patients receiving enfortumab vedotin with or without pembrolizumab for metastatic urotheli
+"Q5 risk-based age to start cancer screening, all cancers or free info",41444419,2025,Higher local recurrence as the distinct failure pattern in early-onset rectal cancer: a tailored MRI score to guide therapy.
+"Q5 risk-based age to start cancer screening, all cancers or free info",42492411,2026,From imaging to action: MRI features direct surgical strategy in low rectal cancer.
+"Q5 risk-based age to start cancer screening, all cancers or free info",42505680,2026,Prevention of Gastrointestinal Bleeding in Patients Receiving Direct Oral Anticoagulants: A Narrative Review and Practical Framework for Prescribers.
+"Q5 risk-based age to start cancer screening, all cancers or free info",PPR1256528,2026,Serum Laminin Alpha 4 (LAMA4): A novel circulating biomarker for diagnosis and prognostication in lung cancer
+"Q5 risk-based age to start cancer screening, all cancers or free info",41008833,2025,Type 2 Diabetes and Gastrointestinal Cancers: Risk Associations and Awareness of Screening Challenges.
+"Q5 risk-based age to start cancer screening, all cancers or free info",36403728,2023,Risk-Adapted Starting Age for Personalized Colorectal Cancer Screening: Validated Evidence From National Population-Based Studies.
+"Q5 risk-based age to start cancer screening, all cancers or free info",41816867,2026,Changes in quality of life in colorectal cancer screening: A multicentre trial in populations in China.
+"Q5 risk-based age to start cancer screening, all cancers or free info",41658567,2025,Impact of smoking on immune feature and prognosis in unresectable stage III anaplastic lymphoma kinase positive non-small-cell lung cancer.
+"Q5 risk-based age to start cancer screening, all cancers or free info",41555284,2026,"Independent factors associated with advanced testicular germ cell tumors: the roles of smoking, lymphovascular invasion, and tumor size."
+"Q5 risk-based age to start cancer screening, all cancers or free info",42498280,2026,Molecular biomarkers as key determinants of outcome in mantle cell lymphoma: results from the FIL V-RBAC trial.
+"Q5 risk-based age to start cancer screening, all cancers or free info",41386971,2025,Imaging Surveillance and Risk-Based Management of Known Genetic Mutations in Breast Cancer: A Radiologist's Guide.
+"Q5 risk-based age to start cancer screening, all cancers or free info",40685233,2025,Psychosocial outcomes of risk-adapted prevention for prostate cancer predisposition: study protocol for a longitudinal observational mixed-methods study.
+"Q5 risk-based age to start cancer screening, all cancers or free info",41797777,2026,"Risk factors associated with early death, disease relapse and second primary malignancies in patients with newly diagnosed acute promyelocytic leukemia."
+"Q5 risk-based age to start cancer screening, all cancers or free info",42718716,2026,Risk-adapted use of thoracic radiotherapy in stage IV non-small cell lung cancer: a multicenter prognostic model study.
+"Q5 risk-based age to start cancer screening, all cancers or free info",41010854,2025,Metastatic Head and Neck Non-Melanoma Skin Cancer: A Retrospective Analysis of Clinico-Pathologic Features and Reconstructive Approach.
+"Q5 risk-based age to start cancer screening, all cancers or free info",41855630,2026,"Systematic literature review of secondary primary malignancies related to a CAR-T treatment in patients with multiple myeloma, lymphoma or leukemia."
+"Q5 risk-based age to start cancer screening, all cancers or free info",39739270,2025,Personalized multifactorial risk assessment in neoadjuvant-treated breast carcinoma.
+"Q5 risk-based age to start cancer screening, all cancers or free info",38672612,2024,"Colorectal Cancer: Epidemiology, Risk Factors, and Prevention."
+"Q5 risk-based age to start cancer screening, all cancers or free info",41397256,2026,Eligibility and Prognostic Performance of Smoking Duration-Based Versus Pack-Year-Based U.S. National Lung Cancer Screening Criteria Across Racial and Ethnic Groups.
+"Q5 risk-based age to start cancer screening, all cancers or free info",41915201,2026,[Prevention in oncological follow-up].
+"Q5 risk-based age to start cancer screening, all cancers or free info",42103101,2026,Clinical Heterogeneity and Risk Stratification of Carotid Blowout Syndrome After Definitive Radiation Therapy for Nasopharyngeal Carcinoma.
+"Q5 risk-based age to start cancer screening, all cancers or free info",42583049,2026,Innovative radiotherapy approaches.
+"Q5 risk-based age to start cancer screening, all cancers or free info",42171781,2026,Postoperative nausea and vomiting as a predictor of chemotherapy-induced nausea and vomiting in gynecologic cancer: a retrospective cohort study.
+"Q5 risk-based age to start cancer screening, all cancers or free info",42514873,2026,Toxicities of Antibody-Drug Conjugates in Breast Cancer: From Mechanistic Insights to Clinical Management.
+"Q5 risk-based age to start cancer screening, all cancers or free info",41857189,2026,"Why Is Colorectal Cancer Occurring Earlier? Metabolic Dysfunction, Underrecognized Carcinogens, and Emerging Controversies."
+"Q5 risk-based age to start cancer screening, all cancers or free info",41384364,2026,Long-Term Outcomes and Oncologic Implications of Histopathological Findings in Breast Reduction Specimens: A 15-Year Follow-Up Study.
+"Q5 risk-based age to start cancer screening, all cancers or free info",42409116,2026,Germline Mutations as Risk Factors for Lung Cancer: A Systematic Review and Meta-Analysis.
+"Q5 risk-based age to start cancer screening, all cancers or free info",41955583,2026,Night shift work and risk of total and site-specific cancer: results from a prospective cohort study among Chinese men.
+"Q5 risk-based age to start cancer screening, all cancers or free info",41542105,2026,Validation of the Questionnaire for the Structured Assessment of the Use of Complementary Medicine Methods and Procedures in Patients from the S3 Guideline Complementary Medicine in Oncology and Pract
+"Q5 risk-based age to start cancer screening, all cancers or free info",42167854,2026,"Epidemiology, classification and clinical burden of pancreatic cystic lesions."
+"Q5 risk-based age to start cancer screening, all cancers or free info",39901701,2025,Novel Breast Cancer Risk Assessment Tools for Pre- and Postmenopausal Asian Women: Development and Validation in a Nationwide Mammographic Screening Cohort.
+"Q5 risk-based age to start cancer screening, all cancers or free info",41259673,2025,"Integrated, Cross-Entity Information on Preventive Measures for Bowel, Breast, and Prostate Cancer: Evaluation Study of the Web Application ""Prevent-Take-Up""."
+"Q5 risk-based age to start cancer screening, all cancers or free info",PPR1159628,2026,"Risk of Hepatitis B Reactivation Among HBsAg-Negative, Anti-HBc–Positive Breast Cancer Patients Undergoing Chemotherapy"
+"Q5 risk-based age to start cancer screening, all cancers or free info",42592268,2026,Mitral valve posteromedial papillary muscle head rupture presenting after liposomal doxorubicin chemotherapy for metastatic lung liposarcoma: a case report.
+"Q5 risk-based age to start cancer screening, all cancers or free info",42232532,2026,Probabilistic mapping of lymph node metastasis in epithelial ovarian cancer: a retrospective cohort study using Bayesian network analysis.
+"Q5 risk-based age to start cancer screening, all cancers or free info",41211892,2026,Assessing the Impact of Visualizations of Quantitative and Qualitative Risk Information on the Comprehension of Hypothetical Risk-Based Breast Cancer Screening Results.
+"Q5 risk-based age to start cancer screening, all cancers or free info",40967296,2026,Risk-guided disease management to prevent heart failure in adult cancer survivors of previous cardiotoxic cancer treatments: Baseline results of the REDEEM trial.
+"Q5 risk-based age to start cancer screening, all cancers or free info",40844867,2026,The value of maintenance therapy in intermediate-risk non-muscle-invasive bladder cancer.
+"Q5 risk-based age to start cancer screening, all cancers or free info",41948524,2026,Prognostic Value of Ki-67 and Progesterone Receptor for Risk Stratification and Outcomes by Adjuvant Chemotherapy in Early Luminal-Type Breast Cancer.
+"Q5 risk-based age to start cancer screening, all cancers or free info",40373109,2025,A combined risk model shows viability for personalized breast cancer risk assessment in the Indonesian population: A case/control study.
+"Q5 risk-based age to start cancer screening, all cancers or free info",42339379,2026,Prevalence of diabetes mellitus in long-term cancer survivors treated with craniospinal irradiation.
+"Q5 risk-based age to start cancer screening, all cancers or free info",41385723,2026,Germline Pathogenic Variants Among Women Without a History of Breast Cancer: A Secondary Analysis of the WISDOM Randomized Clinical Trial.
+"Q5 risk-based age to start cancer screening, all cancers or free info",42192909,2026,"From Survival to Living: A Comprehensive Analysis of Fibula Graft Complications, Functional Outcomes, and Quality of Life Following Reconstruction for Malignant Bone Tumors."
+"Q5 risk-based age to start cancer screening, all cancers or free info",41643491,2026,"De-escalation strategies in the treatment of oral squamous cell carcinoma: A cross-sectional study in oral and maxillofacial surgery in Germany, Austria, and Switzerland."
+"Q5 risk-based age to start cancer screening, all cancers or free info",41827383,2026,Scars That Speak: Unraveling the Oncogenic Aftermath of Pulmonary Tuberculosis-A Narrative Review.
+"Q5 risk-based age to start cancer screening, all cancers or free info",38829299,2024,Validation of a clinical breast cancer risk assessment tool combining a polygenic score for all ancestries with traditional risk factors.
+"Q5 risk-based age to start cancer screening, all cancers or free info",41877773,2026,Risk factors and management strategies in acute promyelocytic leukemia: a real-world single-center retrospective study.
+"Q5 risk-based age to start cancer screening, all cancers or free info",41952564,2024,Effectiveness of Community Education for Breast Cancer Screening.
+"Q5 risk-based age to start cancer screening, all cancers or free info",41146579,2025,"Listening to patients: A qualitative study on diagnostic delay, coping strategies and stigma in early-onset colorectal cancer."
+"Q5 risk-based age to start cancer screening, all cancers or free info",42173255,2026,Prolonged Cytokine Release Syndrome is Associated with Hypofibrinogenemia after CD19-Directed CAR T-Cell Therapy in Adult Patients with Relapsed/Refractory Lymphoma.
+"Q5 risk-based age to start cancer screening, all cancers or free info",42107119,2026,Managing multidrug resistant Gram-negative bacteraemia in immunocompromised hosts.
+"Q5 risk-based age to start cancer screening, all cancers or free info",39455985,2024,Women's perspectives on the acceptability of risk-based cervical cancer screening.
+"Q5 risk-based age to start cancer screening, all cancers or free info",41523836,2025,"Epidemiology, early detection, and management of breast cancer in China: A comprehensive review."
+"Q5 risk-based age to start cancer screening, all cancers or free info",41724539,2026,Clinical updates in bowel preparation for colonoscopy.
+"Q5 risk-based age to start cancer screening, all cancers or free info",41919267,2026,SHAP-explained machine-learning model for high-risk gastric cancer identification.
+"Q5 risk-based age to start cancer screening, all cancers or free info",40809009,2025,"Molecular subtypes, prognostic factors, and treatment optimization in pediatric medulloblastoma: a real-world study from China."
+"Q5 risk-based age to start cancer screening, all cancers or free info",38369461,2024,Risk-based lung cancer screening in heavy smokers: a benefit-harm and cost-effectiveness modeling study.
+"Q5 risk-based age to start cancer screening, all cancers or free info",42200019,2026,Development and validation of a pre-chemotherapy nomogram integrating systemic immune-inflammation index and prognostic nutritional index to predict severe adjuvant toxicity in colorectal cancer.
+"Q5 risk-based age to start cancer screening, all cancers or free info",38412358,2024,Effectiveness of Community Education for Breast Cancer Screening.
+"Q5 risk-based age to start cancer screening, all cancers or free info",40353072,2025,Enhancing diagnostic accuracy: Role of stomach-specific serum biomarkers in real-world risk-based sequential screening for malignant gastric lesions.
+"Q5 risk-based age to start cancer screening, all cancers or free info",42277127,2026,Circulating IGF2BP3 enables risk stratification and predicts treatment response in Ewing sarcoma.
+"Q5 risk-based age to start cancer screening, all cancers or free info",40510917,2025,Online Training to Increase Genetic and Risk Literacy in Physicians Counseling Breast and Ovarian Cancer Patients for Genetic Testing.
+"Q5 risk-based age to start cancer screening, all cancers or free info",40648785,2025,Personalized Treatment Modalities for Rectal Cancer: Advances in Neoadjuvant Treatment.
+"Q5 risk-based age to start cancer screening, all cancers or free info",41272388,2026,Neoadjuvant Treatment is a Risk Factor for Clinically Relevant Chyle Leak (ISGPS Grade B/C) After Pancreatic Cancer Resection: A Retrospective Cohort Study.
+"Q5 risk-based age to start cancer screening, all cancers or free info",40597901,2025,The probability of lung cancer in patients with pulmonary nodules detected via low-dose computed tomography screening in China.
+"Q5 risk-based age to start cancer screening, all cancers or free info",41008882,2025,Carbon-Ion Radiotherapy for Prostate Cancer in Patients with a History of Surgery for Benign Prostatic Hyperplasia.
+"Q5 risk-based age to start cancer screening, all cancers or free info",40785671,2025,Risk factors for multiple myeloma and its precursor diseases.
+"Q5 risk-based age to start cancer screening, all cancers or free info",38237810,2024,Radiation-Induced Cerebral Contrast Enhancements Strongly Share Ischemic Stroke Risk Factors.
+"Q5 risk-based age to start cancer screening, all cancers or free info",PPR1266177,2026,Prospective Population-Scale Validation of an Electronic Health Record–Based Model for Pancreatic Cancer Risk
+"Q5 risk-based age to start cancer screening, all cancers or free info",41514537,2025,Postvoid Residual Volume After Radical Hysterectomy for Early-Stage Cervical Cancer: Predictive Factors and a Decision-Making Algorithm.
+"Q5 risk-based age to start cancer screening, all cancers or free info",41482389,2026,Association Between PD-L1 Expression and Interstitial Lung Disease Risk in EGFR-mutant NSCLC Treated With EGFR-TKIs.
+"Q5 risk-based age to start cancer screening, all cancers or free info",40869212,2025,Circulating microRNAs as Early Biomarkers of Colon Cancer: A Nested Case-Control Study Within a Prospective Cohort.
+"Q5 risk-based age to start cancer screening, all cancers or free info",34336927,2021,Implications of Lifestyle Factors and Polygenic Risk Score for Absolute Risk Prediction of Colorectal Neoplasm and Risk-Adapted Screening.
+"Q5 risk-based age to start cancer screening, all cancers or free info",PPR713267,2023,Breaking Barriers: Spousal Perceptions and Role in Promoting Breast Cancer Screening
+"Q5 risk-based age to start cancer screening, all cancers or free info",37380425,2023,[Research on applying genetic and environmental risk score in risk-adapted colorectal cancer screening].
+"Q5 risk-based age to start cancer screening, all cancers or free info",40146116,2025,Incidence and Risk Factors of Interval and Screen-Detected Breast Cancer.
+"Q5 risk-based age to start cancer screening, all cancers or free info",42532761,2026,"Thyroid Immune-related Adverse Events Following Immune Checkpoint Inhibitors in NSCLC: Insights From Pharmacovigilance Data, a Retrospective Case-control Study, and Single-cell RNA Sequencing Dataset."
+"Q5 risk-based age to start cancer screening, all cancers or free info",37878311,2023,Personalized Initial Screening Age for Colorectal Cancer in Individuals at Average Risk.
+"Q5 risk-based age to start cancer screening, all cancers or free info",41597354,2025,Pancreatic Cancer Screening in Patients with Type 2 Diabetes Mellitus: A Narrative Review.
+"Q5 risk-based age to start cancer screening, all cancers or free info",41847697,2026,Thromboembolic disease in testicular germ cell tumors-real-world evidence of three Portuguese institutions.
+"Q5 risk-based age to start cancer screening, all cancers or free info",37642787,2023,Results of a pilot risk-based lung cancer screening study: outcomes and comparisons to a Medicare eligible cohort.
+"Q5 risk-based age to start cancer screening, all cancers or free info",40882413,2025,Risk of second primary cancers among melanoma survivors following radiotherapy: A population-based cohort study.
+"Q5 risk-based age to start cancer screening, all cancers or free info",40435210,2025,Risk and prognosis of second primary malignancies in patients with follicular lymphoma in the era of rituximab: A population study based on the SEER database.
+"Q5 risk-based age to start cancer screening, all cancers or free info",41199310,2025,Rising metastatic prostate cancer rates but narrowing racial gap.
+"Q5 risk-based age to start cancer screening, all cancers or free info",37040474,2023,New Approaches and Recommendations for Risk-Adapted Breast Cancer Screening.
+"Q5 risk-based age to start cancer screening, all cancers or free info",41709021,2026,Which prognostic factors for recurrence after transanal endoscopic microsurgery for early rectal cancer?
+"Q5 risk-based age to start cancer screening, all cancers or free info",40774321,2025,[Perioperative Therapy for Locally Advanced Non-small Cell Lung Cancer: Delphi Expert Consensus of the German Society for Thoracic Surgery].
+"Q5 risk-based age to start cancer screening, all cancers or free info",39272804,2024,Escalation and De-Escalation of Adjuvant Radiotherapy in Early Breast Cancer: Strategies for Risk-Adapted Optimization.
+"Q5 risk-based age to start cancer screening, all cancers or free info",40656676,2025,"IORT for early-stage, low-risk breast cancer: Outcomes from a prospective, observational study."
+"Q5 risk-based age to start cancer screening, all cancers or free info",39886914,2025,Relapse detection in the Danish surveillance program of patients with clinical stage I seminoma: a nationwide study.
+"Q5 risk-based age to start cancer screening, all cancers or free info",39506668,2024,Assessing the impact of cervical cancer education in two high schools in Ghana.
+"Q5 risk-based age to start cancer screening, all cancers or free info",41130740,2025,Mapping of current resources and models of care for paediatric cancer survivors in Asia: a multinational survey.
+"Q5 risk-based age to start cancer screening, all cancers or free info",40910322,2025,National survey of radiotherapy and androgen deprivation therapy strategies with PSMA-PET/CT integration in intermediate-risk prostate cancer: TROD 09-007 study.
+"Q5 risk-based age to start cancer screening, all cancers or free info",40626126,2024,High infection rates and risk-adapted prevention strategies in contemporary pediatric allogeneic hematopoietic stem cell transplantation.
+"Q5 risk-based age to start cancer screening, all cancers or free info",38421563,2024,"Cumulative incidences of hypogonadism, hypertension, and dyslipidaemia in patients with stage I seminoma treated with a risk-adapted strategy: a Spanish single-centre retrospective analysis."
+Q6 NHIS linked mortality + cancer mortality + risk,42269119,2026,"Paid Sick Leave, Care Delays, and Mortality Risk in Working Cancer Survivors."
+Q6 NHIS linked mortality + cancer mortality + risk,42470029,2026,"Frailty and pre-frailty as independent predictors of mortality in skin cancer survivors: Findings from the US National Health Interview Survey, 1997-2018."
+Q6 NHIS linked mortality + cancer mortality + risk,41238557,2025,Frailty as a predictor of mortality in lung cancer survivors: evidence from a nationally representative cohort NHIS 1997-2018.
+Q6 NHIS linked mortality + cancer mortality + risk,41951973,2026,Multidimensional functional limitations in American cancer survivors: Characteristics and their effects on survival and healthcare utilization.
+Q6 NHIS linked mortality + cancer mortality + risk,41053696,2025,"Transportation barriers, emergency department use, and mortality risk among us adults: a national health interview survey analysis."
+Q6 NHIS linked mortality + cancer mortality + risk,41686585,2026,Pre-frailty and frailty as predictors of mortality among colorectal cancer survivors: Evidence from the National Health Interview Survey (1997-2018).
+Q6 NHIS linked mortality + cancer mortality + risk,41872634,2026,Survival among US adults with post-cancer-diagnosis cigarette smoking cessation.
+Q6 NHIS linked mortality + cancer mortality + risk,39913676,2026,"Association of muscle-strengthening and aerobic physical activity with all-cause, cardiovascular disease, and cancer mortality in US adults with diabetes."
+Q6 NHIS linked mortality + cancer mortality + risk,42475820,2026,All-Cause and Disease-Specific Mortality Among U.S. Adults Living With Co-Existing Cancer and Atherosclerotic Cardiovascular Disease.
+Q6 NHIS linked mortality + cancer mortality + risk,42491095,2026,Affordable care act and 4-year all-cause mortality among U.S. working-age adults with or without cancer: 2000-2015.
+Q6 NHIS linked mortality + cancer mortality + risk,PPR1019805,2025,Frailty as a Predictor of Mortality in Lung Cancer Survivors: Evidence from a Nationally Representative Cohort NHIS 1997–2018
+Q6 NHIS linked mortality + cancer mortality + risk,PPR1040963,2025,Pre-frailty and frailty as predictors of mortality in colorectal cancer survivors: a nationally representative study using NHIS 1997–2018
+Q6 NHIS linked mortality + cancer mortality + risk,38703694,2024,Obesity paradox of cardiovascular mortality in older adults in the United States: A cohort study using 1997-2018 National Health Interview Survey data linked with the National Death Index.
+Q6 NHIS linked mortality + cancer mortality + risk,40172680,2025,Physical activity and risk of cancer mortality in patients with and without cancer: is there a dose-response relationship?
+Q6 NHIS linked mortality + cancer mortality + risk,PPR1111219,2025,Sleep Duration and Multimorbidity as Joint Predictors of All-Cause Mortality in US Adults
+Q6 NHIS linked mortality + cancer mortality + risk,42733750,2026,Functional vulnerability and all-cause mortality among community-dwelling United States adults with a history of hepatitis or chronic liver disease.
+Q6 NHIS linked mortality + cancer mortality + risk,38942415,2024,Examining the Relationship Between Chronic Pain and Mortality in U.S. Adults.
+Q6 NHIS linked mortality + cancer mortality + risk,42646589,2026,Social and Functional Risk Patterns and All-Cause Mortality Among US Adults with Chronic Liver Disease.
+Q6 NHIS linked mortality + cancer mortality + risk,40488592,2025,Differences in Cancer and All-Cause Mortality among Non-Hispanic Black American Adults by Nativity and Duration of Residence in the United States.
+Q6 NHIS linked mortality + cancer mortality + risk,40540285,2025,Mortality Outcomes for Survivors of Cancer With Food Insecurity in the US.
+Q6 NHIS linked mortality + cancer mortality + risk,PPR1020650,2025,"Double Burden, Double Risk: Depression–Frailty Synergy and All‑Cause Mortality in U.S. Cancer Survivors"
+Q6 NHIS linked mortality + cancer mortality + risk,38070489,2024,"Trends in smoking-attributable and smoking-unrelated lung cancer death rates in the United States, 1991-2018."
+Q6 NHIS linked mortality + cancer mortality + risk,37483954,2023,Cigarette smoking in childhood and risk of all-cause and cause-specific mortality in adulthood.
+Q6 NHIS linked mortality + cancer mortality + risk,39874955,2025,Associations Between Leisure-Time Physical Activity and Mortality by Sociodemographic Factors.
+Q6 NHIS linked mortality + cancer mortality + risk,40690774,2025,Association of Weekend Warrior and Other Physical Activity Patterns With Mortality Among Adults With Diabetes : A Cohort Study.
+Q6 NHIS linked mortality + cancer mortality + risk,37289457,2023,Updating the Know Your Chances Website to Include Smoking Status as a Risk Factor for Mortality Estimates.
+Q6 NHIS linked mortality + cancer mortality + risk,35864854,2022,"Disparities in All-cancer and Lung Cancer Survival by Social, Behavioral, and Health Status Characteristics in the United States: A Longitudinal Follow-up of the 1997-2015 National Health Interview Su"
+Q6 NHIS linked mortality + cancer mortality + risk,34977166,2021,"Association Between Initiation, Intensity, and Cessation of Smoking and Mortality Risk in Patients With Cardiovascular Disease: A Cohort Study."
+Q6 NHIS linked mortality + cancer mortality + risk,38970041,2024,Associations of different combinations of moderate-vigorous physical activity and muscle-strengthening activity with mortality among US lung cancer survivors.
+Q6 NHIS linked mortality + cancer mortality + risk,38252359,2024,The role of physical activity in the association between disability and mortality among US older adults: a nationwide prospective cohort study.
+Q6 NHIS linked mortality + cancer mortality + risk,37855867,2024,Living alone and cancer mortality by race/ethnicity and socioeconomic status among US working-age adults.
+Q6 NHIS linked mortality + cancer mortality + risk,37831896,2024,Association of healthy sleep patterns with risk of mortality and life expectancy at age of 30 years: a population-based cohort study.
+Q6 NHIS linked mortality + cancer mortality + risk,33410477,2021,The Association Between Psychological Distress and Cancer Mortality in the United States: Results from the 1997-2014 NHIS-NDI Record Linkage Study.
+Q6 NHIS linked mortality + cancer mortality + risk,32439149,2020,Lung cancer mortality among never-smokers in the United States: estimating smoking-attributable mortality with nationally representative data.
+Q6 NHIS linked mortality + cancer mortality + risk,34890926,2022,"Combined alcohol use and weight status effects on mortality risk among adults: Analysis of the National Health Interview Survey linked mortality files, 2001-2015."
+Q6 NHIS linked mortality + cancer mortality + risk,32679883,2020,Light Cigarette Smoking Increases Risk of All-Cause and Cause-Specific Mortality: Findings from the NHIS Cohort Study.
+Q6 NHIS linked mortality + cancer mortality + risk,38290084,2024,"Psychological Distress, Emergency Room Utilization, and Mortality Risk Among US Adults With History of Prostate Cancer."
+Q6 NHIS linked mortality + cancer mortality + risk,32404384,2020,Novel microsimulation model of tobacco use behaviours and outcomes: calibration and validation in a US population.
+Q6 NHIS linked mortality + cancer mortality + risk,37185777,2023,"Transportation barriers, emergency room use, and mortality risk among US adults by cancer history."
+Q6 NHIS linked mortality + cancer mortality + risk,32687235,2020,"Mortality among workers employed in the mining industry in the United States: A 29-year analysis of the National Health Interview Survey-Linked Mortality File, 1986-2014."
+Q6 NHIS linked mortality + cancer mortality + risk,PMC8441382,2021,Citizenship Status and Mortality Among Latinos: Analyses of the US National Health Interview Survey Linked Mortality Files
+Q6 NHIS linked mortality + cancer mortality + risk,31004232,2019,"Muscle-strengthening physical activity is associated with cancer mortality: results from the 1998-2011 National Health Interview Surveys, National Death Index record linkage."
+Q6 NHIS linked mortality + cancer mortality + risk,37548973,2023,"Prospective Associations of Different Combinations of Aerobic and Muscle-Strengthening Activity With All-Cause, Cardiovascular, and Cancer Mortality."
+Q6 NHIS linked mortality + cancer mortality + risk,37286970,2023,Alcohol consumption and all-cause and cause-specific mortality among US adults: prospective cohort study.
+Q6 NHIS linked mortality + cancer mortality + risk,31815049,2019,"Post-diagnosis smoking and risk of cardiovascular, cancer, and all-cause mortality in survivors of 10 adult cancers: a prospective cohort study."
+Q6 NHIS linked mortality + cancer mortality + risk,34957232,2021,Trends in Cardiometabolic and Cancer Multimorbidity Prevalence and Its Risk With All-Cause and Cause-Specific Mortality in U.S. Adults: Prospective Cohort Study.
+Q6 NHIS linked mortality + cancer mortality + risk,35442439,2022,Association of Medical Financial Hardship and Mortality Among Cancer Survivors in the United States.
+Q6 NHIS linked mortality + cancer mortality + risk,33413424,2021,Mortality among male cigar and cigarette smokers in the USA.
+Q6 NHIS linked mortality + cancer mortality + risk,31387083,2019,The Association of Physical Activity and Mortality Risk Reduction Among Smokers: Results From 1998-2009 National Health Interview Surveys-National Death Index Linkage.
+Q6 NHIS linked mortality + cancer mortality + risk,PPR249391,2020,Mortality Among Male Cigar and Cigarette Smokers in the U.S.
+Q6 NHIS linked mortality + cancer mortality + risk,31429765,2019,Mortality among male smokers and smokeless tobacco users in the USA.
+Q6 NHIS linked mortality + cancer mortality + risk,33441393,2021,Association of sleep duration with all-cause and disease-specific mortality in US adults.
+Q6 NHIS linked mortality + cancer mortality + risk,32611588,2020,Recommended physical activity and all cause and cause specific mortality in US adults: prospective cohort study.
+Q6 NHIS linked mortality + cancer mortality + risk,36996942,2023,Healthcare affordability and effects on mortality among adults with liver disease from 2004 to 2018 in the United States.
+Q6 NHIS linked mortality + cancer mortality + risk,35788615,2022,"Association of the ""Weekend Warrior"" and Other Leisure-time Physical Activity Patterns With All-Cause and Cause-Specific Mortality: A Nationwide Cohort Study."
+Q6 NHIS linked mortality + cancer mortality + risk,32132977,2020,"Pre- and Post-diagnosis Diabetes as a Risk Factor for All-Cause and Cancer-Specific Mortality in Breast, Prostate, and Colorectal Cancer Survivors: a Prospective Cohort Study."
+Q6 NHIS linked mortality + cancer mortality + risk,22360695,2012,"Risk of breast cancer mortality among women cohabiting with same sex partners: findings from the National Health Interview Survey, 1997-2003."
+Q6 NHIS linked mortality + cancer mortality + risk,31992611,2020,Psychological distress and mortality among US adults: prospective cohort study of 330 367 individuals.
+Q6 NHIS linked mortality + cancer mortality + risk,32086372,2020,Association between employment status and risk of all-cause and cause-specific mortality: a population-based prospective cohort study.
+Q6 NHIS linked mortality + cancer mortality + risk,23574644,2014,It is better to be a fat ex-smoker than a thin smoker: findings from the 1997-2004 National Health Interview Survey-National Death Index linkage study.
+Q6 NHIS linked mortality + cancer mortality + risk,31511931,2020,"Trends in cancer mortality among people with vs without diabetes in the USA, 1988-2015."
+Q6 NHIS linked mortality + cancer mortality + risk,33226432,2021,Association of Physical Activity Intensity With Mortality: A National Cohort Study of 403 681 US Adults.
+Q6 NHIS linked mortality + cancer mortality + risk,23799954,2013,"Body mass index, smoking, age and cancer mortality among women: a classification tree analysis."
+Q6 NHIS linked mortality + cancer mortality + risk,24439131,2014,Smoking and mortality in stroke survivors: can we eliminate the paradox?
+Q6 NHIS linked mortality + cancer mortality + risk,21873602,2011,Body mass index in young adulthood and premature death: analyses of the US National Health Interview Survey linked mortality files.
+Q6 NHIS linked mortality + cancer mortality + risk,19649678,2009,Index to predict 5-year mortality of community-dwelling adults aged 65 and older using data from the National Health Interview Survey.
+Q6 NHIS linked mortality + cancer mortality + risk,16902375,2006,Occupation and lung cancer mortality in a nationally representative U.S. Cohort: The National Health Interview Survey (NHIS).
+Q6 NHIS linked mortality + cancer mortality + risk,22387991,2012,Lung cancer mortality risk for U.S. menthol cigarette smokers.
+Q6 NHIS linked mortality + cancer mortality + risk,23440730,2013,Annual number of lung cancer deaths potentially avertable by screening in the United States.
+Q6 NHIS linked mortality + cancer mortality + risk,25719432,2015,"Disability status, mortality, and leading causes of death in the United States community population."
+Q6 NHIS linked mortality + cancer mortality + risk,23327260,2013,Trends in mortality risk by education level and cause of death among US White women from 1986 to 2006.
+Q6 NHIS linked mortality + cancer mortality + risk,11164116,2001,Height and risk of fatal prostate cancer: findings from the National Health Interview Survey (1986 to 1994).
+Q6 NHIS linked mortality + cancer mortality + risk,10877335,2000,Diet and lung cancer mortality: a 1987 National Health Interview Survey cohort study.
+Q6 NHIS linked mortality + cancer mortality + risk,15210100,2004,Self-reported health and adult mortality risk: an analysis of cause-specific mortality.

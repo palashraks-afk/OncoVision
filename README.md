@@ -18,6 +18,10 @@ Built as a mentored research project under the guidance of a clinical oncologist
 
 ---
 
+## Free information and cheaper cancer screening invitation
+
+Pre-registered study in 183,585 NHIS adults with two external surveys: age, sex, smoking and BMI rank ten-year cancer death well, are calibrated in every age band, and inviting by risk covers more cancer deaths than inviting by age for the same number invited (+7.1 points at 20% invited). One pre-registered bar, fairness across race and ethnicity, was missed and is reported as a main result. Outcome is all cancer deaths, not screenable cancers. Paper: `docs/cancer_age_paper/Free_Information_Cheaper_Cancer_Screening.pdf`; analysis `experiments/cancer_age.py`; cohort `fetch_nhis_cancer_risk.py`.
+
 ## The main paper: cheap blood markers of cancer risk, cancer signal or general frailty?
 
 [`docs/marker_paper/Cheap_Blood_Markers_Cancer_Risk.pdf`](docs/marker_paper/Cheap_Blood_Markers_Cancer_Risk.pdf) (18 pages). This
