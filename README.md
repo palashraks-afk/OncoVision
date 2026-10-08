@@ -18,7 +18,18 @@ Built as a mentored research project under the guidance of a clinical oncologist
 
 ---
 
-## New: the symptom-and-lab navigator (research prototype, at `/navigator`)
+## Newest: an audit of NHANES machine-learning cancer papers (the strongest paper angle so far)
+
+[`docs/audit_paper/NHANES_ML_Cancer_Audit.pdf`](docs/audit_paper/NHANES_ML_Cancer_Audit.pdf) (16 pages). A pre-registered
+audit ([`docs/AUDIT_PREREG.md`](docs/AUDIT_PREREG.md)) of 79 Europe PMC records, 24 included, plus a controlled re-analysis on
+43,740 adults. **Supported:** 88% of papers validate only inside NHANES (no external cohort, no held-out cycle), and none of
+the 24 reports an age-only baseline. **Not supported (reported anyway):** that published AUCs are no better than age alone
+(depends on the age range), and that the survey-cycle shortcut hurts cancer-status models (it only hurts when the outcome
+depends on the cycle, as with death). Includes an eight-item checklist. Coding was done by an AI assistant and needs a human
+second coder. Run: `experiments/audit_extract.py`, `audit_adjudicated.py`, `audit_analysis.py`, `make_audit_figures.py`,
+then `docs/audit_paper/build_audit_paper.py`.
+
+## The symptom-and-lab navigator (research prototype, at `/navigator`)
 
 The measurements below show that blood work alone does not find cancer in people with no
 other reason to be tested. The navigator keeps the original idea, reading a lab report together
