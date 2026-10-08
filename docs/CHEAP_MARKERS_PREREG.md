@@ -66,3 +66,50 @@ That an index is useless in people who already have cancer (prognosis is a diffe
 it cannot detect specific cancers; that it fails outside the US or in other eras. Death from
 cancer, not a diagnosis, is the outcome. Multiple indices are correlated, so the 12 tests are not
 independent; Holm correction is conservative.
+
+---
+
+## Addendum, 8 October 2026: three additions, fixed before they are run
+
+The main analysis (above) is complete and unchanged: 0 of 12 markers qualified. To raise the
+evidence from "one survey era" toward an independent check, to show what a marker-based rule
+would do in practice, and to make the novelty claim rest on a recorded search, three further
+pieces are fixed here BEFORE they are run.
+
+### R. Independent replication in NHANES III (1988-1994)
+
+NHANES III is a separate survey, run by different staff on different analysers five to twenty years
+before the continuous survey used above, linked to deaths through 2019. It is not a registry
+cohort and it is the same national programme, so it is described as an **independent replication in
+a separate survey, not in a separate programme**.
+
+- Adults 40 and over, no earlier non-skin cancer reported, complete blood count and albumin, BMI
+  and smoking; ten-year outcomes as above.
+- NHANES III has a three-part differential (lymphocyte, mononuclear, granulocyte), not the
+  five-part one. The twelve markers are therefore **analogues**: NLR becomes granulocyte-to-
+  lymphocyte (GLR), SII and SIRI use granulocytes, NPAR uses the granulocyte percentage, ALI uses GLR.
+  Granulocytes include eosinophils and basophils, which is stated as a limitation.
+- **Test 1 externally**: fit M0 and M0 plus marker in the 1999-2008 cohort; predict in NHANES III,
+  with each marker standardised within its own survey. Test 2 and Test 3 repeat within NHANES III.
+- **Replication bar.** The null replicates if no marker passes Tests 1 and 2 in NHANES III AND at
+  least 5 of the 6 inflammation analogues show both a decedent odds ratio below 1 and a larger
+  association with other-cause than cancer death. If any marker qualifies in NHANES III, the paper
+  reports that the finding did not replicate.
+
+### D. What a marker-based rule would do (decision analysis)
+
+Fixed rules: flag NLR at or above 3 (a common cut-off) and flag the top fifth of NLR, SII, RDW. For each,
+in the 2005-2008 test cycles and in NHANES III, among adults 60 and over: share flagged, sensitivity and
+positive predictive value for ten-year cancer death, and the sensitivity of flagging the **same
+number of the oldest people** by age alone. Net benefit by decision-curve analysis at risk thresholds
+of 2% to 10%. No bar; the question is whether a marker rule finds more cancer deaths than age does
+at the same flag rate, with a bootstrap interval.
+
+### N. A recorded novelty search
+
+A fixed Europe PMC query (any access, 2005-2026) for papers on blood-count or inflammation
+markers (NLR, SII, PLR, MLR, SIRI, NPAR, ALI, PNI, RDW, albumin) and cancer outcomes, from which every
+record whose abstract mentions a negative-control or non-cancer-death comparison, a competing-risk or
+decedent-only design, AND any validation in separate data is read in full. The count, the query and the
+papers read are recorded in `data/audit/novelty_search.csv`. A close prior study would lower the
+novelty score; none found raises the claim to "none found in a recorded search", not to proof.
