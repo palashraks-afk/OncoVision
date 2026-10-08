@@ -20,12 +20,12 @@ Built as a mentored research project under the guidance of a clinical oncologist
 
 ## The main paper: cheap blood markers of cancer risk, cancer signal or general frailty?
 
-[`docs/marker_paper/Cheap_Blood_Markers_Cancer_Risk.pdf`](docs/marker_paper/Cheap_Blood_Markers_Cancer_Risk.pdf) (14 pages). This
+[`docs/marker_paper/Cheap_Blood_Markers_Cancer_Risk.pdf`](docs/marker_paper/Cheap_Blood_Markers_Cancer_Risk.pdf) (18 pages). This
 keeps the original idea (cheap cancer risk information from tests people already have) and tests it directly.
 Twelve blood-count markers (NLR, SII, NPAR, ALI, RDW and others) in 12,645 US adults with ten-year follow-up, with the
 bars [pre-registered](docs/CHEAP_MARKERS_PREREG.md). **None of the twelve qualified.** The inflammation indices track death
 from other causes (odds ratio per SD up to 1.43) and not death from cancer (0.92 to 0.99); none adds 0.01 AUC to age, sex,
-smoking and BMI in an unseen era; the literature's associations reproduce (up to 1.22 per SD) but add at most 0.006 AUC.
+smoking and BMI in an unseen era; the literature's associations reproduce (up to 1.22 per SD) but add at most 0.006 AUC. **Replicated in an independent survey (NHANES III, 1988-94)**, with a decision analysis and a recorded novelty search ([`docs/CHEAP_MARKERS_PREREG.md`](docs/CHEAP_MARKERS_PREREG.md) addendum).
 Honest scoring of this and the other angles for novelty, impact and paper quality: [`docs/ANGLE_ASSESSMENT.md`](docs/ANGLE_ASSESSMENT.md).
 Code: `experiments/cheap_markers.py`, `cheap_markers_sensitivity.py`, `make_marker_figures.py`.
 

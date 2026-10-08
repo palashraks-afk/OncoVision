@@ -15,13 +15,52 @@ each score.
 
 A short search cannot prove something has not been done, so no novelty score is above 4 here.
 
-## The angles
+## The angles, re-scored after a second round of work (9 October 2026)
 
 | Angle | Stays on "cheap cancer risk"? | Novelty | Impact | Paper quality | Verdict |
 |---|---|---|---|---|---|
-| **A. Symptom-and-lab navigator** (guideline reader) | Partly (a guideline reader, not a risk predictor) | 2 | 2 | 3 | A fair student project. QCancer is public and CRUK has a clinician guide; the lab alerts failed their bars. |
-| **B. Audit of NHANES machine-learning cancer papers** | Not really (it is about other people's papers) | 3 | 3 | 3 | Real finding (88% internal-only validation, none with an age baseline), but it drifts from the original idea, covers only 24 papers and was coded by an AI. |
-| **C. Cheap blood markers: cancer signal or general frailty?** | **Yes. It is the original idea tested directly: can the routine blood count give cheap cancer risk information?** | **3 to 4** | **3** | **4** | **The strongest angle that is feasible now. See below.** |
+| **A. Symptom-and-lab navigator** | Partly | 2 | 2 | 3 | A fair student project; QCancer is public; the lab alerts failed their bars. |
+| **B. Audit of NHANES machine-learning cancer papers** | Not really | 3 | 3 | 3 | Real finding, drifts from the original idea, 24 papers, AI-coded. |
+| **C. Cheap blood markers: cancer signal or general frailty?** | **Yes** | **3** | **3** | **4 to 5** | **Strongest feasible angle. Quality is now close to the ceiling reachable without outside data; novelty and impact are not.** |
+
+### What changed for C in the second round
+
+1. **Independent replication** in NHANES III (1988-94), a separate survey with different staff and
+   analysers, using three-part-differential analogues. Pre-registered bar met: 0 of 12 qualify, all six
+   inflammation analogues show the frailty pattern. RDW replicates its small gain (+0.0092 against
+   +0.0093), again just under the 0.01 bar. This raises **quality** (4 to 4.5 or more).
+2. **Decision analysis** among adults 60 and over: NLR and SII rules find no more ten-year cancer deaths
+   than flagging the oldest at the same rate. RDW's top-fifth rule finds 7 more per 100 in NHANES III
+   (interval just above zero) and fewer other-cause deaths than age; PPV only about 11%. This moves
+   **impact** from "informs researchers" toward "informs a tool design question", but not to a practice change.
+3. **A recorded novelty search** (2,469 records) found **closer prior work than I first thought**:
+   single and paired markers have already been compared across causes of death in general-population
+   cohorts (for example SII and SIRI in a Chinese community cohort, where SII was not linked to cancer
+   death; RDW-to-albumin in NHANES and the UK Biobank). Nothing found does twelve markers head to head
+   with a negative control, an unseen era and a replication, so the contribution is the design, not the
+   idea. **Novelty therefore stays at 3, and I lowered my earlier "3 to 4".**
+
+### Why 5 on novelty and 5 on impact cannot be reached from here, and why I am not relabelling
+
+- **Novelty 5 means a new question with nothing close found.** The recorded search found close work
+  on the cause-specific question. A question that is new cannot be manufactured by re-running the
+  same analysis on more markers.
+- **Impact 5 means changing clinical or policy practice.** No retrospective survey analysis does that. It
+  needs cancer diagnoses (registry outcomes), a prospective or at least a clinical-records evaluation,
+  and clinicians who would use the result. None is available without access to data and people.
+- **Quality 5 means independent replication.** This now has a replication in a separate survey, which is real,
+  but it is the same national programme, the same analyst, and death rather than diagnosis. A 5 needs a
+  cohort with registry cancer diagnoses and a second person re-running the work.
+
+Moving the scale to make these come out would be dishonest, so it has not been moved.
+
+### The steps that need a person (the only way to raise the scores further)
+
+1. Register for a dataset with cancer diagnoses (CHARLS, UK Biobank, PLCO, All of Us; see
+   `docs/CLINICAL_DATA_ACCESS.md`) and replicate Tests 1 and 2 there. Quality to 5, novelty up a point.
+2. A second person reruns everything from the repository.
+3. A clinician co-author who can say what decision a cheap marker could change. Impact up a point.
+4. Choose a new question rather than a bigger version of this one (options on request).
 
 ## Why C scores as it does
 

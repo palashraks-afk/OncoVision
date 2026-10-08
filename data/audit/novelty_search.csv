@@ -1,0 +1,6 @@
+pmid,year,title,n_markers,markers,neg_or_cause_cue,decedent_cue,validation_cue
+41613543,2025,Renal function mediates the association between neutrophil percentage-to-albumin ratio and survival in cancer survivors: a large cross-sectional study.,3,SII;NPAR;albumin,True,False,True
+41523839,2025,Development and validation of a clinical risk-prediction model for immune checkpoint inhibitor-related pneumonitis in patients with gastrointestinal cancer based on four machine le,3,NLR;PLR;albumin,True,False,True
+41371732,2025,Exploring a panel of serum biomarkers for cancer risk in patients with non-specific symptoms: a comparative analysis of feature selection methods.,3,NLR;CRP;albumin,True,False,True
+34802721,2022,Pre-treatment inflammatory parameters predict survival from endometrial cancer: A prospective database analysis.,3,SII;MLR;CRP,True,False,True
+36388789,2022,Development and validation of a model to predict the risk of recurrence in patients with laryngeal squamous cell carcinoma after total laryngectomy.,3,NLR;PLR;albumin,True,False,True

@@ -1,0 +1,70 @@
+pmid,year,title,n_markers,markers,neg_or_cause_cue,decedent_cue,validation_cue
+41609217,2026,Systemic inflammation mediates the link between metabolic syndrome and colorectal cancer risk: insights from a large prospective cohort.,4,NLR;SII;PLR;SIRI,True,False,False
+42163874,2026,Predictive value of systemic immune-inflammatory markers for lung cancer-associated cerebral infarction: a retrospective cohort study.,5,NLR;SII;PLR;RDW;CRP,True,False,False
+42542716,2026,The Association of Neutrophil-To-Lymphocyte and Platelet-To-Lymphocyte Ratios With Distant Metastasis in Vietnamese Gastric Cancer Patients.,2,NLR;PLR,True,False,False
+41613543,2025,Renal function mediates the association between neutrophil percentage-to-albumin ratio and survival in cancer survivors: a large cross-sectional study.,3,SII;NPAR;albumin,True,False,True
+41958568,2026,Impact of systemic immune-inflammation index and systemic inflammation response index on all-cause and cause-specific mortality: a community-based cohort study.,2,SII;SIRI,True,False,False
+42738324,2026,C-Reactive Protein-Based Composite Indices for Predicting Tumor Overgrowth Restenosis After Partially Covered Duodenal Stenting in Gastric Cancer: A Cohort Study.,3,NLR;CRP;albumin,True,False,False
+PPR1295112,2026,Age-Dependent Differences in Inflammatory Blood Markers Associated with Breast Cancer Recurrence after Surgery,2,NLR;PLR,True,False,False
+39974397,2025,Association of systemic inflammatory response index with all-cause and malignant neoplasm mortality in patients with gastrointestinal disease.,4,NLR;SII;PLR;SIRI,True,False,False
+42495897,2026,"Systemic Inflammation and Risk of Thromboembolism, Mortality, and Treatment Response in Patients With Cancer Receiving Immune Checkpoint Inhibitors.",4,NLR;SII;PLR;albumin,True,False,False
+42796234,2026,Beyond Simple Ratios: Can the Preoperative HALP Score Provide a More Effective Inflammatory Biomarker for Colon Cancer Survival?,3,NLR;PLR;albumin,True,False,False
+42180977,2026,Physical activity and cancer survival: the role of peripheral blood immune and inflammatory markers in reducing mortality-a retrospective cohort study based on NHANES 1999-2018.,2,MLR;NPAR,True,False,False
+41869571,2026,Preoperative Prognostic Nutritional Index Predicts Postoperative Outcomes in Colorectal Cancer: A Propensity Score-Matched Cohort Study.,2,PNI;albumin,True,False,False
+41739240,2026,Predictors of response and survival in cemiplimab-treated cutaneous squamous cell carcinoma: multicenter real-world evidence from Germany.,3,NLR;SII;SIRI,True,False,False
+40313883,2025,Associations between neutrophil percentage-to-albumin ratio with all-cause and cause-specific mortality among US cancer survivors: evidence from NHANES 2005-2018.,2,NPAR;albumin,True,False,False
+42436188,2026,Ensemble machine learning for predicting breast cancer recurrence and mortality using clinical and hemogram data.,4,NLR;PLR;MLR;RDW,True,False,False
+41062924,2025,Advanced lung cancer inflammation index as a predictor of all-cause and cardiovascular mortality among patients with hypertension in the US.,3,NLR;ALI;albumin,True,False,False
+42304320,2026,"Evaluation of the E-PASS, mE-PASS, and POSSUM scoring systems for predicting postoperative complications following radical nephrectomy.",2,NLR;PNI,True,False,False
+40158078,2025,Oxidative stress and inflammation mediate the adverse effects of cadmium exposure on all-cause and cause-specific mortality in patients with diabetes and prediabetes.,4,NLR;SII;MLR;SIRI,True,False,False
+PPR1028842,2025,Improving Diagnostic Accuracy for Prostate Cancer in the PSA Grey Zone: A Combined Analysis of PSA-related Parameters and Inflammatory Markers,3,NLR;PLR;MLR,True,False,False
+38805227,2024,Ratio of Red Blood Cell Distribution Width to Albumin Level and Risk of Mortality.,2,RDW;albumin,True,False,False
+42333217,2026,Perioperative Symptom Trajectories and a Risk Prediction Model for Cervical Cancer: A Prospective Longitudinal Study.,2,NLR;albumin,True,False,False
+40597939,2025,Combined association of systemic inflammatory response index and prognostic nutritional index with survival among US cancer survivors.,2,SIRI;PNI,True,False,False
+41523839,2025,Development and validation of a clinical risk-prediction model for immune checkpoint inhibitor-related pneumonitis in patients with gastrointestinal cancer based on four machine le,3,NLR;PLR;albumin,True,False,True
+41371732,2025,Exploring a panel of serum biomarkers for cancer risk in patients with non-specific symptoms: a comparative analysis of feature selection methods.,3,NLR;CRP;albumin,True,False,True
+42382338,2026,Development and Validation of an Interpretable Machine Learning Model Based on Peripheral Blood Biomarkers for Esophageal Cancer Risk Prediction.,2,MLR;SIRI,True,False,True
+40286566,2025,"Combined influence of healthy lifestyles, nutritional and inflammatory status on mortality among US adults with depression.",3,NLR;ALI;albumin,True,False,False
+40291866,2025,Early prediction of anastomotic leakage after rectal cancer surgery: Onodera prognostic nutritional index combined with inflammation-related biomarkers.,3,NLR;PLR;PNI,True,False,False
+PPR1157591,2026,An Ensemble-Base Machine Learning Approach to Predict 2- and 10-Year Breast Cancer,4,NLR;PLR;MLR;RDW,True,False,False
+39734903,2024,Role of neutrophil-to-lymphocyte ratio (NLR) and platelet-to-lymphocyte ratio (PLR) in predicting carcinoma prostate (CaP) in patients with lower urinary tract symptoms and raised ,2,NLR;PLR,True,False,False
+42401858,2026,LAR/NMLR stratify mortality risk before and after checkpoint inhibitor pneumonitis in NSCLC: multi-state and time-dependent analyses.,2,MLR;albumin,True,False,False
+40789232,2025,Diagnostic utility of the preoperative cachexia index for malnutrition in colorectal cancer: A prospective cohort study.,2,NLR;albumin,True,False,False
+41030951,2025,Development and validation of a prostate cancer risk prediction model for the elevated PSA population.,2,NLR;albumin,True,False,False
+39639939,2024,"Association of inflammation and nutrition status with all-cause and cardiovascular mortality in individuals with osteoarthritis: NHANES, 1999-2018.",2,SII;ALI,True,False,False
+39639229,2024,Negative association of C-reactive protein-albumin-lymphocyte index (CALLY index) with all-cause and cause-specific mortality in patients with cancer: results from NHANES 1999-2018,2,CRP;albumin,True,False,False
+40262223,2025,Identifying environmental factors and biological metrics associated with cancer prevalence and mortality: An environment-wide association study.,2,CRP;albumin,True,False,False
+37954399,2023,Naples prognostic score as a novel prognostic prediction indicator in adult asthma patients: A population-based study.,2,NLR;albumin,True,False,False
+32111261,2020,Does the preoperative platelet-to-lymphocyte ratio and neutrophil-to-lymphocyte ratio predict morbidity after gastrectomy for gastric cancer?,2,NLR;PLR,True,False,False
+PPR865767,2024,Negative association of C-reactive protein-albumin-lymphocyte index (CALLY index) with all-cause and cause-specific mortality in patients with cancer: results from NHANES 1999-2018,2,CRP;albumin,True,False,False
+41307502,2025,Integrating inflammatory and nutritional markers: the prognostic value of the platelet-to-lymphocyte/albumin ratio for one-year all-cause mortality in patients undergoing transcath,2,PLR;albumin,True,False,False
+34207918,2021,Neutrophil-to-Lymphocyte Ratio and Early Variation of NLR to Predict In-Hospital Mortality and Severity in ED Patients with SARS-CoV-2 Infection.,2,NLR;CRP,True,False,False
+33984678,2021,Immune-inflammatory biomarkers as prognostic factors for immunotherapy in pretreated advanced urinary tract cancer patients: an analysis of the Italian SAUL cohort.,2,NLR;SII,True,False,False
+39010980,2024,The association between hypoalbuminemia and risk of death due to cancer and vascular disease in individuals aged 65 years and older: findings from the prospective Moli-sani cohort ,2,CRP;albumin,True,False,False
+41847223,2026,Diagnostic Performance of Circulating miRNA-92a and Related Circulating miRNA Panels for Colorectal Cancer: An Updated Systematic Review and Meta-Analysis.,2,NLR;PLR,True,False,False
+41707911,2026,Radiomics for early detection of pancreatic cancer: a systematic review and meta-analysis.,2,NLR;PLR,True,False,False
+30296815,2018,Association of Platelet-to-Lymphocyte Ratio and Neutrophil-to-Lymphocyte Ratio with the Risk of Thromboembolism and Mortality in Patients with Cancer.,2,NLR;PLR,True,False,False
+38057733,2023,Association of systemic immune inflammatory index with all-cause and cause-specific mortality among individuals with type 2 diabetes.,2,NLR;SII,True,False,False
+34109595,2021,Neutrophil-to-lymphocyte ratio and platelet-to-lymphocyte ratio as mortality predictor of advanced stage non-small cell lung cancer (NSCLC) with COVID-19 in Indonesia.,2,NLR;PLR,True,False,False
+42002146,2026,Agreement between the Global Leadership Initiative on Malnutrition (GLIM) criteria and the Patient-Generated Subjective Global Assessment (PG-SGA) for diagnosing malnutrition in pa,2,CRP;albumin,True,False,False
+38615695,2024,A Low Systemic Inflammatory Response Index Is Associated With Improved Survival in Adenoid Cystic Carcinoma Patients.,2,SII;SIRI,True,False,False
+PPR1033881,2025,Diagnostic Accuracy of Cell-Free DNA Blood-Based Tests in Screening for Colorectal Cancer: A Systematic Review and Meta-analysis,2,NLR;PLR,True,False,False
+34802721,2022,Pre-treatment inflammatory parameters predict survival from endometrial cancer: A prospective database analysis.,3,SII;MLR;CRP,True,False,True
+36226642,2022,Performance of mid-upper arm circumference and other prognostic indices based on inflammation and nutrition in oncology outpatients: a tertiary cancer center study.,4,NLR;PNI;CRP;albumin,True,False,False
+PPR972422,2025,Diagnostic Accuracy of Cell-Free DNA Blood-Based Tests in Screening for Colorectal Cancer: A Systematic Review and Meta-analysis,2,NLR;PLR,True,False,False
+35925991,2022,"Impact of pre-treatment prognostic nutritional index and the haemoglobin, albumin, lymphocyte and platelet (HALP) score on endometrial cancer survival: A prospective database analy",2,PNI;albumin,True,False,False
+38808007,2024,Circulating microRNAs as promising diagnostic biomarkers for hepatocellular carcinoma: a systematic review and meta-analysis.,2,NLR;PLR,True,False,False
+29895294,2018,Comparing the inflammatory profiles for incidence of diabetes mellitus and cardiovascular diseases: a prospective study exploring the 'common soil' hypothesis.,2,NLR;CRP,True,False,False
+38337519,2024,Systemic Inflammatory Response and the Noble and Underwood (NUn) Score as Early Predictors of Anastomotic Leakage after Esophageal Reconstructive Surgery.,2,CRP;albumin,True,False,False
+PPR783662,2024,Systemic Inflammatory Response and the Noble and Underwood (Nun) Score as Early Predictors of Anastomotic Leakage after Esophageal Reconstructive Surgery,2,CRP;albumin,True,False,False
+30636956,2018,Prognostic Value of Neutrophil to Lymphocyte Ratio on Pathologic Findings of Transrectal Ultrasonography Guided Biopsy of Prostate.,2,NLR;NPAR,True,False,False
+35609228,2022,"Establishment of CORONET, COVID-19 Risk in Oncology Evaluation Tool, to Identify Patients With Cancer at Low Versus High Risk of Severe Complications of COVID-19 Disease On Present",2,CRP;albumin,True,False,False
+36388789,2022,Development and validation of a model to predict the risk of recurrence in patients with laryngeal squamous cell carcinoma after total laryngectomy.,3,NLR;PLR;albumin,True,False,True
+25370967,2014,Prognostic factors in soft tissue sarcoma.,2,NLR;albumin,True,False,False
+27454486,2016,Blood-Based Biomarkers Are Associated with Disease Recurrence and Survival in Gastrointestinal Stroma Tumor Patients after Surgical Resection.,2,NLR;PLR,True,False,False
+25304028,2015,"Neutrophil/lymphocyte ratio, platelet/lymphocyte ratio, and mean platelet volume as potential biomarkers for early detection and monitoring of colorectal adenocarcinoma.",2,NLR;PLR,True,False,False
+23415412,2013,Predicting short term mortality after investigation for venous thromboembolism.,2,CRP;albumin,True,False,False
+26631037,2016,MicroRNA-17 family as novel biomarkers for cancer diagnosis: a meta-analysis based on 19 articles.,2,NLR;PLR,True,False,False
+27802193,2016,Preoperative multiplication of neutrophil and monocyte counts as a prognostic factor in epithelial ovarian cancer.,2,NLR;PLR,True,False,False
+20717110,2010,"The relationship between the presence and site of cancer, an inflammation-based prognostic score and biochemical parameters. Initial results of the Glasgow Inflammation Outcome Stu",2,CRP;albumin,True,False,False
+22865035,2012,Annual outpatient hysteroscopy and endometrial sampling (OHES) in HNPCC/Lynch syndrome (LS).,2,NLR;PLR,True,False,False

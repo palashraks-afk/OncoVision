@@ -1,0 +1,802 @@
+{
+  "n3": {
+    "n": 8274,
+    "cancer_deaths": 414,
+    "noncancer_deaths": 1574
+  },
+  "indices": {
+    "NLR": {
+      "T1_gain": 0.0016,
+      "T1_ci": [
+        -0.0013,
+        0.0047
+      ],
+      "T3_gain": 0.0025,
+      "T3_ci": [
+        -0.0002,
+        0.0047
+      ],
+      "T2_or": 0.815,
+      "T2_ci": [
+        0.736,
+        0.902
+      ],
+      "T2_p": 7.504418560078108e-05,
+      "or_cancer_death": 0.92,
+      "or_cancer_ci": [
+        0.834,
+        1.016
+      ],
+      "or_noncancer_death": 1.262,
+      "or_noncancer_ci": [
+        1.183,
+        1.347
+      ],
+      "T2_p_holm": 0.0006425023641820626,
+      "passes_T1": false,
+      "passes_T2": false,
+      "qualifies": false,
+      "frailty_pattern": true
+    },
+    "PLR": {
+      "T1_gain": 0.0005,
+      "T1_ci": [
+        -0.0031,
+        0.0044
+      ],
+      "T3_gain": -0.0001,
+      "T3_ci": [
+        -0.0004,
+        0.0003
+      ],
+      "T2_or": 0.97,
+      "T2_ci": [
+        0.881,
+        1.067
+      ],
+      "T2_p": 0.5294663408387492,
+      "or_cancer_death": 0.965,
+      "or_cancer_ci": [
+        0.877,
+        1.063
+      ],
+      "or_noncancer_death": 1.009,
+      "or_noncancer_ci": [
+        0.949,
+        1.073
+      ],
+      "T2_p_holm": 1.0,
+      "passes_T1": false,
+      "passes_T2": false,
+      "qualifies": false,
+      "frailty_pattern": true
+    },
+    "MLR": {
+      "T1_gain": 0.0005,
+      "T1_ci": [
+        -0.0001,
+        0.001
+      ],
+      "T3_gain": 0.0024,
+      "T3_ci": [
+        0.0006,
+        0.0042
+      ],
+      "T2_or": 0.809,
+      "T2_ci": [
+        0.728,
+        0.898
+      ],
+      "T2_p": 7.138915157578474e-05,
+      "or_cancer_death": 0.888,
+      "or_cancer_ci": [
+        0.805,
+        0.979
+      ],
+      "or_noncancer_death": 1.19,
+      "or_noncancer_ci": [
+        1.114,
+        1.271
+      ],
+      "T2_p_holm": 0.0006425023641820626,
+      "passes_T1": false,
+      "passes_T2": false,
+      "qualifies": false,
+      "frailty_pattern": true
+    },
+    "SII": {
+      "T1_gain": 0.0007,
+      "T1_ci": [
+        -0.002,
+        0.0037
+      ],
+      "T3_gain": 0.0004,
+      "T3_ci": [
+        -0.0014,
+        0.0021
+      ],
+      "T2_or": 0.877,
+      "T2_ci": [
+        0.796,
+        0.966
+      ],
+      "T2_p": 0.007961618058515807,
+      "or_cancer_death": 0.941,
+      "or_cancer_ci": [
+        0.853,
+        1.037
+      ],
+      "or_noncancer_death": 1.168,
+      "or_noncancer_ci": [
+        1.097,
+        1.244
+      ],
+      "T2_p_holm": 0.05573132640961065,
+      "passes_T1": false,
+      "passes_T2": false,
+      "qualifies": false,
+      "frailty_pattern": true
+    },
+    "SIRI": {
+      "T1_gain": 0.0002,
+      "T1_ci": [
+        -0.0001,
+        0.0005
+      ],
+      "T3_gain": 0.0037,
+      "T3_ci": [
+        0.0013,
+        0.0063
+      ],
+      "T2_or": 0.764,
+      "T2_ci": [
+        0.686,
+        0.85
+      ],
+      "T2_p": 8.788193794906363e-07,
+      "or_cancer_death": 0.883,
+      "or_cancer_ci": [
+        0.798,
+        0.977
+      ],
+      "or_noncancer_death": 1.304,
+      "or_noncancer_ci": [
+        1.219,
+        1.394
+      ],
+      "T2_p_holm": 1.0545832553887635e-05,
+      "passes_T1": false,
+      "passes_T2": false,
+      "qualifies": false,
+      "frailty_pattern": true
+    },
+    "NPAR": {
+      "T1_gain": 0.0003,
+      "T1_ci": [
+        -0.0021,
+        0.0031
+      ],
+      "T3_gain": 0.0063,
+      "T3_ci": [
+        0.0022,
+        0.0097
+      ],
+      "T2_or": 0.82,
+      "T2_ci": [
+        0.745,
+        0.903
+      ],
+      "T2_p": 5.4073781792896014e-05,
+      "or_cancer_death": 0.98,
+      "or_cancer_ci": [
+        0.887,
+        1.082
+      ],
+      "or_noncancer_death": 1.384,
+      "or_noncancer_ci": [
+        1.292,
+        1.483
+      ],
+      "T2_p_holm": 0.0005407378179289601,
+      "passes_T1": false,
+      "passes_T2": false,
+      "qualifies": false,
+      "frailty_pattern": true
+    },
+    "ALI": {
+      "T1_gain": 0.0006,
+      "T1_ci": [
+        -0.0018,
+        0.0031
+      ],
+      "T3_gain": 0.0054,
+      "T3_ci": [
+        0.0023,
+        0.0086
+      ],
+      "T2_or": 1.267,
+      "T2_ci": [
+        1.134,
+        1.415
+      ],
+      "T2_p": 2.736102792888495e-05,
+      "or_cancer_death": 1.048,
+      "or_cancer_ci": [
+        0.939,
+        1.169
+      ],
+      "or_noncancer_death": 0.719,
+      "or_noncancer_ci": [
+        0.669,
+        0.772
+      ],
+      "T2_p_holm": 0.00030097130721773446,
+      "passes_T1": false,
+      "passes_T2": true,
+      "qualifies": false,
+      "frailty_pattern": false
+    },
+    "PNI": {
+      "T1_gain": -0.0007,
+      "T1_ci": [
+        -0.0034,
+        0.0019
+      ],
+      "T3_gain": 0.0041,
+      "T3_ci": [
+        0.0009,
+        0.0072
+      ],
+      "T2_or": 1.106,
+      "T2_ci": [
+        1.012,
+        1.208
+      ],
+      "T2_p": 0.025956949165551357,
+      "or_cancer_death": 0.957,
+      "or_cancer_ci": [
+        0.866,
+        1.058
+      ],
+      "or_noncancer_death": 0.805,
+      "or_noncancer_ci": [
+        0.754,
+        0.859
+      ],
+      "T2_p_holm": 0.15574169499330814,
+      "passes_T1": false,
+      "passes_T2": false,
+      "qualifies": false,
+      "frailty_pattern": false
+    },
+    "RDW": {
+      "T1_gain": 0.0092,
+      "T1_ci": [
+        0.004,
+        0.0154
+      ],
+      "T3_gain": 0.0092,
+      "T3_ci": [
+        0.0059,
+        0.013
+      ],
+      "T2_or": 0.974,
+      "T2_ci": [
+        0.88,
+        1.077
+      ],
+      "T2_p": 0.6010858612456926,
+      "or_cancer_death": 1.266,
+      "or_cancer_ci": [
+        1.161,
+        1.38
+      ],
+      "or_noncancer_death": 1.389,
+      "or_noncancer_ci": [
+        1.307,
+        1.477
+      ],
+      "T2_p_holm": 1.0,
+      "passes_T1": false,
+      "passes_T2": false,
+      "qualifies": false,
+      "frailty_pattern": true
+    },
+    "WBC": {
+      "T1_gain": 0.0001,
+      "T1_ci": [
+        -0.0025,
+        0.0031
+      ],
+      "T3_gain": 0.0012,
+      "T3_ci": [
+        -0.0005,
+        0.003
+      ],
+      "T2_or": 0.889,
+      "T2_ci": [
+        0.799,
+        0.99
+      ],
+      "T2_p": 0.03189984260873513,
+      "or_cancer_death": 0.995,
+      "or_cancer_ci": [
+        0.899,
+        1.102
+      ],
+      "or_noncancer_death": 1.202,
+      "or_noncancer_ci": [
+        1.126,
+        1.284
+      ],
+      "T2_p_holm": 0.15949921304367565,
+      "passes_T1": false,
+      "passes_T2": false,
+      "qualifies": false,
+      "frailty_pattern": true
+    },
+    "Albumin": {
+      "T1_gain": 0.0034,
+      "T1_ci": [
+        0.0003,
+        0.0065
+      ],
+      "T3_gain": 0.0094,
+      "T3_ci": [
+        0.0055,
+        0.0133
+      ],
+      "T2_or": 1.09,
+      "T2_ci": [
+        0.991,
+        1.199
+      ],
+      "T2_p": 0.07508271942060252,
+      "or_cancer_death": 0.853,
+      "or_cancer_ci": [
+        0.777,
+        0.938
+      ],
+      "or_noncancer_death": 0.721,
+      "or_noncancer_ci": [
+        0.676,
+        0.769
+      ],
+      "T2_p_holm": 0.30033087768241007,
+      "passes_T1": false,
+      "passes_T2": false,
+      "qualifies": false,
+      "frailty_pattern": false
+    },
+    "Haemoglobin": {
+      "T1_gain": 0.0005,
+      "T1_ci": [
+        0.0001,
+        0.001
+      ],
+      "T3_gain": 0.0019,
+      "T3_ci": [
+        -0.0007,
+        0.0045
+      ],
+      "T2_or": 1.004,
+      "T2_ci": [
+        0.899,
+        1.121
+      ],
+      "T2_p": 0.9449612205132871,
+      "or_cancer_death": 0.862,
+      "or_cancer_ci": [
+        0.773,
+        0.96
+      ],
+      "or_noncancer_death": 0.819,
+      "or_noncancer_ci": [
+        0.762,
+        0.881
+      ],
+      "T2_p_holm": 1.0,
+      "passes_T1": false,
+      "passes_T2": false,
+      "qualifies": false,
+      "frailty_pattern": false
+    }
+  },
+  "baseline_auc": {
+    "cancer": 0.7152,
+    "noncancer": 0.8334
+  },
+  "n_qualify": 0,
+  "frailty_pattern_inflammation": 6,
+  "replicated": true,
+  "decision": {
+    "test_cycles_2005_2008": {
+      "n": 2581,
+      "cancer_deaths": 150,
+      "rules": {
+        "NLR >= 3": {
+          "flagged_share": 0.1922,
+          "n": 2581,
+          "cancer_deaths": 150,
+          "marker": {
+            "sensitivity": 0.2267,
+            "sens_ci": [
+              0.167,
+              0.3
+            ],
+            "ppv": 0.0685,
+            "tp": 34
+          },
+          "age_only": {
+            "sensitivity": 0.2467,
+            "sens_ci": [
+              0.1846,
+              0.3214
+            ],
+            "ppv": 0.0746,
+            "tp": 37
+          },
+          "sens_diff_marker_minus_age": -0.02,
+          "sens_diff_ci": [
+            -0.1006,
+            0.0648
+          ],
+          "other_cause": {
+            "deaths": 665,
+            "marker_sensitivity": 0.3218,
+            "age_only_sensitivity": 0.4526
+          },
+          "net_benefit": {
+            "0.02": {
+              "rule": 0.00952,
+              "treat_all": 0.03889
+            },
+            "0.05": {
+              "rule": 0.00375,
+              "treat_all": 0.00854
+            },
+            "0.1": {
+              "rule": -0.00672,
+              "treat_all": -0.04654
+            }
+          }
+        },
+        "top fifth of NLR": {
+          "flagged_share": 0.2007,
+          "n": 2581,
+          "cancer_deaths": 150,
+          "marker": {
+            "sensitivity": 0.24,
+            "sens_ci": [
+              0.1787,
+              0.3143
+            ],
+            "ppv": 0.0695,
+            "tp": 36
+          },
+          "age_only": {
+            "sensitivity": 0.2533,
+            "sens_ci": [
+              0.1905,
+              0.3285
+            ],
+            "ppv": 0.0734,
+            "tp": 38
+          },
+          "sens_diff_marker_minus_age": -0.0133,
+          "sens_diff_ci": [
+            -0.0987,
+            0.0685
+          ],
+          "other_cause": {
+            "deaths": 665,
+            "marker_sensitivity": 0.3293,
+            "age_only_sensitivity": 0.4662
+          },
+          "net_benefit": {
+            "0.02": {
+              "rule": 0.01014,
+              "treat_all": 0.03889
+            },
+            "0.05": {
+              "rule": 0.00412,
+              "treat_all": 0.00854
+            },
+            "0.1": {
+              "rule": -0.0068,
+              "treat_all": -0.04654
+            }
+          }
+        },
+        "top fifth of SII": {
+          "flagged_share": 0.2003,
+          "n": 2581,
+          "cancer_deaths": 150,
+          "marker": {
+            "sensitivity": 0.22,
+            "sens_ci": [
+              0.1612,
+              0.2928
+            ],
+            "ppv": 0.0638,
+            "tp": 33
+          },
+          "age_only": {
+            "sensitivity": 0.2533,
+            "sens_ci": [
+              0.1905,
+              0.3285
+            ],
+            "ppv": 0.0735,
+            "tp": 38
+          },
+          "sens_diff_marker_minus_age": -0.0333,
+          "sens_diff_ci": [
+            -0.1292,
+            0.0476
+          ],
+          "other_cause": {
+            "deaths": 665,
+            "marker_sensitivity": 0.3023,
+            "age_only_sensitivity": 0.4662
+          },
+          "net_benefit": {
+            "0.02": {
+              "rule": 0.00896,
+              "treat_all": 0.03889
+            },
+            "0.05": {
+              "rule": 0.00292,
+              "treat_all": 0.00854
+            },
+            "0.1": {
+              "rule": -0.00805,
+              "treat_all": -0.04654
+            }
+          }
+        },
+        "top fifth of RDW": {
+          "flagged_share": 0.2042,
+          "n": 2581,
+          "cancer_deaths": 150,
+          "marker": {
+            "sensitivity": 0.2933,
+            "sens_ci": [
+              0.2264,
+              0.3706
+            ],
+            "ppv": 0.0835,
+            "tp": 44
+          },
+          "age_only": {
+            "sensitivity": 0.26,
+            "sens_ci": [
+              0.1964,
+              0.3356
+            ],
+            "ppv": 0.074,
+            "tp": 39
+          },
+          "sens_diff_marker_minus_age": 0.0333,
+          "sens_diff_ci": [
+            -0.0667,
+            0.1325
+          ],
+          "other_cause": {
+            "deaths": 665,
+            "marker_sensitivity": 0.3083,
+            "age_only_sensitivity": 0.4707
+          },
+          "net_benefit": {
+            "0.02": {
+              "rule": 0.01323,
+              "treat_all": 0.03889
+            },
+            "0.05": {
+              "rule": 0.0072,
+              "treat_all": 0.00854
+            },
+            "0.1": {
+              "rule": -0.00375,
+              "treat_all": -0.04654
+            }
+          }
+        }
+      }
+    },
+    "nhanes3": {
+      "n": 4328,
+      "cancer_deaths": 334,
+      "rules": {
+        "NLR-analogue at the cutoff that flags the same share as NLR >= 3": {
+          "flagged_share": 0.1922,
+          "n": 4328,
+          "cancer_deaths": 334,
+          "marker": {
+            "sensitivity": 0.2186,
+            "sens_ci": [
+              0.1776,
+              0.2659
+            ],
+            "ppv": 0.0877,
+            "tp": 73
+          },
+          "age_only": {
+            "sensitivity": 0.2246,
+            "sens_ci": [
+              0.1831,
+              0.2723
+            ],
+            "ppv": 0.0901,
+            "tp": 75
+          },
+          "sens_diff_marker_minus_age": -0.006,
+          "sens_diff_ci": [
+            -0.0592,
+            0.0559
+          ],
+          "net_benefit": {
+            "0.02": {
+              "rule": 0.01329,
+              "treat_all": 0.05834
+            },
+            "0.05": {
+              "rule": 0.00764,
+              "treat_all": 0.0286
+            },
+            "0.1": {
+              "rule": -0.00262,
+              "treat_all": -0.02536
+            }
+          },
+          "other_cause": {
+            "deaths": 1392,
+            "marker_sensitivity": 0.2909,
+            "age_only_sensitivity": 0.3915
+          }
+        },
+        "top fifth of GLR": {
+          "flagged_share": 0.2006,
+          "n": 4328,
+          "cancer_deaths": 334,
+          "marker": {
+            "sensitivity": 0.2365,
+            "sens_ci": [
+              0.1941,
+              0.2849
+            ],
+            "ppv": 0.091,
+            "tp": 79
+          },
+          "age_only": {
+            "sensitivity": 0.2335,
+            "sens_ci": [
+              0.1913,
+              0.2818
+            ],
+            "ppv": 0.0899,
+            "tp": 78
+          },
+          "sens_diff_marker_minus_age": 0.003,
+          "sens_diff_ci": [
+            -0.0445,
+            0.0691
+          ],
+          "net_benefit": {
+            "0.02": {
+              "rule": 0.01453,
+              "treat_all": 0.05834
+            },
+            "0.05": {
+              "rule": 0.00866,
+              "treat_all": 0.0286
+            },
+            "0.1": {
+              "rule": -0.002,
+              "treat_all": -0.02536
+            }
+          },
+          "other_cause": {
+            "deaths": 1392,
+            "marker_sensitivity": 0.301,
+            "age_only_sensitivity": 0.4059
+          }
+        },
+        "top fifth of SII-analogue": {
+          "flagged_share": 0.2001,
+          "n": 4328,
+          "cancer_deaths": 334,
+          "marker": {
+            "sensitivity": 0.2335,
+            "sens_ci": [
+              0.1913,
+              0.2818
+            ],
+            "ppv": 0.0901,
+            "tp": 78
+          },
+          "age_only": {
+            "sensitivity": 0.2335,
+            "sens_ci": [
+              0.1913,
+              0.2818
+            ],
+            "ppv": 0.0901,
+            "tp": 78
+          },
+          "sens_diff_marker_minus_age": 0.0,
+          "sens_diff_ci": [
+            -0.0497,
+            0.0619
+          ],
+          "net_benefit": {
+            "0.02": {
+              "rule": 0.01431,
+              "treat_all": 0.05834
+            },
+            "0.05": {
+              "rule": 0.00844,
+              "treat_all": 0.0286
+            },
+            "0.1": {
+              "rule": -0.00221,
+              "treat_all": -0.02536
+            }
+          },
+          "other_cause": {
+            "deaths": 1392,
+            "marker_sensitivity": 0.2802,
+            "age_only_sensitivity": 0.4052
+          }
+        },
+        "top fifth of RDW": {
+          "flagged_share": 0.2121,
+          "n": 4328,
+          "cancer_deaths": 334,
+          "marker": {
+            "sensitivity": 0.3084,
+            "sens_ci": [
+              0.2613,
+              0.3599
+            ],
+            "ppv": 0.1122,
+            "tp": 103
+          },
+          "age_only": {
+            "sensitivity": 0.2395,
+            "sens_ci": [
+              0.1969,
+              0.2881
+            ],
+            "ppv": 0.0871,
+            "tp": 80
+          },
+          "sens_diff_marker_minus_age": 0.0689,
+          "sens_diff_ci": [
+            0.0059,
+            0.1283
+          ],
+          "net_benefit": {
+            "0.02": {
+              "rule": 0.01996,
+              "treat_all": 0.05834
+            },
+            "0.05": {
+              "rule": 0.01389,
+              "treat_all": 0.0286
+            },
+            "0.1": {
+              "rule": 0.00288,
+              "treat_all": -0.02536
+            }
+          },
+          "other_cause": {
+            "deaths": 1392,
+            "marker_sensitivity": 0.3003,
+            "age_only_sensitivity": 0.4282
+          }
+        }
+      }
+    }
+  }
+}

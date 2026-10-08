@@ -140,6 +140,67 @@ def fig_claims():
     save("fig5_claims.png")
 
 
+def fig_replication():
+    Z = json.load(open(os.path.join(ROOT, "experiments", "cheap_markers_replication_result.json")))
+    fig, axes = plt.subplots(1, 2, figsize=(10.4, 4.9), sharey=True)
+    y = np.arange(len(NAMES))[::-1]
+    for ax, key, title in ((axes[0], "T1", "Added discrimination for cancer death (AUC gain)"), (axes[1], "OR", "Association with each kind of death (odds ratio per SD)")):
+        for yi, n in zip(y, NAMES):
+            a, b = R["indices"][n], Z["indices"][n]
+            if key == "T1":
+                ax.plot(a["T1_ci"], [yi + 0.15] * 2, color=BLUE, lw=2)
+                ax.plot(a["T1_gain"], yi + 0.15, "o", color=BLUE, ms=5, label="NHANES 1999-2008 (test cycles)" if n == NAMES[0] else None)
+                ax.plot(b["T1_ci"], [yi - 0.15] * 2, color=TEAL, lw=2)
+                ax.plot(b["T1_gain"], yi - 0.15, "s", color=TEAL, ms=5, label="NHANES III 1988-94 (external)" if n == NAMES[0] else None)
+            else:
+                ax.plot(b["or_cancer_ci"], [yi + 0.15] * 2, color=RED, lw=2)
+                ax.plot(b["or_cancer_death"], yi + 0.15, "o", color=RED, ms=5, label="death from cancer" if n == NAMES[0] else None)
+                ax.plot(b["or_noncancer_ci"], [yi - 0.15] * 2, color=ORANGE, lw=2)
+                ax.plot(b["or_noncancer_death"], yi - 0.15, "s", color=ORANGE, ms=5, label="death from another cause" if n == NAMES[0] else None)
+        ax.set_title(title, fontsize=9.5)
+        ax.grid(axis="y", visible=False)
+    axes[0].axvline(0, color=INK, lw=1)
+    axes[0].axvline(0.01, color=MUTED, lw=1, ls="--")
+    axes[1].axvline(1, color=INK, lw=1)
+    axes[1].set_xscale("log")
+    from matplotlib.ticker import NullFormatter
+    axes[1].xaxis.set_minor_formatter(NullFormatter())
+    axes[1].set_xticks([0.7, 0.85, 1, 1.2, 1.4])
+    axes[1].set_xticklabels(["0.7", "0.85", "1", "1.2", "1.4"])
+    axes[0].set_yticks(y)
+    axes[0].set_yticklabels(NAMES)
+    axes[0].legend(frameon=False, fontsize=8, loc="lower left")
+    axes[1].legend(frameon=False, fontsize=8, loc="lower right")
+    fig.suptitle("Independent replication in NHANES III: same picture", x=0.06, ha="left", y=1.02, fontsize=11, fontweight="bold")
+    plt.tight_layout()
+    save("fig6_replication.png")
+
+
+def fig_decision():
+    Z = json.load(open(os.path.join(ROOT, "experiments", "cheap_markers_replication_result.json")))
+    fig, axes = plt.subplots(1, 2, figsize=(10.4, 4.1), sharey=True)
+    for ax, key, title in ((axes[0], "test_cycles_2005_2008", "NHANES 2005-2008, adults 60+"), (axes[1], "nhanes3", "NHANES III, adults 60+")):
+        rules = Z["decision"][key]["rules"]
+        names = list(rules)
+        short = [n.replace("NLR-analogue at the cutoff that flags the same share as NLR >= 3", "NLR >= 3 (matched)").replace("top fifth of ", "top fifth: ") for n in names]
+        x = np.arange(len(names))
+        w = 0.36
+        ax.bar(x - w / 2, [100 * rules[n]["age_only"]["sensitivity"] for n in names], w, color=GREY, label="flag the oldest, same number")
+        ax.bar(x + w / 2, [100 * rules[n]["marker"]["sensitivity"] for n in names], w, color=BLUE, label="flag by the marker")
+        for xi, n in zip(x, names):
+            lo, hi = rules[n]["sens_diff_ci"]
+            ax.text(xi, 2, f"diff {100 * rules[n]['sens_diff_marker_minus_age']:+.1f}\n[{100 * lo:+.0f}, {100 * hi:+.0f}]", ha="center", fontsize=7.2, color="white" if False else INK)
+        ax.set_xticks(x)
+        ax.set_xticklabels(short, fontsize=7.8, rotation=12)
+        ax.set_title(title, fontsize=9.5)
+        ax.set_ylim(0, 42)
+    axes[0].set_ylabel("% of cancer deaths found")
+    axes[0].legend(frameon=False, fontsize=8, loc="upper left")
+    fig.suptitle("A marker rule finds no more cancer deaths than flagging the oldest, except possibly RDW", x=0.06, ha="left", y=1.03, fontsize=11, fontweight="bold")
+    plt.tight_layout()
+    save("fig7_decision.png")
+
+
 if __name__ == "__main__":
-    for f in (fig_logic, fig_gain, fig_frailty, fig_specific, fig_claims):
+    for f in (fig_logic, fig_gain, fig_frailty, fig_specific, fig_claims, fig_replication, fig_decision):
         f()
