@@ -1,0 +1,81 @@
+{
+  "n": 56276,
+  "population_40_74_millions": 97.2,
+  "weighted_cancer_deaths_10y_millions": 2.393,
+  "shares": {
+    "0.1": {
+      "age_only": 0.2882,
+      "risk_based": 0.3927,
+      "diff": 0.1045,
+      "ci": [
+        0.0773,
+        0.1353
+      ]
+    },
+    "0.2": {
+      "age_only": 0.482,
+      "risk_based": 0.5739,
+      "diff": 0.0919,
+      "ci": [
+        0.057,
+        0.1201
+      ]
+    },
+    "0.3": {
+      "age_only": 0.6225,
+      "risk_based": 0.6944,
+      "diff": 0.072,
+      "ci": [
+        0.0446,
+        0.1045
+      ]
+    },
+    "0.4": {
+      "age_only": 0.72,
+      "risk_based": 0.7874,
+      "diff": 0.0674,
+      "ci": [
+        0.0392,
+        0.0939
+      ]
+    },
+    "0.5": {
+      "age_only": 0.7971,
+      "risk_based": 0.8474,
+      "diff": 0.0504,
+      "ci": [
+        0.0239,
+        0.0776
+      ]
+    },
+    "0.6": {
+      "age_only": 0.8728,
+      "risk_based": 0.8866,
+      "diff": 0.0137,
+      "ci": [
+        -0.0039,
+        0.0341
+      ]
+    }
+  },
+  "fixed_coverage": {
+    "0.4": {
+      "share_invited_age": 0.16,
+      "share_invited_risk": 0.11,
+      "invitations_saved_millions": 4.9,
+      "fewer_invitations": 0.312
+    },
+    "0.5": {
+      "share_invited_age": 0.21,
+      "share_invited_risk": 0.17,
+      "invitations_saved_millions": 3.9,
+      "fewer_invitations": 0.19
+    },
+    "0.6": {
+      "share_invited_age": 0.29,
+      "share_invited_risk": 0.23,
+      "invitations_saved_millions": 5.8,
+      "fewer_invitations": 0.207
+    }
+  }
+}

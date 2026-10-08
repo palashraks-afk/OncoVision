@@ -52,6 +52,7 @@ nh, n3 = ex["NHANES 1999-2008"], ex["NHANES III 1988-1994"]
 gr = X["groups"]
 SS = R["screening_start"]
 rob = X["robustness"]
+N = json.load(open(os.path.join(ROOT, "experiments", "cancer_age_national_result.json")))
 pool = X["pooled_external"]
 fc = CM["fixed_coverage"]
 E = CM["earliness_at_30pct_invited"]
@@ -172,6 +173,8 @@ RESULTS = f"""
 {t_eq}
 <h3>3.9 Robustness</h3>
 <p>The result did not depend on early deaths or the horizon. With the first 24 months of follow-up removed (to guard against undiagnosed cancer), the AUC gain held ({rob['first_24_months_removed']['auc_F0']:.3f} to {rob['first_24_months_removed']['auc_F2']:.3f}) and the coverage gain at 20% invited was {100 * rob['first_24_months_removed']['gain_at_20pct']['diff']:+.1f} points ({100 * rob['first_24_months_removed']['gain_at_20pct']['ci'][0]:+.1f} to {100 * rob['first_24_months_removed']['gain_at_20pct']['ci'][1]:+.1f}). With a five-year horizon it was {100 * rob['five_year']['gain_at_20pct']['diff']:+.1f} points ({100 * rob['five_year']['gain_at_20pct']['ci'][0]:+.1f} to {100 * rob['five_year']['gain_at_20pct']['ci'][1]:+.1f}), AUC {rob['five_year']['auc_F0']:.3f} to {rob['five_year']['auc_F2']:.3f}.</p>
+<h3>3.10 Survey-weighted, national scale (exploratory)</h3>
+<p>The main analysis counts respondents. Weighting each respondent by the NHIS sample-adult weight so the sample stands for the US civilian adult population ({N['population_40_74_millions']} million adults aged 40 to 74 in 2005-2009), the advantage was the same size or larger: inviting 20% of adults covered {pc(N['shares']['0.2']['risk_based'])} of ten-year cancer deaths by risk against {pc(N['shares']['0.2']['age_only'])} by age ({100 * N['shares']['0.2']['diff']:+.1f} points, interval {100 * N['shares']['0.2']['ci'][0]:+.1f} to {100 * N['shares']['0.2']['ci'][1]:+.1f}), and the interval excluded zero from 10% to 50% invited but not at 60% ({100 * N['shares']['0.6']['diff']:+.1f}, {100 * N['shares']['0.6']['ci'][0]:+.1f} to {100 * N['shares']['0.6']['ci'][1]:+.1f}). To cover half of ten-year cancer deaths, inviting by risk instead of age would need about {N['fixed_coverage']['0.5']['invitations_saved_millions']} million fewer invitations ({N['fixed_coverage']['0.5']['fewer_invitations']:.0%}); for 40% of deaths, {N['fixed_coverage']['0.4']['invitations_saved_millions']} million ({N['fixed_coverage']['0.4']['fewer_invitations']:.0%}). These are one-off counts for a population of that size, not annual savings or money, and the bootstrap ignores the survey's clustering, so the intervals are somewhat too narrow.</p>
 """
 
 DISCUSSION = f"""
