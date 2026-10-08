@@ -18,7 +18,18 @@ Built as a mentored research project under the guidance of a clinical oncologist
 
 ---
 
-## Newest: an audit of NHANES machine-learning cancer papers (the strongest paper angle so far)
+## The main paper: cheap blood markers of cancer risk, cancer signal or general frailty?
+
+[`docs/marker_paper/Cheap_Blood_Markers_Cancer_Risk.pdf`](docs/marker_paper/Cheap_Blood_Markers_Cancer_Risk.pdf) (14 pages). This
+keeps the original idea (cheap cancer risk information from tests people already have) and tests it directly.
+Twelve blood-count markers (NLR, SII, NPAR, ALI, RDW and others) in 12,645 US adults with ten-year follow-up, with the
+bars [pre-registered](docs/CHEAP_MARKERS_PREREG.md). **None of the twelve qualified.** The inflammation indices track death
+from other causes (odds ratio per SD up to 1.43) and not death from cancer (0.92 to 0.99); none adds 0.01 AUC to age, sex,
+smoking and BMI in an unseen era; the literature's associations reproduce (up to 1.22 per SD) but add at most 0.006 AUC.
+Honest scoring of this and the other angles for novelty, impact and paper quality: [`docs/ANGLE_ASSESSMENT.md`](docs/ANGLE_ASSESSMENT.md).
+Code: `experiments/cheap_markers.py`, `cheap_markers_sensitivity.py`, `make_marker_figures.py`.
+
+## Also: an audit of NHANES machine-learning cancer papers
 
 [`docs/audit_paper/NHANES_ML_Cancer_Audit.pdf`](docs/audit_paper/NHANES_ML_Cancer_Audit.pdf) (16 pages). A pre-registered
 audit ([`docs/AUDIT_PREREG.md`](docs/AUDIT_PREREG.md)) of 79 Europe PMC records, 24 included, plus a controlled re-analysis on

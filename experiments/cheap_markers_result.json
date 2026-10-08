@@ -1,0 +1,540 @@
+{
+  "n": 12645,
+  "n_fit": 7207,
+  "n_test": 5438,
+  "cancer_deaths_fit": 292,
+  "cancer_deaths_test": 195,
+  "noncancer_deaths_fit": 1104,
+  "noncancer_deaths_test": 780,
+  "indices": {
+    "NLR": {
+      "T1_gain": -0.0013,
+      "T1_ci": [
+        -0.0064,
+        0.004
+      ],
+      "T3_gain": 0.0059,
+      "T3_ci": [
+        0.002,
+        0.0096
+      ],
+      "T2_or": 0.819,
+      "T2_ci": [
+        0.75,
+        0.894
+      ],
+      "T2_p": 7.6216054922806364e-06,
+      "or_cancer_death": 0.92,
+      "or_cancer_ci": [
+        0.842,
+        1.004
+      ],
+      "or_noncancer_death": 1.304,
+      "or_noncancer_ci": [
+        1.233,
+        1.379
+      ],
+      "T2_p_holm": 7.621605492280636e-05,
+      "passes_T1": false,
+      "passes_T2": false,
+      "qualifies": false,
+      "frailty_marker": true
+    },
+    "PLR": {
+      "T1_gain": 0.0003,
+      "T1_ci": [
+        -0.0051,
+        0.0062
+      ],
+      "T3_gain": 0.0001,
+      "T3_ci": [
+        -0.0002,
+        0.0004
+      ],
+      "T2_or": 0.921,
+      "T2_ci": [
+        0.848,
+        1.0
+      ],
+      "T2_p": 0.04948136608880693,
+      "or_cancer_death": 0.9,
+      "or_cancer_ci": [
+        0.828,
+        0.979
+      ],
+      "or_noncancer_death": 1.032,
+      "or_noncancer_ci": [
+        0.979,
+        1.088
+      ],
+      "T2_p_holm": 0.09896273217761387,
+      "passes_T1": false,
+      "passes_T2": false,
+      "qualifies": false,
+      "frailty_marker": true
+    },
+    "MLR": {
+      "T1_gain": -0.0,
+      "T1_ci": [
+        -0.0008,
+        0.0008
+      ],
+      "T3_gain": 0.002,
+      "T3_ci": [
+        -0.0006,
+        0.0046
+      ],
+      "T2_or": 0.896,
+      "T2_ci": [
+        0.818,
+        0.982
+      ],
+      "T2_p": 0.019185713346680844,
+      "or_cancer_death": 0.983,
+      "or_cancer_ci": [
+        0.896,
+        1.079
+      ],
+      "or_noncancer_death": 1.193,
+      "or_noncancer_ci": [
+        1.127,
+        1.263
+      ],
+      "T2_p_holm": 0.07674285338672338,
+      "passes_T1": false,
+      "passes_T2": false,
+      "qualifies": false,
+      "frailty_marker": true
+    },
+    "SII": {
+      "T1_gain": -0.0003,
+      "T1_ci": [
+        -0.0041,
+        0.0034
+      ],
+      "T3_gain": 0.0023,
+      "T3_ci": [
+        -0.0,
+        0.005
+      ],
+      "T2_or": 0.873,
+      "T2_ci": [
+        0.803,
+        0.949
+      ],
+      "T2_p": 0.0014062817309168363,
+      "or_cancer_death": 0.925,
+      "or_cancer_ci": [
+        0.849,
+        1.008
+      ],
+      "or_noncancer_death": 1.18,
+      "or_noncancer_ci": [
+        1.118,
+        1.246
+      ],
+      "T2_p_holm": 0.008437690385501018,
+      "passes_T1": false,
+      "passes_T2": false,
+      "qualifies": false,
+      "frailty_marker": true
+    },
+    "SIRI": {
+      "T1_gain": -0.0,
+      "T1_ci": [
+        -0.0003,
+        0.0003
+      ],
+      "T3_gain": 0.0047,
+      "T3_ci": [
+        0.0011,
+        0.0083
+      ],
+      "T2_or": 0.849,
+      "T2_ci": [
+        0.773,
+        0.933
+      ],
+      "T2_p": 0.0007078535667246477,
+      "or_cancer_death": 0.99,
+      "or_cancer_ci": [
+        0.902,
+        1.087
+      ],
+      "or_noncancer_death": 1.309,
+      "or_noncancer_ci": [
+        1.235,
+        1.388
+      ],
+      "T2_p_holm": 0.005662828533797182,
+      "passes_T1": false,
+      "passes_T2": false,
+      "qualifies": false,
+      "frailty_marker": true
+    },
+    "NPAR": {
+      "T1_gain": -0.0003,
+      "T1_ci": [
+        -0.0031,
+        0.0028
+      ],
+      "T3_gain": 0.0092,
+      "T3_ci": [
+        0.0035,
+        0.0149
+      ],
+      "T2_or": 0.807,
+      "T2_ci": [
+        0.742,
+        0.878
+      ],
+      "T2_p": 6.345293850351652e-07,
+      "or_cancer_death": 0.937,
+      "or_cancer_ci": [
+        0.861,
+        1.02
+      ],
+      "or_noncancer_death": 1.429,
+      "or_noncancer_ci": [
+        1.344,
+        1.519
+      ],
+      "T2_p_holm": 6.979823235386817e-06,
+      "passes_T1": false,
+      "passes_T2": false,
+      "qualifies": false,
+      "frailty_marker": true
+    },
+    "ALI": {
+      "T1_gain": -0.0013,
+      "T1_ci": [
+        -0.0048,
+        0.0027
+      ],
+      "T3_gain": 0.009,
+      "T3_ci": [
+        0.0042,
+        0.0142
+      ],
+      "T2_or": 1.281,
+      "T2_ci": [
+        1.164,
+        1.409
+      ],
+      "T2_p": 3.658904290659848e-07,
+      "or_cancer_death": 1.073,
+      "or_cancer_ci": [
+        0.974,
+        1.181
+      ],
+      "or_noncancer_death": 0.698,
+      "or_noncancer_ci": [
+        0.657,
+        0.742
+      ],
+      "T2_p_holm": 4.3906851487918175e-06,
+      "passes_T1": false,
+      "passes_T2": true,
+      "qualifies": false,
+      "frailty_marker": false
+    },
+    "PNI": {
+      "T1_gain": 0.0004,
+      "T1_ci": [
+        -0.0022,
+        0.0033
+      ],
+      "T3_gain": 0.007,
+      "T3_ci": [
+        0.0023,
+        0.0122
+      ],
+      "T2_or": 1.168,
+      "T2_ci": [
+        1.082,
+        1.26
+      ],
+      "T2_p": 6.548880459500417e-05,
+      "or_cancer_death": 1.07,
+      "or_cancer_ci": [
+        0.99,
+        1.157
+      ],
+      "or_noncancer_death": 0.74,
+      "or_noncancer_ci": [
+        0.697,
+        0.785
+      ],
+      "T2_p_holm": 0.0005893992413550375,
+      "passes_T1": false,
+      "passes_T2": true,
+      "qualifies": false,
+      "frailty_marker": false
+    },
+    "RDW": {
+      "T1_gain": 0.0093,
+      "T1_ci": [
+        0.0013,
+        0.0176
+      ],
+      "T3_gain": 0.0143,
+      "T3_ci": [
+        0.0086,
+        0.0201
+      ],
+      "T2_or": 0.907,
+      "T2_ci": [
+        0.829,
+        0.992
+      ],
+      "T2_p": 0.03176172795656207,
+      "or_cancer_death": 1.216,
+      "or_cancer_ci": [
+        1.127,
+        1.313
+      ],
+      "or_noncancer_death": 1.473,
+      "or_noncancer_ci": [
+        1.4,
+        1.55
+      ],
+      "T2_p_holm": 0.09528518386968621,
+      "passes_T1": false,
+      "passes_T2": false,
+      "qualifies": false,
+      "frailty_marker": true
+    },
+    "WBC": {
+      "T1_gain": 0.0015,
+      "T1_ci": [
+        -0.0021,
+        0.005
+      ],
+      "T3_gain": 0.0016,
+      "T3_ci": [
+        -0.0009,
+        0.0045
+      ],
+      "T2_or": 0.959,
+      "T2_ci": [
+        0.874,
+        1.053
+      ],
+      "T2_p": 0.3828905724415108,
+      "or_cancer_death": 1.092,
+      "or_cancer_ci": [
+        0.995,
+        1.197
+      ],
+      "or_noncancer_death": 1.186,
+      "or_noncancer_ci": [
+        1.119,
+        1.257
+      ],
+      "T2_p_holm": 0.3828905724415108,
+      "passes_T1": false,
+      "passes_T2": false,
+      "qualifies": false,
+      "frailty_marker": true
+    },
+    "Albumin": {
+      "T1_gain": 0.0038,
+      "T1_ci": [
+        -0.0017,
+        0.0089
+      ],
+      "T3_gain": 0.0113,
+      "T3_ci": [
+        0.0053,
+        0.0166
+      ],
+      "T2_or": 1.174,
+      "T2_ci": [
+        1.067,
+        1.291
+      ],
+      "T2_p": 0.0009550094656154418,
+      "or_cancer_death": 0.891,
+      "or_cancer_ci": [
+        0.815,
+        0.974
+      ],
+      "or_noncancer_death": 0.684,
+      "or_noncancer_ci": [
+        0.646,
+        0.724
+      ],
+      "T2_p_holm": 0.006685066259308092,
+      "passes_T1": false,
+      "passes_T2": true,
+      "qualifies": false,
+      "frailty_marker": false
+    },
+    "Haemoglobin": {
+      "T1_gain": 0.0,
+      "T1_ci": [
+        -0.0005,
+        0.0006
+      ],
+      "T3_gain": 0.0034,
+      "T3_ci": [
+        -0.0006,
+        0.0078
+      ],
+      "T2_or": 1.175,
+      "T2_ci": [
+        1.059,
+        1.304
+      ],
+      "T2_p": 0.002271990586757866,
+      "or_cancer_death": 0.982,
+      "or_cancer_ci": [
+        0.888,
+        1.087
+      ],
+      "or_noncancer_death": 0.759,
+      "or_noncancer_ci": [
+        0.716,
+        0.805
+      ],
+      "T2_p_holm": 0.01135995293378933,
+      "passes_T1": false,
+      "passes_T2": true,
+      "qualifies": false,
+      "frailty_marker": false
+    }
+  },
+  "baseline_auc": {
+    "cancer": 0.741,
+    "noncancer": 0.8291
+  },
+  "n_qualify": 0,
+  "n_frailty": 8,
+  "T4": {
+    "auc_baseline": 0.74,
+    "auc_all": 0.7515,
+    "gain": 0.0116,
+    "ci": [
+      -0.0015,
+      0.0243
+    ],
+    "passes": false
+  },
+  "CRP": {
+    "n": 12803,
+    "T1_gain": -0.0001,
+    "T1_ci": [
+      -0.0003,
+      0.0001
+    ],
+    "T3_gain": 0.0058,
+    "T2_or": 0.854,
+    "T2_ci": [
+      0.772,
+      0.944
+    ]
+  },
+  "T5": {
+    "n": 24674,
+    "cases": 3074,
+    "baseline_auc": 0.7165,
+    "indices": {
+      "NLR": {
+        "or": 1.159,
+        "ci": [
+          1.115,
+          1.204
+        ],
+        "auc_gain_later_cycles": 0.0041
+      },
+      "PLR": {
+        "or": 1.138,
+        "ci": [
+          1.095,
+          1.183
+        ],
+        "auc_gain_later_cycles": 0.0027
+      },
+      "MLR": {
+        "or": 1.219,
+        "ci": [
+          1.17,
+          1.269
+        ],
+        "auc_gain_later_cycles": 0.0056
+      },
+      "SII": {
+        "or": 1.116,
+        "ci": [
+          1.075,
+          1.16
+        ],
+        "auc_gain_later_cycles": 0.0028
+      },
+      "SIRI": {
+        "or": 1.16,
+        "ci": [
+          1.114,
+          1.207
+        ],
+        "auc_gain_later_cycles": 0.0043
+      },
+      "NPAR": {
+        "or": 1.107,
+        "ci": [
+          1.063,
+          1.153
+        ],
+        "auc_gain_later_cycles": 0.0022
+      },
+      "ALI": {
+        "or": 0.851,
+        "ci": [
+          0.816,
+          0.887
+        ],
+        "auc_gain_later_cycles": 0.0043
+      },
+      "PNI": {
+        "or": 0.923,
+        "ci": [
+          0.885,
+          0.962
+        ],
+        "auc_gain_later_cycles": 0.0011
+      },
+      "RDW": {
+        "or": 1.018,
+        "ci": [
+          0.98,
+          1.058
+        ],
+        "auc_gain_later_cycles": -0.0001
+      },
+      "WBC": {
+        "or": 0.972,
+        "ci": [
+          0.935,
+          1.012
+        ],
+        "auc_gain_later_cycles": -0.0006
+      },
+      "Albumin": {
+        "or": 0.972,
+        "ci": [
+          0.933,
+          1.013
+        ],
+        "auc_gain_later_cycles": 0.0002
+      },
+      "Haemoglobin": {
+        "or": 0.979,
+        "ci": [
+          0.938,
+          1.021
+        ],
+        "auc_gain_later_cycles": -0.0001
+      }
+    }
+  }
+}
