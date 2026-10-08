@@ -90,3 +90,40 @@ should help, and if it still fails the paper says so. Race is expected to add li
 
 That a person will or will not get cancer; anything about cancer incidence (the outcome is death); effects of
 screening; effects of changing a risk factor (these are associations). All cancers are pooled.
+
+---
+
+## Addendum, 9 October 2026: the aim is earlier and cheaper screening, not communication
+
+The first version of this plan leaned on "plain language". That is **not** the aim and is dropped as a claim.
+The paper is about **cancer risk assessment to decide who is screened and when, so that cancer is caught
+earlier and screening costs less**. "Cancer-risk age" (the risk advancement period) stays only as a technical
+way to compare people on one scale; the paper makes no claim about how well anyone understands it.
+
+### Added primary analysis: cost-matched screening invitation
+
+Cost is proxied by **the number of people invited**. In the temporal test (2005-2009), among adults 40 to 74,
+compare policies that invite exactly the same number of people:
+
+| Policy | Who is invited |
+|---|---|
+| A. Age only | The oldest people, down to the age that gives the required number |
+| B. Risk-based (free information) | The people with the highest predicted ten-year cancer-death risk from model F2 |
+
+Measures, with bootstrap 95% intervals: the share of all ten-year cancer deaths among those invited
+(coverage), deaths per 1,000 invited, and the **number needed to invite per cancer death covered**. A
+second view fixes the target coverage (for example 50% of cancer deaths) and reports how many fewer
+people B needs to invite than A: **the saving, as a share of invitations**. A third view asks about
+**earliness**: among invited people aged under 50, how many cancer deaths does B cover that A would cover
+only later.
+
+**Bar:** B covers more cancer deaths than A at the same number invited, with an interval for the difference
+above zero, in the temporal test AND in NHANES. If not, the paper says free information does not make screening
+cheaper than age alone does.
+
+### Also fixed here
+
+- The measure is **all cancer deaths**. Some cancers have no screening test; the result describes
+  where cancer death risk is concentrated and is not an estimate of what screening would prevent.
+- Free information costs nothing to collect at a visit or by form; the comparison asks whether a few minutes
+  of questions can replace some of the blanket age-based invitations.
