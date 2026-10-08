@@ -1,0 +1,56 @@
+idx,pmid,reason
+0,42629713,"association analysis; ML only ranks variables, no model performance"
+3,42192026,"Korea NHANES (KNHANES), a different survey; target is psychological distress"
+4,41007166,"target is sarcopenic obesity, not cancer"
+6,41013410,target is insulin resistance
+8,41531742,target is dietary fat
+9,41371087,targets stroke and mortality
+11,41223197,target is fatty liver
+12,41670835,target is cardiovascular death among cancer survivors
+14,41484685,target is all-cause mortality in CVD-cancer comorbidity
+15,41534354,"mechanistic study, no prediction performance"
+18,42536197,target of the models not clearly cancer; abstract only
+19,40874812,target is multimorbidity
+21,41882235,target is CVD in cancer survivors
+22,40931290,target is benign prostatic hyperplasia
+24,41451124,target is osteoporosis
+26,41592398,single-marker association; no model performance reported in the abstract
+31,41637463,target is depression
+32,40415396,Mendelian randomisation and omics; unclear
+33,41187199,association study; single marker
+34,42670686,mortality association in kidney disease
+35,42305524,association study
+38,40963229,association study
+40,41013668,target is asthma
+41,40669089,clustering and association
+43,40349028,target is mortality in rheumatoid arthritis
+44,40262223,association study (environment-wide)
+46,42617515,omics
+47,40883416,mechanistic cell study
+49,40988252,target is asthma
+50,42560444,omics and genetics
+51,39678170,statistical method paper
+52,40478960,"association, no model performance in the abstract"
+53,42768379,chronic disease burden and all-cause mortality
+54,40357031,association study
+55,39767532,target is GI health in cancer survivors
+56,42446284,single-index ROC; no ML model evident (abstract only)
+57,40206955,hyperuricaemia in breast-cancer patients
+58,39104905,hospital data primary; NHANES only supporting
+60,39240958,target is lean mass
+61,42066461,omics
+63,40741049,biological age
+65,40636877,target is emphysema
+66,41734845,omics
+67,41997961,microbiome age
+68,40218080,target is sleep apnoea
+69,39102412,target is kidney disease
+70,37710270,target is albuminuria
+71,41252864,target is benign prostatic hyperplasia
+72,35405939,PSA association
+73,36429890,"Korea NHANES (KNHANES), a different survey"
+74,37036281,"target is a high PSA level, not a cancer diagnosis"
+75,35657782,obesity drug use
+76,37161056,association study
+77,39781526,global burden and omics; unclear
+78,34415913,"simulation of HPV-related cancer, not NHANES prediction"

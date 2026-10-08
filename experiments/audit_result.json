@@ -1,0 +1,1064 @@
+{
+  "part1": {
+    "records_found": 79,
+    "included": 24,
+    "excluded": 55,
+    "open_access_full_text_in_included": 20,
+    "years": [
+      2024,
+      2026
+    ],
+    "tasks": {
+      "xs": 17,
+      "mort": 5,
+      "comorb": 2
+    },
+    "sites": {
+      "any": 10,
+      "prostate": 4,
+      "breast": 4,
+      "digestive": 2,
+      "colorectal": 2,
+      "uterine": 1,
+      "bladder": 1
+    },
+    "A1": {
+      "external_or_heldout": 3,
+      "heldout_cycle": 1,
+      "no_external": 21,
+      "share_no_external": 0.875,
+      "ci": [
+        0.69,
+        0.957
+      ],
+      "validation_types": {
+        "random": 13,
+        "none": 6,
+        "cv": 4,
+        "split_unstated": 1
+      },
+      "full_text_only": {
+        "n": 20,
+        "share_no_external": 0.85
+      },
+      "supported": true
+    },
+    "A2": {
+      "age_or_agesex_baseline": 0,
+      "share": 0.0,
+      "ci": [
+        0.0,
+        0.138
+      ],
+      "any_comparator_logistic_cox_or_clinical": 10,
+      "comparator_share": 0.417,
+      "supported": true
+    },
+    "weights_in_fitting": {
+      "assessable": 18,
+      "used": 0
+    },
+    "calibration_reported": {
+      "yes": 13,
+      "assessable": 22
+    },
+    "resampling_used": {
+      "yes": 7,
+      "assessable": 22
+    },
+    "leakage_guard_among_resampling_papers": {
+      "papers": 7,
+      "guard_reported": 2
+    },
+    "auc_all": {
+      "n": 23,
+      "median": 0.84,
+      "min": 0.674,
+      "max": 0.996,
+      "share_ge_0.80": 0.652,
+      "share_ge_0.90": 0.217
+    },
+    "auc_xs": {
+      "n": 18,
+      "median": 0.836,
+      "iqr": [
+        0.79,
+        0.893
+      ]
+    },
+    "cue_vs_adjudicated": {
+      "external or held-out cycle": {
+        "kappa": 0.25,
+        "raw_agreement": 0.62
+      },
+      "random split or CV described": {
+        "kappa": 0.71,
+        "raw_agreement": 0.88
+      },
+      "age-only baseline": {
+        "kappa": 0.0,
+        "raw_agreement": 0.88
+      },
+      "survey weights in text": {
+        "kappa": 0.0,
+        "raw_agreement": 0.58
+      },
+      "calibration": {
+        "kappa": 1.0,
+        "raw_agreement": 1.0
+      },
+      "resampling": {
+        "kappa": 0.73,
+        "raw_agreement": 0.88
+      }
+    },
+    "table": [
+      {
+        "idx": 1,
+        "site": "any",
+        "task": "comorb",
+        "validation": "none",
+        "ext": false,
+        "heldout": false,
+        "agesex": false,
+        "comparator": false,
+        "auc": 0.996,
+        "weights": false,
+        "calib": true,
+        "resample": true,
+        "guard": false,
+        "abstract_only": false,
+        "pmid": 42058226,
+        "pmcid": "PMC13121860",
+        "year": 2026
+      },
+      {
+        "idx": 2,
+        "site": "colorectal",
+        "task": "xs",
+        "validation": "random",
+        "ext": false,
+        "heldout": false,
+        "agesex": false,
+        "comparator": false,
+        "auc": 0.787,
+        "weights": false,
+        "calib": true,
+        "resample": true,
+        "guard": true,
+        "abstract_only": false,
+        "pmid": 42260815,
+        "pmcid": "PMC13246055",
+        "year": 2026
+      },
+      {
+        "idx": 5,
+        "site": "uterine",
+        "task": "xs",
+        "validation": "random",
+        "ext": false,
+        "heldout": false,
+        "agesex": false,
+        "comparator": true,
+        "auc": 0.964,
+        "weights": false,
+        "calib": true,
+        "resample": false,
+        "guard": null,
+        "abstract_only": false,
+        "pmid": 42332450,
+        "pmcid": "PMC13286416",
+        "year": 2026
+      },
+      {
+        "idx": 7,
+        "site": "breast",
+        "task": "xs",
+        "validation": "random",
+        "ext": true,
+        "heldout": true,
+        "agesex": false,
+        "comparator": false,
+        "auc": 0.832,
+        "weights": false,
+        "calib": true,
+        "resample": false,
+        "guard": null,
+        "abstract_only": false,
+        "pmid": 42528994,
+        "pmcid": "PMC13416066",
+        "year": 2026
+      },
+      {
+        "idx": 10,
+        "site": "digestive",
+        "task": "xs",
+        "validation": "random",
+        "ext": true,
+        "heldout": false,
+        "agesex": false,
+        "comparator": true,
+        "auc": 0.852,
+        "weights": false,
+        "calib": true,
+        "resample": false,
+        "guard": null,
+        "abstract_only": false,
+        "pmid": 42638646,
+        "pmcid": "PMC13500251",
+        "year": 2026
+      },
+      {
+        "idx": 13,
+        "site": "prostate",
+        "task": "xs",
+        "validation": "none",
+        "ext": false,
+        "heldout": false,
+        "agesex": false,
+        "comparator": false,
+        "auc": 0.9,
+        "weights": false,
+        "calib": false,
+        "resample": false,
+        "guard": null,
+        "abstract_only": false,
+        "pmid": 41366988,
+        "pmcid": "PMC12688939",
+        "year": 2025
+      },
+      {
+        "idx": 16,
+        "site": "any",
+        "task": "xs",
+        "validation": "random",
+        "ext": false,
+        "heldout": false,
+        "agesex": false,
+        "comparator": true,
+        "auc": 0.92,
+        "weights": false,
+        "calib": true,
+        "resample": true,
+        "guard": null,
+        "abstract_only": false,
+        "pmid": 39928823,
+        "pmcid": "PMC11813008",
+        "year": 2025
+      },
+      {
+        "idx": 17,
+        "site": "any",
+        "task": "mort",
+        "validation": "random",
+        "ext": false,
+        "heldout": false,
+        "agesex": false,
+        "comparator": false,
+        "auc": 0.891,
+        "weights": false,
+        "calib": false,
+        "resample": false,
+        "guard": null,
+        "abstract_only": false,
+        "pmid": 40405088,
+        "pmcid": "PMC12100792",
+        "year": 2025
+      },
+      {
+        "idx": 20,
+        "site": "any",
+        "task": "mort",
+        "validation": "random",
+        "ext": false,
+        "heldout": false,
+        "agesex": false,
+        "comparator": true,
+        "auc": 0.84,
+        "weights": null,
+        "calib": false,
+        "resample": true,
+        "guard": null,
+        "abstract_only": false,
+        "pmid": 42180936,
+        "pmcid": "PMC13190813",
+        "year": 2026
+      },
+      {
+        "idx": 23,
+        "site": "breast",
+        "task": "xs",
+        "validation": "random",
+        "ext": false,
+        "heldout": false,
+        "agesex": false,
+        "comparator": false,
+        "auc": 0.727,
+        "weights": false,
+        "calib": false,
+        "resample": false,
+        "guard": null,
+        "abstract_only": false,
+        "pmid": 42459460,
+        "pmcid": "PMC13369117",
+        "year": 2026
+      },
+      {
+        "idx": 25,
+        "site": "any",
+        "task": "xs",
+        "validation": "random",
+        "ext": false,
+        "heldout": false,
+        "agesex": false,
+        "comparator": false,
+        "auc": 0.765,
+        "weights": false,
+        "calib": false,
+        "resample": false,
+        "guard": null,
+        "abstract_only": false,
+        "pmid": 41560104,
+        "pmcid": "PMC12826254",
+        "year": 2026
+      },
+      {
+        "idx": 27,
+        "site": "bladder",
+        "task": "xs",
+        "validation": "none",
+        "ext": false,
+        "heldout": false,
+        "agesex": false,
+        "comparator": false,
+        "auc": 0.78,
+        "weights": false,
+        "calib": false,
+        "resample": false,
+        "guard": null,
+        "abstract_only": false,
+        "pmid": 38277522,
+        "pmcid": "PMC10817101",
+        "year": 2024
+      },
+      {
+        "idx": 28,
+        "site": "any",
+        "task": "mort",
+        "validation": "cv",
+        "ext": false,
+        "heldout": false,
+        "agesex": false,
+        "comparator": true,
+        "auc": 0.674,
+        "weights": null,
+        "calib": true,
+        "resample": false,
+        "guard": null,
+        "abstract_only": true,
+        "pmid": 41386362,
+        "pmcid": null,
+        "year": 2026
+      },
+      {
+        "idx": 29,
+        "site": "prostate",
+        "task": "xs",
+        "validation": "split_unstated",
+        "ext": false,
+        "heldout": false,
+        "agesex": false,
+        "comparator": false,
+        "auc": 0.869,
+        "weights": null,
+        "calib": null,
+        "resample": null,
+        "guard": null,
+        "abstract_only": true,
+        "pmid": 40716343,
+        "pmcid": null,
+        "year": 2025
+      },
+      {
+        "idx": 30,
+        "site": "prostate",
+        "task": "mort",
+        "validation": "none",
+        "ext": true,
+        "heldout": false,
+        "agesex": false,
+        "comparator": true,
+        "auc": 0.751,
+        "weights": null,
+        "calib": true,
+        "resample": false,
+        "guard": null,
+        "abstract_only": false,
+        "pmid": 42200020,
+        "pmcid": "PMC13199051",
+        "year": 2026
+      },
+      {
+        "idx": 36,
+        "site": "any",
+        "task": "comorb",
+        "validation": "cv",
+        "ext": false,
+        "heldout": false,
+        "agesex": false,
+        "comparator": true,
+        "auc": 0.951,
+        "weights": false,
+        "calib": false,
+        "resample": true,
+        "guard": null,
+        "abstract_only": false,
+        "pmid": 39700695,
+        "pmcid": "PMC11729017",
+        "year": 2025
+      },
+      {
+        "idx": 37,
+        "site": "breast",
+        "task": "xs",
+        "validation": "none",
+        "ext": false,
+        "heldout": false,
+        "agesex": false,
+        "comparator": false,
+        "auc": 0.84,
+        "weights": false,
+        "calib": true,
+        "resample": false,
+        "guard": null,
+        "abstract_only": false,
+        "pmid": 38329808,
+        "pmcid": "PMC10854439",
+        "year": 2024
+      },
+      {
+        "idx": 39,
+        "site": "prostate",
+        "task": "xs",
+        "validation": "random",
+        "ext": false,
+        "heldout": false,
+        "agesex": false,
+        "comparator": false,
+        "auc": 0.768,
+        "weights": false,
+        "calib": true,
+        "resample": false,
+        "guard": null,
+        "abstract_only": false,
+        "pmid": 40697552,
+        "pmcid": "PMC12282170",
+        "year": 2025
+      },
+      {
+        "idx": 42,
+        "site": "breast",
+        "task": "xs",
+        "validation": "cv",
+        "ext": false,
+        "heldout": false,
+        "agesex": false,
+        "comparator": false,
+        "auc": 0.797,
+        "weights": false,
+        "calib": true,
+        "resample": false,
+        "guard": null,
+        "abstract_only": false,
+        "pmid": 40730969,
+        "pmcid": "PMC12309015",
+        "year": 2025
+      },
+      {
+        "idx": 45,
+        "site": "any",
+        "task": "xs",
+        "validation": "cv",
+        "ext": false,
+        "heldout": false,
+        "agesex": false,
+        "comparator": true,
+        "auc": 0.812,
+        "weights": null,
+        "calib": false,
+        "resample": false,
+        "guard": null,
+        "abstract_only": true,
+        "pmid": 42701956,
+        "pmcid": null,
+        "year": 2026
+      },
+      {
+        "idx": 48,
+        "site": "colorectal",
+        "task": "xs",
+        "validation": "random",
+        "ext": false,
+        "heldout": false,
+        "agesex": false,
+        "comparator": true,
+        "auc": 0.87,
+        "weights": false,
+        "calib": true,
+        "resample": true,
+        "guard": true,
+        "abstract_only": false,
+        "pmid": 41299673,
+        "pmcid": "PMC12764094",
+        "year": 2025
+      },
+      {
+        "idx": 59,
+        "site": "any",
+        "task": "xs",
+        "validation": "random",
+        "ext": false,
+        "heldout": false,
+        "agesex": false,
+        "comparator": false,
+        "auc": null,
+        "weights": false,
+        "calib": true,
+        "resample": true,
+        "guard": null,
+        "abstract_only": false,
+        "pmid": 40190762,
+        "pmcid": "PMC11968389",
+        "year": 2025
+      },
+      {
+        "idx": 62,
+        "site": "digestive",
+        "task": "xs",
+        "validation": "random",
+        "ext": false,
+        "heldout": false,
+        "agesex": false,
+        "comparator": false,
+        "auc": 0.827,
+        "weights": false,
+        "calib": false,
+        "resample": false,
+        "guard": null,
+        "abstract_only": false,
+        "pmid": 39779803,
+        "pmcid": "PMC11711503",
+        "year": 2025
+      },
+      {
+        "idx": 64,
+        "site": "any",
+        "task": "mort",
+        "validation": "none",
+        "ext": false,
+        "heldout": false,
+        "agesex": false,
+        "comparator": true,
+        "auc": 0.85,
+        "weights": null,
+        "calib": null,
+        "resample": null,
+        "guard": null,
+        "abstract_only": true,
+        "pmid": 38142591,
+        "pmcid": null,
+        "year": 2024
+      }
+    ]
+  },
+  "part2": {
+    "n": 43740,
+    "cancer_history": 4029,
+    "variables": {
+      "age + sex": 2,
+      "age + sex + smoking + BMI": 4,
+      "whole picture, no missing flags": 206,
+      "whole picture + missing flags": 380
+    },
+    "tasks": {
+      "any cancer, 20+": {
+        "n": 43740,
+        "cases": 4029,
+        "random": {
+          "test_n": 13122,
+          "test_cases": 1209,
+          "age + sex": 0.7719,
+          "age + sex + smoking + BMI": 0.7756,
+          "whole picture, no missing flags": 0.8187,
+          "whole picture + missing flags": 0.8187,
+          "gain_whole_picture_flags": 0.0468,
+          "gain_ci_whole_picture_flags": [
+            0.0388,
+            0.0544
+          ]
+        },
+        "later_cycles": {
+          "test_n": 23458,
+          "test_cases": 2231,
+          "age + sex": 0.7725,
+          "age + sex + smoking + BMI": 0.7756,
+          "whole picture, no missing flags": 0.8079,
+          "whole picture + missing flags": 0.8079,
+          "gain_whole_picture_flags": 0.0354,
+          "gain_ci_whole_picture_flags": [
+            0.0301,
+            0.041
+          ]
+        }
+      },
+      "any cancer, 40+": {
+        "n": 28565,
+        "cases": 3746,
+        "random": {
+          "test_n": 8570,
+          "test_cases": 1124,
+          "age + sex": 0.7078,
+          "age + sex + smoking + BMI": 0.7109,
+          "whole picture, no missing flags": 0.7703,
+          "whole picture + missing flags": 0.7703,
+          "gain_whole_picture_flags": 0.0625,
+          "gain_ci_whole_picture_flags": [
+            0.0516,
+            0.0738
+          ]
+        },
+        "later_cycles": {
+          "test_n": 15559,
+          "test_cases": 2066,
+          "age + sex": 0.713,
+          "age + sex + smoking + BMI": 0.7139,
+          "whole picture, no missing flags": 0.7566,
+          "whole picture + missing flags": 0.7566,
+          "gain_whole_picture_flags": 0.0436,
+          "gain_ci_whole_picture_flags": [
+            0.0362,
+            0.0513
+          ]
+        }
+      },
+      "breast, 40+": {
+        "n": 13326,
+        "cases": 608,
+        "random": {
+          "test_n": 3998,
+          "test_cases": 182,
+          "age + sex": 0.7284,
+          "age + sex + smoking + BMI": 0.731,
+          "whole picture, no missing flags": 0.7762,
+          "whole picture + missing flags": 0.7762,
+          "gain_whole_picture_flags": 0.0478,
+          "gain_ci_whole_picture_flags": [
+            0.0124,
+            0.0815
+          ]
+        },
+        "later_cycles": {
+          "test_n": 7310,
+          "test_cases": 336,
+          "age + sex": 0.7099,
+          "age + sex + smoking + BMI": 0.7025,
+          "whole picture, no missing flags": 0.7609,
+          "whole picture + missing flags": 0.7609,
+          "gain_whole_picture_flags": 0.051,
+          "gain_ci_whole_picture_flags": [
+            0.0228,
+            0.0792
+          ]
+        }
+      },
+      "prostate, 40+": {
+        "n": 12701,
+        "cases": 600,
+        "random": {
+          "test_n": 3811,
+          "test_cases": 180,
+          "age + sex": 0.822,
+          "age + sex + smoking + BMI": 0.8231,
+          "whole picture, no missing flags": 0.8644,
+          "whole picture + missing flags": 0.8644,
+          "gain_whole_picture_flags": 0.0424,
+          "gain_ci_whole_picture_flags": [
+            0.0199,
+            0.0636
+          ]
+        },
+        "later_cycles": {
+          "test_n": 6846,
+          "test_cases": 327,
+          "age + sex": 0.8062,
+          "age + sex + smoking + BMI": 0.8064,
+          "whole picture, no missing flags": 0.8284,
+          "whole picture + missing flags": 0.8284,
+          "gain_whole_picture_flags": 0.0222,
+          "gain_ci_whole_picture_flags": [
+            0.008,
+            0.0363
+          ]
+        }
+      },
+      "colorectal, 40+": {
+        "n": 25103,
+        "cases": 284,
+        "random": {
+          "test_n": 7531,
+          "test_cases": 85,
+          "age + sex": 0.8228,
+          "age + sex + smoking + BMI": 0.821,
+          "whole picture, no missing flags": 0.8094,
+          "whole picture + missing flags": 0.8094,
+          "gain_whole_picture_flags": -0.0134,
+          "gain_ci_whole_picture_flags": [
+            -0.0432,
+            0.0161
+          ]
+        },
+        "later_cycles": {
+          "test_n": 13648,
+          "test_cases": 155,
+          "age + sex": 0.7884,
+          "age + sex + smoking + BMI": 0.7882,
+          "whole picture, no missing flags": 0.7877,
+          "whole picture + missing flags": 0.7877,
+          "gain_whole_picture_flags": -0.0007,
+          "gain_ci_whole_picture_flags": [
+            -0.023,
+            0.0244
+          ]
+        }
+      },
+      "digestive, 40+": {
+        "n": 25181,
+        "cases": 362,
+        "random": {
+          "test_n": 7555,
+          "test_cases": 109,
+          "age + sex": 0.7634,
+          "age + sex + smoking + BMI": 0.7609,
+          "whole picture, no missing flags": 0.8182,
+          "whole picture + missing flags": 0.8182,
+          "gain_whole_picture_flags": 0.0548,
+          "gain_ci_whole_picture_flags": [
+            0.0275,
+            0.0845
+          ]
+        },
+        "later_cycles": {
+          "test_n": 13696,
+          "test_cases": 203,
+          "age + sex": 0.7767,
+          "age + sex + smoking + BMI": 0.7741,
+          "whole picture, no missing flags": 0.7938,
+          "whole picture + missing flags": 0.7938,
+          "gain_whole_picture_flags": 0.0171,
+          "gain_ci_whole_picture_flags": [
+            -0.0105,
+            0.045
+          ]
+        }
+      },
+      "uterine, 40+": {
+        "n": 12862,
+        "cases": 144,
+        "random": {
+          "test_n": 3859,
+          "test_cases": 43,
+          "age + sex": 0.6134,
+          "age + sex + smoking + BMI": 0.6031,
+          "whole picture, no missing flags": 0.6183,
+          "whole picture + missing flags": 0.6183,
+          "gain_whole_picture_flags": 0.0049,
+          "gain_ci_whole_picture_flags": [
+            -0.0977,
+            0.1083
+          ]
+        },
+        "later_cycles": {
+          "test_n": 7049,
+          "test_cases": 75,
+          "age + sex": 0.5716,
+          "age + sex + smoking + BMI": 0.6019,
+          "whole picture, no missing flags": 0.5975,
+          "whole picture + missing flags": 0.5975,
+          "gain_whole_picture_flags": 0.0259,
+          "gain_ci_whole_picture_flags": [
+            -0.0288,
+            0.0868
+          ]
+        }
+      },
+      "bladder, 40+": {
+        "n": 24906,
+        "cases": 87,
+        "random": {
+          "test_n": 7472,
+          "test_cases": 26,
+          "age + sex": 0.8428,
+          "age + sex + smoking + BMI": 0.8517,
+          "whole picture, no missing flags": 0.8267,
+          "whole picture + missing flags": 0.8267,
+          "gain_whole_picture_flags": -0.0161,
+          "gain_ci_whole_picture_flags": [
+            -0.0781,
+            0.0471
+          ]
+        },
+        "later_cycles": {
+          "test_n": 13543,
+          "test_cases": 50,
+          "age + sex": 0.8367,
+          "age + sex + smoking + BMI": 0.8436,
+          "whole picture, no missing flags": 0.7787,
+          "whole picture + missing flags": 0.7787,
+          "gain_whole_picture_flags": -0.058,
+          "gain_ci_whole_picture_flags": [
+            -0.1024,
+            -0.0107
+          ]
+        }
+      }
+    },
+    "age_only_by_site": {
+      "any, 40+": {
+        "auc": 0.7045,
+        "cases": 3746,
+        "n": 28565
+      },
+      "breast, 40+": {
+        "auc": 0.6957,
+        "cases": 608,
+        "n": 13326
+      },
+      "prostate, 40+": {
+        "auc": 0.8117,
+        "cases": 600,
+        "n": 12701
+      },
+      "colorectal, 40+": {
+        "auc": 0.7799,
+        "cases": 284,
+        "n": 25103
+      },
+      "uterine, 40+": {
+        "auc": 0.5975,
+        "cases": 144,
+        "n": 12862
+      },
+      "bladder, 40+": {
+        "auc": 0.8165,
+        "cases": 87,
+        "n": 24906
+      },
+      "digestive, 40+": {
+        "auc": 0.7603,
+        "cases": 362,
+        "n": 25181
+      },
+      "any, 20+": {
+        "auc": 0.7739,
+        "cases": 4029,
+        "n": 43740
+      },
+      "breast, 20+": {
+        "auc": 0.8054,
+        "cases": 619,
+        "n": 21221
+      },
+      "prostate, 20+": {
+        "auc": 0.8808,
+        "cases": 600,
+        "n": 19709
+      },
+      "colorectal, 20+": {
+        "auc": 0.8526,
+        "cases": 288,
+        "n": 39999
+      },
+      "uterine, 20+": {
+        "auc": 0.6917,
+        "cases": 164,
+        "n": 20766
+      },
+      "bladder, 20+": {
+        "auc": 0.89,
+        "cases": 88,
+        "n": 39799
+      },
+      "digestive, 20+": {
+        "auc": 0.8396,
+        "cases": 368,
+        "n": 40079
+      }
+    },
+    "era_from_flags_auc": 0.937,
+    "n_flags": 174,
+    "oversample_before_split": {
+      "auc_oversample_then_split": 0.8168,
+      "auc_split_then_oversample_train_only": 0.7683,
+      "test_duplicates_of_training_cases": "cases duplicated 1:1 before the split put copies of the same person in both sets"
+    }
+  },
+  "A3": {
+    "papers": 16,
+    "median_gap_vs_age_only_40plus": 0.089,
+    "median_gap_vs_age_only_20plus": 0.002,
+    "share_gap_le_0.05_40plus": 0.25,
+    "rows": [
+      {
+        "pmid": 42260815,
+        "site": "colorectal",
+        "paper_auc": 0.787,
+        "gap": {
+          "40+": 0.007,
+          "20+": -0.066
+        }
+      },
+      {
+        "pmid": 42332450,
+        "site": "uterine",
+        "paper_auc": 0.964,
+        "gap": {
+          "40+": 0.366,
+          "20+": 0.272
+        }
+      },
+      {
+        "pmid": 42528994,
+        "site": "breast",
+        "paper_auc": 0.832,
+        "gap": {
+          "40+": 0.136,
+          "20+": 0.027
+        }
+      },
+      {
+        "pmid": 42638646,
+        "site": "digestive",
+        "paper_auc": 0.852,
+        "gap": {
+          "40+": 0.092,
+          "20+": 0.012
+        }
+      },
+      {
+        "pmid": 41366988,
+        "site": "prostate",
+        "paper_auc": 0.9,
+        "gap": {
+          "40+": 0.088,
+          "20+": 0.019
+        }
+      },
+      {
+        "pmid": 39928823,
+        "site": "any",
+        "paper_auc": 0.92,
+        "gap": {
+          "40+": 0.216,
+          "20+": 0.146
+        }
+      },
+      {
+        "pmid": 42459460,
+        "site": "breast",
+        "paper_auc": 0.727,
+        "gap": {
+          "40+": 0.031,
+          "20+": -0.078
+        }
+      },
+      {
+        "pmid": 41560104,
+        "site": "any",
+        "paper_auc": 0.765,
+        "gap": {
+          "40+": 0.06,
+          "20+": -0.009
+        }
+      },
+      {
+        "pmid": 38277522,
+        "site": "bladder",
+        "paper_auc": 0.78,
+        "gap": {
+          "40+": -0.036,
+          "20+": -0.11
+        }
+      },
+      {
+        "pmid": 40716343,
+        "site": "prostate",
+        "paper_auc": 0.869,
+        "gap": {
+          "40+": 0.057,
+          "20+": -0.012
+        }
+      },
+      {
+        "pmid": 38329808,
+        "site": "breast",
+        "paper_auc": 0.84,
+        "gap": {
+          "40+": 0.144,
+          "20+": 0.035
+        }
+      },
+      {
+        "pmid": 40697552,
+        "site": "prostate",
+        "paper_auc": 0.768,
+        "gap": {
+          "40+": -0.044,
+          "20+": -0.113
+        }
+      },
+      {
+        "pmid": 40730969,
+        "site": "breast",
+        "paper_auc": 0.797,
+        "gap": {
+          "40+": 0.101,
+          "20+": -0.008
+        }
+      },
+      {
+        "pmid": 42701956,
+        "site": "any",
+        "paper_auc": 0.812,
+        "gap": {
+          "40+": 0.108,
+          "20+": 0.038
+        }
+      },
+      {
+        "pmid": 41299673,
+        "site": "colorectal",
+        "paper_auc": 0.87,
+        "gap": {
+          "40+": 0.09,
+          "20+": 0.017
+        }
+      },
+      {
+        "pmid": 39779803,
+        "site": "digestive",
+        "paper_auc": 0.827,
+        "gap": {
+          "40+": 0.067,
+          "20+": -0.013
+        }
+      }
+    ],
+    "verdict_basis": "the lower, more conservative age-only baseline (adults 40+), which makes the papers look better",
+    "supported": false
+  },
+  "A4": {
+    "random_vs_later_gap_any_40plus": 0.0137,
+    "era_from_flags_auc": 0.937,
+    "supported": false
+  }
+}
