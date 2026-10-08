@@ -15,7 +15,7 @@ each score.
 
 A short search cannot prove something has not been done, so no novelty score is above 4 here.
 
-## The angles, re-scored after a second round of work (9 October 2026)
+## The angles, re-scored after a second round of work (7 October 2026)
 
 | Angle | Stays on "cheap cancer risk"? | Novelty | Impact | Paper quality | Verdict |
 |---|---|---|---|---|---|
@@ -116,7 +116,7 @@ be true.
 - Analysis: `experiments/cheap_markers.py`, `experiments/cheap_markers_sensitivity.py`; figures `experiments/make_marker_figures.py`
 - Earlier angles: `docs/paper/` (navigator and risk ranking) and `docs/audit_paper/` (audit)
 
-## Angle D: free information and cost-matched screening invitation (added 10 Oct 2026)
+## Angle D: free information and cost-matched screening invitation (added 8 Oct 2026)
 
 Paper: `docs/cancer_age_paper/Free_Information_Cheaper_Cancer_Screening.pdf`. Pre-registered in
 `docs/CANCER_AGE_PREREG.md`. 183,585 NHIS adults, two external surveys, equity analysis.

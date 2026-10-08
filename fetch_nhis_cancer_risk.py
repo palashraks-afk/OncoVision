@@ -6,7 +6,7 @@ Why NHIS
 Cancer death is rare in NHANES (about 1,300 deaths in 40,000 adults), which is too few to ask
 how cancer risk differs by smoking, education or race, or what share of adults in their forties
 already carry the risk of a fifty-year-old. NHIS is a much larger national interview survey with
-public-use mortality linkage: about 350,000 adults here, with ten or more years of follow-up
+public-use mortality linkage: about 180,000 adults aged 35 to 84 without earlier cancer in the analysis, with ten or more years of follow-up
 and several thousand cancer deaths. It carries only FREE information, the kind a person can answer
 in a minute with no test: age, sex, height and weight, smoking, schooling, race and ethnicity,
 marital status, self-rated health.

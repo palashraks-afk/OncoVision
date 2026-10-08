@@ -1,5 +1,5 @@
 # Cancer-risk age: how much cancer-death risk can be read from free information?
-## Pre-registration, written and committed before any model was fitted (9 October 2026)
+## Pre-registration, written and committed before any model was fitted (7 October 2026)
 
 ## Why this question, and why it is the original idea
 
@@ -93,7 +93,7 @@ screening; effects of changing a risk factor (these are associations). All cance
 
 ---
 
-## Addendum, 9 October 2026: the aim is earlier and cheaper screening, not communication
+## Addendum, 7 October 2026: the aim is earlier and cheaper screening, not communication
 
 The first version of this plan leaned on "plain language". That is **not** the aim and is dropped as a claim.
 The paper is about **cancer risk assessment to decide who is screened and when, so that cancer is caught
