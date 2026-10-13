@@ -43,3 +43,6 @@ data/nhanes_wide.csv.gz
 data/audit/fulltext/
 data/audit/snippets.json
 data/audit/nhis_cache/
+
+# NHANES 2003-2006 minute-level accelerometer files (about 900 MB), downloaded by fetch_nhanes_activity.py
+data/audit/pax/
