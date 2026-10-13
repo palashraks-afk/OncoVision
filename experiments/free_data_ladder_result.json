@@ -1,0 +1,91 @@
+{
+  "n": 4241,
+  "cancer_deaths": 158,
+  "other_deaths": 551,
+  "models": {
+    "Q": {
+      "auc": 0.7354,
+      "slope": 0.916
+    },
+    "QC": {
+      "auc": 0.7349,
+      "slope": 0.803
+    },
+    "QW": {
+      "auc": 0.7377,
+      "slope": 0.879
+    },
+    "QCW": {
+      "auc": 0.7356,
+      "slope": 0.784
+    }
+  },
+  "gains": {
+    "QW vs Q": {
+      "gain": 0.0022,
+      "ci": [
+        -0.006,
+        0.0101
+      ]
+    },
+    "QC vs Q": {
+      "gain": -0.0005,
+      "ci": [
+        -0.0118,
+        0.0106
+      ]
+    },
+    "QCW vs QC": {
+      "gain": 0.0006,
+      "ci": [
+        -0.0059,
+        0.0071
+      ]
+    }
+  },
+  "other_cause": {
+    "auc_Q": 0.8139,
+    "auc_QW": 0.8463,
+    "gain": {
+      "gain": 0.0323,
+      "ci": [
+        0.022,
+        0.0429
+      ]
+    }
+  },
+  "bars": {
+    "1_W_adds": false,
+    "2_C_adds": false,
+    "3_cancer_not_just_frailty": false
+  },
+  "age65plus": {
+    "n": 1402,
+    "cancer_deaths": 98,
+    "auc_Q": 0.6376,
+    "auc_QW": 0.639
+  },
+  "single_W": {
+    "log_tac": {
+      "cancer_rate_bottom_quarter": 0.0584,
+      "cancer_rate_top_quarter": 0.0179
+    },
+    "mvpa_min": {
+      "cancer_rate_bottom_quarter": 0.0603,
+      "cancer_rate_top_quarter": 0.0234
+    },
+    "sed_frac": {
+      "cancer_rate_bottom_quarter": 0.0207,
+      "cancer_rate_top_quarter": 0.0528
+    },
+    "frag": {
+      "cancer_rate_bottom_quarter": 0.0302,
+      "cancer_rate_top_quarter": 0.0518
+    }
+  },
+  "unintentional_weight_loss": {
+    "n": 714,
+    "cancer_rate": 0.0448,
+    "rate_others": 0.0357
+  }
+}
