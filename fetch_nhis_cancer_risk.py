@@ -46,7 +46,7 @@ OUT = os.path.join("data", "nhis_cancer_risk.csv.gz")
 
 ADULT_VARS = ["SRVY_YR", "HHX", "FMX", "FPX", "PX", "INTV_QRT", "WTFA_SA", "AGE_P", "SEX", "BMI", "SMKEV", "SMKNOW", "SMKSTAT2", "CIGSDAY", "SMKQTNO", "SMKQTTP",
               "CANEV", "VIGFREQW", "REGION"]
-PERSON_VARS = ["SRVY_YR", "HHX", "FMX", "FPX", "PX", "EDUC", "EDUC1", "PHSTAT", "R_MARITL", "HISPAN_I", "HISPAN_P", "RACERPI2", "RACEREC", "RACE", "ORIGIN_I", "ORIGIN"]
+PERSON_VARS = ["SRVY_YR", "HHX", "FMX", "FPX", "PX", "EDUC", "EDUC1", "PHSTAT", "R_MARITL", "HISPAN_I", "HISPAN_P", "RACERPI2", "RACEREC", "RACE", "ORIGIN_I", "ORIGIN", "MEDICARE"]
 
 
 def get(url):
@@ -98,7 +98,6 @@ def one_year(y):
     p = p.drop(columns=[c for c in ("SRVY_YR", "HHX", "FMX", "FPX", "PX") if c in p.columns]).drop_duplicates("k")
     df = a.merge(p, on="k", how="left")
     df["pid"] = df["SRVY_YR"].astype(str).str.strip() + df["k"]
-    mort = pd.read_fwf(io.BytesIO(get(LMF.format(y=y))), colspecs=[(0, 14), (14, 15), (15, 16), (16, 19), (22, 23), (22, 26)], names=["pid", "elig", "died", "ucod", "dodq", "dody"], dtype=str)
     mort = pd.read_fwf(io.BytesIO(get(LMF.format(y=y))), colspecs=[(0, 14), (14, 15), (15, 16), (16, 19), (21, 22), (22, 26)], names=["pid", "elig", "died", "ucod", "dodq", "dody"], dtype=str)
     df = df.merge(mort, on="pid", how="left")
     df["year"] = y
@@ -128,6 +127,7 @@ def clean(df):
     race = n("RACERPI2") if "RACERPI2" in df else n("RACEREC")
     o["hisp_raw"], o["race_raw"] = hisp, race
     o["prior_cancer"] = (n("CANEV") == 1).astype(int)
+    o["medicare"] = n("MEDICARE").isin([1, 2]).astype(float).where(n("MEDICARE").between(1, 3))   # 1-2 covered, 3 not covered
     o["elig"] = pd.to_numeric(df["elig"], errors="coerce")
     o["mortstat"] = pd.to_numeric(df["died"], errors="coerce")
     o["ucod"] = pd.to_numeric(df["ucod"], errors="coerce")
@@ -143,8 +143,15 @@ def main():
     frames = []
     print("NHIS 1997-2009 linked to the National Death Index through 2019\n", flush=True)
     for y in YEARS:
+        cache = os.path.join("data", "audit", "nhis_cache", f"{y}.csv.gz")
+        if os.path.exists(cache):
+            frames.append(pd.read_csv(cache))
+            continue
         try:
-            frames.append(clean(one_year(y)))
+            c = clean(one_year(y))
+            os.makedirs(os.path.dirname(cache), exist_ok=True)
+            c.to_csv(cache, index=False, compression="gzip")
+            frames.append(c)
         except Exception as e:  # report and carry on, the year is left out and said so
             print(f"  {y}: SKIPPED ({type(e).__name__}: {e})", flush=True)
     d = pd.concat(frames, ignore_index=True)
