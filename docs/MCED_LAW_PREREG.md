@@ -73,3 +73,27 @@ structure and smoking are older than the 2028 Medicare population. No MCED test 
 cancer deaths; NHS-Galleri missed its primary endpoint (fewer stage III-IV cancers), so nothing here claims
 lives saved by MCED testing. This is an analysis of who a law reaches and how to spend it, not of whether
 the test works.
+
+## Correction, 12 October 2026 (after the first run): the enacted law differs from the introduced bill
+
+The section above quoted H.R. 842 **as introduced**. An independent re-check found, and I confirmed in the
+enrolled text of H.R. 7148 (govinfo BILLS-119hr7148enr; Pub. L. 119-75), that the enacted version differs:
+
+- tests furnished **on or after 1 January 2029** (not 2028);
+- no payment if the person "is under 50 years of age" or, "as of January 1 of such year, has attained" the
+  specified age, which is **65 for 2029**, rising by one year each later year;
+- one test per 11 months and the stool-DNA payment rate are unchanged.
+
+So anyone aged 65 or older on 1 January 2029 (born before about 1964) never qualifies, and in 2029 the people
+covered are Medicare beneficiaries aged 50-64 (mostly people entitled through disability) plus those turning 65
+that year. The first run, on the introduced text, is kept as `experiments/mced_law_result_introduced_bill.json`
+and is not reported as the result. The analysis is re-run with the enacted rule, everything else unchanged:
+
+- Medicare-eligible pool: adults 65-84 plus Medicare beneficiaries aged 50-64 (the law's floor is 50).
+- Covered in 2029: Medicare beneficiaries aged 50-64, plus adults aged 65 at interview (a stand-in for those
+  turning 65 during the year).
+- Stylised 2035: the covered birth cohorts are then 65-70, plus beneficiaries aged 50-64.
+- Q2 groups, Q3 triage group and Q4 follow these definitions. Bars are unchanged.
+
+Second caveat found by the re-check: Q3's yield ratio is a ratio of observed death rates, so the PATHFINDER 2
+anchor only scales absolute numbers; and most of the triage gain comes from smoking (reported).

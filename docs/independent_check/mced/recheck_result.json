@@ -1,0 +1,466 @@
+[
+ {
+  "label": "main: 5y, weighted, prior cancer excluded",
+  "n": 73303,
+  "deaths": 875,
+  "Q1_2028_prereg": {
+   "pop_share": 0.3457,
+   "death_share": 0.237,
+   "ci": [
+    0.197,
+    0.279
+   ]
+  },
+  "Q1_2028_only_medicare_65plus": {
+   "pop_share": 0.3392,
+   "death_share": 0.2307,
+   "ci": [
+    0.192,
+    0.269
+   ]
+  },
+  "Q1_enacted_2029_u65mc_50to64": {
+   "pop_share": 0.1075,
+   "death_share": 0.0786,
+   "ci": [
+    0.048,
+    0.106
+   ]
+  },
+  "anchor_rate50": 0.0173,
+  "anchor_k": 0.3122,
+  "Q3_cov28_full": {
+   "n": 6231,
+   "deaths": 131,
+   "ratio": 2.609,
+   "ci": [
+    2.145,
+    3.118
+   ]
+  },
+  "Q3_cov28_agesex_only": {
+   "n": 6231,
+   "deaths": 131,
+   "ratio": 1.503,
+   "ci": [
+    1.094,
+    2.025
+   ]
+  },
+  "Q3_65to67_only": {
+   "n": 3525,
+   "deaths": 86,
+   "ratio": 2.623,
+   "ci": [
+    2.051,
+    3.306
+   ]
+  },
+  "Q3_65to67_agesex_only": {
+   "n": 3525,
+   "deaths": 86,
+   "ratio": 1.16,
+   "ci": [
+    0.721,
+    1.95
+   ]
+  },
+  "Q3_u65mc_only": {
+   "n": 2706,
+   "deaths": 45,
+   "ratio": 2.369,
+   "ci": [
+    1.518,
+    3.323
+   ]
+  },
+  "Q3_enacted29_full": {
+   "n": 1900,
+   "deaths": 42,
+   "ratio": 2.147,
+   "ci": [
+    1.308,
+    3.035
+   ]
+  },
+  "Q3_enacted29_agesex_only": {
+   "n": 1900,
+   "deaths": 42,
+   "ratio": 1.463,
+   "ci": [
+    0.836,
+    2.425
+   ]
+  },
+  "Q4_observed": {
+   "medicare": 0.01108,
+   "none": 0.00512,
+   "ratio": 2.164,
+   "ratio_ci": [
+    1.128,
+    3.275
+   ]
+  },
+  "Q4_predicted": {
+   "medicare": 0.00828,
+   "none": 0.00645,
+   "ratio": 1.284,
+   "ratio_ci": [
+    1.24,
+    1.326
+   ]
+  },
+  "Q4_n_u65mc": 2706,
+  "Q4_deaths_u65mc": 45,
+  "Q4_n_u65mc_50to64": 1900,
+  "Q4_deaths_u65mc_50to64": 42
+ },
+ {
+  "label": "10y outcome",
+  "n": 73303,
+  "deaths": 2076,
+  "Q1_2028_prereg": {
+   "pop_share": 0.3457,
+   "death_share": 0.2436,
+   "ci": [
+    0.212,
+    0.274
+   ]
+  },
+  "Q1_2028_only_medicare_65plus": {
+   "pop_share": 0.3392,
+   "death_share": 0.2394,
+   "ci": [
+    0.21,
+    0.267
+   ]
+  },
+  "Q1_enacted_2029_u65mc_50to64": {
+   "pop_share": 0.1075,
+   "death_share": 0.0702,
+   "ci": [
+    0.054,
+    0.084
+   ]
+  },
+  "anchor_rate50": 0.04142,
+  "anchor_k": 0.1304,
+  "Q3_cov28_full": {
+   "n": 6231,
+   "deaths": 293,
+   "ratio": 2.498,
+   "ci": [
+    2.173,
+    2.871
+   ]
+  },
+  "Q3_cov28_agesex_only": {
+   "n": 6231,
+   "deaths": 293,
+   "ratio": 1.317,
+   "ci": [
+    0.949,
+    1.562
+   ]
+  },
+  "Q3_65to67_only": {
+   "n": 3525,
+   "deaths": 199,
+   "ratio": 2.479,
+   "ci": [
+    2.051,
+    2.849
+   ]
+  },
+  "Q3_65to67_agesex_only": {
+   "n": 3525,
+   "deaths": 199,
+   "ratio": 1.007,
+   "ci": [
+    0.723,
+    1.407
+   ]
+  },
+  "Q3_u65mc_only": {
+   "n": 2706,
+   "deaths": 94,
+   "ratio": 2.464,
+   "ci": [
+    1.818,
+    3.087
+   ]
+  },
+  "Q3_enacted29_full": {
+   "n": 1900,
+   "deaths": 85,
+   "ratio": 2.135,
+   "ci": [
+    1.707,
+    2.995
+   ]
+  },
+  "Q3_enacted29_agesex_only": {
+   "n": 1900,
+   "deaths": 85,
+   "ratio": 1.045,
+   "ci": [
+    0.664,
+    1.593
+   ]
+  },
+  "Q4_observed": {
+   "medicare": 0.02693,
+   "none": 0.01443,
+   "ratio": 1.867,
+   "ratio_ci": [
+    1.273,
+    2.547
+   ]
+  },
+  "Q4_predicted": {
+   "medicare": 0.02172,
+   "none": 0.01719,
+   "ratio": 1.263,
+   "ratio_ci": [
+    1.219,
+    1.306
+   ]
+  },
+  "Q4_n_u65mc": 2706,
+  "Q4_deaths_u65mc": 94,
+  "Q4_n_u65mc_50to64": 1900,
+  "Q4_deaths_u65mc_50to64": 85
+ },
+ {
+  "label": "unweighted",
+  "n": 73303,
+  "deaths": 875,
+  "Q1_2028_prereg": {
+   "pop_share": 0.3296,
+   "death_share": 0.2294,
+   "ci": [
+    0.194,
+    0.262
+   ]
+  },
+  "Q1_2028_only_medicare_65plus": {
+   "pop_share": 0.3228,
+   "death_share": 0.2247,
+   "ci": [
+    0.188,
+    0.259
+   ]
+  },
+  "Q1_enacted_2029_u65mc_50to64": {
+   "pop_share": 0.1005,
+   "death_share": 0.0736,
+   "ci": [
+    0.052,
+    0.096
+   ]
+  },
+  "anchor_rate50": 0.01925,
+  "anchor_k": 0.2804,
+  "Q3_cov28_full": {
+   "n": 6231,
+   "deaths": 131,
+   "ratio": 2.672,
+   "ci": [
+    2.28,
+    3.04
+   ]
+  },
+  "Q3_cov28_agesex_only": {
+   "n": 6231,
+   "deaths": 131,
+   "ratio": 1.298,
+   "ci": [
+    1.068,
+    1.817
+   ]
+  },
+  "Q3_65to67_only": {
+   "n": 3525,
+   "deaths": 86,
+   "ratio": 2.384,
+   "ci": [
+    1.842,
+    2.886
+   ]
+  },
+  "Q3_65to67_agesex_only": {
+   "n": 3525,
+   "deaths": 86,
+   "ratio": 0.988,
+   "ci": [
+    0.718,
+    1.602
+   ]
+  },
+  "Q3_u65mc_only": {
+   "n": 2706,
+   "deaths": 45,
+   "ratio": 2.668,
+   "ci": [
+    2.011,
+    3.396
+   ]
+  },
+  "Q3_enacted29_full": {
+   "n": 1900,
+   "deaths": 42,
+   "ratio": 2.381,
+   "ci": [
+    1.59,
+    3.101
+   ]
+  },
+  "Q3_enacted29_agesex_only": {
+   "n": 1900,
+   "deaths": 42,
+   "ratio": 1.905,
+   "ci": [
+    1.057,
+    2.552
+   ]
+  },
+  "Q4_observed": {
+   "medicare": 0.01119,
+   "none": 0.0056,
+   "ratio": 1.998,
+   "ratio_ci": [
+    1.357,
+    2.892
+   ]
+  },
+  "Q4_predicted": {
+   "medicare": 0.00828,
+   "none": 0.0065,
+   "ratio": 1.273,
+   "ratio_ci": [
+    1.237,
+    1.309
+   ]
+  },
+  "Q4_n_u65mc": 2706,
+  "Q4_deaths_u65mc": 45,
+  "Q4_n_u65mc_50to64": 1900,
+  "Q4_deaths_u65mc_50to64": 42
+ },
+ {
+  "label": "prior cancer kept",
+  "n": 81482,
+  "deaths": 1473,
+  "Q1_2028_prereg": {
+   "pop_share": 0.3246,
+   "death_share": 0.2154,
+   "ci": [
+    0.189,
+    0.246
+   ]
+  },
+  "Q1_2028_only_medicare_65plus": {
+   "pop_share": 0.3184,
+   "death_share": 0.2103,
+   "ci": [
+    0.184,
+    0.244
+   ]
+  },
+  "Q1_enacted_2029_u65mc_50to64": {
+   "pop_share": 0.1002,
+   "death_share": 0.0793,
+   "ci": [
+    0.061,
+    0.101
+   ]
+  },
+  "anchor_rate50": 0.02636,
+  "anchor_k": 0.2048,
+  "Q3_cov28_full": {
+   "n": 7335,
+   "deaths": 217,
+   "ratio": 2.334,
+   "ci": [
+    1.966,
+    2.701
+   ]
+  },
+  "Q3_cov28_agesex_only": {
+   "n": 7335,
+   "deaths": 217,
+   "ratio": 1.383,
+   "ci": [
+    1.06,
+    1.745
+   ]
+  },
+  "Q3_65to67_only": {
+   "n": 4209,
+   "deaths": 131,
+   "ratio": 2.433,
+   "ci": [
+    1.969,
+    2.842
+   ]
+  },
+  "Q3_65to67_agesex_only": {
+   "n": 4209,
+   "deaths": 131,
+   "ratio": 1.498,
+   "ci": [
+    0.879,
+    1.809
+   ]
+  },
+  "Q3_u65mc_only": {
+   "n": 3126,
+   "deaths": 86,
+   "ratio": 1.933,
+   "ci": [
+    1.323,
+    2.637
+   ]
+  },
+  "Q3_enacted29_full": {
+   "n": 2255,
+   "deaths": 81,
+   "ratio": 1.693,
+   "ci": [
+    1.153,
+    2.394
+   ]
+  },
+  "Q3_enacted29_agesex_only": {
+   "n": 2255,
+   "deaths": 81,
+   "ratio": 1.327,
+   "ci": [
+    0.818,
+    1.991
+   ]
+  },
+  "Q4_observed": {
+   "medicare": 0.01766,
+   "none": 0.00722,
+   "ratio": 2.446,
+   "ratio_ci": [
+    1.766,
+    3.269
+   ]
+  },
+  "Q4_predicted": {
+   "medicare": 0.01161,
+   "none": 0.00931,
+   "ratio": 1.248,
+   "ratio_ci": [
+    1.211,
+    1.274
+   ]
+  },
+  "Q4_n_u65mc": 3126,
+  "Q4_deaths_u65mc": 86,
+  "Q4_n_u65mc_50to64": 2255,
+  "Q4_deaths_u65mc_50to64": 81
+ }
+]

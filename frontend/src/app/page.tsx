@@ -2,9 +2,9 @@
 
 import { useState, useRef, useEffect } from "react";
 import {
-  Activity, BrainCircuit, Scan, UploadCloud, FileText, ChevronDown, ChevronUp,
-  LayoutDashboard, FileCheck, Info, Mail, Globe, ShieldCheck, Microscope,
-  Linkedin, BookOpen, Code2, AlertTriangle, Beaker, Layers, GitBranch, Server,
+  Activity, Scan, UploadCloud, FileText, ChevronDown, ChevronUp,
+  LayoutDashboard, FileCheck, Info, Mail, Globe, ShieldCheck,
+  Linkedin, BookOpen, Code2, AlertTriangle, Beaker, Layers, Server,
   Cpu, Shuffle, ClipboardList, Target,
 } from "lucide-react";
 import {
@@ -454,7 +454,6 @@ export default function OncovisionDashboard() {
           href="/navigator"
           className="mx-4 px-4 py-3 border border-[var(--stamp-line)] bg-[var(--stamp-bg)] hover:border-[var(--stamp)] transition-colors duration-300 text-left block"
         >
-          <p className="text-[10px] text-[var(--stamp)] font-bold uppercase tracking-widest mb-1">Research prototype</p>
           <p className="text-[var(--ink)] display text-sm">Symptom and lab navigator</p>
           <p className="text-[10px] text-[var(--ink-3)] mt-1">Reads symptoms and labs together</p>
         </a>
@@ -463,9 +462,16 @@ export default function OncovisionDashboard() {
           href="/screening"
           className="mx-4 mt-3 px-4 py-3 border border-[var(--stamp-line)] bg-[var(--stamp-bg)] hover:border-[var(--stamp)] transition-colors duration-300 text-left block"
         >
-          <p className="text-[10px] text-[var(--stamp)] font-bold uppercase tracking-widest mb-1">Research prototype</p>
           <p className="text-[var(--ink)] display text-sm">Which screenings are you due for?</p>
           <p className="text-[10px] text-[var(--ink-3)] mt-1">US guidelines, breast, bowel, lung, cervical, PSA</p>
+        </a>
+
+        <a
+          href="/multicancer"
+          className="mx-4 mt-3 px-4 py-3 border border-[var(--stamp-line)] bg-[var(--stamp-bg)] hover:border-[var(--stamp)] transition-colors duration-300 text-left block"
+        >
+          <p className="text-[var(--ink)] display text-sm">Multi-cancer blood test: worth it for you?</p>
+          <p className="text-[10px] text-[var(--ink-3)] mt-1">Medicare's 2029 law: does it cover you, and what it would find</p>
         </a>
 
         <button
@@ -496,7 +502,7 @@ export default function OncovisionDashboard() {
 
         {/* ================= ASSESSMENT ================= */}
         {currentPage === "dashboard" && (
-          <div className="p-6 lg:p-10 max-w-[1600px] mx-auto animate-in fade-in duration-500 flex-1 w-full">
+          <div className="p-6 lg:p-10 max-w-[1600px] mx-auto fade-in flex-1 w-full">
             <header className="mb-8">
               <h2 className="text-3xl font-bold text-[var(--ink)]">Patient Assessment</h2>
               <p className="text-[var(--ink-2)] text-sm mt-1">
@@ -738,7 +744,7 @@ export default function OncovisionDashboard() {
                   {!results ? (
                     <div className="h-full flex flex-col items-center justify-center text-center text-[var(--ink-3)] text-sm py-20 gap-3">
                       <Scan className="w-10 h-10 text-[var(--ink-4)]" />
-                      <p>Run the analysis to see the report.</p>
+                      <p className="text-[var(--ink-2)] max-w-sm">Nothing to report yet. Upload a lab report PDF or type in the values you have, answer the history questions, then press Analyse. Blank fields are fine.</p>
                       <button onClick={() => setCurrentPage("guide")} className="text-[var(--stamp)] hover:text-[var(--stamp)] text-xs font-bold underline underline-offset-4">
                         First time here? Read the guide
                       </button>
@@ -1320,7 +1326,7 @@ export default function OncovisionDashboard() {
 
         {/* ================= HOW TO USE ================= */}
         {currentPage === "guide" && (
-          <div className="p-6 lg:p-16 max-w-[1000px] mx-auto animate-in fade-in duration-500 flex-1 w-full">
+          <div className="p-6 lg:p-16 max-w-[1000px] mx-auto fade-in flex-1 w-full">
             <header className="mb-12">
               <p className="text-[var(--stamp)] text-[11px] font-bold uppercase tracking-[0.25em] mb-3">User Guide</p>
               <h2 className="text-4xl display text-[var(--ink)]">How to use Oncovision</h2>
@@ -1358,16 +1364,16 @@ export default function OncovisionDashboard() {
 
               <section>
                 <h3 className="text-2xl font-bold text-[var(--ink)] mb-6">The flow, start to finish</h3>
-                <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-x-8 gap-y-6">
                   {[
                     { icon: UploadCloud, title: "Get your data in", body: "Upload the PDF of your lab report and let the parser fill the panel, or type the values yourself. Both routes feed the same models, and you can upload a PDF and then correct anything it misread. Nothing is required, so the models work with whatever you give them." },
                     { icon: ClipboardList, title: "Answer the history questions", body: "Sex, smoking, alcohol, exercise, family history, hepatitis status, cirrhosis and diabetes. This is the information about you that no lab report contains, and it carries real weight in the scoring, so filling it in is worth the minute it takes." },
                     { icon: Scan, title: "Run the analysis", body: "Values are checked against the range a living patient can have, then scored by each model that has enough to work with. Anything impossible, such as a typo with an extra zero, is dropped and reported back rather than quietly changing your score." },
                     { icon: Layers, title: "Read the report", body: "Cards come back sorted highest first: the cancer panels you have inputs for, and a healthy baseline. Each one expands to show which inputs the model leaned on, how your values compare to their reference limits, and how accurate that model is." },
-                  ].map(({ icon: Icon, title, body }) => (
-                    <div key={title} className="bg-[var(--surface)] border border-[var(--rule)] rounded-none p-6">
-                      <div className="flex items-center gap-3 mb-3">
-                        <div className="p-2 rounded-none bg-[var(--stamp-bg)]"><Icon className="w-4 h-4 text-[var(--stamp)]" /></div>
+                  ].map(({ title, body }, i) => (
+                    <div key={title} className="border-t border-[var(--rule-strong)] pt-4">
+                      <div className="flex items-baseline gap-3 mb-2">
+                        <span className="data text-xs text-[var(--stamp)]">{String(i + 1).padStart(2, "0")}</span>
                         <h4 className="font-bold text-[var(--ink)] text-sm">{title}</h4>
                       </div>
                       <p className="text-sm text-[var(--ink-2)] leading-relaxed">{body}</p>
@@ -1377,9 +1383,7 @@ export default function OncovisionDashboard() {
               </section>
 
               <section className="bg-[var(--surface)] border border-[var(--rule)] rounded-none p-8">
-                <h3 className="text-2xl font-bold text-[var(--ink)] mb-2 flex items-center gap-3">
-                  <FileText className="text-[var(--stamp)] w-6 h-6" /> Uploading a lab report
-                </h3>
+                <h3 className="text-2xl font-bold text-[var(--ink)] mb-2">Uploading a lab report</h3>
                 <p className="text-[var(--ink-2)] text-sm mb-6">How to get a PDF in, and what to do when it does not work.</p>
 
                 <div className="space-y-5">
@@ -1488,7 +1492,7 @@ export default function OncovisionDashboard() {
                     </p>
                   </div>
 
-                  <div className="bg-[var(--paper-2)] border border-[var(--rule)] rounded-none p-5">
+                  <div className="border-t border-[var(--rule)] pt-4">
                     <p className="font-bold text-[var(--ink)] text-sm mb-3">The five cancer panels</p>
                     <p className="text-sm text-[var(--ink-2)] leading-relaxed mb-4">
                       General, breast, liver and pancreatic. A prostate panel was built and then withdrawn
@@ -1512,7 +1516,7 @@ export default function OncovisionDashboard() {
                     </div>
                   </div>
 
-                  <div className="bg-[var(--paper-2)] border border-[var(--rule)] rounded-none p-5">
+                  <div className="border-t border-[var(--rule)] pt-4">
                     <p className="font-bold text-[var(--ink)] text-sm mb-2">Inside each card</p>
                     <ul className="space-y-3 text-sm text-[var(--ink-2)] leading-relaxed">
                       <li><strong className="text-[var(--stamp)]">Red flag chips</strong> sit under the score when one of your markers crossed an established clinical threshold, such as PSA above 4 or CA 19-9 above 37. These are reported separately and never change the number.</li>
@@ -1534,8 +1538,7 @@ export default function OncovisionDashboard() {
               </section>
 
               <section className="bg-[var(--surface)] border border-[var(--flag-line)] rounded-none p-8">
-                <h3 className="text-xl font-bold text-[var(--ink)] mb-4 flex items-center gap-3">
-                  <AlertTriangle className="text-[var(--flag)] w-5 h-5" /> What this tool cannot do
+                <h3 className="text-xl font-bold text-[var(--ink)] mb-4">What this tool cannot do
                 </h3>
                 <ul className="space-y-3 text-sm text-[var(--ink-2)] leading-relaxed list-disc pl-5">
                   <li>It cannot diagnose cancer. Only a biopsy can do that.</li>
@@ -1551,7 +1554,7 @@ export default function OncovisionDashboard() {
 
         {/* ================= ABOUT & METHODOLOGY ================= */}
         {currentPage === "about" && (
-          <div className="p-6 lg:p-16 max-w-[1000px] mx-auto animate-in fade-in duration-500 flex-1 w-full">
+          <div className="p-6 lg:p-16 max-w-[1000px] mx-auto fade-in flex-1 w-full">
             <header className="mb-12 text-center">
               <OncovisionLogo className="w-24 h-24 text-[var(--stamp)] mx-auto mb-6 " />
               <h2 className="text-4xl display text-[var(--ink)]">Project Oncovision</h2>
@@ -1561,8 +1564,7 @@ export default function OncovisionDashboard() {
             <div className="space-y-12 text-[var(--ink-2)]">
 
               <section className="bg-[var(--surface)] border border-[var(--rule)] rounded-none p-8">
-                <h3 className="text-2xl font-bold text-[var(--ink)] mb-4 flex items-center gap-3">
-                  <Target className="text-[var(--stamp)] w-6 h-6" /> The goal
+                <h3 className="text-2xl font-bold text-[var(--ink)] mb-4">The goal
                 </h3>
                 <p className="leading-relaxed text-lg">
                   Make multi-cancer screening cheap enough to be routine, and make the results readable to someone
@@ -1580,8 +1582,7 @@ export default function OncovisionDashboard() {
 
               {/* THE PROBLEM */}
               <section className="bg-[var(--surface)] border border-[var(--rule)] rounded-none p-8">
-                <h3 className="text-2xl font-bold text-[var(--ink)] mb-2 flex items-center gap-3">
-                  <AlertTriangle className="text-[var(--stamp)] w-6 h-6" /> The problem this addresses
+                <h3 className="text-2xl font-bold text-[var(--ink)] mb-2">The problem this addresses
                 </h3>
                 <p className="text-sm text-[var(--ink-2)] mb-6 leading-relaxed">
                   Cancer screening in the United States has two gaps. It covers very few cancers, and the tests
@@ -1615,7 +1616,7 @@ export default function OncovisionDashboard() {
                       body: "Multi-cancer blood tests already exist. Galleri, the best known, lists at $949 and is not covered by Medicare or most insurance. A screening colonoscopy averages about $2,750 without insurance and still runs several hundred dollars out of pocket for many who have it.",
                     },
                   ].map(({ stat, unit, title, body }) => (
-                    <div key={title} className="bg-[var(--paper-2)] border border-[var(--rule)] rounded-none p-5">
+                    <div key={title} className="border-t border-[var(--rule)] pt-4">
                       <p className="display text-2xl text-[var(--stamp)] leading-none">{stat}</p>
                       <p className="text-[9px] uppercase font-bold text-[var(--ink-3)] tracking-widest mt-1 mb-3">{unit}</p>
                       <h4 className="font-bold text-[var(--ink)] text-sm mb-2">{title}</h4>
@@ -1651,8 +1652,7 @@ export default function OncovisionDashboard() {
               </section>
 
               <section className="bg-[var(--surface)] border border-[var(--rule)] rounded-none p-8">
-                <h3 className="text-2xl font-bold text-[var(--ink)] mb-6 flex items-center gap-3">
-                  <Microscope className="text-[var(--stamp)] w-6 h-6" /> How this was built
+                <h3 className="text-2xl font-bold text-[var(--ink)] mb-6">How this was built
                 </h3>
                 <ul className="space-y-4">
                   {[
@@ -1672,8 +1672,7 @@ export default function OncovisionDashboard() {
 
               {/* MODEL PERFORMANCE */}
               <section className="bg-[var(--surface)] border border-[var(--rule)] rounded-none p-8">
-                <h3 className="text-2xl font-bold text-[var(--ink)] mb-2 flex items-center gap-3">
-                  <Target className="text-[var(--stamp)] w-6 h-6" /> Measured performance
+                <h3 className="text-2xl font-bold text-[var(--ink)] mb-2">Measured performance
                 </h3>
                 <p className="text-sm text-[var(--ink-2)] mb-6 leading-relaxed">
                   Every figure here comes from a 20 percent test split that was cut before any model was
@@ -1928,8 +1927,7 @@ export default function OncovisionDashboard() {
               </section>
 
               <section className="bg-[var(--surface)] border border-[var(--rule)] rounded-none p-8">
-                <h3 className="text-2xl font-bold text-[var(--ink)] mb-6 flex items-center gap-3">
-                  <BrainCircuit className="text-[var(--stamp)] w-6 h-6" /> Architecture
+                <h3 className="text-2xl font-bold text-[var(--ink)] mb-6">Architecture
                 </h3>
                 <div className="space-y-4">
                   {[
@@ -1958,10 +1956,10 @@ export default function OncovisionDashboard() {
                       title: "Attribution",
                       body: "Feature importance is averaged across both members of each ensemble and returned with every prediction, ranked and paired with the patient's own reading and the clinical limit for that marker. This is a ranking of what the model leans on, not an additive decomposition of the score.",
                     },
-                  ].map(({ icon: Icon, title, body }) => (
-                    <div key={title} className="bg-[var(--paper-2)] border border-[var(--rule)] rounded-none p-5">
-                      <div className="flex items-center gap-3 mb-3">
-                        <Icon className="w-4 h-4 text-[var(--stamp)] flex-shrink-0" />
+                  ].map(({ title, body }, i) => (
+                    <div key={title} className="border-t border-[var(--rule)] pt-4">
+                      <div className="flex items-baseline gap-3 mb-2">
+                        <span className="data text-xs text-[var(--stamp)]">{String(i + 1).padStart(2, "0")}</span>
                         <h4 className="font-bold text-[var(--ink)] text-sm">{title}</h4>
                       </div>
                       <p className="text-sm text-[var(--ink-2)] leading-relaxed">{body}</p>
@@ -1971,8 +1969,7 @@ export default function OncovisionDashboard() {
               </section>
 
               <section className="bg-[var(--surface)] border border-[var(--rule)] rounded-none p-8">
-                <h3 className="text-2xl font-bold text-[var(--ink)] mb-4 flex items-center gap-3">
-                  <Microscope className="text-[var(--stamp)] w-6 h-6" /> Training data
+                <h3 className="text-2xl font-bold text-[var(--ink)] mb-4">Training data
                 </h3>
                 <p className="text-sm leading-relaxed text-[var(--ink-2)] mb-6">
                   Every model was trained on de-identified, publicly released clinical research data. Categorical
@@ -2009,8 +2006,7 @@ export default function OncovisionDashboard() {
               </section>
 
               <section className="bg-[var(--surface)] border border-[var(--warn-line)] rounded-none p-8">
-                <h3 className="text-xl font-bold text-[var(--ink)] mb-4 flex items-center gap-3">
-                  <AlertTriangle className="text-[var(--warn)] w-5 h-5" /> Known limitations
+                <h3 className="text-xl font-bold text-[var(--ink)] mb-4">Known limitations
                 </h3>
                 <ul className="space-y-3 text-sm text-[var(--ink-2)] leading-relaxed list-disc pl-5">
                   <li><strong className="text-[var(--ink)]">Two kinds of cohort, and only one supports a screening claim.</strong> Liver and the mammogram-report breast panel are trained on population cohorts at real prevalence. Pancreatic, ovarian, prostate and the biopsy breast panel are case-control: people who already had a reason to be tested, running far above real incidence. Their high AUCs describe separating cases from selected controls, not screening.</li>
@@ -2025,8 +2021,7 @@ export default function OncovisionDashboard() {
               </section>
 
               <section className="bg-[var(--surface)] border border-[var(--ok-line)] rounded-none p-8">
-                <h3 className="text-xl font-bold text-[var(--ink)] mb-4 flex items-center gap-3">
-                  <ShieldCheck className="text-[var(--ok)] w-6 h-6" /> Data handling
+                <h3 className="text-xl font-bold text-[var(--ink)] mb-4">Data handling
                 </h3>
                 <p className="text-sm text-[var(--ink-2)] leading-relaxed">
                   Uploaded PDFs are read into memory, parsed, and discarded inside the request. Nothing is written
@@ -2040,7 +2035,7 @@ export default function OncovisionDashboard() {
 
         {/* ================= DEVELOPER ================= */}
         {currentPage === "developer" && (
-          <div className="p-6 lg:p-16 max-w-[1000px] mx-auto animate-in fade-in duration-500 flex-1 w-full">
+          <div className="p-6 lg:p-16 max-w-[1000px] mx-auto fade-in flex-1 w-full">
             <header className="mb-12">
               <p className="text-[var(--stamp)] text-[11px] font-bold uppercase tracking-[0.25em] mb-3">Developer</p>
               <h2 className="text-4xl display text-[var(--ink)]">Behind the project</h2>
@@ -2073,7 +2068,7 @@ export default function OncovisionDashboard() {
                       <span className="font-bold text-xs">medtechcentral@gmail.com</span>
                     </div>
                   </a>
-                  <a href="https://www.linkedin.com/in/Palash-Rakshit10" target="_blank" rel="noopener noreferrer" className="flex items-center gap-3 bg-[var(--paper-2)] p-4 rounded-none border border-[var(--rule)] hover:border-blue-500/50 transition-colors">
+                  <a href="https://www.linkedin.com/in/Palash-Rakshit10" target="_blank" rel="noopener noreferrer" className="flex items-center gap-3 bg-[var(--paper-2)] p-4 rounded-none border border-[var(--rule)] hover:border-[var(--stamp-line)] transition-colors">
                     <Linkedin className="w-5 h-5 text-blue-400 flex-shrink-0" />
                     <div className="flex flex-col">
                       <span className="text-[9px] uppercase font-bold text-[var(--ink-3)]">Professional profile</span>
@@ -2084,8 +2079,7 @@ export default function OncovisionDashboard() {
               </div>
 
               <section className="bg-[var(--surface)] border border-[var(--rule)] rounded-none p-8">
-                <h3 className="text-xl font-bold text-[var(--ink)] mb-6 flex items-center gap-3">
-                  <GitBranch className="text-[var(--stamp)] w-5 h-5" /> Stack
+                <h3 className="text-xl font-bold text-[var(--ink)] mb-6">Stack
                 </h3>
                 <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
                   {[
@@ -2093,7 +2087,7 @@ export default function OncovisionDashboard() {
                     { title: "Backend", items: ["FastAPI", "Uvicorn", "Pydantic", "pdfplumber", "pandas", "Render"] },
                     { title: "Machine learning", items: ["XGBoost", "scikit-learn Extra Trees", "Soft voting ensemble x5", "Stratified 5 fold CV", "joblib serialisation", "NumPy"] },
                   ].map(({ title, items }) => (
-                    <div key={title} className="bg-[var(--paper-2)] border border-[var(--rule)] rounded-none p-5">
+                    <div key={title} className="border-t border-[var(--rule)] pt-4">
                       <p className="text-[10px] uppercase font-bold text-[var(--stamp)] tracking-widest mb-3">{title}</p>
                       <ul className="space-y-2">
                         {items.map(i => (
@@ -2129,7 +2123,7 @@ export default function OncovisionDashboard() {
                 </div>
 
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mt-6">
-                  <div className="bg-[var(--paper-2)] border border-[var(--rule)] rounded-none p-5">
+                  <div className="border-t border-[var(--rule)] pt-4">
                     <p className="text-[10px] uppercase font-bold text-[var(--stamp)] tracking-widest mb-3">Endpoints</p>
                     <div className="space-y-3 text-xs">
                       <div>
@@ -2147,7 +2141,7 @@ export default function OncovisionDashboard() {
                     </div>
                   </div>
 
-                  <div className="bg-[var(--paper-2)] border border-[var(--rule)] rounded-none p-5">
+                  <div className="border-t border-[var(--rule)] pt-4">
                     <p className="text-[10px] uppercase font-bold text-[var(--stamp)] tracking-widest mb-3">Running locally</p>
                     <div className="font-mono text-[11px] text-[var(--ink-2)] space-y-1 leading-relaxed">
                       <p className="text-[var(--ink-4)]"># train</p>
@@ -2168,7 +2162,7 @@ export default function OncovisionDashboard() {
           </div>
         )}
 
-        <footer className="p-8 border-t border-[var(--rule)] bg-[var(--paper-2)] backdrop-blur-sm mt-auto">
+        <footer className="p-8 border-t border-[var(--rule)] bg-[var(--paper-2)] mt-auto">
           <div className="max-w-4xl mx-auto text-center space-y-3">
             <p className="text-[var(--ink-3)] text-[11px] leading-relaxed italic">
               <strong>Disclaimer:</strong> Oncovision is a diagnostic support prototype built for educational and

@@ -1,6 +1,7 @@
 """
 Who Medicare's multi-cancer early detection (MCED) test law reaches, and what free questions add.
-Questions, assumptions and bars: docs/MCED_LAW_PREREG.md (committed before this was run).
+Questions, assumptions and bars: docs/MCED_LAW_PREREG.md (committed before this was run), including the
+correction at its end: the ENACTED law (Pub. L. 119-75) starts in 2029 with a floor of 50 and a cap of 65 in 2029.
 
 Everything descriptive is NHIS interview years 2005-2009, survey-weighted (sample-adult weight).
 Outcome: death from cancer within five years of interview. Yield per test is anchored to PATHFINDER 2
@@ -78,15 +79,16 @@ def main():
     k = DETECT / wmean(y[a50], w[a50])
     res["anchor"] = {"observed_5y_cancer_death_rate_50plus": round(wmean(y[a50], w[a50]), 5), "k": round(k, 4)}
 
-    under65_mc = (age < 65) & (mc == 1)
+    # enacted law (Pub. L. 119-75): from 2029, aged 50+, and under 65 on 1 January 2029 (cap +1 a year)
+    under65_mc = (age >= 50) & (age < 65) & (mc == 1)
     elig_pop = (age >= 65) | under65_mc
-    cov28 = ((age >= 65) & (age <= 67)) | under65_mc
-    cov35 = ((age >= 65) & (age <= 74)) | under65_mc
+    cov29 = (age == 65) | under65_mc                 # 65 at interview stands in for those turning 65 in 2029
+    cov35 = ((age >= 65) & (age <= 70)) | under65_mc
 
     # Q1: share of five-year cancer deaths among Medicare-eligible adults that the law pays for
     print("\nQ1. Share of Medicare-eligible adults' five-year cancer deaths in people the law covers")
     res["Q1"] = {}
-    for name, cov in (("2028", cov28), ("2035 (stylised)", cov35)):
+    for name, cov in (("2029", cov29), ("2035 (stylised)", cov35)):
         def share(i, cov=cov):
             e = elig_pop[i]
             return (y[i] * w[i] * cov[i] * e).sum() / (y[i] * w[i] * e).sum()
@@ -95,12 +97,12 @@ def main():
         ci = boot(share, n)
         res["Q1"][name] = {"share_of_cancer_deaths": round(float(s), 4), "ci": ci, "share_of_population": round(float(pop), 4)}
         print(f"  {name}: covers {pop:.1%} of Medicare-eligible adults and {s:.1%} of their cancer deaths [{ci[0]:.1%}, {ci[1]:.1%}]")
-    res["Q1"]["bar_met"] = bool(res["Q1"]["2028"]["ci"][1] < 0.5)
+    res["Q1"]["bar_met"] = bool(res["Q1"]["2029"]["ci"][1] < 0.5)
 
     # Q2: yield per test by group, from observed rates
     print("\nQ2. Expected yield per 1,000 tests by group (observed five-year cancer-death rate x anchor)")
-    groups = {"50-64 without Medicare": (age >= 50) & (age < 65) & (mc != 1), "under 65 with Medicare": under65_mc & (age >= 50),
-              "65-67 (covered 2028)": (age >= 65) & (age <= 67), "68-74 (never covered)": (age >= 68) & (age <= 74), "75-84 (never covered)": age >= 75}
+    groups = {"50-64 without Medicare (not eligible)": (age >= 50) & (age < 65) & (mc != 1), "50-64 with Medicare (covered 2029)": under65_mc,
+              "65 (covered 2029)": age == 65, "66-74 (never covered)": (age >= 66) & (age <= 74), "75-84 (never covered)": age >= 75}
     res["Q2"] = {}
     for g, m in groups.items():
         rate = wmean(y[m], w[m])
@@ -111,11 +113,11 @@ def main():
         r["sens_sqrt_cancers_per_1000"] = round(1000 * det2, 2)
         r["sens_sqrt_ppv"] = round(det2 / (det2 + (1 - SPEC) * (1 - det2)), 3)
         res["Q2"][g] = r
-        print(f"  {g:<26} n={r['n']:>6,} deaths={r['cancer_deaths']:>4}  {r['cancers_found_per_1000_tests']:>5.2f}/1000  PPV {r['ppv']:.0%}  ${r['medicare_test_cost_per_cancer_found']:,.0f} per cancer   (sqrt: {r['sens_sqrt_cancers_per_1000']:.2f}, PPV {r['sens_sqrt_ppv']:.0%})")
+        print(f"  {g:<38} n={r['n']:>6,} deaths={r['cancer_deaths']:>4}  {r['cancers_found_per_1000_tests']:>5.2f}/1000  PPV {r['ppv']:.0%}  ${r['medicare_test_cost_per_cancer_found']:,.0f} per cancer   (sqrt: {r['sens_sqrt_cancers_per_1000']:.2f}, PPV {r['sens_sqrt_ppv']:.0%})")
 
-    # Q3: free-information triage inside the 2028-covered group
-    print("\nQ3. Inside the 2028-covered group: test the highest-risk 20%, 30%, 50% vs the same number at random")
-    idx = np.where(cov28)[0]
+    # Q3: free-information triage inside the 2029-covered group
+    print("\nQ3. Inside the 2029-covered group: test the highest-risk 20%, 30%, 50% vs the same number at random")
+    idx = np.where(cov29)[0]
     res["Q3"] = {}
     for share_tested in (0.2, 0.3, 0.5):
         def ratio(ii, share_tested=share_tested):
@@ -136,9 +138,17 @@ def main():
               f"PPV {t['random']['ppv']:.0%} -> {t['triaged']['ppv']:.0%}, cost/cancer ${t['random']['medicare_test_cost_per_cancer_found']:,.0f} -> ${t['triaged']['medicare_test_cost_per_cancer_found']:,.0f}")
     res["Q3"]["bar_met"] = bool(res["Q3"]["0.2"]["ci"][0] >= 1.25)
 
-    # Q4: under-65 Medicare beneficiaries against same-age adults without Medicare (ages 35-64), age-standardised
-    print("\nQ4. Under-65 Medicare beneficiaries vs same-age adults without Medicare (age-standardised to the latter)")
-    u = (age < 65) & np.isfinite(mc)
+    # exploratory (added after the re-check): the same triage using age and sex only, to show what smoking adds
+    p0 = Fit(tr, 0).predict(te)
+    o = idx[np.argsort(-(p0[idx] + RNG.random(len(idx)) * 1e-9))]
+    cw = np.cumsum(w[o])
+    top = o[: np.searchsorted(cw, 0.2 * cw[-1]) + 1]
+    res["Q3"]["age_sex_only_ratio_20pct"] = round(float(wmean(y[top], w[top]) / wmean(y[idx], w[idx])), 3)
+    print(f"  age and sex only, top 20%: yield x{res['Q3']['age_sex_only_ratio_20pct']:.2f}")
+
+    # Q4: Medicare beneficiaries aged 50-64 against same-age adults without Medicare, age-standardised
+    print("\nQ4. Medicare beneficiaries aged 50-64 vs same-age adults without Medicare (age-standardised to the latter)")
+    u = (age >= 50) & (age < 65) & np.isfinite(mc)
     band = (age // 5).astype(int)
 
     def std_rate(ii, val, grp):
@@ -156,7 +166,7 @@ def main():
 
     allidx = np.arange(n)
     smk = (te["smoke_status"].to_numpy() == 2).astype(float)
-    res["Q4"] = {"n_medicare_under65": int(((mc == 1) & (age < 65)).sum()), "cancer_deaths_medicare_under65": int(y[(mc == 1) & (age < 65)].sum())}
+    res["Q4"] = {"n_medicare_50_64": int(under65_mc.sum()), "cancer_deaths_medicare_50_64": int(y[under65_mc].sum())}
     for nm, val in (("observed_5y_cancer_death", y), ("predicted_5y_risk", p), ("current_smoker", smk)):
         a, b_ = std_rate(allidx, val, 1), std_rate(allidx, val, 0)
         ci = boot(lambda i, val=val: std_rate(i, val, 1) - std_rate(i, val, 0), n, 200)

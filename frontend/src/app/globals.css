@@ -183,3 +183,18 @@ body {
     transition-duration: 0.01ms !important;
   }
 }
+
+/*
+  The one animation in the interface: content fades in when a page mounts.
+  Nothing slides, bounces or pulses. Turned off for people who ask for less motion.
+*/
+@keyframes fade-in {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+.fade-in {
+  animation: fade-in 300ms ease-out both;
+}
+@media (prefers-reduced-motion: reduce) {
+  .fade-in { animation: none; }
+}
