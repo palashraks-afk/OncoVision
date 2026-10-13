@@ -18,6 +18,10 @@ Built as a mentored research project under the guidance of a clinical oncologist
 
 ---
 
+## Who Medicare's multi-cancer test law reaches (newest)
+
+The 2026 law (Pub. L. 119-75) pays for multi-cancer blood tests from 2029 only for people under an age limit that rises as fast as they age, so anyone 65 or older in 2029 never qualifies. In national survey data this covers about 12% of Medicare-age five-year cancer deaths in 2029, excludes the people in whom the test would find the most cancers per test, and first reaches Medicare members aged 50-64 who carry 2.3 times the cancer-death rate of their peers. Inside the covered group, three free questions (age, sex, smoking) roughly double cancers found per test; activity-tracker and routine checkup data add nothing for cancer. Pre-registered, with a recorded correction. Paper: `docs/mced_paper/Medicare_Multi_Cancer_Test_Law.pdf`; app page `/multicancer`; analysis `experiments/mced_law.py`, `experiments/free_data_ladder.py`.
+
 ## Free information and cheaper cancer screening invitation
 
 Pre-registered study in 183,585 NHIS adults with two external surveys: age, sex, smoking and BMI rank ten-year cancer death well, are calibrated in every age band, and inviting by risk covers more cancer deaths than inviting by age for the same number invited (+7.1 points at 20% invited). One pre-registered bar, fairness across race and ethnicity, was missed and is reported as a main result. Outcome is all cancer deaths, not screenable cancers. Paper: `docs/cancer_age_paper/Free_Information_Cheaper_Cancer_Screening.pdf`; analysis `experiments/cancer_age.py`; cohort `fetch_nhis_cancer_risk.py`.

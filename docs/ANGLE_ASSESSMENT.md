@@ -132,3 +132,27 @@ Honest scores on the same 1 / 3 / 5 scale (my judgement, not an external review)
 **The target of 4 on one criterion and 5 on the other two was not reached.** Raising impact and
 novelty needs a registry-outcome cohort (cancer sites, diagnoses), a clinician co-author and a
 second analyst; those are human steps.
+
+## Angle E: who Medicare's multi-cancer test law reaches, and free-data triage (added 12 Oct 2026)
+
+Paper: `docs/mced_paper/Medicare_Multi_Cancer_Test_Law.pdf`. Pre-registered in `docs/MCED_LAW_PREREG.md`
+(with an openly recorded correction from the introduced bill to the enacted law) and
+`docs/FREE_DATA_LADDER_PREREG.md`. App page: `/multicancer`.
+
+Findings: the enacted age rule is a birth-date cutoff (anyone 65+ on 1 Jan 2029 never qualifies); in 2029 the law
+covers about 12% of Medicare-eligible five-year cancer deaths; the excluded older adults are where a test would find
+the most cancers per test; the first people covered (Medicare members 50-64, mostly disabled) carry 2.3x the
+cancer-death rate; free-question triage inside the covered group roughly doubles cancers found per test (mostly
+smoking); wearable activity and routine checkup data add nothing for cancer death (they do for other-cause death).
+
+Honest scores (my judgement, same 1/3/5 scale):
+
+| Criterion | Score | Why |
+|---|---|---|
+| Novelty | 5 | The law was enacted in Feb 2026; recorded searches (Europe PMC, 2 rounds; web, 2 rounds) and the closest paper (Scherer et al. 2026 medRxiv cost estimate) found no analysis of the birth-cohort effect, the excluded burden, the disabled group reached first, or free-answer triage within it. Searches are not proof. |
+| Impact | 4 (could reach 5) | Directly relevant to a pending Medicare coverage decision and to Congress, which could amend the age rule. Capped because no MCED test has shown a mortality benefit, so no lives-saved claim is possible. Reaching 5 needs timely release (preprint) and uptake by policy people. |
+| Research-paper quality | 4 | Pre-registered, independently re-implemented, an error caught and corrected in the open. Not 5: test yield rests on an anchoring assumption, data are 2005-2009, no human second analyst. |
+
+**Against the target (5, 5, 4): novelty 5 and quality 4 meet it; impact is 4, not 5.** The step most likely to move
+impact is posting a preprint before the Medicare coverage decision and getting it to people who work on that
+decision; that is a human step.
