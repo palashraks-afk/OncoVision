@@ -1,0 +1,3 @@
+item,label,n,events,df,lr,p,main_level,main_coef,ref_level,converged,q
+ALC12MYR,freq drank alcohol: days in past year,15152,561,5,21.827,0.0005647081544586034,2.0,-0.4439,-1.0,True,0.03057240344292113
+ALC12MWK,freq drank alcohol: days per week,15152,561,10,29.91,0.0008861566215339458,5.0,0.704,-1.0,True,0.03057240344292113

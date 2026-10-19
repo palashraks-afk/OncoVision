@@ -1,0 +1,80 @@
+item,label,skipped
+R_MARITL,marital status,fewer than 5000 people in the discovery years
+ANGEV,ever been told you had angina pectoris,fewer than 5000 people in the discovery years
+MIEV,ever been told you had a heart attack,fewer than 5000 people in the discovery years
+STREV,ever been told you had a stroke,fewer than 5000 people in the discovery years
+EPHEV,ever been told you had emphysema,fewer than 5000 people in the discovery years
+AASMEV,ever been told you had asthma,fewer than 5000 people in the discovery years
+SINYR,"told that you had sinusitis, past 12 m",fewer than 5000 people in the discovery years
+CBRCHYR,"told you had chronic bronchitis, 12 m",fewer than 5000 people in the discovery years
+KIDWKYR,"told you had weak/failing kidneys, 12 m",fewer than 5000 people in the discovery years
+LIVYR,"told you had liver condition, past 12 m",fewer than 5000 people in the discovery years
+PAINECK,"had neck pain, past 3 months",fewer than 5000 people in the discovery years
+PAINLB,"had low back pain, past 3 months",fewer than 5000 people in the discovery years
+PAINLEG,pain spread down leg/below knees,fewer than 5000 people in the discovery years
+PAINFACE,"had pain in jaw/front of ear, past 3 m",fewer than 5000 people in the discovery years
+AMIGR,"had severe headache/migraine, past 3 m",fewer than 5000 people in the discovery years
+PREGNOW,currently pregnant,fewer than 5000 people in the discovery years
+AHEARST,description of hearing w/o hearing aid,fewer than 5000 people in the discovery years
+AVISION,trouble seeing even w/glasses/lenses,fewer than 5000 people in the discovery years
+NERVOUS,"how often felt nervous, past 30 days",fewer than 5000 people in the discovery years
+RESTLESS,"how often restless/fidgety, past 30 days",fewer than 5000 people in the discovery years
+HOPELESS,"how often felt hopeless, past 30 days",fewer than 5000 people in the discovery years
+WORTHLS,"how often felt worthless, past 30 days",fewer than 5000 people in the discovery years
+MHAMTMO,"feelings interfered w/life, past 30 days",fewer than 5000 people in the discovery years
+WKDAYR,"number of work loss days, past 12 months",fewer than 5000 people in the discovery years
+BEDDAYR,"number of bed days, past 12 months",fewer than 5000 people in the discovery years
+FLA1AR,"any functional limitation, all conds",fewer than 5000 people in the discovery years
+VIGNO,freq vigorous activity: # of units,fewer than 5000 people in the discovery years
+VIGTP,freq vigorous activity: time units,fewer than 5000 people in the discovery years
+VIGFREQW,freq vigorous activity (times per wk),fewer than 5000 people in the discovery years
+VIGLNGTP,duration vigorous activity: time unit,fewer than 5000 people in the discovery years
+VIGMIN,duration vigorous activity (in minutes),fewer than 5000 people in the discovery years
+MODNO,freq moderate activity: # of units,fewer than 5000 people in the discovery years
+MODTP,freq moderate activity: time units,fewer than 5000 people in the discovery years
+STRFREQW,freq strength activity (times per wk),fewer than 5000 people in the discovery years
+ALCLIFE,had 12+ drinks in entire life,fewer than 5000 people in the discovery years
+ALC12MWK,freq drank alcohol: days per week,fewer than 5000 people in the discovery years
+ALC12MYR,freq drank alcohol: days in past year,fewer than 5000 people in the discovery years
+ALCAMT,average # drinks on days drank,fewer than 5000 people in the discovery years
+ALC5UPYR,number of days had 5+ drinks past year,fewer than 5000 people in the discovery years
+AUSUALPL,place usually go when sick,fewer than 5000 people in the discovery years
+APLKIND,place to go when sick (most often),fewer than 5000 people in the discovery years
+AHCDLYR1,"couldn't get through on phone, past 12 m",fewer than 5000 people in the discovery years
+AHCDLYR2,"couldn't get appt soon enough, past 12 m",fewer than 5000 people in the discovery years
+ONEJOB,have more than one job,fewer than 5000 people in the discovery years
+BLDGV,donated blood since march 1985,fewer than 5000 people in the discovery years
+CHNSADSP,chances of getting aids virus,fewer than 5000 people in the discovery years
+STMTRU,are any of these statements true,fewer than 5000 people in the discovery years
+AINTIL2W,"had stomach prob w/vomit/diarrhea, 2 w",fewer than 5000 people in the discovery years
+ALCHRONR,overall functl lim recode by cond status,fewer than 5000 people in the discovery years
+LUPPRT,lost all upper & lower natural teeth,fewer than 5000 people in the discovery years
+DIFAGE2,years since first diagnosed w/diabetes,fewer than 5000 people in the discovery years
+AHCHNOY2,total number of home visits,fewer than 5000 people in the discovery years
+AHCNOYR2,"total number of office visits, past 12 m",fewer than 5000 people in the discovery years
+APOX,ever had chickenpox,fewer than 5000 people in the discovery years
+AHEP,ever had hepatitis,fewer than 5000 people in the discovery years
+AHEPLIV,ever lived w/ someone w/ hepatitis,fewer than 5000 people in the discovery years
+SHEPDOS,# doses of hepatitis b vaccine received,fewer than 5000 people in the discovery years
+TST12M_M,month of last test for hiv,fewer than 5000 people in the discovery years
+TST12M_Y,year of last test for hiv,fewer than 5000 people in the discovery years
+LASTST_C,location of last hiv test,fewer than 5000 people in the discovery years
+CLNTYP_C,type of clinic for last hiv test,fewer than 5000 people in the discovery years
+STDWHER,place where checked,fewer than 5000 people in the discovery years
+TBHRD,ever heard of tuberculosis,fewer than 5000 people in the discovery years
+TBKNOW,ever personally known anyone who had tb,fewer than 5000 people in the discovery years
+TBSPRD1,breathing air around person sick with tb,fewer than 5000 people in the discovery years
+TBSPRD2,sharing eating/drinking utensils,fewer than 5000 people in the discovery years
+TBSPRD5,from mosquito or other insect bites,fewer than 5000 people in the discovery years
+TBSPRD6,other,fewer than 5000 people in the discovery years
+TBCHANC,chances of getting tb,fewer than 5000 people in the discovery years
+TBSHAME,ashamed if you/family diagnosed with tb,fewer than 5000 people in the discovery years
+AASSTILL,still have asthma,fewer than 5000 people in the discovery years
+WRKLYR3,"work status: last week, past 12 m",fewer than 5000 people in the discovery years
+ADNLONG2,time since last saw a dentist,fewer than 5000 people in the discovery years
+EVERWRK,ever worked,fewer than 5000 people in the discovery years
+WRKCATA,class of worker,fewer than 5000 people in the discovery years
+LOCALL1A,number of employees at work,fewer than 5000 people in the discovery years
+YRSWRKPA,years on the job,fewer than 5000 people in the discovery years
+REATST_C,main reason for last hiv test,fewer than 5000 people in the discovery years
+REASWHOR,who suggested you should be tested,fewer than 5000 people in the discovery years

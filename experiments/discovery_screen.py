@@ -168,7 +168,7 @@ class Base:
 
     def X(self, o):
         s = o["smoke_status"].to_numpy()
-        cols = [self.st.transform(o[["age"]].to_numpy()), o[["male"]].to_numpy(),
+        cols = [self.st.transform(o[["age"]]), o[["male"]].to_numpy(),
                 np.column_stack([(s == 1), (s == 2), o["cigs_per_day"] / 20.0, (s == 1) * o["quit_years"] / 10.0, o["bmi"] / 10.0]).astype(float)]
         yr = np.column_stack([(o["year"].to_numpy() == y).astype(float) for y in self.years[1:]]) if len(self.years) > 1 else np.zeros((len(o), 0))
         return np.column_stack(cols + [yr])

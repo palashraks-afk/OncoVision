@@ -1,0 +1,19 @@
+{
+  "group": "other",
+  "adults": 9016,
+  "cancer_deaths": 217,
+  "columns": 2800,
+  "excluded_by_name": 288,
+  "excluded_by_label": 508,
+  "no_label": 178,
+  "label_wording_differs": 111,
+  "too_few_years": 1636,
+  "candidates": 79,
+  "skipped_by_size_floors": 79,
+  "skipped_reasons": {
+    "fewer than 5000 people in the discovery years": 79
+  },
+  "screened": 0,
+  "discovery_hits": 0,
+  "note": "no item could be screened in this group: every candidate fell below the size floors"
+}
