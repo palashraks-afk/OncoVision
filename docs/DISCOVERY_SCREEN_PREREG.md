@@ -64,3 +64,54 @@ Two decisions made while writing the code, recorded here so they are not post ho
   differs are dropped for that item. Labels are read from the NCHS SAS programs. Categories with fewer than 50
   respondents are pooled. Models use a very light ridge penalty (C = 10,000) so that sparse categories cannot produce
   infinite coefficients; likelihood-ratio tests use the penalised fits.
+
+
+## Addendum 2, 18 October 2026 (before any screening result exists)
+
+Written after the full questionnaire was downloaded and the code was run on real data for the first time. What had been
+looked at before this addendum: cohort sizes and cancer-death counts by year and by race group (to match the age paper);
+the screen run on the first three items by name with only size and convergence printed, no test result; and the screen run
+on **shuffled copies** of items, which have no real link to cancer, to check the test is calibrated. No test result for a
+real item has been seen. Everything below fixes the code so it does what this document says, or records a decision that
+was forced by the data. **None of it changes the baseline model, the discovery and replication years, the false discovery
+rate, the Bonferroni step, the same-direction rule, the cancer-specificity rule or the usefulness thresholds.**
+
+1. **Equity bar.** The text above says an equity hit must raise AUC in its group by at least 0.01 with the interval above
+   zero. The code applied the all-adults rule (0.005 AUC and 1 point of coverage). It now uses 0.01 AUC with the interval
+   above zero for the equity screens. Replication and cancer-specificity still apply. Coverage at 20% invited is reported but
+   not required, because the registered text names only the AUC criterion.
+2. **No silent drops at replication.** If the replication years had no one in a category that had been pooled in discovery, the
+   item was skipped with no record. The replication block now has the discovery layout, the test counts only columns that
+   vary in the replication years, and a hit that cannot be tested is listed with the reason.
+3. **Race and ethnicity were missing in 1997-2002.** The code chose one race variable name for every year, but NCHS uses a
+   different name in different years (RACEREC, RACER_P, RACERP_I, RACERPI2; HISPAN_P, HISPANCR, HISPAN_I). The discovery years
+   came out with no White or Black adults. The code now takes the first variable that has a value for each person. 2005-2009 is
+   unchanged and matches the age paper exactly (White 45,815 adults and 1,384 cancer deaths; Black 11,431 and 397; Hispanic
+   11,379 and 194; other 4,543 and 97). As in the age paper, adults whose Hispanic subgroup code is 0 are left unclassified
+   (135 adults in 2005-2009).
+4. **Race and ethnicity are not candidate items.** Race is a stratifier, never a feature (project rule), so every race and
+   Hispanic-origin item is excluded by name and by label. Items such as birthplace or language, if any, are kept; a hit that
+   could be an ethnicity proxy will be flagged in the report.
+5. **Solver.** On shuffled items the likelihood-ratio test was miscalibrated: null p-values averaged 0.61 (should be 0.50), 2.8%
+   fell below 0.05 (should be 5%) and 14% of tests gave an impossible likelihood-ratio of zero, because the default lbfgs fits
+   stopped before converging. Fits now use the exact Newton-Cholesky solver at a tight tolerance. Same shuffles, new solver:
+   mean p 0.47, 5.7% below 0.05, no zeros, uniformity test p = 0.10 (316 null tests); a tight-tolerance lbfgs gave identical
+   numbers, so this is the optimum. Same model, same ridge (C = 10,000).
+6. **Size floors (not registered, only reduce power).** The code skips an item that has fewer than 5,000 people or fewer than
+   100 cancer deaths in its discovery years, or fewer than two categories with 50 people. Skipped items are listed with their
+   reasons. Counts, from sizes only: all adults, 79 of 79 candidates clear the floors; non-Hispanic Black, 69 of 79; Hispanic,
+   69 of 79; **other, 0 of 79** (3,840 adults and 107 cancer deaths in the discovery years). The "other" equity screen will
+   therefore be reported as not screenable rather than run.
+7. **How many items.** The text above expected "several hundred" and "300+" items. The registered eligibility rule (a stable
+   label in at least two discovery and two replication years) leaves **79**. Of 2,800 columns: 288 excluded by name, 508 by
+   label (cancer, screening, baseline items, race), 178 with no label, 1,636 asked in fewer than two discovery or two
+   replication years, 111 asked in enough years but with changed wording (for example "had" became "have"), and 79 candidates.
+   The 111 are listed in the excluded file and are **not** screened. The result will be stated for 79 items, not for 300.
+8. **Power of the equity screens, stated in advance.** Replication has 397 cancer deaths in Black adults and 194 in Hispanic
+   adults. An AUC gain of 0.01 with an interval above zero is hard to show at that size, so a miss there means "not shown", not
+   "absent".
+9. **Freeze.** The run is split into `discover` and `replicate`. `discover` writes the hit list and its SHA-256 and stops. The
+   hit list and hash are committed before `replicate` is run, and `replicate` refuses to run if the file no longer matches.
+10. **Reporting.** The output now has the count at every stage, the list of excluded columns with reasons, and the list of
+    skipped items with reasons. Commands are `python experiments/discovery_screen.py [equity 1|2|3] discover|replicate`.
+11. **Speed only.** Item columns are passed to workers one at a time and eight workers are used. The screen takes minutes.

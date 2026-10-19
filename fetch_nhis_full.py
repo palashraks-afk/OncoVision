@@ -86,7 +86,11 @@ def main():
             print(y, "already done", flush=True)
             continue
         df = one_year(y)
-        df.to_csv(f, index=False, compression="gzip")
+        # Write to a temporary name and rename, so a run that is cut off mid-write cannot leave a
+        # truncated file that the next run would treat as finished.
+        tmp = f + ".part"
+        df.to_csv(tmp, index=False, compression="gzip")
+        os.replace(tmp, f)
         print(f"{y}: {len(df):,} adults, {df.shape[1]} columns, linked {df['died'].notna().mean():.1%}", flush=True)
 
 

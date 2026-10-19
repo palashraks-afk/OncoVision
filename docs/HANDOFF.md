@@ -86,3 +86,12 @@ Full text in `docs/handoff/oncovision-project-notes.md` (copied from the assista
 
 Paste: "Read CLAUDE.md and docs/HANDOFF.md, then do section 3 of the handoff: test discovery_screen.py on a few items, fix bugs without
 changing the pre-registered rules, run the full screen in the background, and report every stage honestly." That is enough.
+
+
+## Update, 18 October 2026 (Mac session, before any screen result)
+
+Section 3 was followed. The screening script needed fixes before it could be trusted; they are recorded in **Addendum 2** of
+`docs/DISCOVERY_SCREEN_PREREG.md` and none changes a registered rule. The commands are now
+`python experiments/discovery_screen.py [equity 1|2|3] discover` then, after the hit list is committed, `... replicate`.
+Setup notes: the install line also needs `pip install -r backend/requirements.txt` for the tests; xgboost needs an OpenMP library
+on a Mac (not used by the screen). The screen takes minutes, not hours. The registered rules leave 79 candidate items, not 300+.
