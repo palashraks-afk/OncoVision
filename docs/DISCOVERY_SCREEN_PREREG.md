@@ -53,3 +53,14 @@ a replication rule fixed in advance. No variable is rescued after the fact, and 
 Self-reported variables only. Death from any cancer, not site. Multiple variables that measure the same thing will
 all pass together. Associations are not causes and the screen finds predictors, not mechanisms. Variables present
 only in some years have less power. This is one survey; an NHANES check is added where the same item exists.
+
+## Addendum, 18 October 2026 (before any screening result exists)
+
+Two decisions made while writing the code, recorded here so they are not post hoc:
+
+- Interview-year indicators are added to the baseline model, so an item asked in only some years is not confounded
+  with period trends in cancer death.
+- Candidate items must have the same label in at least two discovery and two replication years; years where the label
+  differs are dropped for that item. Labels are read from the NCHS SAS programs. Categories with fewer than 50
+  respondents are pooled. Models use a very light ridge penalty (C = 10,000) so that sparse categories cannot produce
+  infinite coefficients; likelihood-ratio tests use the penalised fits.

@@ -46,3 +46,6 @@ data/audit/nhis_cache/
 
 # NHANES 2003-2006 minute-level accelerometer files (about 900 MB), downloaded by fetch_nhanes_activity.py
 data/audit/pax/
+
+# full NHIS adult questionnaire per year (hundreds of MB), built by fetch_nhis_full.py
+data/audit/nhis_full/
