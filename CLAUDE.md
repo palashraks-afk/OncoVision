@@ -18,5 +18,6 @@ quality 4 on the 1/3/5 scale in `docs/ANGLE_ASSESSMENT.md`, judged honestly, nev
    `pytest tests -q` before committing. Do not commit large downloaded data (see `.gitignore`).
 6. Long jobs run in the background and are polled; do not block on multi-minute commands. Never kill the user's browser.
 
-**Next job:** section 3 of `docs/HANDOFF.md` (test, then run, the pre-registered discovery screen in
-`experiments/discovery_screen.py`, which has never completed a run).
+**Status:** the discovery screen has been run (18 Oct 2026) and is a clean negative; see `docs/DISCOVERY_SCREEN_RESULT.md`. Do not
+re-run it expecting a different answer. What remains needs a person (data access, a human second analyst, a clinician): see
+`docs/HANDOFF.md` section 6, `docs/NEXT_STEPS_FOR_RAHUL.md` and `docs/CLINICAL_DATA_ACCESS.md`.

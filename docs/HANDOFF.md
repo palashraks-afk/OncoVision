@@ -95,3 +95,7 @@ Section 3 was followed. The screening script needed fixes before it could be tru
 `python experiments/discovery_screen.py [equity 1|2|3] discover` then, after the hit list is committed, `... replicate`.
 Setup notes: the install line also needs `pip install -r backend/requirements.txt` for the tests; xgboost needs an OpenMP library
 on a Mac (not used by the screen). The screen takes minutes, not hours. The registered rules leave 79 candidate items, not 300+.
+
+Result (18 October 2026): the screen ran and nothing passed all stages. 79 items screened, 13 passed discovery, 3 replicated, none
+cancer-specific; the largest replicated AUC gain was +0.0016 against a bar of 0.005. See `docs/DISCOVERY_SCREEN_RESULT.md`. Section 3
+is done; what remains needs a person (section 6).

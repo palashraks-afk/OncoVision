@@ -25,7 +25,7 @@ are caught sooner and screening costs less, and get that into people's hands at 
 |---|---|---|
 | Free information and cost-matched invitation (`docs/cancer_age_paper/`) | Age, sex, smoking rank cancer death; inviting by risk covers more deaths at equal cost; fairness bar missed | 4 / 4 / 4 to 5 |
 | Medicare multi-cancer test law (`docs/mced_paper/`) | Law covers about 12% of Medicare-age cancer deaths in 2029; free-question triage roughly doubles cancers found per test | 5 / 4 / 4 |
-| Discovery screen (`docs/DISCOVERY_SCREEN_PREREG.md`) | Pre-registered; running | pending |
+| Discovery screen (`docs/DISCOVERY_SCREEN_RESULT.md`) | Run 18 Oct 2026: 79 items screened, none passed all stages; the free-information ceiling is firm for those items | 3 / 2 / 4 |
 
 **Congressional App Challenge note.** The 2026 rules (congressionalappchallenge.us) require that the student
 build the app, with AI allowed only for specific supported parts and fully disclosed. Most of this repo was

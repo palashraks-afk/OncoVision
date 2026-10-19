@@ -1,0 +1,359 @@
+{
+  "group": "all adults",
+  "adults": 200330,
+  "cancer_deaths": 5930,
+  "columns": 2800,
+  "excluded_by_name": 288,
+  "excluded_by_label": 508,
+  "no_label": 178,
+  "label_wording_differs": 111,
+  "too_few_years": 1636,
+  "candidates": 79,
+  "skipped_by_size_floors": 0,
+  "skipped_reasons": {},
+  "screened": 79,
+  "discovery_hits": 13,
+  "not_converged": 0,
+  "hits_file": "discovery_screen_hits.csv",
+  "hits_sha256": "aed93c1131ec4a9d0f02b8a4d3c23ebd67e37737df57012c2086d9fcceb0459f",
+  "equity_screen": false,
+  "auc_bar": 0.005,
+  "replicated": [
+    "LUPPRT",
+    "ADNLONG2",
+    "LIVYR"
+  ],
+  "items": {
+    "ALC12MYR": {
+      "label": "freq drank alcohol: days in past year",
+      "years": [
+        1997,
+        1998,
+        1999,
+        2000,
+        2001,
+        2002,
+        2005,
+        2006,
+        2007,
+        2008,
+        2009
+      ],
+      "p_discovery": 1.0597067842393725e-07,
+      "q_discovery": 8.371683595491043e-06,
+      "replicated": false,
+      "p_replication": 0.006297417893845773,
+      "same_direction": true,
+      "replication_df": 5,
+      "discovery_df": 5
+    },
+    "ALC12MWK": {
+      "label": "freq drank alcohol: days per week",
+      "years": [
+        1997,
+        1998,
+        1999,
+        2000,
+        2001,
+        2002,
+        2005,
+        2006,
+        2007,
+        2008,
+        2009
+      ],
+      "p_discovery": 2.6784165706781094e-06,
+      "q_discovery": 0.0001057974545417,
+      "replicated": false,
+      "p_replication": 0.005726051247040918,
+      "same_direction": false,
+      "replication_df": 11,
+      "discovery_df": 11
+    },
+    "ALCAMT": {
+      "label": "average # drinks on days drank",
+      "years": [
+        1997,
+        1998,
+        1999,
+        2000,
+        2001,
+        2002,
+        2005,
+        2006,
+        2007,
+        2008,
+        2009
+      ],
+      "p_discovery": 1.4630203868045386e-05,
+      "q_discovery": 0.0003852620351918,
+      "replicated": false,
+      "p_replication": 0.008943445395005823,
+      "same_direction": true,
+      "replication_df": 4,
+      "discovery_df": 4
+    },
+    "ALC5UPYR": {
+      "label": "number of days had 5+ drinks past year",
+      "years": [
+        1997,
+        1998,
+        1999,
+        2000,
+        2001,
+        2002,
+        2005,
+        2006,
+        2007,
+        2008,
+        2009
+      ],
+      "p_discovery": 4.598936562249997e-05,
+      "q_discovery": 0.0009082899710443,
+      "replicated": false,
+      "p_replication": 0.00718487700972434,
+      "same_direction": true,
+      "replication_df": 3,
+      "discovery_df": 3
+    },
+    "ONEJOB": {
+      "label": "have more than one job",
+      "years": [
+        1997,
+        1998,
+        1999,
+        2000,
+        2001,
+        2002,
+        2005,
+        2006,
+        2007,
+        2008,
+        2009
+      ],
+      "p_discovery": 0.0001239070465192,
+      "q_discovery": 0.0019577313350036,
+      "replicated": false,
+      "p_replication": 0.016337622686091194,
+      "same_direction": true,
+      "replication_df": 4,
+      "discovery_df": 5
+    },
+    "LUPPRT": {
+      "label": "lost all upper & lower natural teeth",
+      "years": [
+        1999,
+        2000,
+        2001,
+        2002,
+        2005,
+        2006,
+        2007,
+        2008,
+        2009
+      ],
+      "p_discovery": 0.0001584891579725,
+      "q_discovery": 0.0020867739133055,
+      "replicated": true,
+      "p_replication": 6.089231595937319e-07,
+      "same_direction": true,
+      "replication_df": 2,
+      "discovery_df": 2,
+      "auc_gain_cancer": 0.0014241794390011941,
+      "auc_gain_cancer_ci": [
+        0.0006492771479171544,
+        0.0022379363625315467
+      ],
+      "auc_gain_other": 0.002860944931803555,
+      "specific": false,
+      "coverage_gain_20pct": 0.002645502645502673,
+      "coverage_gain_ci": [
+        -0.005343663524794523,
+        0.01219948790834435
+      ],
+      "auc_bar_met": false,
+      "coverage_bar_met": false,
+      "discovery": false
+    },
+    "EPHEV": {
+      "label": "ever been told you had emphysema",
+      "years": [
+        1997,
+        1998,
+        1999,
+        2000,
+        2001,
+        2002,
+        2005,
+        2006,
+        2007,
+        2008,
+        2009
+      ],
+      "p_discovery": 0.0003264051740567,
+      "q_discovery": 0.0036837155357834,
+      "replicated": false,
+      "p_replication": 0.0295742327429214,
+      "same_direction": true,
+      "replication_df": 3,
+      "discovery_df": 3
+    },
+    "ADNLONG2": {
+      "label": "time since last saw a dentist",
+      "years": [
+        2001,
+        2002,
+        2005,
+        2006,
+        2007,
+        2008,
+        2009
+      ],
+      "p_discovery": 0.000815028027652,
+      "q_discovery": 0.0074685280817909,
+      "replicated": true,
+      "p_replication": 4.3609082609764815e-05,
+      "same_direction": true,
+      "replication_df": 7,
+      "discovery_df": 7,
+      "auc_gain_cancer": 0.001578703173573559,
+      "auc_gain_cancer_ci": [
+        -8.056828296235379e-05,
+        0.0031946481845708556
+      ],
+      "auc_gain_other": 0.00626364111015254,
+      "specific": false,
+      "coverage_gain_20pct": 0.003306878306878369,
+      "coverage_gain_ci": [
+        -0.009721061473087277,
+        0.015791424110813114
+      ],
+      "auc_bar_met": false,
+      "coverage_bar_met": false,
+      "discovery": false
+    },
+    "EVERWRK": {
+      "label": "ever worked",
+      "years": [
+        2001,
+        2002,
+        2005,
+        2006,
+        2007,
+        2008,
+        2009
+      ],
+      "p_discovery": 0.0008691432514493,
+      "q_discovery": 0.0074685280817909,
+      "replicated": false,
+      "p_replication": 0.041919260022850555,
+      "same_direction": true,
+      "replication_df": 3,
+      "discovery_df": 3
+    },
+    "WRKLYR3": {
+      "label": "work status: last week, past 12 m",
+      "years": [
+        2001,
+        2002,
+        2005,
+        2006,
+        2007
+      ],
+      "p_discovery": 0.0009453833014925,
+      "q_discovery": 0.0074685280817909,
+      "replicated": false,
+      "p_replication": 0.06754444288617241,
+      "same_direction": false,
+      "replication_df": 4,
+      "discovery_df": 4
+    },
+    "WKDAYR": {
+      "label": "number of work loss days, past 12 months",
+      "years": [
+        1997,
+        1998,
+        1999,
+        2000,
+        2001,
+        2002,
+        2008,
+        2009
+      ],
+      "p_discovery": 0.0024319940378308,
+      "q_discovery": 0.0174661389989668,
+      "replicated": false,
+      "p_replication": 0.9672883745918636,
+      "same_direction": true,
+      "replication_df": 4,
+      "discovery_df": 4
+    },
+    "BLDGV": {
+      "label": "donated blood since march 1985",
+      "years": [
+        2000,
+        2001,
+        2002,
+        2005,
+        2006,
+        2007,
+        2008,
+        2009
+      ],
+      "p_discovery": 0.005095805264354,
+      "q_discovery": 0.0335473846569974,
+      "replicated": false,
+      "p_replication": 0.006480272261678883,
+      "same_direction": true,
+      "replication_df": 4,
+      "discovery_df": 4
+    },
+    "LIVYR": {
+      "label": "told you had liver condition, past 12 m",
+      "years": [
+        1997,
+        1998,
+        1999,
+        2000,
+        2001,
+        2002,
+        2005,
+        2006,
+        2007,
+        2008,
+        2009
+      ],
+      "p_discovery": 0.007273782190601,
+      "q_discovery": 0.0442022148505756,
+      "replicated": true,
+      "p_replication": 0.0006638391669417494,
+      "same_direction": true,
+      "replication_df": 3,
+      "discovery_df": 3,
+      "auc_gain_cancer": 0.00015092591292631408,
+      "auc_gain_cancer_ci": [
+        -0.0009909604421765139,
+        0.0012151329318440453
+      ],
+      "auc_gain_other": 0.002344831747528975,
+      "specific": false,
+      "coverage_gain_20pct": 0.000661375661375696,
+      "coverage_gain_ci": [
+        -0.004960128903346905,
+        0.006790539550423502
+      ],
+      "auc_bar_met": false,
+      "coverage_bar_met": false,
+      "discovery": false
+    }
+  },
+  "discoveries": [],
+  "stages": {
+    "candidates": 79,
+    "screened": 79,
+    "discovery_hits": 13,
+    "replicated": 3,
+    "cancer_specific": 0,
+    "discoveries": 0
+  }
+}

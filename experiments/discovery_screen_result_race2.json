@@ -1,0 +1,25 @@
+{
+  "group": "Hispanic",
+  "adults": 29315,
+  "cancer_deaths": 511,
+  "columns": 2800,
+  "excluded_by_name": 288,
+  "excluded_by_label": 508,
+  "no_label": 178,
+  "label_wording_differs": 111,
+  "too_few_years": 1636,
+  "candidates": 79,
+  "skipped_by_size_floors": 12,
+  "skipped_reasons": {
+    "fewer than 100 cancer deaths in the discovery years": 10,
+    "fewer than 2 categories with 50 or more people": 2
+  },
+  "screened": 67,
+  "discovery_hits": 0,
+  "not_converged": 0,
+  "hits_file": "discovery_screen_hits_race2.csv",
+  "hits_sha256": "a93a01980e58bfe8e3f7c131eb4439f89ebe143048bccf88456b1d5357ffdff5",
+  "replicated": [],
+  "discoveries": [],
+  "items": {}
+}

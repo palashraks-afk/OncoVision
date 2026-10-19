@@ -156,3 +156,26 @@ Honest scores (my judgement, same 1/3/5 scale):
 **Against the target (5, 5, 4): novelty 5 and quality 4 meet it; impact is 4, not 5.** The step most likely to move
 impact is posting a preprint before the Medicare coverage decision and getting it to people who work on that
 decision; that is a human step.
+
+
+## Angle F: a hypothesis-free screen of free survey questions for cancer-death risk (added 18 Oct 2026)
+
+Result: `docs/DISCOVERY_SCREEN_RESULT.md`. Pre-registered in `docs/DISCOVERY_SCREEN_PREREG.md` (with Addendum 2, written before any
+result). Code and tests: `experiments/discovery_screen.py`, `tests/test_discovery_screen.py`.
+
+Finding: of 79 NHIS questions asked in a stable form across 1997-2002 and 2005-2009, none adds to cancer-death risk beyond age,
+sex, smoking and BMI in a way that replicates, is specific to cancer and is large enough to matter. 13 passed discovery, 3
+replicated, 0 were cancer-specific, and the largest replicated AUC gain was +0.0016 against a bar of 0.005. Three equity screens
+found nothing either (one group could not be screened). It is a negative result, and it is not a discovery.
+
+Honest scores (my judgement, same 1/3/5 scale):
+
+| Criterion | Score | Why |
+|---|---|---|
+| Novelty | 3 | A known question (what beyond age, sex, smoking and weight predicts cancer death) with new evidence: a registered, replicated, hypothesis-free screen. I ran no recorded literature search for this angle, so I cannot claim more than 3. |
+| Impact | 2 | A clean negative that tells researchers not to expect more from cheap survey questions. It changes no one's practice, and it covers 79 items, not the whole questionnaire. |
+| Research-paper quality | 4 | Pre-registered, rules and hit list frozen by hash before replication, the test checked on shuffled items, every stage and every miss reported. Not 5: no human second analyst has re-run it, the scope (79 items) is smaller than the "300+" registered as an expectation, and it is one survey. |
+
+**Against the target (5, 5, 4): quality meets it; novelty 3 and impact 2 do not, and the discovery deliverable is not met.** This
+closes the free-NHIS route. What could still lift novelty and impact needs a person: the NCHS Research Data Center (NHIS linked to
+cancer registries), PLCO, CHARLS or UK Biobank (see `docs/NEXT_STEPS_FOR_RAHUL.md` and `docs/CLINICAL_DATA_ACCESS.md`).
