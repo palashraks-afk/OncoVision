@@ -452,5 +452,54 @@
       "S2_cancer_specific": false,
       "S3_ida_beats_non_iron": false
     }
+  },
+  "R1_replication_2001_2002": {
+    "n_50plus": 2139,
+    "ida_n": 54,
+    "weighted_population_50plus_millions": 68.5,
+    "ida_prevalence": {
+      "est": 0.025436128137106443,
+      "ci": [
+        0.014699148487090072,
+        0.036173107787122814
+      ],
+      "millions": 1.74
+    },
+    "ida_untreated_share": {
+      "est": 0.7713899724707004,
+      "ci": [
+        0.6569895748076313,
+        0.8857903701337695
+      ],
+      "n": 54
+    },
+    "untreated_share_regular_attenders": {
+      "est": 0.7684161670663084,
+      "ci": [
+        0.6512850467417839,
+        0.885547287390833
+      ],
+      "n": 46
+    },
+    "bar_R1_met": true
+  },
+  "M1_competing_risks_5y": {
+    "rrr_cancer_ida": 3.104,
+    "rrr_cancer_ci": [
+      1.475,
+      4.94
+    ],
+    "rrr_other_ida": 2.261,
+    "rrr_other_ci": [
+      1.481,
+      3.196
+    ],
+    "ratio": 1.373,
+    "ratio_ci": [
+      0.676,
+      2.509
+    ],
+    "bootstrap_used": 500,
+    "bar_M1_specific": false
   }
 }

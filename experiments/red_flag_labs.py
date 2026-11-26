@@ -210,12 +210,70 @@ def part_b(yrs):
     return res
 
 
+def part_r1():
+    """Addendum 4, R1: replication of the national picture in NHANES 2001-2002 (independent era)."""
+    d = pd.read_csv(os.path.join(ROOT, "data", "red_flag_2001.csv.gz"))
+    d = d[(d["RIDAGEYR"] >= 50) & d["LBXHGB"].notna() & d["LBXFER"].notna() & (d["WTMEC2YR"] > 0)].copy()
+    d["male"] = (d["RIAGENDR"] == 1).astype(int)
+    d = d[~((d["male"] == 0) & (d["RHQ030"] == 1))]
+    _, ida, _ = flags(d["LBXHGB"].to_numpy(), d["LBXFER"].to_numpy(), d["male"].to_numpy())
+    w, h, c = d["WTMEC2YR"].to_numpy(), d["SDMVSTRA"].to_numpy(), d["SDMVPSU"].to_numpy()
+    p, ci = ratio_est(ida.astype(float), np.ones(len(d)), w, h, c)
+    known = d["MCQ053"].isin([1, 2]).to_numpy()
+    k = ida & known
+    untreated = (d["MCQ053"] == 2).to_numpy().astype(float)
+    pu, ciu = ratio_est(untreated * k, k.astype(float), w, h, c)
+    seen = (d["HUQ030"].isin([1, 3]) & (d["HUQ050"] >= 2) & d["HUQ050"].between(0, 8)).to_numpy()
+    k2 = k & seen
+    pr, cir = ratio_est(untreated * k2, k2.astype(float), w, h, c)
+    pop = float(w.sum())
+    return {"n_50plus": int(len(d)), "ida_n": int(ida.sum()), "weighted_population_50plus_millions": round(pop / 1e6, 1),
+            "ida_prevalence": {"est": p, "ci": ci, "millions": round(p * pop / 1e6, 2)},
+            "ida_untreated_share": {"est": pu, "ci": ciu, "n": int(k.sum())},
+            "untreated_share_regular_attenders": {"est": pr, "ci": cir, "n": int(k2.sum())},
+            "bar_R1_met": bool(ciu[0] > 0.5)}
+
+
+def part_m1(yrs=5):
+    """Addendum 4, M1: multinomial (alive / cancer death / other death) competing-risks model, pooled follow-up data."""
+    d0 = load_followup()
+    d = d0[d0[f"ok{yrs}"]].reset_index(drop=True)
+    y = np.where(d[f"ca{yrs}"] == 1, 1, np.where(d[f"oth{yrs}"] == 1, 2, 0))
+
+    def fit(s, yy):
+        st = SplineTransformer(degree=3, n_knots=4, knots="quantile", extrapolation="constant", include_bias=False).fit(s[["age"]])
+        X = design(s, st, True)
+        m = LogisticRegression(C=1e6, max_iter=3000).fit(X, yy)
+        k = st.transform(s[["age"]].iloc[:1].to_numpy()).shape[1]
+        cls = list(m.classes_)
+        b = m.coef_
+        # log relative-risk ratios against "alive" for the IDA column
+        return float(b[cls.index(1)][k + 2] - b[cls.index(0)][k + 2]), float(b[cls.index(2)][k + 2] - b[cls.index(0)][k + 2])
+
+    ca, ot = fit(d, y)
+    bs = []
+    for _ in range(B):
+        i = RNG.integers(0, len(d), len(d))
+        if not set([0, 1, 2]).issubset(set(y[i])) or d.iloc[i].loc[lambda s: s["ida"] == 1].shape[0] == 0:
+            continue
+        a, o = fit(d.iloc[i].reset_index(drop=True), y[i])
+        bs.append((a, o))
+    bt = np.array(bs)
+    pc = lambda x: [round(float(v), 3) for v in np.exp(np.percentile(x, [2.5, 97.5]))]  # noqa: E731
+    return {"rrr_cancer_ida": round(float(np.exp(ca)), 3), "rrr_cancer_ci": pc(bt[:, 0]), "rrr_other_ida": round(float(np.exp(ot)), 3), "rrr_other_ci": pc(bt[:, 1]),
+            "ratio": round(float(np.exp(ca - ot)), 3), "ratio_ci": pc(bt[:, 0] - bt[:, 1]), "bootstrap_used": int(len(bt)), "bar_M1_specific": bool(np.exp(np.percentile(bt[:, 0] - bt[:, 1], 2.5)) > 1)}
+
+
 def main():
     out = {"A_societal_2017_2020": part_a()}
     print(json.dumps(out["A_societal_2017_2020"], indent=1)[:3000])
     for yrs in (5, 10):
         out[f"B_scientific_{yrs}y"] = part_b(yrs)
         print(f"\n--- {yrs}-year"); print(json.dumps(out[f"B_scientific_{yrs}y"], indent=1))
+    out["R1_replication_2001_2002"] = part_r1()
+    out["M1_competing_risks_5y"] = part_m1(5)
+    print("R1", json.dumps(out["R1_replication_2001_2002"]))
+    print("M1", json.dumps(out["M1_competing_risks_5y"]))
     json.dump(out, open(OUT, "w"), indent=2)
 
 

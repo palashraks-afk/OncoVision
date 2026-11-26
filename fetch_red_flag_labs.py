@@ -49,6 +49,22 @@ def current():
     print(f"  wrote data/red_flag_current.csv.gz ({len(d):,} rows)", flush=True)
 
 
+def era_2001():
+    """Addendum 4, R1: the same national picture in NHANES 2001-2002 (independent era)."""
+    print("NHANES 2001-2002 (replication of the national picture)", flush=True)
+    global P
+    old, P = P, "https://wwwn.cdc.gov/Nchs/Data/Nhanes/Public/2001/DataFiles/{f}.xpt"
+    try:
+        d = xpt("DEMO_B", ["SEQN", "RIAGENDR", "RIDAGEYR", "RIDRETH1", "INDFMPIR", "WTMEC2YR", "SDMVSTRA", "SDMVPSU"])
+        for name, cols in (("L25_B", ["LBXHGB", "LBXMCVSI"]), ("L06_B", ["LBXFER"]), ("MCQ_B", ["MCQ053", "MCQ220"]),
+                           ("HIQ_B", ["HID010"]), ("HUQ_B", ["HUQ030", "HUQ050"]), ("RHQ_B", ["RHQ030"])):
+            d = d.merge(xpt(name, cols), on="SEQN", how="left")
+    finally:
+        P = old
+    d.to_csv(os.path.join("data", "red_flag_2001.csv.gz"), index=False, compression="gzip")
+    print(f"  wrote data/red_flag_2001.csv.gz ({len(d):,} rows); ferritin present {d['LBXFER'].notna().sum():,}", flush=True)
+
+
 def followup():
     print("NHANES 2001-2002 (from nhanes_navigator) and NHANES III", flush=True)
     nav = pd.read_csv(os.path.join("data", "nhanes_navigator.csv.gz"))
@@ -86,4 +102,5 @@ def followup():
 if __name__ == "__main__":
     os.makedirs("data", exist_ok=True)
     current()
+    era_2001()
     followup()
