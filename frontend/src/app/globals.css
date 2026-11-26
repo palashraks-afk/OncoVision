@@ -1,54 +1,56 @@
 @import "tailwindcss";
 
 /*
-  Dark, but not the neon-on-black look every AI app ships.
+  A printed lab report: dark ink on white paper.
 
-  Two rules keep it out of that territory. Nothing glows: no coloured box
-  shadows, no gradients, and separation comes from hairline rules the way it
-  does on a printed report. And the accents are desaturated: the cyan is a
-  muted instrument teal rather than #06b6d4, the red is a signal red rather
-  than a hot one, so a flagged value stands out because everything around it
-  is quiet.
+  Light by default, because a lab report is, and because a dark screen with
+  coloured accents is the default look of AI-built apps. Separation comes from
+  hairline rules the way it does on a printed report, not from boxes, glows or
+  shadows. One accent (a clinical teal) for action and links; red only for a
+  flagged value; amber only for a caution. Greys for everything else.
 
   Every colour in the interface is declared here and nowhere else.
 */
 :root {
+  color-scheme: light;
+
   /* Ground and surfaces */
-  --paper: #0d1014;
-  --paper-2: #141922;
-  --paper-3: #1c222c;
-  --surface: #11161e;
+  --paper: #ffffff;
+  --paper-2: #f6f7f8;
+  --paper-3: #eceef1;
+  --surface: #ffffff;
 
   /* Text, stepping down in weight rather than in hue */
-  --ink: #e6e9ed;
-  --ink-2: #a2a9b4;
-  --ink-3: #78808c;
-  --ink-4: #5a626d;
+  --ink: #15191e;
+  --ink-2: #3f4751;
+  --ink-3: #5f6874;
+  --ink-4: #868f9a;
 
   /* Structure */
-  --rule: #232a35;
-  --rule-strong: #333c4a;
+  --rule: #e2e5e9;
+  --rule-strong: #c5ccd4;
 
-  /* Signals. Muted on purpose. */
-  --stamp: #5aa4ab;
-  --stamp-hover: #74bcc2;
-  --stamp-bg: #14232a;
-  --stamp-line: #2f5c63;
-  /* Primary action. Deep enough that it does not dominate the page. */
-  --stamp-solid: #1e4348;
-  --stamp-solid-hover: #275860;
+  /* The one accent: clinical teal */
+  --stamp: #0e6a72;
+  --stamp-hover: #0a5258;
+  --stamp-bg: #eef6f7;
+  --stamp-line: #a9cfd3;
+  /* Primary action: a light teal panel with dark text, so it reads without shouting. */
+  --stamp-solid: #d5eaec;
+  --stamp-solid-hover: #c3e0e3;
 
-  --flag: #d2685e;
-  --flag-bg: #2a1715;
-  --flag-line: #6b342e;
+  /* Signals, used only for what they mean */
+  --flag: #b42318;
+  --flag-bg: #fdf0ef;
+  --flag-line: #ecb7b2;
 
-  --ok: #6aa383;
-  --ok-bg: #142019;
-  --ok-line: #35563f;
+  --ok: #1f7a4a;
+  --ok-bg: #edf7f1;
+  --ok-line: #aed6bf;
 
-  --warn: #c2954e;
-  --warn-bg: #241c10;
-  --warn-line: #5c4726;
+  --warn: #8a5a00;
+  --warn-bg: #fdf6e7;
+  --warn-line: #e6cb8f;
 }
 
 html,

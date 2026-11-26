@@ -235,10 +235,13 @@ const PANCREATIC_MULTISITE = [
 
 
 
+// Chart colours. SVG chart libraries need literal values, so these repeat the tokens in globals.css.
+const CHART = { grid: "#c5ccd4", tick: "#5f6874", flag: "#b42318", accent: "#0e6a72", paper: "#ffffff", ink: "#15191e", cursor: "rgba(21,25,30,0.04)" };
+
 const OncovisionLogo = ({ className }: { className?: string }) => (
   <svg viewBox="0 0 100 100" className={className} fill="none" xmlns="http://www.w3.org/2000/svg">
     <path d="M10 50C10 50 25 20 50 20C75 20 90 50 90 50C90 50 75 80 50 80C25 80 10 50 10 50Z" stroke="currentColor" strokeWidth="4" strokeLinecap="round" strokeLinejoin="round" />
-    <circle cx="50" cy="50" r="10" stroke="currentColor" strokeWidth="4" fill="#020617" />
+    <circle cx="50" cy="50" r="10" stroke="currentColor" strokeWidth="4" style={{ fill: "var(--paper)" }} />
     <circle cx="50" cy="50" r="3" fill="currentColor" />
     <path d="M25 40L50 50M25 60L50 50M75 40L50 50M75 60L50 50" stroke="currentColor" strokeWidth="2" strokeDasharray="3 3" />
   </svg>
@@ -596,7 +599,7 @@ export default function OncovisionDashboard() {
                       <div className="space-y-2">
                         {uploadedFiles.map((f, i) => (
                           <div key={i} className="flex items-center gap-2 text-xs text-[var(--ink-2)]">
-                            <FileCheck className="w-3 h-3 text-emerald-500" />
+                            <FileCheck className="w-3 h-3 text-[var(--ok)]" />
                             <span className="truncate">{f}</span>
                           </div>
                         ))}
@@ -1245,11 +1248,11 @@ export default function OncovisionDashboard() {
                                         <p className="text-[10px] text-[var(--ink-2)] uppercase tracking-widest text-center mb-2">Marker profile</p>
                                         <ResponsiveContainer width="100%" height="100%">
                                           <RadarChart cx="50%" cy="50%" outerRadius="70%" data={d.contributors}>
-                                            <PolarGrid stroke="#334155" />
-                                            <PolarAngleAxis dataKey="name" tick={{ fill: "#94a3b8", fontSize: 8 }} />
+                                            <PolarGrid stroke={CHART.grid} />
+                                            <PolarAngleAxis dataKey="name" tick={{ fill: CHART.tick, fontSize: 8 }} />
                                             <PolarRadiusAxis angle={30} domain={[0, "auto"]} tick={false} axisLine={false} />
-                                            <Radar dataKey="impact" stroke="#ef4444" fill="#ef4444" fillOpacity={0.35} />
-                                            <Tooltip contentStyle={{ backgroundColor: "#1e293b", border: "none", borderRadius: "8px", fontSize: "12px" }} />
+                                            <Radar dataKey="impact" stroke={CHART.flag} fill={CHART.flag} fillOpacity={0.2} />
+                                            <Tooltip contentStyle={{ backgroundColor: CHART.paper, border: `1px solid ${CHART.grid}`, borderRadius: 0, fontSize: "12px", color: CHART.ink }} />
                                           </RadarChart>
                                         </ResponsiveContainer>
                                       </div>
@@ -1260,14 +1263,14 @@ export default function OncovisionDashboard() {
                                       <ResponsiveContainer width="100%" height="100%">
                                         <BarChart data={d.contributors} layout="vertical" margin={{ top: 0, right: 10, left: 0, bottom: 0 }}>
                                           <XAxis type="number" hide />
-                                          <YAxis dataKey="name" type="category" width={95} tick={{ fontSize: 9, fill: "#94a3b8" }} />
+                                          <YAxis dataKey="name" type="category" width={95} tick={{ fontSize: 9, fill: CHART.tick }} />
                                           <Tooltip
-                                            cursor={{ fill: "rgba(255,255,255,0.05)" }}
+                                            cursor={{ fill: CHART.cursor }}
                                             content={({ active, payload }: any) => {
                                               if (active && payload?.length) {
                                                 const p = payload[0].payload;
                                                 return (
-                                                  <div className="bg-[var(--paper-3)] border border-[var(--rule-strong)] p-3 rounded-none shadow-xl">
+                                                  <div className="bg-[var(--paper-3)] border border-[var(--rule-strong)] p-3 rounded-none">
                                                     <p className="text-[var(--ink)] font-bold text-xs mb-1">{p.name}</p>
                                                     <p className={p.over ? "text-[var(--flag)] font-bold" : "text-[var(--stamp)] font-bold"}>
                                                       Patient value {p.value}
@@ -1279,9 +1282,9 @@ export default function OncovisionDashboard() {
                                               return null;
                                             }}
                                           />
-                                          <Bar dataKey="value" radius={[0, 4, 4, 0]} barSize={12}>
+                                          <Bar dataKey="value" barSize={12}>
                                             {d.contributors.map((c: any, i: number) => (
-                                              <Cell key={i} fill={c.over ? "#ef4444" : "#0ea5e9"} />
+                                              <Cell key={i} fill={c.over ? CHART.flag : CHART.accent} />
                                             ))}
                                           </Bar>
                                         </BarChart>
@@ -2077,7 +2080,7 @@ export default function OncovisionDashboard() {
                     </div>
                   </a>
                   <a href="https://www.linkedin.com/in/Palash-Rakshit10" target="_blank" rel="noopener noreferrer" className="flex items-center gap-3 bg-[var(--paper-2)] p-4 rounded-none border border-[var(--rule)] hover:border-[var(--stamp-line)] transition-colors">
-                    <Linkedin className="w-5 h-5 text-blue-400 flex-shrink-0" />
+                    <Linkedin className="w-5 h-5 text-[var(--stamp)] flex-shrink-0" />
                     <div className="flex flex-col">
                       <span className="text-[9px] uppercase font-bold text-[var(--ink-3)]">Professional profile</span>
                       <span className="font-bold text-xs">Palash-Rakshit10</span>
