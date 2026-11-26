@@ -1,0 +1,56 @@
+{
+  "age 70-79 vs 50-59": {
+    "trial_ratio": 4.33,
+    "trial_ci": [
+      3.4,
+      5.53
+    ],
+    "proportional_to_death_rate": {
+      "ratio": 3.77,
+      "ci": [
+        2.97,
+        4.74
+      ],
+      "pass": true
+    },
+    "square_root_sensitivity": {
+      "ratio": 1.98,
+      "ci": [
+        1.96,
+        2.0
+      ],
+      "pass": false
+    },
+    "cancer_deaths": [
+      161,
+      232
+    ]
+  },
+  "men vs women": {
+    "trial_ratio": 1.53,
+    "trial_ci": [
+      1.33,
+      1.75
+    ],
+    "proportional_to_death_rate": {
+      "ratio": 1.81,
+      "ci": [
+        1.51,
+        2.2
+      ],
+      "pass": true
+    },
+    "square_root_sensitivity": {
+      "ratio": 1.22,
+      "ci": [
+        1.21,
+        1.23
+      ],
+      "pass": false
+    },
+    "cancer_deaths": [
+      267,
+      376
+    ]
+  }
+}

@@ -179,3 +179,11 @@ Honest scores (my judgement, same 1/3/5 scale):
 **Against the target (5, 5, 4): quality meets it; novelty 3 and impact 2 do not, and the discovery deliverable is not met.** This
 closes the free-NHIS route. What could still lift novelty and impact needs a person: the NCHS Research Data Center (NHIS linked to
 cancer registries), PLCO, CHARLS or UK Biobank (see `docs/NEXT_STEPS_FOR_RAHUL.md` and `docs/CLINICAL_DATA_ACCESS.md`).
+
+
+## Update to Angle E, 25 November 2026
+
+- **Error found and removed.** The paper and `/multicancer` reported predictive values and false alarms by group on an assumed constant false-positive rate. The NHS-Galleri trial (PMID 42773209) shows the false-positive rate rises with age and predictive value is about flat across age and sex. Those figures are gone. Cancers found, cost per cancer, coverage and the triage yield ratio did not use that rate.
+- **External check passed (age and sex only).** Predicted detection ratio ages 70-78 vs 50-59: 3.77 vs trial 4.33; men vs women: 1.81 vs 1.53; both intervals overlap. The square-root alternative failed both. Lenient rule, not blind, smoking not tested (the trial reports it only in a supplement not yet read).
+- **Context.** An FDA advisory panel backed Galleri on 23 September 2026; no final decision found as of 25 November. I missed that vote when the paper was first written.
+- **Scores unchanged: novelty 5, impact 4, quality 4.** The trial check strengthens quality; the error shows why a human second analyst is still needed, so I do not move it to 5. Novelty rests on the 12 October searches plus one web search on 25 November; it is not proof.

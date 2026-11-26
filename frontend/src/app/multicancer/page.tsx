@@ -9,7 +9,7 @@ import model from "./model.json";
 // The law rule, the test numbers and the model are explained on the page and in
 // docs/MCED_LAW_PREREG.md; nothing is sent to a server.
 
-type Model = { k: number; specificity: number; price: number; covered_percentiles: number[]; risk: Record<string, Record<string, Record<string, number>>> };
+type Model = { k: number; price: number; covered_percentiles: number[]; risk: Record<string, Record<string, Record<string, number>>> };
 const M = model as Model;
 
 const field = "w-full bg-[var(--paper)] border border-[var(--rule-strong)] px-3 py-2 text-sm text-[var(--ink)] focus:outline-none focus:border-[var(--stamp-line)]";
@@ -63,10 +63,9 @@ export default function MultiCancerPage() {
     const key = smoke === "never" ? "never:0" : smoke === "former" ? `former:${snap(Number(quit) || 0, 5, 0, 50)}` : `current:${snap(Number(cigs) || 0, 5, 5, 40)}`;
     const p = M.risk[sex === "male" ? "m" : "f"][String(age)][key];
     const det = Math.min(M.k * p, 0.5);
-    const fp = (1 - M.specificity) * (1 - det);
     let rank = 0;
     while (rank < 100 && M.covered_percentiles[rank] < p) rank++;
-    return { law, age, risk: { p, det, fp, ppv: det / (det + fp), rank, cost: M.price / det } };
+    return { law, age, risk: { p, det, rank, cost: M.price / det } };
   }, [birth, sex, smoke, cigs, quit, early, thisYear]);
 
   return (
@@ -81,8 +80,9 @@ export default function MultiCancerPage() {
           are one of them, and what the test would be likely to find in someone like you.
         </p>
         <p className="text-xs text-[var(--ink-3)] leading-relaxed mb-8 border-l-2 border-[var(--warn-line)] pl-3">
-          Research prototype, not medical advice. No multi-cancer blood test has been shown to reduce deaths from cancer, and none is
-          FDA-approved for screening. The estimates below come from a US national survey and one published study of the test.
+          Research prototype, not medical advice. No multi-cancer blood test has been shown to reduce deaths from cancer. An FDA advisory panel backed one in
+          September 2026; when this page was last checked (25 November 2026), no final approval had been found. The estimates
+          below come from a US national survey and published studies of the test.
         </p>
 
         <form className="border-y border-[var(--rule-strong)] py-6 mb-8" onSubmit={e => e.preventDefault()}>
@@ -136,16 +136,15 @@ export default function MultiCancerPage() {
 
                 <section>
                   <h2 className="display text-lg mb-3 rule-out">If 1,000 people like you took the test once</h2>
-                  <dl className="grid grid-cols-3 border-y border-[var(--rule)] divide-x divide-[var(--rule)] mb-3">
-                    <div className="py-3 px-3"><dt className="field-label">Cancers found</dt><dd className="data text-2xl mt-1">{(out.risk.det * 1000).toFixed(1)}</dd></div>
-                    <div className="py-3 px-3"><dt className="field-label">False alarms</dt><dd className="data text-2xl mt-1">{(out.risk.fp * 1000).toFixed(1)}</dd></div>
-                    <div className="py-3 px-3"><dt className="field-label">Positives that are real</dt><dd className="data text-2xl mt-1">{Math.round(out.risk.ppv * 100)}%</dd></div>
-                  </dl>
-                  <p className="text-sm text-[var(--ink-2)] leading-relaxed">
+                  <p className="text-sm text-[var(--ink-2)] leading-relaxed mb-3">
+                    The test would be expected to find about <span className="data text-[var(--ink)]">{(out.risk.det * 1000).toFixed(1)}</span> cancers.
                     At the price the law sets (<span className="data">${M.price.toFixed(2)}</span> a test), Medicare would spend about{" "}
-                    <span className="data text-[var(--ink)]">${Math.round(out.risk.cost).toLocaleString()}</span> on tests for every cancer found in people like you,
-                    before any follow-up scans. The test also misses most cancers: it found about 4 in 10 of them in its largest published study, so a
-                    negative result does not rule cancer out.
+                    <span className="data text-[var(--ink)]">${Math.round(out.risk.cost).toLocaleString()}</span> on tests for each one, before any follow-up scans.
+                  </p>
+                  <p className="text-sm text-[var(--ink-2)] leading-relaxed">
+                    A positive result is not a diagnosis. In a large trial in England, about half of positive results (46% to 58%, depending on the
+                    year of testing) turned out to be cancer, at a similar rate across ages. The test also misses most cancers, so a negative result
+                    does not rule cancer out.
                   </p>
                 </section>
 
@@ -163,11 +162,9 @@ export default function MultiCancerPage() {
 
             <footer className="border-t border-[var(--rule)] pt-5 text-xs text-[var(--ink-3)] space-y-2 leading-relaxed">
               <p>Risk comes from a model fitted on 110,000 US adults in the National Health Interview Survey (1997-2002) and checked on 73,000 more
-                (2005-2009), with deaths followed through 2019. Test performance comes from the PATHFINDER 2 study (specificity 99.64%; cancer found
-                in 0.54% of adults over 50), assuming the chance the test finds a cancer rises in step with the chance of dying of one. That assumption
-                is uncertain, and survey data from those years overstate today&apos;s smoking.</p>
+                (2005-2009), with deaths followed through 2019. The detection rate comes from the PATHFINDER 2 study (cancer found in 0.54% of adults over 50), assuming the chance the test finds a cancer rises in step with the chance of dying of one. That assumption matched the age and sex pattern in the NHS-Galleri trial but has not been checked for smoking, and survey data from those years overstate today&apos;s smoking.</p>
               <p>Sources: <a className="underline" href={LAW_URL} target="_blank" rel="noreferrer">the law as passed</a>,{" "}
-                <a className="underline" href="https://pubmed.ncbi.nlm.nih.gov/42773207/" target="_blank" rel="noreferrer">PATHFINDER 2</a>, and the
+                <a className="underline" href="https://pubmed.ncbi.nlm.nih.gov/42773207/" target="_blank" rel="noreferrer">PATHFINDER 2</a>, <a className="underline" href="https://europepmc.org/article/MED/42773209" target="_blank" rel="noreferrer">NHS-Galleri</a>, and the
                 pre-registered analysis in the project repository.</p>
             </footer>
           </div>

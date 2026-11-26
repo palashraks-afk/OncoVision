@@ -72,7 +72,7 @@ def main():
     fig, ax = plt.subplots(figsize=(6.4, 3.4))
     ax.bar(range(len(vals)), vals, color=cols)
     for i, v in enumerate(vals):
-        ax.text(i, v + 0.2, f"{v:.1f}\nPPV {g[names[i]]['ppv']:.0%}", ha="center", va="bottom", fontsize=7.5, color=INK)
+        ax.text(i, v + 0.2, f"{v:.1f}", ha="center", va="bottom", fontsize=7.5, color=INK)
     ax.set_xticks(range(len(vals)), short, fontsize=7.5)
     ax.set_ylabel("Cancers found per 1,000 tests")
     ax.set_ylim(0, max(vals) * 1.35)
