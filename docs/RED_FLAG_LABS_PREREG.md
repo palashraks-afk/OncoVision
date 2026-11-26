@@ -98,3 +98,20 @@ No group, rate or model has been computed.
 - Robustness checks added after seeing the main result (exploratory, reported whatever they show): the untreated share and
   usual-care share without people reporting earlier cancer; a stricter ferritin cut-off of 30 ng/mL; men only.
 - The 5-year versus 10-year pattern (signal stronger at 5 years) was noticed after the run and is exploratory.
+
+## Addendum 3, 26 November 2026 (after an independent re-check; everything here is labelled exploratory)
+
+The re-check (`docs/independent_check/red_flag/`) reproduced every number and raised points that change how the result
+is read:
+
+1. **The registered societal bar was uninformative.** 92% of all adults 50+ have a usual place of care, so "90% of untreated
+   IDA has a usual place of care" restates the population rate. The bar is reported as met but is **not** evidence of a missed
+   opportunity on its own. Added, exploratory: the untreated share of IDA among people who have a usual place of care and
+   two or more visits in the past year (the people a routine blood test would reach), against the same share among people
+   without; and the usual-care rate in all adults 50+ as the baseline.
+2. **"Untreated" is not "unrecognised".** MCQ053 asks only about treatment in the past 3 months; people who were treated and
+   recovered are no longer anaemic. The paper and app say "not being treated", never "unknown".
+3. **Follow-up months.** 441 NHANES III records (416 of them deaths) had no months from the exam; months from the interview
+   are now used for them (flagged `months_source`). Part B is re-run with this fix; the first run's numbers are kept in git.
+4. **Fragility.** Part B rests on 14 cancer deaths among people with IDA, unweighted. Bar S3 crossed 1 in one bootstrap seed and
+   not in another; it is reported as not shown.

@@ -55,7 +55,7 @@ def followup():
     b = nav[nav["cycle"] == "2001-2002"].copy()
     b = pd.DataFrame({"dataset": "NHANES 2001-2002", "SEQN": b["SEQN"], "age": b["age"], "male": (b["sex"] == "male").astype(float),
                       "smoked": b["ever_smoked"], "hemoglobin": b["hemoglobin"], "mcv": b["mcv"], "platelets": b["platelets"], "ferritin": b["ferritin"],
-                      "prior_cancer": 0, "died": b["died"], "ucod": b["ucod"], "months": b["months"]})
+                      "prior_cancer": 0, "died": b["died"], "ucod": b["ucod"], "months": b["months"], "months_source": "exam"})
     raw = get(NH3_LAB)
     lab = pd.read_fwf(io.BytesIO(raw), colspecs=[(0, 5), (1462, 1466), (1339, 1344)], names=["SEQN", "FRP", "MVPSI"])
     for c in ("FRP", "MVPSI"):
@@ -64,9 +64,19 @@ def followup():
     lab["MVPSI"] = lab["MVPSI"].mask(lab["MVPSI"] >= 888)
     print(f"  NHANES III lab: {len(lab):,} rows; ferritin present {lab['FRP'].notna().mean():.0%}; ferritin median {lab['FRP'].median():.0f}; MCV median {lab['MVPSI'].median():.1f}", flush=True)
     m3 = pd.read_csv(os.path.join("data", "nhanes3_markers.csv.gz")).merge(lab, on="SEQN", how="left")
+    # 416 NHANES III decedents have no months-from-exam; fall back to months from interview (the exam usually followed within
+    # weeks), flagged in months_source. Found by the independent re-check (docs/independent_check/red_flag/).
+    mort = pd.read_fwf(io.BytesIO(get("https://ftp.cdc.gov/pub/Health_Statistics/NCHS/datalinkage/linked_mortality/NHANES_III_MORT_2019_PUBLIC.dat")),
+                       colspecs=[(0, 6), (42, 45), (45, 48)], names=["SEQN", "PERMTH_INT", "PERMTH_EXM"])
+    for c in ("PERMTH_INT", "PERMTH_EXM"):
+        mort[c] = pd.to_numeric(mort[c], errors="coerce")
+    m3 = m3.merge(mort, on="SEQN", how="left")
+    m3["months_num"] = pd.to_numeric(m3["months"], errors="coerce")
+    m3["months_source"] = np.where(m3["months_num"].notna(), "exam", np.where(m3["PERMTH_INT"].notna(), "interview", "none"))
+    m3["months"] = m3["months_num"].fillna(m3["PERMTH_INT"])
     c = pd.DataFrame({"dataset": "NHANES III 1988-1994", "SEQN": m3["SEQN"], "age": m3["age"], "male": m3["male"], "smoked": m3["smoked"],
                       "hemoglobin": m3["hemoglobin"], "mcv": m3["MVPSI"], "platelets": m3["platelets"], "ferritin": m3["FRP"],
-                      "prior_cancer": m3["prior_cancer"], "died": m3["died"], "ucod": m3["ucod"], "months": m3["months"]})
+                      "prior_cancer": m3["prior_cancer"], "died": m3["died"], "ucod": m3["ucod"], "months": m3["months"], "months_source": m3["months_source"]})
     out = pd.concat([b, c], ignore_index=True)
     out.to_csv(os.path.join("data", "red_flag_followup.csv.gz"), index=False, compression="gzip")
     print(out.groupby("dataset")[["age", "hemoglobin", "mcv", "ferritin", "platelets", "died", "months"]].median().round(1).to_string())

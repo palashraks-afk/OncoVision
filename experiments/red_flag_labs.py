@@ -112,6 +112,21 @@ def part_a():
         rob[label] = {"prevalence": pp, "prevalence_ci": cip, "ida_n": int(ida2.sum()), "untreated_share": pu, "untreated_ci": ciu,
                       "usual_care_share_among_untreated": pc2, "usual_care_ci": cic2, "untreated_n": int(u2.sum())}
     res["robustness_exploratory"] = rob
+    # exploratory (Addendum 3): a fairer missed-opportunity measure
+    seen = (d["HUQ030"].isin([1, 3]) & (d["HUQ051"] >= 2) & d["HUQ051"].between(0, 8)).to_numpy()
+    notseen = (d["HUQ030"].isin([1, 2, 3]) & d["HUQ051"].between(0, 8)).to_numpy() & ~seen
+    mo = {}
+    for label, g in (("usual_care_and_2plus_visits", seen), ("everyone_else", notseen)):
+        k3 = (d["ida"] == 1).to_numpy() & known & g
+        pu3, ciu3 = ratio_est(untreated * k3, k3.astype(float), w, h, c)
+        mo[label] = {"untreated_share_of_ida": pu3, "ci": ciu3, "ida_n": int(k3.sum())}
+    allv = d["HUQ030"].isin([1, 2, 3]).to_numpy()
+    pb, cib = ratio_est(d["HUQ030"].isin([1, 3]).to_numpy().astype(float) * allv, allv.astype(float), w, h, c)
+    mo["baseline_usual_care_all_50plus"] = {"est": pb, "ci": cib}
+    k4 = (d["ida"] == 1).to_numpy() & seen
+    p8, ci8 = ratio_est(k4.astype(float), seen.astype(float), w, h, c)
+    mo["ida_prevalence_among_regular_attenders"] = {"est": p8, "ci": ci8, "millions_untreated_among_them": round(p8 * float((w * seen).sum()) / 1e6 * mo["usual_care_and_2plus_visits"]["untreated_share_of_ida"], 2)}
+    res["missed_opportunity_exploratory"] = mo
     return res
 
 

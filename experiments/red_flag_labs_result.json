@@ -200,6 +200,39 @@
         ],
         "untreated_n": 43
       }
+    },
+    "missed_opportunity_exploratory": {
+      "usual_care_and_2plus_visits": {
+        "untreated_share_of_ida": 0.7728079716586183,
+        "ci": [
+          0.6486470217901039,
+          0.8969689215271326
+        ],
+        "ida_n": 102
+      },
+      "everyone_else": {
+        "untreated_share_of_ida": 1.0,
+        "ci": [
+          1.0,
+          1.0
+        ],
+        "ida_n": 16
+      },
+      "baseline_usual_care_all_50plus": {
+        "est": 0.9229604902136986,
+        "ci": [
+          0.9077503919372284,
+          0.9381705884901689
+        ]
+      },
+      "ida_prevalence_among_regular_attenders": {
+        "est": 0.022529283535476886,
+        "ci": [
+          0.01667944092426571,
+          0.028379126146688062
+        ],
+        "millions_untreated_among_them": 1.38
+      }
     }
   },
   "B_scientific_5y": {
@@ -220,84 +253,84 @@
       "note": "too few cancer deaths in people with IDA for a model"
     },
     "NHANES III 1988-1994": {
-      "n": 5923,
-      "ida_n": 165,
-      "nia_n": 430,
-      "cancer_deaths": 162,
+      "n": 6110,
+      "ida_n": 177,
+      "nia_n": 460,
+      "cancer_deaths": 174,
       "cancer_deaths_ida": 13,
-      "cancer_deaths_nia": 16,
-      "cancer_deaths_none": 133,
-      "other_deaths_ida": 27,
-      "crude_cancer_rate_ida": 0.0788,
-      "crude_cancer_rate_nia": 0.0372,
-      "crude_cancer_rate_none": 0.025,
-      "people_with_ida_per_cancer_death": 12.7,
-      "people_without_anaemia_per_cancer_death": 40.1,
-      "or_cancer_ida": 3.145,
+      "cancer_deaths_nia": 18,
+      "cancer_deaths_none": 143,
+      "other_deaths_ida": 31,
+      "crude_cancer_rate_ida": 0.0734,
+      "crude_cancer_rate_nia": 0.0391,
+      "crude_cancer_rate_none": 0.0261,
+      "people_with_ida_per_cancer_death": 13.6,
+      "people_without_anaemia_per_cancer_death": 38.3,
+      "or_cancer_ida": 2.808,
       "or_cancer_ida_ci": [
-        1.421,
-        5.389
+        1.242,
+        4.752
       ],
-      "or_cancer_nia": 1.287,
+      "or_cancer_nia": 1.291,
       "or_cancer_nia_ci": [
-        0.614,
-        1.979
+        0.701,
+        2.125
       ],
-      "or_other_ida": 1.803,
+      "or_other_ida": 1.879,
       "or_other_ida_ci": [
-        1.081,
-        2.707
+        1.178,
+        2.827
       ],
-      "ratio_of_ors_cancer_vs_other_ida": 1.744,
+      "ratio_of_ors_cancer_vs_other_ida": 1.494,
       "ratio_of_ors_ci": [
-        0.672,
-        3.978
+        0.584,
+        3.375
       ],
-      "ida_minus_nia_cancer_ratio_of_ors": 2.443,
+      "ida_minus_nia_cancer_ratio_of_ors": 2.175,
       "ida_minus_nia_ci": [
-        1.039,
-        5.544
+        0.934,
+        4.692
       ],
       "bootstrap_used": 500
     },
     "pooled": {
-      "n": 7606,
-      "ida_n": 206,
-      "nia_n": 507,
-      "cancer_deaths": 195,
+      "n": 7793,
+      "ida_n": 218,
+      "nia_n": 537,
+      "cancer_deaths": 207,
       "cancer_deaths_ida": 14,
-      "cancer_deaths_nia": 18,
-      "cancer_deaths_none": 163,
-      "other_deaths_ida": 35,
-      "crude_cancer_rate_ida": 0.068,
-      "crude_cancer_rate_nia": 0.0355,
-      "crude_cancer_rate_none": 0.0236,
-      "people_with_ida_per_cancer_death": 14.7,
-      "people_without_anaemia_per_cancer_death": 42.3,
-      "or_cancer_ida": 2.754,
+      "cancer_deaths_nia": 20,
+      "cancer_deaths_none": 173,
+      "other_deaths_ida": 39,
+      "crude_cancer_rate_ida": 0.0642,
+      "crude_cancer_rate_nia": 0.0372,
+      "crude_cancer_rate_none": 0.0246,
+      "people_with_ida_per_cancer_death": 15.6,
+      "people_without_anaemia_per_cancer_death": 40.7,
+      "or_cancer_ida": 2.503,
       "or_cancer_ida_ci": [
-        1.255,
-        4.785
+        1.29,
+        4.201
       ],
-      "or_cancer_nia": 1.247,
+      "or_cancer_nia": 1.251,
       "or_cancer_nia_ci": [
-        0.685,
-        1.947
+        0.742,
+        1.914
       ],
-      "or_other_ida": 2.017,
+      "or_other_ida": 2.066,
       "or_other_ida_ci": [
-        1.231,
-        2.963
+        1.396,
+        2.976
       ],
-      "ratio_of_ors_cancer_vs_other_ida": 1.365,
+      "ratio_of_ors_cancer_vs_other_ida": 1.211,
       "ratio_of_ors_ci": [
-        0.549,
-        2.873
+        0.548,
+        2.476
       ],
-      "ida_minus_nia_cancer_ratio_of_ors": 2.209,
+      "ida_minus_nia_cancer_ratio_of_ors": 2.001,
       "ida_minus_nia_ci": [
-        0.95,
-        4.589
+        0.875,
+        4.114
       ],
       "bootstrap_used": 500
     },
@@ -329,84 +362,84 @@
       "note": "too few cancer deaths in people with IDA for a model"
     },
     "NHANES III 1988-1994": {
-      "n": 5923,
-      "ida_n": 165,
-      "nia_n": 430,
-      "cancer_deaths": 381,
+      "n": 6110,
+      "ida_n": 177,
+      "nia_n": 460,
+      "cancer_deaths": 397,
       "cancer_deaths_ida": 16,
-      "cancer_deaths_nia": 42,
-      "cancer_deaths_none": 323,
-      "other_deaths_ida": 54,
-      "crude_cancer_rate_ida": 0.097,
-      "crude_cancer_rate_nia": 0.0977,
-      "crude_cancer_rate_none": 0.0606,
-      "people_with_ida_per_cancer_death": 10.3,
-      "people_without_anaemia_per_cancer_death": 16.5,
-      "or_cancer_ida": 1.647,
+      "cancer_deaths_nia": 44,
+      "cancer_deaths_none": 337,
+      "other_deaths_ida": 60,
+      "crude_cancer_rate_ida": 0.0904,
+      "crude_cancer_rate_nia": 0.0957,
+      "crude_cancer_rate_none": 0.0616,
+      "people_with_ida_per_cancer_death": 11.1,
+      "people_without_anaemia_per_cancer_death": 16.2,
+      "or_cancer_ida": 1.523,
       "or_cancer_ida_ci": [
-        0.942,
-        2.643
+        0.749,
+        2.402
       ],
-      "or_cancer_nia": 1.513,
+      "or_cancer_nia": 1.462,
       "or_cancer_nia_ci": [
-        1.089,
-        2.091
+        0.967,
+        1.971
       ],
-      "or_other_ida": 1.676,
+      "or_other_ida": 1.674,
       "or_other_ida_ci": [
-        1.149,
-        2.46
+        1.128,
+        2.415
       ],
-      "ratio_of_ors_cancer_vs_other_ida": 0.982,
+      "ratio_of_ors_cancer_vs_other_ida": 0.909,
       "ratio_of_ors_ci": [
-        0.464,
-        1.878
+        0.383,
+        1.783
       ],
-      "ida_minus_nia_cancer_ratio_of_ors": 1.089,
+      "ida_minus_nia_cancer_ratio_of_ors": 1.042,
       "ida_minus_nia_ci": [
-        0.586,
-        1.875
+        0.515,
+        1.89
       ],
       "bootstrap_used": 500
     },
     "pooled": {
-      "n": 7606,
-      "ida_n": 206,
-      "nia_n": 507,
-      "cancer_deaths": 460,
+      "n": 7793,
+      "ida_n": 218,
+      "nia_n": 537,
+      "cancer_deaths": 476,
       "cancer_deaths_ida": 17,
-      "cancer_deaths_nia": 44,
-      "cancer_deaths_none": 399,
-      "other_deaths_ida": 70,
-      "crude_cancer_rate_ida": 0.0825,
-      "crude_cancer_rate_nia": 0.0868,
-      "crude_cancer_rate_none": 0.0579,
-      "people_with_ida_per_cancer_death": 12.1,
-      "people_without_anaemia_per_cancer_death": 17.3,
-      "or_cancer_ida": 1.419,
+      "cancer_deaths_nia": 46,
+      "cancer_deaths_none": 413,
+      "other_deaths_ida": 76,
+      "crude_cancer_rate_ida": 0.078,
+      "crude_cancer_rate_nia": 0.0857,
+      "crude_cancer_rate_none": 0.0587,
+      "people_with_ida_per_cancer_death": 12.8,
+      "people_without_anaemia_per_cancer_death": 17.0,
+      "or_cancer_ida": 1.33,
       "or_cancer_ida_ci": [
-        0.791,
-        2.266
+        0.703,
+        2.053
       ],
-      "or_cancer_nia": 1.354,
+      "or_cancer_nia": 1.317,
       "or_cancer_nia_ci": [
-        0.983,
-        1.845
+        0.941,
+        1.823
       ],
-      "or_other_ida": 1.928,
+      "or_other_ida": 1.911,
       "or_other_ida_ci": [
-        1.247,
-        2.73
+        1.421,
+        2.725
       ],
-      "ratio_of_ors_cancer_vs_other_ida": 0.736,
+      "ratio_of_ors_cancer_vs_other_ida": 0.696,
       "ratio_of_ors_ci": [
-        0.331,
-        1.436
+        0.308,
+        1.309
       ],
-      "ida_minus_nia_cancer_ratio_of_ors": 1.048,
+      "ida_minus_nia_cancer_ratio_of_ors": 1.009,
       "ida_minus_nia_ci": [
-        0.563,
-        1.783
+        0.489,
+        1.729
       ],
       "bootstrap_used": 500
     },
