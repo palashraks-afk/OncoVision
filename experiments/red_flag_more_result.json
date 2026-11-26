@@ -1,0 +1,177 @@
+{
+  "T1": {
+    "2017-2020": {
+      "dataset": "NHANES 2017-2020",
+      "n": 4192,
+      "ida_n": 120,
+      "anaemia_n": 540,
+      "microcytic_anaemia_n": 96,
+      "any_anaemia": {
+        "sensitivity": 1.0,
+        "sensitivity_ci": [
+          1.0,
+          1.0
+        ],
+        "ppv": 0.2526394129999943,
+        "ppv_ci": [
+          0.2013583530089502,
+          0.3039204729910384
+        ],
+        "ferritin_tests_per_case": 4.0
+      },
+      "microcytic_anaemia": {
+        "sensitivity": 0.26754317698740177,
+        "sensitivity_ci": [
+          0.16569709247734077,
+          0.36938926149746276
+        ],
+        "ppv": 0.4853396754865239,
+        "ppv_ci": [
+          0.34394548818292525,
+          0.6267338627901226
+        ],
+        "ferritin_tests_per_case": 2.1
+      }
+    },
+    "2001-2002": {
+      "dataset": "NHANES 2001-2002",
+      "n": 2139,
+      "ida_n": 54,
+      "anaemia_n": 173,
+      "microcytic_anaemia_n": 26,
+      "any_anaemia": {
+        "sensitivity": 1.0,
+        "sensitivity_ci": [
+          1.0,
+          1.0
+        ],
+        "ppv": 0.43797105558429644,
+        "ppv_ci": [
+          0.31225134019614853,
+          0.5636907709724444
+        ],
+        "ferritin_tests_per_case": 2.3
+      },
+      "microcytic_anaemia": {
+        "sensitivity": 0.19948504969479075,
+        "sensitivity_ci": [
+          0.030936983661017603,
+          0.3680331157285639
+        ],
+        "ppv": 0.5779684624266359,
+        "ppv_ci": [
+          0.3207428171769219,
+          0.8351941076763499
+        ],
+        "ferritin_tests_per_case": 1.7
+      }
+    },
+    "bar_T1_met": true
+  },
+  "T2": {
+    "n": 21820,
+    "cancer_deaths": 475,
+    "other_deaths": 1940,
+    "by_cohort": {
+      "NHANES 1999-2014": 15626,
+      "NHANES III": 6194
+    },
+    "micro_anaemia": {
+      "n_exposed": 379,
+      "cancer_deaths_exposed": 12,
+      "rrr_cancer": 1.744,
+      "rrr_cancer_ci": [
+        0.813,
+        3.197
+      ],
+      "rrr_other": 2.13,
+      "rrr_other_ci": [
+        1.488,
+        2.842
+      ],
+      "ratio": 0.819,
+      "ratio_ci": [
+        0.365,
+        1.597
+      ]
+    },
+    "other_anaemia": {
+      "n_exposed": 1865,
+      "cancer_deaths_exposed": 68,
+      "rrr_cancer": 1.837,
+      "rrr_cancer_ci": [
+        1.387,
+        2.378
+      ],
+      "rrr_other": 3.094,
+      "rrr_other_ci": [
+        2.72,
+        3.538
+      ],
+      "ratio": 0.594,
+      "ratio_ci": [
+        0.451,
+        0.794
+      ]
+    },
+    "high_platelets": {
+      "n_exposed": 652,
+      "cancer_deaths_exposed": 22,
+      "rrr_cancer": 1.713,
+      "rrr_cancer_ci": [
+        1.015,
+        2.769
+      ],
+      "rrr_other": 1.563,
+      "rrr_other_ci": [
+        1.159,
+        2.042
+      ],
+      "ratio": 1.096,
+      "ratio_ci": [
+        0.634,
+        1.826
+      ]
+    },
+    "weight_loss_1999_2014": {
+      "n_exposed": 1782,
+      "cancer_deaths_exposed": 38,
+      "rrr_cancer": 1.159,
+      "rrr_cancer_ci": [
+        0.788,
+        1.597
+      ],
+      "rrr_other": 1.939,
+      "rrr_other_ci": [
+        1.613,
+        2.323
+      ],
+      "ratio": 0.598,
+      "ratio_ci": [
+        0.396,
+        0.844
+      ]
+    },
+    "bar_T2_met": false
+  },
+  "T3": {
+    "or_months_0_24": 2.384,
+    "or_0_24_ci": [
+      0.491,
+      4.577
+    ],
+    "cancer_deaths_exposed_0_24": 5,
+    "or_months_25_60": 1.535,
+    "or_25_60_ci": [
+      0.48,
+      2.785
+    ],
+    "cancer_deaths_exposed_25_60": 7,
+    "ratio_early_to_late": 1.552,
+    "ratio_ci": [
+      0.398,
+      5.714
+    ],
+    "bar_T3_met": false
+  }
+}

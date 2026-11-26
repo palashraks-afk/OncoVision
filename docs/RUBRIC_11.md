@@ -60,3 +60,19 @@ treatment rates from the same survey and question (Wang and Wang 2022), national
 | 11 | Uniqueness | 9 | **8** | Few similar projects, not none. |
 
 **Now: eight criteria at 9; impact 8, uniqueness 8, novelty 7.**
+
+
+### Revision after more data (26 November 2026, Addendum 5 tests)
+
+Added: four times the follow-up data (21,820 adults, 475 cancer deaths), four routine red flags in one competing-risks model, a
+laboratory trigger analysis (adding ferritin for anaemic adults 50+ costs about 4 tests, about $55, per guideline case; the
+small-red-cell shortcut misses about 3 in 4 cases), and a timing test. T1 met (partly by definition); T2 and T3 missed. Closest
+work found and named (automatic laboratory algorithms in Spain; record-based competing-risk work).
+
+| # | Criterion | Was | Now | Why |
+|---|---|---|---|---|
+| 1 | Impact | 8 | **8** | The laboratory rule is a concrete, priced action, which helps; still no measured endoscopy follow-up or uptake. |
+| 3 | Novelty | 7 | **7** | The additions are new in population and design, not in idea. |
+| 6 | Depth of real data | 9 | **9** | Now four NHANES samples, 1988-2020, 21,820 adults in the follow-up analysis. |
+
+No other score changes.
