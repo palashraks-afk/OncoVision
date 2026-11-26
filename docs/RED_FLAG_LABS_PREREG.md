@@ -131,3 +131,30 @@ the earlier models stay in the results. Reported: the relative-risk ratio for ca
 bootstrap intervals (500 resamples), and their ratio. **Pass for specificity if the ratio's interval is above 1** (same bar as S2).
 
 Code tests are added for the design-based estimator (against a hand-computed example) and for the red-flag definitions.
+
+## Addendum 5, 26 November 2026: more data and three new tests (written before any of them is run)
+
+Data added: `data/nhanes_navigator.csv.gz`, NHANES 1999-2014 (eight cycles) with haemoglobin, MCV, platelets, the unintentional
+weight-loss flag and deaths through 2019 (built earlier for the navigator study; its outcomes for these definitions have not
+been computed). Pooled with NHANES III for follow-up. Adults 50-84; earlier cancer removed (NHANES III item; navigator cohort
+already excludes it). Five-year outcome as before.
+
+**T1, a trigger that needs only a complete blood count.** Ferritin is not on a routine blood count; MCV is. In NHANES 2001-2002
+and 2017-2020 (ferritin measured), among adults 50+: how well does **microcytic anaemia** (anaemia with MCV below 80 fL) and,
+separately, **any anaemia** identify guideline IDA? Reported: sensitivity, positive predictive value, and the number of ferritin
+tests per IDA case found if ferritin were added automatically. **Bar T1:** reflexing ferritin for **any** anaemia in adults 50+
+finds at least 90% of guideline IDA (interval above 80%) with no more than 10 ferritin tests per case. (Microcytic anaemia is
+expected to miss many cases; that is reported, not barred.)
+
+**T2, the cancer signal on four times the data.** Exposures, each against people without it, in the pooled 1999-2014 + NHANES III
+data: microcytic anaemia; non-microcytic anaemia; unintentional weight loss (5%+ in a year, not trying; navigator definition;
+NHANES III not available, so 1999-2014 only); platelets above 400 x10^9/L. Multinomial competing-risks model (alive, cancer
+death, other-cause death) with age spline, sex, ever smoking and cohort. **Bar T2:** for microcytic anaemia, the cancer-death
+relative-risk ratio has an interval above 1 **and** its ratio to the other-cause one has an interval above 1. The other
+exposures are reported with the same statistics and no bar.
+
+**T3, timing.** If the cancer signal of microcytic anaemia comes from cancers already present, it should be strongest soon after
+the blood test. **Bar T3:** the cancer-death odds ratio for deaths in months 0-24 exceeds that for months 25-60 (people alive at
+24 months), with the bootstrap interval of their ratio above 1.
+
+Bootstrap 300 resamples (light, for this machine). A recorded novelty search for T1-T3 is run after the analysis and reported.
