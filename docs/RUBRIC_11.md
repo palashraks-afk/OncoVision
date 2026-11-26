@@ -46,3 +46,17 @@ Work: `docs/RED_FLAG_LABS_PREREG.md` (with four addenda), `experiments/red_flag_
 **Nine of eleven at 9 or above. Impact and novelty stay at 8**, and more analysis of public data cannot honestly move them:
 impact needs measured follow-up (endoscopy) or real-world uptake, and novelty is held back because the scientific half is
 known territory. Both are written down here rather than rounded up.
+
+
+### Revision after a prior-art check (26 November 2026, same day)
+
+A wider search (`experiments/prior_art_red_flag.py`, 1,107 records) found closer work than the first searches: national anaemia
+treatment rates from the same survey and question (Wang and Wang 2022), national iron-deficiency prevalence and trends 1999-2020
+(Tawfik et al. 2024, 2026), and anaemia and cause-specific death in the ARIC cohort (Cannon et al. 2024). Changes:
+
+| # | Criterion | Was | Now | Why |
+|---|---|---|---|---|
+| 3 | Novelty | 8 | **7** | Done before in part; new only in population and design (the guideline's own definition and group, regular attenders, two eras). That is the rubric's 7. |
+| 11 | Uniqueness | 9 | **8** | Few similar projects, not none. |
+
+**Now: eight criteria at 9; impact 8, uniqueness 8, novelty 7.**

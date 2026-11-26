@@ -147,8 +147,8 @@ DISCUSSION = f"""
 <li><b>Small numbers and old follow-up data.</b> {P5['cancer_deaths_ida']} cancer deaths among people with iron-deficiency anaemia, mostly from 1988-1994; the follow-up analysis is not survey-weighted.</li>
 <li><b>Age 50 as a stand-in for menopause,</b> and the 2017-2020 estimate is the latest available because ferritin was not measured in older adults in 2021-2023.</li>
 </ul>
-<h3>4.3 Novelty</h3>
-<p>Recorded searches of Europe PMC (11 queries, titles and abstracts; <code>data/audit/novelty_routine_labs.csv</code>) found record-based studies of anaemia and cancer,<sup>2,3</sup> a physician survey and a veterans cohort showing under-investigation,<sup>4,5</sup> and an NHANES III study of iron markers and mortality that looked at high iron rather than this guideline definition.<sup>6</sup> We found no national estimate of untreated guideline-defined iron-deficiency anaemia in older adults by contact with care, and no test of its cancer specificity in a population tested regardless of symptoms. Searches are not proof of absence.</p>
+<h3>4.3 Novelty, and the closest work</h3>
+<p>A prior-art check on 26 November 2026 (Europe PMC, including PubMed and preprints: 10 query families, 1,107 records, 169 read in full abstract; <code>data/audit/prior_art_red_flag.csv</code>) found three pieces of work closer than those cited above, and the claims here are narrowed accordingly. Wang and Wang used the same survey and the same treatment question to report national anaemia treatment rates for 2005-2018,<sup>8</sup> so "anaemia often goes untreated" is not new. Tawfik and colleagues estimated iron deficiency and its trend from 1999-2002 to 2017-2020,<sup>9,10</sup> so the rise in iron deficiency is not new. In the ARIC community cohort, anaemia was linked to cancer death but no more than to other deaths once adjusted,<sup>11</sup> which agrees with the scientific result here. What we did not find: an estimate restricted to the guideline's own definition and population (anaemia with ferritin under 45 ng/mL in men and women past menopause, the group for whom endoscopy is strongly recommended), the untreated share among people in regular contact with a doctor, or the comparison of that share across two eras with ferritin measured. Those three pieces are the contribution. Searches are not proof of absence.</p>
 """
 
 DECL = """
@@ -167,6 +167,10 @@ REFS = """
 <li>Endoscopy underuse for new-onset iron deficiency anemia in younger veterans. <i>Am J Manag Care</i> 2026 (PMID 42189062).</li>
 <li>The association of biomarkers of iron status with mortality in US adults. <i>Nutr Metab Cardiovasc Dis</i> 2012 (PMID 21330119).</li>
 <li>National Center for Health Statistics. NHANES 2017-March 2020 pre-pandemic files; NHANES 2001-2002; NHANES III (1988-1994); public-use Linked Mortality Files through 31 December 2019.</li>
+<li>Wang C, Wang Y. Trends in prevalence and treatment rate of anemia in the U.S. population: cross-sectional study using data from NHANES 2005-2018. <i>Hematology</i> 2022 (PMID 35962563).</li>
+<li>Tawfik YMK, Billingsley H, Bhatt AS, et al. Absolute and functional iron deficiency in the US, 2017-2020. <i>JAMA Netw Open</i> 2024 (PMID 39316402).</li>
+<li>Tawfik YMK, Aboelsaad IAF, Nelson MD, et al. Temporal trends in absolute iron deficiency among US adults. <i>Am J Med</i> 2026 (PMID 42815754).</li>
+<li>Cannon EJ, Misialek JR, Buckley LF, et al. Anemia, iron deficiency, and cause-specific mortality: the Atherosclerosis Risk in Communities Study. <i>Gerontology</i> 2024 (PMID 39047718).</li>
 </ol>
 <p class="tnote">Author lists for references 2-6 are to be completed from the originals.</p>
 """
