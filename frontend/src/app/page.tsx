@@ -467,6 +467,14 @@ export default function OncovisionDashboard() {
         </a>
 
         <a
+          href="/redflag"
+          className="mx-4 mt-3 px-4 py-3 border border-[var(--stamp-line)] bg-[var(--stamp-bg)] hover:border-[var(--stamp)] transition-colors duration-300 text-left block"
+        >
+          <p className="text-[var(--ink)] display text-sm">A red flag hiding on your blood test?</p>
+          <p className="text-[10px] text-[var(--ink-3)] mt-1">Haemoglobin and ferritin against the US guideline</p>
+        </a>
+
+        <a
           href="/multicancer"
           className="mx-4 mt-3 px-4 py-3 border border-[var(--stamp-line)] bg-[var(--stamp-bg)] hover:border-[var(--stamp)] transition-colors duration-300 text-left block"
         >
