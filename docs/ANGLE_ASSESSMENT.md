@@ -187,3 +187,14 @@ cancer registries), PLCO, CHARLS or UK Biobank (see `docs/NEXT_STEPS_FOR_RAHUL.m
 - **External check passed (age and sex only).** Predicted detection ratio ages 70-78 vs 50-59: 3.77 vs trial 4.33; men vs women: 1.81 vs 1.53; both intervals overlap. The square-root alternative failed both. Lenient rule, not blind, smoking not tested (the trial reports it only in a supplement not yet read).
 - **Context.** An FDA advisory panel backed Galleri on 23 September 2026; no final decision found as of 25 November. I missed that vote when the paper was first written.
 - **Scores unchanged: novelty 5, impact 4, quality 4.** The trial check strengthens quality; the error shows why a human second analyst is still needed, so I do not move it to 5. Novelty rests on the 12 October searches plus one web search on 25 November; it is not proof.
+
+
+## Angle G: a red flag already on the lab report (added 26 Nov 2026)
+
+Routine lab values (haemoglobin, ferritin) and a non-specific finding (anaemia) checked against the AGA 2020 guideline. About 2.1
+million US adults 50+ have iron-deficiency anaemia that the guideline says should be investigated; about 80% are not being
+treated, including about 77% of those who see a doctor regularly, and the same was true in 2001-2002 (pre-registered replication
+met). In people tested regardless of symptoms it raised 5-year cancer-death odds about 2.5 times but other-cause death nearly as
+much, so it is not a cancer test. Scored on the 11-criterion rubric in `docs/RUBRIC_11.md`: nine criteria at 9, impact and
+novelty at 8. On this file's 1/3/5 scale: novelty 4, impact 4, quality 5 (pre-registered, replicated, independently re-run,
+tested), the first angle here to reach 5 on quality.

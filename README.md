@@ -18,6 +18,10 @@ Built as a mentored research project under the guidance of a clinical oncologist
 
 ---
 
+## A red flag already on the lab report (newest)
+
+Haemoglobin and ferritin, two numbers on ordinary lab reports, identify iron-deficiency anaemia, which a US guideline (AGA 2020) says should be investigated with endoscopy in men and women past menopause. In national survey data about 2.1 million US adults 50+ have it, about 80% are not being treated, and the same was true in 2001-2002 (pre-registered replication). In people tested regardless of symptoms it raises five-year cancer-death odds about 2.5 times, but other-cause death nearly as much. Paper: `docs/red_flag_paper/Red_Flag_On_The_Lab_Report.pdf`; app page `/redflag`; analysis `experiments/red_flag_labs.py`; grades `docs/RUBRIC_11.md`.
+
 ## Who Medicare's multi-cancer test law reaches (newest)
 
 The 2026 law (Pub. L. 119-75) pays for multi-cancer blood tests from 2029 only for people under an age limit that rises as fast as they age, so anyone 65 or older in 2029 never qualifies. In national survey data this covers about 12% of Medicare-age five-year cancer deaths in 2029, excludes the people in whom the test would find the most cancers per test, and first reaches Medicare members aged 50-64 who carry 2.3 times the cancer-death rate of their peers. Inside the covered group, three free questions (age, sex, smoking) roughly double cancers found per test; activity-tracker and routine checkup data add nothing for cancer. Pre-registered, with a recorded correction. Paper: `docs/mced_paper/Medicare_Multi_Cancer_Test_Law.pdf`; app page `/multicancer`; analysis `experiments/mced_law.py`, `experiments/free_data_ladder.py`.
