@@ -71,3 +71,22 @@ Death from any cancer, not gastrointestinal cancer specifically (public mortalit
 inflammation, so some IDA is missed; that biases toward finding nothing. Self-reported treatment is a crude proxy for
 "known". Cross-sectional societal estimates show a gap at one time point and cannot say what happened next. Small numbers of
 IDA cases in 2001-2002; NHANES III carries most of the power. Associations, not causes.
+
+## Addendum, 26 November 2026 (after download, before any analysis result)
+
+Seen so far: row counts, ferritin coverage, and median haemoglobin, MCV and ferritin per dataset (to check units).
+No group, rate or model has been computed.
+
+1. **Bar S2 wording.** "The ratio of the two log-odds ratios" was a slip: the stated intent is that the IDA odds ratio for
+   cancer death is larger than its odds ratio for other-cause death. It is tested as the **ratio of the two odds ratios**
+   (equivalently the difference of the log-odds ratios), with the bootstrap interval above 1. A ratio of log-odds ratios is
+   undefined when the other-cause effect is near zero, so it would not have been a usable test.
+2. **Societal population.** All adults 50+ with haemoglobin and ferritin, including people who report an earlier cancer (the
+   question is who has an unworked-up red flag today). Women 50+ who report regular periods in the past 12 months (RHQ031 = 1)
+   are excluded. A sensitivity estimate without people reporting earlier cancer is also given.
+3. **Codes.** "Treated for anaemia" = MCQ053 = 1; refused or don't know is left out of that denominator. Routine place of care
+   = HUQ030 of 1 or 3 (one place, or more than one). Two or more visits = HUQ051 code 2 or higher. Insured = HIQ011 = 1.
+4. **Design-based intervals** by Taylor linearisation with strata and PSUs (SDMVSTRA, SDMVPSU) and the pre-pandemic MEC weight
+   (WTMECPRP). National counts are prevalence times the weighted population 50+, with the prevalence interval.
+5. **Follow-up data.** 2001-2002 had earlier cancer removed when it was built; NHANES III uses its own earlier-cancer item.
+   Bootstrap uses 500 resamples to keep the run light on this machine.
