@@ -97,3 +97,23 @@ and is not reported as the result. The analysis is re-run with the enacted rule,
 
 Second caveat found by the re-check: Q3's yield ratio is a ratio of observed death rates, so the PATHFINDER 2
 anchor only scales absolute numbers; and most of the triage gain comes from smoking (reported).
+
+## External check against the NHS-Galleri trial, written 25 November 2026 before the NHIS side is computed
+
+Source: NHS-Galleri test-performance paper, Nature Medicine, 22 September 2026, PMID 42773209, open access full text
+via Europe PMC (PMC13668664). Aggregate cancer detection rate over three annual rounds: ages 50-59 0.18% (95% CI
+0.14-0.22) and 70-79 0.78% (0.71-0.85); male 0.58% (0.53-0.63) and female 0.38% (0.34-0.42). Ratios: age 4.33
+(about 3.4 to 5.5), sex 1.53 (about 1.33 to 1.75). Enrolment was ages 50-77 (maximum 78).
+
+Our paper assumes the chance a test finds a cancer is proportional to the group's cancer-death rate. **Check:** in
+NHIS 2005-2009 (weighted, five-year cancer death), the ratio of ages 70-78 to 50-59, and of men to women aged 50-78.
+**Pass:** the 95% bootstrap interval of each NHIS ratio overlaps the trial ratio's interval. The square-root mapping
+(the sensitivity analysis) is compared the same way, and both are reported whatever happens.
+
+Not blind: yields by other age bands from the same NHIS data had already been seen. Different country, years and
+outcome (the trial counts cancers the test found, not deaths).
+
+**Already known to be wrong:** the same trial paper reports that the false-positive rate rose with age (0.18% to
+0.76%) and that positive predictive value was relatively homogeneous across age and sex. The paper and the app assumed
+a constant false-positive rate, which produced positive predictive values that rose with risk. That was an error. All
+group-specific predictive values and false-alarm counts are to be removed.
