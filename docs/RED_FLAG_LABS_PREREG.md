@@ -115,3 +115,19 @@ is read:
    are now used for them (flagged `months_source`). Part B is re-run with this fix; the first run's numbers are kept in git.
 4. **Fragility.** Part B rests on 14 cancer deaths among people with IDA, unweighted. Bar S3 crossed 1 in one bootstrap seed and
    not in another; it is reported as not shown.
+
+## Addendum 4, 26 November 2026: replication in an independent era and a competing-risks model (written before either is run)
+
+**R1, replication of the societal estimate.** NHANES 2001-2002 measured ferritin in adults and asked the same anaemia-treatment
+question (MCQ053) and usual-care questions (HUQ030, HUQ050/HUQ051). Using the same definitions, MEC weights (WTMEC2YR), strata and
+PSUs: **pass if the share of adults 50+ with IDA who are not being treated has a 95% interval above 50%**, as in 2017-2020.
+Also reported, no bar: prevalence, the untreated share among people with a usual place of care and two or more visits, and the
+change between eras. The 2001-2002 demographics, questionnaire and lab files have not been opened before this addendum; the
+follow-up file used for Part B carries only age, sex, smoking and labs.
+
+**M1, competing risks.** A multinomial logistic model with three outcomes at five years (alive, died of cancer, died of other
+causes), same covariates, pooled follow-up data. It replaces the two separate logistic models as the main specificity check;
+the earlier models stay in the results. Reported: the relative-risk ratio for cancer death and for other-cause death with
+bootstrap intervals (500 resamples), and their ratio. **Pass for specificity if the ratio's interval is above 1** (same bar as S2).
+
+Code tests are added for the design-based estimator (against a hand-computed example) and for the red-flag definitions.
