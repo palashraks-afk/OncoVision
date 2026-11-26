@@ -90,3 +90,11 @@ No group, rate or model has been computed.
    (WTMECPRP). National counts are prevalence times the weighted population 50+, with the prevalence interval.
 5. **Follow-up data.** 2001-2002 had earlier cancer removed when it was built; NHANES III uses its own earlier-cancer item.
    Bootstrap uses 500 resamples to keep the run light on this machine.
+
+## Addendum 2, 26 November 2026 (after the main result; everything below is labelled exploratory)
+
+- 2021-2023 cannot repeat the estimate: FERTIN_L measured ferritin only in children 1-5 and women 12-49. 2017-March 2020 is
+  the latest US ferritin data for adults 50+.
+- Robustness checks added after seeing the main result (exploratory, reported whatever they show): the untreated share and
+  usual-care share without people reporting earlier cancer; a stricter ferritin cut-off of 30 ng/mL; men only.
+- The 5-year versus 10-year pattern (signal stronger at 5 years) was noticed after the run and is exploratory.

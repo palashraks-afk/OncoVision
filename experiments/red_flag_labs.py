@@ -97,6 +97,21 @@ def part_a():
             p7, ci7 = ratio_est(d["ida"].to_numpy() * m, m, w, h, c)
             res["ida_prevalence_by_group"][name] = {"est": p7, "ci": ci7, "n": int(m.sum()), "ida_n": int((d["ida"].to_numpy() * m).sum())}
     res["bar_societal_met"] = bool(res["untreated_ida_usual_place_of_care"]["ci"][0] > 0.5)
+    # exploratory robustness (Addendum 2)
+    rob = {}
+    for label, keep, cut in (("no_prior_cancer", (d["MCQ220"] != 1).to_numpy(), 45), ("ferritin_below_30", np.ones(len(d), bool), 30),
+                             ("men_only", (d["male"] == 1).to_numpy(), 45)):
+        _, ida2, _ = flags(d["LBXHGB"].to_numpy(), d["LBXFER"].to_numpy() * (45 / cut), d["male"].to_numpy())
+        ida2 = ida2 & keep
+        k2 = ida2 & known
+        pu, ciu = ratio_est(untreated * k2, k2.astype(float), w, h, c)
+        u2 = k2 & (untreated == 1)
+        v = d["HUQ030"].isin([1, 2, 3]).to_numpy() & u2
+        pc2, cic2 = ratio_est(d["HUQ030"].isin([1, 3]).to_numpy().astype(float) * v, v.astype(float), w, h, c)
+        pp, cip = ratio_est(ida2.astype(float), keep.astype(float), w, h, c)
+        rob[label] = {"prevalence": pp, "prevalence_ci": cip, "ida_n": int(ida2.sum()), "untreated_share": pu, "untreated_ci": ciu,
+                      "usual_care_share_among_untreated": pc2, "usual_care_ci": cic2, "untreated_n": int(u2.sum())}
+    res["robustness_exploratory"] = rob
     return res
 
 

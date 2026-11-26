@@ -141,7 +141,66 @@
         "ida_n": 3
       }
     },
-    "bar_societal_met": true
+    "bar_societal_met": true,
+    "robustness_exploratory": {
+      "no_prior_cancer": {
+        "prevalence": 0.020861581699488648,
+        "prevalence_ci": [
+          0.015209379405409297,
+          0.026513783993567998
+        ],
+        "ida_n": 98,
+        "untreated_share": 0.841728438474334,
+        "untreated_ci": [
+          0.7245411345771999,
+          0.958915742371468
+        ],
+        "usual_care_share_among_untreated": 0.8972121994289993,
+        "usual_care_ci": [
+          0.8019336926125648,
+          0.9924907062454339
+        ],
+        "untreated_n": 79
+      },
+      "ferritin_below_30": {
+        "prevalence": 0.017389083042156455,
+        "prevalence_ci": [
+          0.012669346608866153,
+          0.022108819475446757
+        ],
+        "ida_n": 92,
+        "untreated_share": 0.7968792776966888,
+        "untreated_ci": [
+          0.6810467668709489,
+          0.9127117885224286
+        ],
+        "usual_care_share_among_untreated": 0.9069565706028019,
+        "usual_care_ci": [
+          0.8155962142040777,
+          0.9983169270015261
+        ],
+        "untreated_n": 73
+      },
+      "men_only": {
+        "prevalence": 0.01758878523970721,
+        "prevalence_ci": [
+          0.008307643494723207,
+          0.026869926984691216
+        ],
+        "ida_n": 52,
+        "untreated_share": 0.8662416188985483,
+        "untreated_ci": [
+          0.7514456076771032,
+          0.9810376301199935
+        ],
+        "usual_care_share_among_untreated": 0.8921109425334168,
+        "usual_care_ci": [
+          0.7455911769714789,
+          1.0
+        ],
+        "untreated_n": 43
+      }
+    }
   },
   "B_scientific_5y": {
     "NHANES 2001-2002": {
