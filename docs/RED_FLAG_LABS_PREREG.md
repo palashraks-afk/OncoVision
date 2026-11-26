@@ -158,3 +158,19 @@ the blood test. **Bar T3:** the cancer-death odds ratio for deaths in months 0-2
 24 months), with the bootstrap interval of their ratio above 1.
 
 Bootstrap 300 resamples (light, for this machine). A recorded novelty search for T1-T3 is run after the analysis and reported.
+
+## Addendum 6, 26 November 2026: four more angles (written before any is run; NOT yet run)
+
+Files downloaded (columns inspected only): data/audit/P_DSQIDS, P_RXQ_RX, P_HIQ (NHANES 2017-March 2020).
+
+- **A1 Treated, measured three ways (rigor, data).** "Treated" = MCQ053 = 1, OR a prescription whose name contains IRON, FERROUS,
+  FERRIC or CARBONYL (P_RXQ_RX), OR an iron-containing supplement in the past 30 days (P_DSQTOT DSQTIRON > 0; also a stricter
+  45 mg/day). Bar A1: the untreated share of guideline IDA among adults 50+ stays above 50% (interval) under the broadest definition.
+- **A2 Expected cancers if the untreated were scoped (impact, projection).** Untreated count times the pooled malignancy yield of
+  endoscopy in IDA from a systematic review (candidate: PMID 41784434, Eur J Gastroenterol Hepatol 2026, upper-GI malignancy 5.0%;
+  colorectal figure to be read from the paper, not from a truncated abstract). Reported as a projection with the yield's interval;
+  no bar.
+- **A3 Who is left untreated, by payer (solvability).** Untreated IDA split by Medicare, private, Medicaid and uninsured (HIQ032A/B/D,
+  HIQ011), so each payer's share and count is known. Descriptive; no bar.
+- **A4 A cause in plain sight (solvability).** Share of adults 50+ with IDA on a prescription anticoagulant or antiplatelet, an NSAID,
+  or a proton-pump inhibitor (drug-name lists fixed in code before running), against adults 50+ without anaemia. Descriptive; no bar.
