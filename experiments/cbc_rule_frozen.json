@@ -1,0 +1,43 @@
+{
+  "n_anaemic": 830,
+  "ida": 221,
+  "model": {
+    "intercept": -3.2230581297493526,
+    "coef": {
+      "mcv": 0.011133825991086319,
+      "mch": -0.1647903795392766,
+      "mchc": 0.07296850087105093,
+      "rdw": 0.1516700334946352,
+      "log_plt": 0.3358917541278818,
+      "age": -0.005359900429094407,
+      "male": -0.30898776598095123
+    },
+    "cutoff": 0.15230763021042856
+  },
+  "derivation": {
+    "MCV below 80": {
+      "sensitivity": 0.248868778280543,
+      "tests_avoided": 0.8481927710843373
+    },
+    "MCH below 27": {
+      "sensitivity": 0.36199095022624433,
+      "tests_avoided": 0.7771084337349398
+    },
+    "MCHC below 32": {
+      "sensitivity": 0.22624434389140272,
+      "tests_avoided": 0.8373493975903614
+    },
+    "RDW above 14.5": {
+      "sensitivity": 0.4841628959276018,
+      "tests_avoided": 0.6216867469879518
+    },
+    "Any of the four": {
+      "sensitivity": 0.5656108597285068,
+      "tests_avoided": 0.5108433734939759
+    },
+    "Model on all indices": {
+      "sensitivity": 0.9502262443438914,
+      "tests_avoided": 0.13132530120481922
+    }
+  }
+}
