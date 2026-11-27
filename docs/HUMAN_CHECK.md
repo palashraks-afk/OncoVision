@@ -40,3 +40,9 @@ shows the code gives the same answer again. It does **not** show the code is rig
 
 Anything wrong or overstated, in any form. If you are willing to be named as having re-checked it, say so; otherwise you
 will not be named.
+
+## The Medicare law paper (`docs/mced_paper/`)
+
+Please check: the law's age rule against the enacted text (govinfo, H.R. 7148, enrolled); `experiments/mced_law.py` (who is
+covered); the replication (`experiments/mced_replication.py`: do 2010-2014 results in Table 1 reproduce?); and the claim
+that the first people covered are mostly Medicare members aged 50-64 (survey-weighted about 61% in 2005-2009).

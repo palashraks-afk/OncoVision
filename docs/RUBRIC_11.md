@@ -86,3 +86,9 @@ implausible. A one-command number check and a sheet for a human checker were add
 **No score changes: eight criteria at 9, impact 8, uniqueness 8, novelty 7.** The new work makes the main finding harder to
 dismiss and gives clearer routes to act on it, but it adds no measured endoscopy follow-up, no uptake, no outside review and
 no new scientific idea, which are what the three remaining scores need.
+
+### Revision after the Medicare replication and proofreading (27 November 2026)
+
+The red-flag angle's scores are unchanged (eight 9s, impact 8, uniqueness 8, novelty 7). Its paper was proofread (two false
+statements fixed) and a blood-count rule test added. For the Medicare law paper (1-5 scale, `docs/ANGLE_ASSESSMENT.md`):
+novelty 5, impact 4, quality 4; its central result replicated in newer data and two secondary results did not.

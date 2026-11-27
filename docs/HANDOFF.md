@@ -20,7 +20,7 @@ large downloaded data files, which the scripts below rebuild.
 | Work | Where | State |
 |---|---|---|
 | Free information, cost-matched invitation | `docs/cancer_age_paper/` (PDF built by `build_age_paper.py`) | Done. Novelty 4, impact 4, quality 4-5. Fairness bar missed (reported). |
-| Medicare multi-cancer test law | `docs/mced_paper/` (PDF built by `build_mced_paper.py`) | Done. Novelty 5, impact 4, quality 4. Law covers ~12% of Medicare-age cancer deaths in 2029; free-question triage ~2.3x yield. |
+| Medicare multi-cancer test law | `docs/mced_paper/` (PDF built by `build_mced_paper.py`) | Done. Novelty 5, impact 4, quality 4. Law covers ~12% of Medicare-age cancer deaths in 2029; triage and disability-group results did not replicate in 2010-2014. |
 | Free-data ladder (activity, checkup) | `experiments/free_data_ladder.py`, `docs/FREE_DATA_LADDER_PREREG.md` | Done. Negative for cancer death. |
 | App page for the above | `frontend/src/app/multicancer/` (runs in the browser) | Done, tested in a browser. |
 | Independent AI re-checks | `docs/independent_check/` | Done. Found and fixed the introduced-vs-enacted law error. |

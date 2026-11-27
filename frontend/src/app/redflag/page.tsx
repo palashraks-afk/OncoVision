@@ -46,15 +46,29 @@ export default function RedFlagPage() {
   const [hgb, setHgb] = useState("");
   const [fer, setFer] = useState("");
   const [mcv, setMcv] = useState("");
+  const [copied, setCopied] = useState(false);
+
+  // Many labs outside the US report haemoglobin in g/L (e.g. 118) instead of g/dL (11.8). The two ranges do not overlap.
+  const rawH = Number(hgb.replace(",", "."));
+  const inGramsPerLitre = Number.isFinite(rawH) && rawH >= 30 && rawH <= 250;
+  const problems = [
+    age.trim() && !(Number(age) >= 18 && Number(age) <= 110) ? "Age should be a number from 18 to 110." : "",
+    hgb.trim() && !inGramsPerLitre && !(rawH >= 3 && rawH <= 25) ? "That haemoglobin does not look right. It is usually between 8 and 18 g/dL, or 80 and 180 g/L." : "",
+    fer.trim() && !(Number(fer.replace(",", ".")) >= 0) ? "Ferritin should be a number." : "",
+    mcv.trim() && !(Number(mcv) >= 40 && Number(mcv) <= 160) ? "MCV is usually between 60 and 120 fL." : "",
+  ].filter(Boolean);
 
   const out = useMemo(() => {
-    const a = Number(age), h = Number(hgb);
+    const a = Number(age);
+    const raw = Number(hgb.replace(",", "."));
+    const h = raw >= 30 && raw <= 250 ? Math.round(raw) / 10 : raw;
     if (!age.trim() || !hgb.trim() || !Number.isFinite(a) || !Number.isFinite(h) || a < 18 || a > 110 || h < 3 || h > 25) return null;
     const male = sex === "male";
     const cutH = male ? 13 : 12;
     const anaemia = h < cutH;
-    const f = fer.trim() ? Number(fer) : NaN;
-    const m = mcv.trim() ? Number(mcv) : NaN;
+    const f = fer.trim() ? Number(fer.replace(",", ".")) : NaN;
+    const raw_m = mcv.trim() ? Number(mcv) : NaN;
+    const m = raw_m >= 40 && raw_m <= 160 ? raw_m : NaN;
     const hasF = Number.isFinite(f) && f >= 0;
     const lowIron = hasF && f < 45;
     const guidelineGroup = male || periods === "no";
@@ -79,10 +93,20 @@ export default function RedFlagPage() {
       ].filter(Boolean).join("\n")
     : "";
 
+  async function copyLetter() {
+    try {
+      await navigator.clipboard.writeText(letter);
+      setCopied(true);
+      setTimeout(() => setCopied(false), 2500);
+    } catch {
+      setCopied(false);
+    }
+  }
+
   return (
     <div className="min-h-screen bg-[var(--paper)] text-[var(--ink)] font-sans">
       <main className="max-w-2xl mx-auto px-5 py-10 fade-in">
-        <Link href="/" className="inline-flex items-center gap-2 text-xs text-[var(--stamp)] mb-8"><ArrowLeft className="w-4 h-4" /> Back to Oncovision</Link>
+        <Link href="/" className="inline-flex items-center gap-2 text-xs text-[var(--stamp)] mb-8 print:hidden"><ArrowLeft className="w-4 h-4" /> Back to Oncovision</Link>
 
         <h1 className="display text-3xl leading-tight mb-3">Is there a red flag hiding on your blood test?</h1>
         <p className="text-sm text-[var(--ink-2)] leading-relaxed mb-3">
@@ -110,14 +134,16 @@ export default function RedFlagPage() {
                   <option value="no">No</option><option value="yes">Yes</option></select></div>)}
           </div>
           <div className="grid grid-cols-3 gap-4 mt-4">
-            <div><label className="field-label block mb-1" htmlFor="hgb">Haemoglobin, g/dL</label>
-              <input id="hgb" className={`${field} data`} inputMode="decimal" value={hgb} onChange={e => setHgb(e.target.value)} placeholder="HGB, e.g. 11.8" /></div>
-            <div><label className="field-label block mb-1" htmlFor="fer">Ferritin, ng/mL</label>
+            <div><label className="field-label block mb-1" htmlFor="hgb">Haemoglobin</label>
+              <input id="hgb" className={`${field} data`} inputMode="decimal" value={hgb} onChange={e => setHgb(e.target.value)} placeholder="e.g. 11.8 or 118" /></div>
+            <div><label className="field-label block mb-1" htmlFor="fer">Ferritin, ng/mL or µg/L</label>
               <input id="fer" className={`${field} data`} inputMode="decimal" value={fer} onChange={e => setFer(e.target.value)} placeholder="if on report" /></div>
             <div><label className="field-label block mb-1" htmlFor="mcv">MCV, fL</label>
               <input id="mcv" className={`${field} data`} inputMode="decimal" value={mcv} onChange={e => setMcv(e.target.value)} placeholder="optional" /></div>
           </div>
-          <p className="text-xs text-[var(--ink-3)] mt-3">Haemoglobin (HGB) and MCV are on every complete blood count. Ferritin is a separate test and may not be on yours.</p>
+          <p className="text-xs text-[var(--ink-3)] mt-3">Haemoglobin (HGB or Hb) and MCV are on every complete blood count, in g/dL or g/L; either works. Ferritin is a separate test and may not be on yours. Its two units give the same number.</p>
+          {inGramsPerLitre && <p className="text-xs text-[var(--stamp)] mt-2">Read as g/L: {hgb} g/L = {(Math.round(rawH) / 10).toFixed(1)} g/dL.</p>}
+          {problems.map(msg => <p key={msg} className="text-xs text-[var(--flag)] mt-2" role="alert">{msg}</p>)}
         </form>
 
         {!out && (
@@ -173,8 +199,12 @@ export default function RedFlagPage() {
                 <h2 className="display text-lg mb-2 rule-out">Take this to your doctor</h2>
                 <p className="text-sm text-[var(--ink-2)] leading-relaxed mb-3">Do not stop or change any medicine on your own, especially a blood thinner. Stopping one can be dangerous. Ask first.</p>
                 <pre className="data text-xs text-[var(--ink-2)] whitespace-pre-wrap border border-[var(--rule)] p-4 leading-relaxed">{letter}</pre>
-                <button type="button" onClick={() => navigator.clipboard?.writeText(letter)}
-                  className="mt-3 text-xs border border-[var(--stamp-line)] text-[var(--stamp)] px-3 py-1.5 hover:bg-[var(--stamp-bg)]">Copy these questions</button>
+                <div className="mt-3 flex gap-2 print:hidden">
+                  <button type="button" onClick={copyLetter}
+                    className="text-xs border border-[var(--stamp-line)] text-[var(--stamp)] px-3 py-1.5 hover:bg-[var(--stamp-bg)]">{copied ? "Copied" : "Copy these questions"}</button>
+                  <button type="button" onClick={() => window.print()}
+                    className="text-xs border border-[var(--stamp-line)] text-[var(--stamp)] px-3 py-1.5 hover:bg-[var(--stamp-bg)]">Print this page for my doctor</button>
+                </div>
               </section>
             )}
 
