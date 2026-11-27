@@ -174,3 +174,23 @@ Files downloaded (columns inspected only): data/audit/P_DSQIDS, P_RXQ_RX, P_HIQ 
   HIQ011), so each payer's share and count is known. Descriptive; no bar.
 - **A4 A cause in plain sight (solvability).** Share of adults 50+ with IDA on a prescription anticoagulant or antiplatelet, an NSAID,
   or a proton-pump inhibitor (drug-name lists fixed in code before running), against adults 50+ without anaemia. Descriptive; no bar.
+
+## Addendum 7, 27 November 2026 (before A1, A3 or A4 is run)
+
+- **A2 is dropped.** Published scope yields come from patients who were referred and examined. A pooled review reports 8%
+  colorectal and 5% upper-GI cancer (PMID 41784434, many symptomatic); a search summary of the AGA technical review gives
+  8.9% and 2.0% in asymptomatic patients (full text not verified: PMC showed a bot check, not bypassed). Applied to about
+  1.7 million untreated people, 8.9% would mean about 150,000 hidden colorectal cancers, about a full year of US
+  diagnoses, and our own follow-up (all-cancer death 6% in five years with this flag) gives no support for a figure that
+  large. The yields do not transfer to survey-detected cases, so no cancer count is projected. This was judged from
+  arithmetic, before any new result.
+- **A1 details.** Iron prescription: a P_RXQ_RX drug name containing FERROUS, FERRIC, IRON or CARBONYL IRON. Iron
+  supplement: P_DSQTOT total 30-day average DSQTIRON above 0 mg/day (broadest) and at least 45 mg/day (treatment dose).
+  Denominator: guideline IDA with a known MCQ053 answer. Missing supplement or drug data counts as not taking it.
+- **A4 drug names** (prescription file only, so over-the-counter use is missed): blood thinners = WARFARIN, APIXABAN,
+  RIVAROXABAN, DABIGATRAN, EDOXABAN, ENOXAPARIN, HEPARIN, CLOPIDOGREL, PRASUGREL, TICAGRELOR, DIPYRIDAMOLE, ASPIRIN;
+  anti-inflammatory painkillers = IBUPROFEN, NAPROXEN, MELOXICAM, DICLOFENAC, CELECOXIB, INDOMETHACIN, NABUMETONE,
+  ETODOLAC, KETOROLAC, PIROXICAM; acid reducers (PPI) = OMEPRAZOLE, PANTOPRAZOLE, ESOMEPRAZOLE, LANSOPRAZOLE,
+  RABEPRAZOLE, DEXLANSOPRAZOLE.
+- **A3 groups** are not exclusive (people can hold more than one): private (HIQ032A), Medicare (HIQ032B), Medicaid
+  (HIQ032D), uninsured (HIQ011 = 2).
