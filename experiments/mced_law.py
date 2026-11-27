@@ -72,7 +72,7 @@ def main():
     n = len(te)
     res = {"n_test": n, "cancer_deaths_5y": int(y.sum()), "medicare_known": round(float(np.isfinite(mc).mean()), 3),
            "medicare_share_under65": round(wmean(np.nan_to_num(mc) == 1, w * (age < 65)), 4) if True else None}
-    print(f"NHIS 2005-2009: {n:,} adults, {int(y.sum())} five-year cancer deaths; Medicare recode known for {res['medicare_known']:.1%}")
+    print(f"NHIS test years {int(te.year.min())}-{int(te.year.max())}: {n:,} adults, {int(y.sum())} five-year cancer deaths; Medicare recode known for {res['medicare_known']:.1%}")
 
     # anchor: adults 50+ reproduce PATHFINDER 2's detection rate
     a50 = age >= 50

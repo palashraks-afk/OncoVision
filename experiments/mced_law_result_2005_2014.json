@@ -1,0 +1,179 @@
+{
+  "n_test": 169750,
+  "cancer_deaths_5y": 2029,
+  "medicare_known": 0.998,
+  "medicare_share_under65": 0.0449,
+  "anchor": {
+    "observed_5y_cancer_death_rate_50plus": 0.01688,
+    "k": 0.3199
+  },
+  "Q1": {
+    "2029": {
+      "share_of_cancer_deaths": 0.1171,
+      "ci": [
+        0.0945,
+        0.1422
+      ],
+      "share_of_population": 0.1952
+    },
+    "2035 (stylised)": {
+      "share_of_cancer_deaths": 0.3878,
+      "ci": [
+        0.3564,
+        0.4228
+      ],
+      "share_of_population": 0.5015
+    },
+    "bar_met": true
+  },
+  "Q2": {
+    "50-64 without Medicare (not eligible)": {
+      "n": 55663,
+      "cancer_deaths": 527,
+      "rate_5y": 0.00869,
+      "cancers_found_per_1000_tests": 2.78,
+      "false_alarms_per_1000_tests": 3.59,
+      "ppv": 0.436,
+      "medicare_test_cost_per_cancer_found": 182989.0,
+      "sens_sqrt_cancers_per_1000": 4.27,
+      "sens_sqrt_ppv": 0.544
+    },
+    "50-64 with Medicare (covered 2029)": {
+      "n": 5067,
+      "cancer_deaths": 97,
+      "rate_5y": 0.01712,
+      "cancers_found_per_1000_tests": 5.48,
+      "false_alarms_per_1000_tests": 3.58,
+      "ppv": 0.605,
+      "medicare_test_cost_per_cancer_found": 92903.0,
+      "sens_sqrt_cancers_per_1000": 5.08,
+      "sens_sqrt_ppv": 0.587
+    },
+    "65 (covered 2029)": {
+      "n": 3343,
+      "cancer_deaths": 61,
+      "rate_5y": 0.01878,
+      "cancers_found_per_1000_tests": 6.01,
+      "false_alarms_per_1000_tests": 3.58,
+      "ppv": 0.627,
+      "medicare_test_cost_per_cancer_found": 84692.0,
+      "sens_sqrt_cancers_per_1000": 5.98,
+      "sens_sqrt_ppv": 0.626
+    },
+    "66-74 (never covered)": {
+      "n": 21419,
+      "cancer_deaths": 595,
+      "rate_5y": 0.02746,
+      "cancers_found_per_1000_tests": 8.79,
+      "false_alarms_per_1000_tests": 3.57,
+      "ppv": 0.711,
+      "medicare_test_cost_per_cancer_found": 57913.0,
+      "sens_sqrt_cancers_per_1000": 6.97,
+      "sens_sqrt_ppv": 0.661
+    },
+    "75-84 (never covered)": {
+      "n": 14555,
+      "cancer_deaths": 605,
+      "rate_5y": 0.04035,
+      "cancers_found_per_1000_tests": 12.91,
+      "false_alarms_per_1000_tests": 3.55,
+      "ppv": 0.784,
+      "medicare_test_cost_per_cancer_found": 39421.0,
+      "sens_sqrt_cancers_per_1000": 8.52,
+      "sens_sqrt_ppv": 0.705
+    }
+  },
+  "Q3": {
+    "0.2": {
+      "yield_ratio": 2.003,
+      "ci": [
+        1.523,
+        2.478
+      ],
+      "random": {
+        "cancers_found_per_1000_tests": 5.69,
+        "false_alarms_per_1000_tests": 3.58,
+        "ppv": 0.614,
+        "medicare_test_cost_per_cancer_found": 89465.0
+      },
+      "triaged": {
+        "cancers_found_per_1000_tests": 11.39,
+        "false_alarms_per_1000_tests": 3.56,
+        "ppv": 0.762,
+        "medicare_test_cost_per_cancer_found": 44675.0
+      }
+    },
+    "0.3": {
+      "yield_ratio": 1.7,
+      "ci": [
+        1.397,
+        2.015
+      ],
+      "random": {
+        "cancers_found_per_1000_tests": 5.69,
+        "false_alarms_per_1000_tests": 3.58,
+        "ppv": 0.614,
+        "medicare_test_cost_per_cancer_found": 89465.0
+      },
+      "triaged": {
+        "cancers_found_per_1000_tests": 9.67,
+        "false_alarms_per_1000_tests": 3.57,
+        "ppv": 0.731,
+        "medicare_test_cost_per_cancer_found": 52616.0
+      }
+    },
+    "0.5": {
+      "yield_ratio": 1.279,
+      "ci": [
+        1.083,
+        1.492
+      ],
+      "random": {
+        "cancers_found_per_1000_tests": 5.69,
+        "false_alarms_per_1000_tests": 3.58,
+        "ppv": 0.614,
+        "medicare_test_cost_per_cancer_found": 89465.0
+      },
+      "triaged": {
+        "cancers_found_per_1000_tests": 7.28,
+        "false_alarms_per_1000_tests": 3.57,
+        "ppv": 0.671,
+        "medicare_test_cost_per_cancer_found": 69922.0
+      }
+    },
+    "bar_met": true,
+    "age_sex_only_ratio_20pct": 1.299
+  },
+  "Q4": {
+    "n_medicare_50_64": 5067,
+    "cancer_deaths_medicare_50_64": 97,
+    "observed_5y_cancer_death": {
+      "medicare": 0.01609,
+      "no_medicare": 0.00872,
+      "ratio": 1.85,
+      "diff_ci": [
+        0.003,
+        0.0125
+      ]
+    },
+    "predicted_5y_risk": {
+      "medicare": 0.01442,
+      "no_medicare": 0.01137,
+      "ratio": 1.27,
+      "diff_ci": [
+        0.0027,
+        0.0034
+      ]
+    },
+    "current_smoker": {
+      "medicare": 0.32724,
+      "no_medicare": 0.19404,
+      "ratio": 1.69,
+      "diff_ci": [
+        0.1127,
+        0.1504
+      ]
+    },
+    "bar_met": true
+  }
+}
