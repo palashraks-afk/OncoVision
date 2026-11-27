@@ -90,17 +90,24 @@ def replication_data():
     d["months"] = pd.to_numeric(d["months"], errors="coerce")
     d["told_diabetes"] = (pd.to_numeric(d["had1"], errors="coerce") == 1).astype(int)
     d["wave"] = "NHANES III"
+    had = pd.to_numeric(d["had1"], errors="coerce")
+    if not set(had.dropna().unique()) <= {1, 2, 8, 9}:
+        raise ValueError("HAD1 has unexpected codes; column position is wrong")
     med = d[LABS].median().round(2).to_dict()
     print("NHANES III lab medians (unit check):", med)
     return finish(d)
 
 
 def HAD1_SPEC():
+    """Column position of HAD1 from CDC's adult.sas. The name appears in the LENGTH list (a width, e.g. 3) as well as the
+    INPUT list (a position, e.g. 1561); the position is the large number."""
     import re
     from fetch_red_flag_labs import get
     txt = get("https://wwwn.cdc.gov/nchs/data/nhanes3/1a/adult.sas").decode("latin-1")
-    m = re.search(r"\n\s+HAD1\s+(\d+)(?:\s*-\s*(\d+))?\s", txt)
-    a, b = int(m.group(1)), int(m.group(2) or m.group(1))
+    hits = [(int(m.group(1)), int(m.group(2) or m.group(1))) for m in re.finditer(r"\n\s+HAD1\s+(\d+)(?:\s*-\s*(\d+))?\s", txt)]
+    a, b = max(hits)
+    if a < 100:
+        raise ValueError(f"HAD1 position not found: {hits}")
     return [(0, 5), (a - 1, b)]
 
 

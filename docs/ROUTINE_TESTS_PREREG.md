@@ -46,3 +46,11 @@ Measures: relative-risk ratio (RRR) for cancer death, RRR for other-cause death,
 
 Death from any cancer, not site. Unweighted. Single measurement. Lab methods differ between eras. A cancer-specific flag
 would still not be a diagnostic test; a miss means these cut-offs do not single out cancer in these data.
+
+
+## Result (27 November 2026)
+
+No flag passed discovery, so none was confirmed. Full numbers: `experiments/routine_test_flags_discovery.json` and
+`..._replication.json`; paper Section 3.8. Departure: the first NHANES III run read the wrong column for diagnosed diabetes
+(a width from CDC's LENGTH list was taken as the position). It showed as 14.5% unrecognised diabetes; after the fix it is
+5.5%. The change affects only that flag and the combined flag in NHANES III; discovery does not use that code.

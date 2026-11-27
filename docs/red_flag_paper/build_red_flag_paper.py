@@ -21,6 +21,8 @@ MO = A["missed_opportunity_exploratory"]
 R1, M1 = R["R1_replication_2001_2002"], R["M1_competing_risks_5y"]
 X = json.load(open(os.path.join(ROOT, "experiments", "red_flag_more_result.json")))
 T1a, T1b, T2, T3 = X["T1"]["2017-2020"], X["T1"]["2001-2002"], X["T2"], X["T3"]
+RD = json.load(open(os.path.join(ROOT, "experiments", "routine_test_flags_discovery.json")))
+RR = json.load(open(os.path.join(ROOT, "experiments", "routine_test_flags_replication.json")))
 ROB = A["robustness_exploratory"]
 FIGS = ["fig1_funnel", "fig2_untreated", "fig3_groups", "fig4_odds"]
 FN = {n: i + 1 for i, n in enumerate(FIGS)}
@@ -116,6 +118,26 @@ METHODS = f"""
 <p>National estimates are survey-weighted ratios with design-based 95% intervals (Taylor linearisation with strata and primary sampling units). The follow-up analysis is logistic regression of death from cancer within five years (secondary: ten years) on IDA and non-iron anaemia against no anaemia, adjusted for age (spline), sex, ever smoking and dataset, with bootstrap intervals. Non-cases include deaths from other causes. The same model for death from other causes tests whether the result is specific to cancer. Python (pandas, scikit-learn); the code is <code>experiments/red_flag_labs.py</code>, with tests of the estimator and the definitions in <code>tests/test_red_flag_labs.py</code>.</p>
 """
 
+_NAMES = {"high_calcium": "High calcium", "high_alp": "High alkaline phosphatase", "low_albumin": "Low albumin", "high_ggt": "High GGT",
+          "high_wbc": "High white count", "high_platelets": "High platelets", "high_fib4": "High FIB-4 liver score",
+          "new_diabetes_hba1c": "Unrecognised diabetes-range HbA1c", "urine_albumin": "Albumin in urine", "high_crp": "High C-reactive protein",
+          "two_or_more": "Two or more of these"}
+
+
+def _cells(r):
+    if "rrr_cancer" not in r:
+        return [r["cancer_deaths_flagged"], "too few", "", ""]
+    return [r["cancer_deaths_flagged"], f"{r['rrr_cancer']:.2f} ({r['rrr_cancer_ci'][0]:.2f} to {r['rrr_cancer_ci'][1]:.2f})", f"{r['rrr_other']:.2f}",
+            f"{r['ratio']:.2f} ({r['ratio_ci'][0]:.2f} to {r['ratio_ci'][1]:.2f})"]
+
+
+_rows = "".join("<tr>" + "".join(f"<td>{c}</td>" for c in [_NAMES[k]] + _cells(RD["flags"][k]) + _cells(RR["flags"][k])[1:]) + "</tr>" for k in _NAMES)
+ROUTINE = f"""<h3>3.8 Flags on other routine tests</h3>
+<p>The same question was asked of other tests people commonly have: calcium, liver enzymes, albumin, white count, platelets, a liver score calculated from them, blood sugar (HbA1c), urine albumin and C-reactive protein. Cut-offs, bars and a multiple-testing correction were committed first (<code>docs/ROUTINE_TESTS_PREREG.md</code>); the analysis was not blind, because earlier work here had suggested routine values mostly mark general ill health. Discovery: NHANES 1999-2014, {RD['n']:,} adults 50-84 and {RD['cancer_deaths']} cancer deaths within five years. Check: NHANES III, {RR['n']:,} adults and {RR['cancer_deaths']} cancer deaths. Most flags raised the risk of cancer death, but none raised it more than the risk of other deaths: no flag passed discovery, so none was confirmed. Albumin in urine, low albumin and having two or more flags pointed clearly the other way, towards deaths from other causes. The NHANES III columns are therefore exploratory. A first run of that check read the wrong column for diagnosed diabetes; the error was caught by an implausible rate, fixed, and the code now stops if the column is wrong.</p>
+<div class="tcap"><b>Table 4.</b> Flags on routine tests: relative-risk ratios for five-year cancer death and other-cause death.</div>
+<table class="num"><thead><tr><th>Flag</th><th>Cancer deaths flagged (1999-2014)</th><th>Cancer RRR (95% CI)</th><th>Other-cause RRR</th><th>Cancer / other (95% CI)</th><th>NHANES III: cancer RRR</th><th>Other-cause RRR</th><th>Cancer / other</th></tr></thead><tbody>{_rows}</tbody></table>
+<p class="tnote">Each flag modelled alone against everyone else with that test, adjusted for age (spline), sex, ever smoking and survey wave. Unweighted. Bar: cancer RRR and ratio above 1 with p below 0.05/11. Blood pressure, pulse and lung function were not included.</p>"""
+
 RESULTS = f"""
 <h3>3.1 The bars</h3>
 {t_bars}
@@ -140,7 +162,8 @@ RESULTS = f"""
 <p>Ferritin is not part of a routine blood count, so most people with guideline iron-deficiency anaemia are found only if someone orders it. A common shortcut is to look into iron only when red cells are small (MCV under 80 fL). Among adults 50+, that shortcut found only {pc(T1a['microcytic_anaemia']['sensitivity'])} of guideline cases in 2017-2020 (95% CI {ci(T1a['microcytic_anaemia']['sensitivity_ci'])}) and {pc(T1b['microcytic_anaemia']['sensitivity'])} in 2001-2002: most iron-deficiency anaemia in older adults has normal-sized red cells. Adding ferritin automatically whenever an adult 50+ is anaemic finds every case by definition, at {T1a['any_anaemia']['ferritin_tests_per_case']} ferritin tests per case found in 2017-2020 and {T1b['any_anaemia']['ferritin_tests_per_case']} in 2001-2002 (pre-registered bar T1 met; its sensitivity part was true by definition, so the informative numbers are the cost per case and the shortcut's miss rate). Medicare pays $13.63 for a ferritin test (CPT 82728, 2026 Clinical Laboratory Fee Schedule), so the rule costs about ${13.63 * T1a['any_anaemia']['ferritin_tests_per_case']:.0f} in tests per case found (2017-2020): a cheap laboratory rule, not a new test.</p>
 <h3>3.7 Four routine red flags in 21,820 adults</h3>
 <p>Ferritin was not measured in older adults in 2003-2014, but haemoglobin, red-cell size, platelets and a weight-loss question were. Pooling NHANES 1999-2014 with NHANES III gave {T2['n']:,} adults 50-84 and {T2['cancer_deaths']} cancer deaths within five years, about four times the data of Section 3.5. In one competing-risks model, no routine red flag was specific to cancer (pre-registered bar T2 missed). Microcytic anaemia: cancer {T2['micro_anaemia']['rrr_cancer']:.2f} ({T2['micro_anaemia']['rrr_cancer_ci'][0]:.2f} to {T2['micro_anaemia']['rrr_cancer_ci'][1]:.2f}) against other causes {T2['micro_anaemia']['rrr_other']:.2f}. Other anaemia: {T2['other_anaemia']['rrr_cancer']:.2f} against {T2['other_anaemia']['rrr_other']:.2f}, mostly frailty. Platelets above 400: {T2['high_platelets']['rrr_cancer']:.2f} ({T2['high_platelets']['rrr_cancer_ci'][0]:.2f} to {T2['high_platelets']['rrr_cancer_ci'][1]:.2f}) against {T2['high_platelets']['rrr_other']:.2f}. Unintentional weight loss (1999-2014 only): {T2['weight_loss_1999_2014']['rrr_cancer']:.2f} ({T2['weight_loss_1999_2014']['rrr_cancer_ci'][0]:.2f} to {T2['weight_loss_1999_2014']['rrr_cancer_ci'][1]:.2f}) against {T2['weight_loss_1999_2014']['rrr_other']:.2f}. The timing test (T3) was missed: {T3['cancer_deaths_exposed_0_24'] + T3['cancer_deaths_exposed_25_60']} cancer deaths among people with microcytic anaemia are too few to compare early and late. Of all the red flags, only ferritin-confirmed iron-deficiency anaemia (Section 3.5) and high platelets showed a cancer signal with an interval above 1, and neither was cancer-specific.</p>
-<h3>3.8 Independent re-analysis</h3>
+{ROUTINE}
+<h3>3.9 Independent re-analysis</h3>
 <p>A second analyst (an AI agent writing its own code from the pre-registration) reproduced every national number to the decimal and the pooled odds ratios within bootstrap noise (<code>docs/independent_check/red_flag/</code>). It found four weaknesses, all acted on: the societal bar was uninformative (reported above); "not treated" is not the same as "not recognised" (wording changed throughout); {441} NHANES III records had no follow-up months from the exam and had been silently dropped (recovered from the interview date); and the follow-up result rests on very few deaths (stated).</p>
 """
 
