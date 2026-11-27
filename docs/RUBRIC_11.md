@@ -92,3 +92,26 @@ no new scientific idea, which are what the three remaining scores need.
 The red-flag angle's scores are unchanged (eight 9s, impact 8, uniqueness 8, novelty 7). Its paper was proofread (two false
 statements fixed) and a blood-count rule test added. For the Medicare law paper (1-5 scale, `docs/ANGLE_ASSESSMENT.md`):
 novelty 5, impact 4, quality 4; its central result replicated in newer data and two secondary results did not.
+
+### Fresh grading, 27 November 2026 (supersedes the revisions above)
+
+Two scores are lowered on a strict re-read of the anchors.
+
+| # | Criterion (red-flag angle) | Score | Main reason it is not higher |
+|---|---|---|---|
+| 1 | Impact | 8 | The work-up gap is inferred from treatment; no endoscopy data, no uptake |
+| 2 | Creativity | 9 | 10 needs others to adopt the approach |
+| 3 | Novelty | 7 | Closer work exists for several parts |
+| 4 | Fit to the brief | 9 | The scientific result is a qualified negative |
+| 5 | Scientific rigor | **8** (was 9) | The 9 anchor needs survey design honoured; the follow-up and routine-test analyses are unweighted. Later sections have had no independent re-check, and a proofread found two false statements |
+| 6 | Depth of real data | 9 | No cancer registry |
+| 7 | Feasibility | 9 | Nobody is yet doing it because of this |
+| 8 | Profile fit (biomedical) | 9 | No clinician co-author |
+| 9 | Visual and interactive | 9 | No testing with real users |
+| 10 | Technical depth | 9 | No method others reuse |
+| 11 | Uniqueness | 8 | Similar projects exist |
+
+On the 1/3/5 scale: red-flag angle novelty 4, impact 4, quality **4** (was 5, same reasons as criterion 5). Medicare law
+angle novelty **4** (was 5: a search on 27 November found commentary already saying the rising limit excludes older people,
+and two of the other claimed-new results did not replicate; the burden estimate was still not found elsewhere), impact 4,
+quality 4. **The 5 / 5 / 4 target is not met by either angle.** These are the author-assistant's own judgements.
