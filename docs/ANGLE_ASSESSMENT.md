@@ -198,3 +198,15 @@ met). In people tested regardless of symptoms it raised 5-year cancer-death odds
 much, so it is not a cancer test. Scored on the 11-criterion rubric in `docs/RUBRIC_11.md`: nine criteria at 9, impact and
 novelty at 8. On this file's 1/3/5 scale: novelty 4, impact 4, quality 5 (pre-registered, replicated, independently re-run,
 tested), the first angle here to reach 5 on quality.
+
+
+## Update to Angle E, 27 November 2026: replication in newer data (NHIS 2010-2014, pre-registered before download)
+
+- **Held:** the law covers 11.4% of Medicare-age five-year cancer deaths in 2029 (12.0% before); older excluded groups have
+  higher expected yield per test; the yield assumption matched NHS-Galleri for age (4.30 vs 4.33) and sex (1.45 vs 1.53).
+- **Did not hold:** triage yield 1.58 times (CI 1.07-2.19; bar missed), and age and sex alone gave 1.50, so "smoking does
+  nearly all the work" is withdrawn; Medicare members 50-64 1.47 times peers' cancer death, interval including no difference.
+- Earlier statements that free questions "double" the cancers found, and that the first group covered has 2.3 times the
+  cancer-death rate, are **withdrawn as general claims**.
+- **Scores: novelty 5, impact 4, quality 4 (unchanged).** The replication strengthens the central finding and the paper's
+  honesty; losing two secondary results stops quality moving to 5.

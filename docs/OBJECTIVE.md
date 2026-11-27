@@ -24,7 +24,7 @@ are caught sooner and screening costs less, and get that into people's hands at 
 | Work | Result | Scores (novelty / impact / quality) |
 |---|---|---|
 | Free information and cost-matched invitation (`docs/cancer_age_paper/`) | Age, sex, smoking rank cancer death; inviting by risk covers more deaths at equal cost; fairness bar missed | 4 / 4 / 4 to 5 |
-| Medicare multi-cancer test law (`docs/mced_paper/`) | Law covers about 12% of Medicare-age cancer deaths in 2029; free-question triage roughly doubles cancers found per test | 5 / 4 / 4 |
+| Medicare multi-cancer test law (`docs/mced_paper/`) | Law covers about 12% of Medicare-age cancer deaths in 2029 (replicated, 11.4% in 2010-2014); triage and disability-group results did not replicate | 5 / 4 / 4 |
 | Red flag on the lab report (`docs/red_flag_paper/`, app `/redflag`) | 2.1 million older Americans with guideline iron-deficiency anaemia, about 80% untreated in 2017-2020 and in 2001-2002; cancer signal real but not specific | 4 / 4 / 5 (11-criterion rubric: nine 9s, two 8s) |
 | Discovery screen (`docs/DISCOVERY_SCREEN_RESULT.md`) | Run 18 Oct 2026: 79 items screened, none passed all stages; the free-information ceiling is firm for those items | 3 / 2 / 4 |
 
