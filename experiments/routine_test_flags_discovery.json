@@ -1,0 +1,257 @@
+{
+  "n": 16303,
+  "cancer_deaths": 332,
+  "other_deaths": 1350,
+  "alpha": 0.004545454545454546,
+  "flags": {
+    "high_calcium": {
+      "n": 15305,
+      "flagged": 107,
+      "flagged_share": 0.007,
+      "cancer_deaths_flagged": 3,
+      "other_deaths_flagged": 14,
+      "note": "fewer than 5 cancer deaths among the flagged; not modelled"
+    },
+    "high_alp": {
+      "n": 13643,
+      "flagged": 392,
+      "flagged_share": 0.0287,
+      "cancer_deaths_flagged": 14,
+      "other_deaths_flagged": 77,
+      "rrr_cancer": 2.657,
+      "rrr_cancer_ci": [
+        1.516,
+        4.659
+      ],
+      "p_cancer": 0.0006454108604543252,
+      "rrr_other": 3.809,
+      "rrr_other_ci": [
+        2.862,
+        5.068
+      ],
+      "ratio": 0.698,
+      "ratio_ci": [
+        0.385,
+        1.264
+      ],
+      "p_ratio": 0.2351142227337324
+    },
+    "low_albumin": {
+      "n": 15319,
+      "flagged": 249,
+      "flagged_share": 0.0163,
+      "cancer_deaths_flagged": 9,
+      "other_deaths_flagged": 99,
+      "rrr_cancer": 3.372,
+      "rrr_cancer_ci": [
+        1.681,
+        6.763
+      ],
+      "p_cancer": 0.0006194640578898869,
+      "rrr_other": 9.864,
+      "rrr_other_ci": [
+        7.278,
+        13.368
+      ],
+      "ratio": 0.342,
+      "ratio_ci": [
+        0.17,
+        0.689
+      ],
+      "p_ratio": 0.0026730671342867743
+    },
+    "high_ggt": {
+      "n": 15315,
+      "flagged": 1337,
+      "flagged_share": 0.0873,
+      "cancer_deaths_flagged": 36,
+      "other_deaths_flagged": 163,
+      "rrr_cancer": 1.884,
+      "rrr_cancer_ci": [
+        1.311,
+        2.707
+      ],
+      "p_cancer": 0.000619992448025181,
+      "rrr_other": 2.493,
+      "rrr_other_ci": [
+        2.056,
+        3.022
+      ],
+      "ratio": 0.756,
+      "ratio_ci": [
+        0.51,
+        1.12
+      ],
+      "p_ratio": 0.16282657594321437
+    },
+    "high_wbc": {
+      "n": 15626,
+      "flagged": 596,
+      "flagged_share": 0.0381,
+      "cancer_deaths_flagged": 28,
+      "other_deaths_flagged": 81,
+      "rrr_cancer": 2.746,
+      "rrr_cancer_ci": [
+        1.825,
+        4.13
+      ],
+      "p_cancer": 1.2391878189834114e-06,
+      "rrr_other": 2.024,
+      "rrr_other_ci": [
+        1.556,
+        2.633
+      ],
+      "ratio": 1.357,
+      "ratio_ci": [
+        0.861,
+        2.138
+      ],
+      "p_ratio": 0.1887498749931653
+    },
+    "high_platelets": {
+      "n": 15626,
+      "flagged": 386,
+      "flagged_share": 0.0247,
+      "cancer_deaths_flagged": 11,
+      "other_deaths_flagged": 40,
+      "rrr_cancer": 1.939,
+      "rrr_cancer_ci": [
+        1.036,
+        3.629
+      ],
+      "p_cancer": 0.038306577384241654,
+      "rrr_other": 1.707,
+      "rrr_other_ci": [
+        1.187,
+        2.454
+      ],
+      "ratio": 1.136,
+      "ratio_ci": [
+        0.57,
+        2.264
+      ],
+      "p_ratio": 0.7163220217951176
+    },
+    "high_fib4": {
+      "n": 15252,
+      "flagged": 904,
+      "flagged_share": 0.0593,
+      "cancer_deaths_flagged": 35,
+      "other_deaths_flagged": 221,
+      "rrr_cancer": 1.624,
+      "rrr_cancer_ci": [
+        1.112,
+        2.371
+      ],
+      "p_cancer": 0.012086575038312342,
+      "rrr_other": 2.185,
+      "rrr_other_ci": [
+        1.819,
+        2.625
+      ],
+      "ratio": 0.743,
+      "ratio_ci": [
+        0.499,
+        1.106
+      ],
+      "p_ratio": 0.14316579750838557
+    },
+    "new_diabetes_hba1c": {
+      "n": 15609,
+      "flagged": 729,
+      "flagged_share": 0.0467,
+      "cancer_deaths_flagged": 18,
+      "other_deaths_flagged": 54,
+      "rrr_cancer": 1.185,
+      "rrr_cancer_ci": [
+        0.727,
+        1.931
+      ],
+      "p_cancer": 0.4967101370585638,
+      "rrr_other": 0.857,
+      "rrr_other_ci": [
+        0.636,
+        1.154
+      ],
+      "ratio": 1.383,
+      "ratio_ci": [
+        0.796,
+        2.4
+      ],
+      "p_ratio": 0.24959987693059793
+    },
+    "urine_albumin": {
+      "n": 15824,
+      "flagged": 2835,
+      "flagged_share": 0.1792,
+      "cancer_deaths_flagged": 87,
+      "other_deaths_flagged": 538,
+      "rrr_cancer": 1.689,
+      "rrr_cancer_ci": [
+        1.307,
+        2.183
+      ],
+      "p_cancer": 6.213451718493542e-05,
+      "rrr_other": 3.41,
+      "rrr_other_ci": [
+        2.991,
+        3.888
+      ],
+      "ratio": 0.495,
+      "ratio_ci": [
+        0.376,
+        0.653
+      ],
+      "p_ratio": 5.995164023526999e-07
+    },
+    "high_crp": {
+      "n": 11278,
+      "flagged": 1342,
+      "flagged_share": 0.119,
+      "cancer_deaths_flagged": 42,
+      "other_deaths_flagged": 184,
+      "rrr_cancer": 2.141,
+      "rrr_cancer_ci": [
+        1.51,
+        3.036
+      ],
+      "p_cancer": 1.941451221395807e-05,
+      "rrr_other": 2.387,
+      "rrr_other_ci": [
+        1.976,
+        2.883
+      ],
+      "ratio": 0.897,
+      "ratio_ci": [
+        0.615,
+        1.308
+      ],
+      "p_ratio": 0.5719981149355389
+    },
+    "two_or_more": {
+      "n": 15317,
+      "flagged": 1861,
+      "flagged_share": 0.1215,
+      "cancer_deaths_flagged": 67,
+      "other_deaths_flagged": 375,
+      "rrr_cancer": 2.382,
+      "rrr_cancer_ci": [
+        1.796,
+        3.16
+      ],
+      "p_cancer": 1.7158931481365752e-09,
+      "rrr_other": 3.61,
+      "rrr_other_ci": [
+        3.12,
+        4.177
+      ],
+      "ratio": 0.66,
+      "ratio_ci": [
+        0.488,
+        0.891
+      ],
+      "p_ratio": 0.006758666521686345
+    }
+  },
+  "hits": []
+}
