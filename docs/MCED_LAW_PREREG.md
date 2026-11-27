@@ -117,3 +117,16 @@ outcome (the trial counts cancers the test found, not deaths).
 0.76%) and that positive predictive value was relatively homogeneous across age and sex. The paper and the app assumed
 a constant false-positive rate, which produced positive predictive values that rose with risk. That was an error. All
 group-specific predictive values and false-alarm counts are to be removed.
+
+## Replication in newer data, written 27 November 2026 before NHIS 2010-2014 is downloaded or opened
+
+Interview years 2010-2014 have a full five years of follow-up by 31 December 2019 and have not been used anywhere in this
+project. They are processed by the same code (`fetch_nhis_cancer_risk.py` layouts and cleaning). The ranking model stays
+frozen as fitted on 1997-2002. Population, definitions (enacted law), outcome and weights are unchanged.
+
+Bars, the same as before: **Q1** the 2029-covered share of Medicare-eligible five-year cancer deaths has a 95% interval
+below 50%. **Q3** testing the highest-risk 20% of the covered group on free answers raises the observed cancer-death rate
+at least 1.25 times, with the interval lower bound at least 1.25. **Q4** Medicare members aged 50-64 have higher observed
+and predicted five-year cancer-death risk than same-age adults without Medicare, intervals excluding no difference.
+Also reported, no bar: the same numbers pooled 2005-2014, and the yield-assumption check against NHS-Galleri age and sex
+ratios. If a year's file cannot be read with the same code, it is left out and said so. Results are reported whatever they are.
