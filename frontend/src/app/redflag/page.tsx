@@ -11,7 +11,7 @@ import { ArrowLeft } from "lucide-react";
 
 const NATIONAL = {
   millions: 2.1, millionsLo: 1.6, millionsHi: 2.6,
-  untreated: 81, untreatedRegular: 77,
+  untreated: 81, untreatedAnyIron: 70,
   perCancerDeathIda: 16, perCancerDeathNone: 41,
 };
 
@@ -75,6 +75,7 @@ export default function RedFlagPage() {
         out.v === "ida" ? "The guideline recommends looking for a source of blood loss with an upper endoscopy and a colonoscopy, even without symptoms. Do I need these, and what is the reason I am iron deficient?" : "",
         out.v === "ida-young" ? "The guideline suggests considering an upper endoscopy and a colonoscopy for this too. What do you think is causing it?" : "",
         "Should I be tested for coeliac disease and H. pylori first, as the guideline suggests?",
+        "Could any medicine I take, such as a blood thinner, aspirin, a painkiller like ibuprofen, or an acid reducer, be part of the reason?",
       ].filter(Boolean).join("\n")
     : "";
 
@@ -87,9 +88,9 @@ export default function RedFlagPage() {
         <p className="text-sm text-[var(--ink-2)] leading-relaxed mb-3">
           A routine blood count shows your haemoglobin. If it is low and your ferritin (stored iron) is also low, US gut specialists say
           that is worth looking into even if you feel fine, because slow bleeding from the gut, sometimes from a cancer, is one cause.
-          About <span className="data text-[var(--ink)]">{NATIONAL.millions}</span> million Americans over 50 have this result right now, and
-          about <span className="data text-[var(--ink)]">{NATIONAL.untreated}%</span> are not being treated for it. Even among people who had
-          seen a doctor at least twice in the past year, about <span className="data text-[var(--ink)]">{NATIONAL.untreatedRegular}%</span> were not.
+          About <span className="data text-[var(--ink)]">{NATIONAL.millions}</span> million Americans over 50 have this result right now, and about
+          <span className="data text-[var(--ink)]"> {NATIONAL.untreated}%</span> say they are not being treated for it. Even counting any iron pill,
+          including a multivitamin, about <span className="data text-[var(--ink)]">{NATIONAL.untreatedAnyIron}%</span> show no treatment.
         </p>
         <p className="text-xs text-[var(--ink-3)] leading-relaxed mb-8 border-l-2 border-[var(--warn-line)] pl-3">
           Research prototype, not medical advice, not reviewed by a clinician. Most people with this result do not have cancer. It reads three
@@ -170,6 +171,7 @@ export default function RedFlagPage() {
             {letter && (
               <section>
                 <h2 className="display text-lg mb-2 rule-out">Take this to your doctor</h2>
+                <p className="text-sm text-[var(--ink-2)] leading-relaxed mb-3">Do not stop or change any medicine on your own, especially a blood thinner. Stopping one can be dangerous. Ask first.</p>
                 <pre className="data text-xs text-[var(--ink-2)] whitespace-pre-wrap border border-[var(--rule)] p-4 leading-relaxed">{letter}</pre>
                 <button type="button" onClick={() => navigator.clipboard?.writeText(letter)}
                   className="mt-3 text-xs border border-[var(--stamp-line)] text-[var(--stamp)] px-3 py-1.5 hover:bg-[var(--stamp-bg)]">Copy these questions</button>

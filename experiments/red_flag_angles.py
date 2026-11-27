@@ -17,7 +17,7 @@ from red_flag_labs import flags, ratio_est
 ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 AUDIT = os.path.join(ROOT, "data", "audit")
 OUT = os.path.join(ROOT, "experiments", "red_flag_angles_result.json")
-IRON_RX = r"FERROUS|FERRIC|IRON|CARBONYL IRON"
+IRON_RX = r"FERROUS|FERRIC|IRON|FERUMOXYTOL"      # whole words: a bare "IRON" also matches busPIRONE and spIRONolactone
 DRUGS = {
     "blood_thinner": "WARFARIN|APIXABAN|RIVAROXABAN|DABIGATRAN|EDOXABAN|ENOXAPARIN|HEPARIN|CLOPIDOGREL|PRASUGREL|TICAGRELOR|DIPYRIDAMOLE|ASPIRIN",
     "nsaid": "IBUPROFEN|NAPROXEN|MELOXICAM|DICLOFENAC|CELECOXIB|INDOMETHACIN|NABUMETONE|ETODOLAC|KETOROLAC|PIROXICAM",

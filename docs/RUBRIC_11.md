@@ -76,3 +76,13 @@ work found and named (automatic laboratory algorithms in Spain; record-based com
 | 6 | Depth of real data | 9 | **9** | Now four NHANES samples, 1988-2020, 21,820 adults in the follow-up analysis. |
 
 No other score changes.
+
+### Revision after angles A1, A3, A4 and the routine-test screen (27 November 2026)
+
+A1 met: even counting any iron supplement, about 70% of cases show no treatment (about 1.5 million). Payer and medicine
+breakdowns added (descriptive). Routine-test screen: no flag cancer-specific. A2 (projected cancers) dropped as
+implausible. A one-command number check and a sheet for a human checker were added (`docs/HUMAN_CHECK.md`).
+
+**No score changes: eight criteria at 9, impact 8, uniqueness 8, novelty 7.** The new work makes the main finding harder to
+dismiss and gives clearer routes to act on it, but it adds no measured endoscopy follow-up, no uptake, no outside review and
+no new scientific idea, which are what the three remaining scores need.

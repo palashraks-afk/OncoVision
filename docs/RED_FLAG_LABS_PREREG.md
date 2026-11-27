@@ -194,3 +194,7 @@ Files downloaded (columns inspected only): data/audit/P_DSQIDS, P_RXQ_RX, P_HIQ 
   RABEPRAZOLE, DEXLANSOPRAZOLE.
 - **A3 groups** are not exclusive (people can hold more than one): private (HIQ032A), Medicare (HIQ032B), Medicaid
   (HIQ032D), uninsured (HIQ011 = 2).
+
+**Correction after the first A1 run (27 November 2026):** the iron-prescription match "contains IRON" also matched
+buspirone and spironolactone. It now matches the whole words FERROUS, FERRIC, IRON or FERUMOXYTOL, and A1, A3 and A4
+were re-run. The first run is not reported.
