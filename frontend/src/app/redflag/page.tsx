@@ -88,7 +88,7 @@ export default function RedFlagPage() {
         <p className="text-sm text-[var(--ink-2)] leading-relaxed mb-3">
           A routine blood count shows your haemoglobin. If it is low and your ferritin (stored iron) is also low, US gut specialists say
           that is worth looking into even if you feel fine, because slow bleeding from the gut, sometimes from a cancer, is one cause.
-          About <span className="data text-[var(--ink)]">{NATIONAL.millions}</span> million Americans over 50 have this result right now, and about
+          About <span className="data text-[var(--ink)]">{NATIONAL.millions}</span> million Americans over 50 had this result in the latest national survey (2017 to March 2020), and about
           <span className="data text-[var(--ink)]"> {NATIONAL.untreated}%</span> say they are not being treated for it. Even counting any iron pill,
           including a multivitamin, about <span className="data text-[var(--ink)]">{NATIONAL.untreatedAnyIron}%</span> show no treatment.
         </p>
