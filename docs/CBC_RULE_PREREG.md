@@ -37,3 +37,8 @@ whatever happens. If none is usable, the conclusion is to add ferritin for every
 ## Limits
 
 Survey, not patient, samples; small numbers of cases in validation; analysers differ between eras (RDW especially).
+
+## Result (27 November 2026)
+
+No rule met the bar. Pooled validation (713 anaemic adults, 174 with ferritin below 45): MCV below 80 found 24%; any of the
+four indices 65%; the model on all indices 94% (89-99%) while skipping 16% of tests. Numbers: `experiments/cbc_rule_result.json`.

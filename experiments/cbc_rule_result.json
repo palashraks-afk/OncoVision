@@ -1,0 +1,249 @@
+{
+  "pooled": {
+    "n_anaemic": 713,
+    "ida": 174,
+    "MCV below 80": {
+      "sensitivity": 0.2368702501545237,
+      "sensitivity_ci": [
+        0.14260852283126707,
+        0.33113197747778034
+      ],
+      "tests_avoided": 0.8569106470924394,
+      "tests_avoided_ci": [
+        0.8193396678728848,
+        0.8944816263119939
+      ],
+      "missed_cases": 115
+    },
+    "MCH below 27": {
+      "sensitivity": 0.3715436914993024,
+      "sensitivity_ci": [
+        0.2532664492357414,
+        0.4898209337628634
+      ],
+      "tests_avoided": 0.7858566296429866,
+      "tests_avoided_ci": [
+        0.7417239030589304,
+        0.8299893562270428
+      ],
+      "missed_cases": 97
+    },
+    "MCHC below 32": {
+      "sensitivity": 0.2615479612535433,
+      "sensitivity_ci": [
+        0.14546802725625818,
+        0.3776278952508284
+      ],
+      "tests_avoided": 0.8581202094967003,
+      "tests_avoided_ci": [
+        0.8180487234694152,
+        0.8981916955239855
+      ],
+      "missed_cases": 118
+    },
+    "RDW above 14.5": {
+      "sensitivity": 0.6149599590122969,
+      "sensitivity_ci": [
+        0.5068369820711223,
+        0.7230829359534716
+      ],
+      "tests_avoided": 0.5317681479623824,
+      "tests_avoided_ci": [
+        0.47890256940542786,
+        0.5846337265193369
+      ],
+      "missed_cases": 61
+    },
+    "Any of the four": {
+      "sensitivity": 0.6467808038955419,
+      "sensitivity_ci": [
+        0.5395058565796362,
+        0.7540557512114476
+      ],
+      "tests_avoided": 0.5032557143290299,
+      "tests_avoided_ci": [
+        0.45144861546689363,
+        0.5550628131911662
+      ],
+      "missed_cases": 53
+    },
+    "Model on all indices": {
+      "sensitivity": 0.9433991897529018,
+      "sensitivity_ci": [
+        0.8930554968835756,
+        0.9937428826222281
+      ],
+      "tests_avoided": 0.15965674434970134,
+      "tests_avoided_ci": [
+        0.12145488857547287,
+        0.1978586001239298
+      ],
+      "missed_cases": 7
+    }
+  },
+  "2001-2002": {
+    "n_anaemic": 173,
+    "ida": 54,
+    "MCV below 80": {
+      "sensitivity": 0.19948504969479075,
+      "sensitivity_ci": [
+        0.030936983661017603,
+        0.3680331157285639
+      ],
+      "tests_avoided": 0.8488348699489751,
+      "tests_avoided_ci": [
+        0.752454262095476,
+        0.9452154778024742
+      ],
+      "missed_cases": 42
+    },
+    "MCH below 27": {
+      "sensitivity": 0.28689102918667314,
+      "sensitivity_ci": [
+        0.09932394076700132,
+        0.47445811760634493
+      ],
+      "tests_avoided": 0.7957838245213131,
+      "tests_avoided_ci": [
+        0.6943916825460461,
+        0.8971759664965802
+      ],
+      "missed_cases": 38
+    },
+    "MCHC below 32": {
+      "sensitivity": 0.10548974929940792,
+      "sensitivity_ci": [
+        0.0,
+        0.2441080355048899
+      ],
+      "tests_avoided": 0.9291900046694072,
+      "tests_avoided_ci": [
+        0.8622716829108287,
+        0.9961083264279856
+      ],
+      "missed_cases": 48
+    },
+    "RDW above 14.5": {
+      "sensitivity": 0.4599997688551743,
+      "sensitivity_ci": [
+        0.265076656673768,
+        0.6549228810365806
+      ],
+      "tests_avoided": 0.6143946738611198,
+      "tests_avoided_ci": [
+        0.4881506632628578,
+        0.7406386844593817
+      ],
+      "missed_cases": 34
+    },
+    "Any of the four": {
+      "sensitivity": 0.5103454212594689,
+      "sensitivity_ci": [
+        0.3185735290913172,
+        0.7021173134276206
+      ],
+      "tests_avoided": 0.5696958468178906,
+      "tests_avoided_ci": [
+        0.4475472369764639,
+        0.6918444566593174
+      ],
+      "missed_cases": 30
+    },
+    "Model on all indices": {
+      "sensitivity": 0.8769394759472283,
+      "sensitivity_ci": [
+        0.7658203611388381,
+        0.9880585907556185
+      ],
+      "tests_avoided": 0.22626432654164746,
+      "tests_avoided_ci": [
+        0.13122553216878227,
+        0.32130312091451263
+      ],
+      "missed_cases": 6
+    }
+  },
+  "2017-2020": {
+    "n_anaemic": 540,
+    "ida": 120,
+    "MCV below 80": {
+      "sensitivity": 0.26754317698740177,
+      "sensitivity_ci": [
+        0.16569709247734077,
+        0.36938926149746276
+      ],
+      "tests_avoided": 0.8607326897013027,
+      "tests_avoided_ci": [
+        0.8297210245625932,
+        0.8917443548400121
+      ],
+      "missed_cases": 73
+    },
+    "MCH below 27": {
+      "sensitivity": 0.44099750973200935,
+      "sensitivity_ci": [
+        0.30056238076281194,
+        0.5814326387012068
+      ],
+      "tests_avoided": 0.7811583620784639,
+      "tests_avoided_ci": [
+        0.7370601058053378,
+        0.82525661835159
+      ],
+      "missed_cases": 59
+    },
+    "MCHC below 32": {
+      "sensitivity": 0.3895869193994201,
+      "sensitivity_ci": [
+        0.23788454030192724,
+        0.5412892984969129
+      ],
+      "tests_avoided": 0.8244848353986057,
+      "tests_avoided_ci": [
+        0.7784547058219032,
+        0.8705149649753082
+      ],
+      "missed_cases": 70
+    },
+    "RDW above 14.5": {
+      "sensitivity": 0.7420980381518688,
+      "sensitivity_ci": [
+        0.619938708558904,
+        0.8642573677448336
+      ],
+      "tests_avoided": 0.4926632919222565,
+      "tests_avoided_ci": [
+        0.4389466569505606,
+        0.5463799268939524
+      ],
+      "missed_cases": 27
+    },
+    "Any of the four": {
+      "sensitivity": 0.7587200862198257,
+      "sensitivity_ci": [
+        0.6365097785233417,
+        0.8809303939163097
+      ],
+      "tests_avoided": 0.47181143190273134,
+      "tests_avoided_ci": [
+        0.41866797702384767,
+        0.5249548867816151
+      ],
+      "missed_cases": 23
+    },
+    "Model on all indices": {
+      "sensitivity": 0.9979264870210035,
+      "sensitivity_ci": [
+        0.9936417388600949,
+        1.0
+      ],
+      "tests_avoided": 0.12813321259684682,
+      "tests_avoided_ci": [
+        0.0937175669817489,
+        0.16254885821194473
+      ],
+      "missed_cases": 1
+    }
+  },
+  "usable_rules": []
+}
